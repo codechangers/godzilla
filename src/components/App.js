@@ -1,16 +1,15 @@
 import React from 'react';
-import logo from '../assets/images/logo.svg';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Route } from 'react-router';
+import HomePage from './HomePage';
 import '../assets/css/App.css';
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello New Platform
-        </p>
-      </header>
+      <Router>
+        <Route path="/" exact component={HomePage} />
+      </Router>
     </div>
   );
 }
