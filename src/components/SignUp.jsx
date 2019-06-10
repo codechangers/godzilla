@@ -20,23 +20,23 @@ class SignUp extends React.Component {
       this.setState({
         fName: e.target.value
       });
-    } else if (e.target.value === 'lastName') {
+    } else if (e.target.id === 'lastName') {
       this.setState({
         lName: e.target.value
       });
-    } else if (e.target.value === 'Email') {
+    } else if (e.target.id === 'Email') {
       this.setState({
         email: e.target.value
       });
-    } else if (e.target.value === 'accountType') {
+    } else if (e.target.id === 'accountType') {
       this.setState({
         acountType: e.target.value
       });
-    } else if (e.target.value === 'password') {
+    } else if (e.target.id === 'password') {
       this.setState({
         password: e.target.value
       });
-    } else if (e.target.value === 'confirmPassword') {
+    } else if (e.target.id === 'confirmPassword') {
       this.setState({
         confirmPassword: e.target.value
       });
