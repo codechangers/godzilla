@@ -1,12 +1,14 @@
 import React from 'react';
 import logo from '../assets/images/logo.svg';
-import '../assets/css/App.css';
+import '../assets/css/HomePage.css';
 
 const HomePage = () => (
-  <header className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <p>Hello New Platform</p>
-  </header>
+  <div className="HomePage-banner">
+    <div className="overlay banner">
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1>Hello New Platform</h1>
+    </div>
+  </div>
 );
 
 export default HomePage;

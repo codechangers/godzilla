@@ -1,0 +1,12 @@
+.HomePage-banner {
+  width: 100%;
+  height: 100vh;
+  background-image: url('https://codechangers.com/NEW/static/img/home-hero/CodeChangers_20180710_181.jpg');
+  background-size: cover;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
