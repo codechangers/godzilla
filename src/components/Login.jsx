@@ -1,5 +1,7 @@
 import React from 'react';
 import autoBind from '../autoBind';
+import firebase from '../firebase';
+import 'firebase/auth';
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,6 +10,7 @@ class Login extends React.Component {
       email: '',
       password: ''
     };
+    this.firebase = firebase();
     autoBind(this);
   }
 
@@ -23,9 +26,25 @@ class Login extends React.Component {
     }
   }
 
+  handleSubmit() {
+    const { email, password } = this.state;
+    this.firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(err => {
+        if (err.code === 'auth/user-not-found') {
+          console.log(err, 'Invalid Email...');
+        } else if (err.code === 'auth/wrong-password') {
+          console.log(err, 'Invalid Password...');
+        } else {
+          console.log(err);
+        }
+      });
+  }
+
   render() {
     return (
-      <form>
+      <div className="login-form">
         <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
@@ -39,8 +58,10 @@ class Login extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <input type="submit" value="Submit" />
-      </form>
+        <button type="submit" onClick={this.handleSubmit}>
+          Submit
+        </button>
+      </div>
     );
   }
 }
