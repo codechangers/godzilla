@@ -30,7 +30,7 @@ class SignUp extends React.Component {
       });
     } else if (e.target.id === 'accountType') {
       this.setState({
-        acountType: e.target.value
+        accountType: e.target.value
       });
     } else if (e.target.id === 'password') {
       this.setState({
@@ -43,32 +43,37 @@ class SignUp extends React.Component {
     }
   }
 
+  handleSubmit() {
+    console.log(this.state);
+  }
+
   render() {
     return (
-      <form>
-        <label>
+      <div className="signup-form">
+        <label htmlFor="firstname">
           First Name:
           <input id="firstName" type="text" value={this.state.fName} onChange={this.handleChange} />
         </label>
         <br />
-        <label>
+        <label htmlFor="lastname">
           Last Name:
           <input id="lastName" type="text" value={this.state.lName} onChange={this.handleChange} />
         </label>
         <br />
-        <label>
+        <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
         </label>
         <br />
-        <select id="accountType">
-          Account Type:
+        <p>Account Type:</p>
+        <select id="accountType" value={this.state.accountType} onChange={this.handleChange}>
+          <option value="" />
           <option value="Parent">Parent</option>
           <option value="Teacher">Teacher</option>
           <option value="Organization">Organization</option>
         </select>
         <br />
-        <label>
+        <label htmlFor="password">
           Password:
           <input
             id="password"
@@ -78,7 +83,7 @@ class SignUp extends React.Component {
           />
         </label>
         <br />
-        <label>
+        <label htmlFor="confirm-password">
           Confirm Password:
           <input
             id="confirmPassword"
@@ -88,8 +93,10 @@ class SignUp extends React.Component {
           />
         </label>
         <br />
-        <input type="submit" value="Submit" />
-      </form>
+        <button type="submit" onClick={this.handleSubmit}>
+          Submit
+        </button>
+      </div>
     );
   }
 }
