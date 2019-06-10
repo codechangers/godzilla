@@ -1,4 +1,5 @@
 import React from 'react';
+import autoBind from '../autoBind';
 
 class Login extends React.Component {
   constructor(props) {
@@ -7,6 +8,7 @@ class Login extends React.Component {
       email: '',
       password: ''
     };
+    autoBind(this);
   }
 
   handleChange(e) {
@@ -14,7 +16,7 @@ class Login extends React.Component {
       this.setState({
         email: e.target.value
       });
-    } else if (e.target.value === 'Password') {
+    } else if (e.target.id === 'Password') {
       this.setState({
         password: e.target.value
       });
@@ -24,11 +26,11 @@ class Login extends React.Component {
   render() {
     return (
       <form>
-        <label>
+        <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
         </label>
-        <label>
+        <label htmlFor="password">
           Password:
           <input
             id="Password"

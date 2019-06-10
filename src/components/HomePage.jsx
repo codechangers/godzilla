@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import '../assets/css/HomePage.css';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const HomePage = () => (
   <div className="HomePage-banner">
