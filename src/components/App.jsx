@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route } from 'react-router';
 import HomePage from './HomePage';
+import Login from './Login';
 import '../assets/css/App.css';
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
     <div className="App">
       <Router>
         <Route path="/" exact component={HomePage} />
+        <Route path="/login" component={Login} />
       </Router>
     </div>
   );
