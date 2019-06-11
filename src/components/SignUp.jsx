@@ -12,6 +12,13 @@ const accountTypeToCollection = {
   Organization: 'organizations'
 };
 
+const accountTypeToRoute = {
+  '': '/signup',
+  Parent: '/parent',
+  Organization: '/organization',
+  Teacher: '/trainingteacher'
+};
+
 const idToDataMember = {
   firstName: 'fName',
   lastName: 'lName',
@@ -77,7 +84,7 @@ class SignUp extends React.Component {
 
   render() {
     return this.state.isLoggedIn ? (
-      <Redirect to="/dashboard" />
+      <Redirect to={accountTypeToRoute[this.state.accountType]} />
     ) : (
       <div className="signup-form">
         <label htmlFor="firstname">
