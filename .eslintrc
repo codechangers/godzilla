@@ -3,6 +3,7 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "react/destructuring-assignment": [false, "always"]
+    "react/destructuring-assignment": [false, "always"],
+    "no-console": 0
   }
 }
