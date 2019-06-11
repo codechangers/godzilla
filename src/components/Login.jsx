@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
