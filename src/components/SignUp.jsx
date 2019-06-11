@@ -1,5 +1,7 @@
 import React from 'react';
 import autoBind from '../autoBind';
+import firebase from '../firebase';
+import 'firebase/auth';
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class SignUp extends React.Component {
       confirmPassword: '',
       accountType: ''
     };
+    this.firebase = firebase();
     autoBind(this);
   }
 
@@ -44,7 +47,16 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    console.log(this.state);
+    const { fName, lName, email, accountType, password, confirmPassword } = this.state;
+    console.log(fName, lName, accountType);
+    if (password === confirmPassword) {
+      this.firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch(err => console.log(err));
+    } else {
+      console.log("passwords don't match");
+    }
   }
 
   render() {
