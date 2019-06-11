@@ -31,6 +31,9 @@ class Login extends React.Component {
     this.firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        return <Redirect to="/dashboard" />;
+      })
       .catch(err => {
         if (err.code === 'auth/user-not-found') {
           console.log(err, 'Invalid Email...');

@@ -4,6 +4,7 @@ import { Route } from 'react-router';
 import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
+import Dashboard from './Dashboard';
 import '../assets/css/App.css';
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/" exact component={HomePage} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/dashboard" component={Dashboard} />
       </Router>
     </div>
   );

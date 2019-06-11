@@ -2,6 +2,7 @@ import React from 'react';
 import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
+import { Redirect } from 'react-router-dom';
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -53,6 +54,9 @@ class SignUp extends React.Component {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          return <Redirect to="/dashboard" />;
+        })
         .catch(err => console.log(err));
     } else {
       console.log("passwords don't match");
