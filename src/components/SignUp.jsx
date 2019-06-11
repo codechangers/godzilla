@@ -12,6 +12,15 @@ const accountTypeToCollection = {
   Organization: 'organizations'
 };
 
+const idToDataMember = {
+  firstName: 'fName',
+  lastName: 'lName',
+  Email: 'email',
+  accountType: 'accountType',
+  password: 'password',
+  confirmPassword: 'confirmPassword'
+};
+
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
@@ -32,31 +41,10 @@ class SignUp extends React.Component {
   }
 
   handleChange(e) {
-    if (e.target.id === 'firstName') {
-      this.setState({
-        fName: e.target.value
-      });
-    } else if (e.target.id === 'lastName') {
-      this.setState({
-        lName: e.target.value
-      });
-    } else if (e.target.id === 'Email') {
-      this.setState({
-        email: e.target.value
-      });
-    } else if (e.target.id === 'accountType') {
-      this.setState({
-        accountType: e.target.value
-      });
-    } else if (e.target.id === 'password') {
-      this.setState({
-        password: e.target.value
-      });
-    } else if (e.target.id === 'confirmPassword') {
-      this.setState({
-        confirmPassword: e.target.value
-      });
-    }
+    const { id, value } = e.target;
+    const newState = {};
+    newState[idToDataMember[id]] = value;
+    this.setState(newState);
   }
 
   handleSubmit() {
