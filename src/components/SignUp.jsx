@@ -30,7 +30,8 @@ class SignUp extends React.Component {
       email: '',
       password: '',
       confirmPassword: '',
-      accountType: ''
+      accountType: '',
+      isLoggedIn: false
     };
     this.firebase = firebase();
     this.db = this.firebase
@@ -62,7 +63,9 @@ class SignUp extends React.Component {
               .set(userData)
               .then(() => {
                 console.log('Created:', `${fName} ${lName}`);
-                return <Redirect to="/dashboard" />;
+                this.setState({
+                  isLoggedIn: true
+                });
               });
           }
         })
@@ -73,7 +76,9 @@ class SignUp extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.isLoggedIn ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <div className="signup-form">
         <label htmlFor="firstname">
           First Name:

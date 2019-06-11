@@ -9,7 +9,8 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      isLoggedIn: false
     };
     this.firebase = firebase();
     autoBind(this);
@@ -33,7 +34,10 @@ class Login extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        return <Redirect to="/dashboard" />;
+        console.log('>>>>>>>>>>>logging in');
+        this.setState({
+          isLoggedIn: true
+        });
       })
       .catch(err => {
         if (err.code === 'auth/user-not-found') {
@@ -47,7 +51,9 @@ class Login extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.isLoggedIn ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <div className="login-form">
         <label htmlFor="email">
           Email Address:
