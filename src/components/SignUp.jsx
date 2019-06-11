@@ -3,6 +3,14 @@ import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
 import { Redirect } from 'react-router-dom';
+import 'firebase/firestore';
+
+const accountTypeToCollection = {
+  '': null,
+  Parent: 'parents',
+  Teacher: 'teachers',
+  Organization: 'organizations'
+};
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -16,6 +24,10 @@ class SignUp extends React.Component {
       accountType: ''
     };
     this.firebase = firebase();
+    this.db = this.firebase
+      .firestore()
+      .collection('env')
+      .doc('DEVELOPMENT');
     autoBind(this);
   }
 
@@ -49,13 +61,22 @@ class SignUp extends React.Component {
 
   handleSubmit() {
     const { fName, lName, email, accountType, password, confirmPassword } = this.state;
-    console.log(fName, lName, accountType);
     if (password === confirmPassword) {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          return <Redirect to="/dashboard" />;
+        .then(res => {
+          if (res.user) {
+            const userData = { fName, lName, email, accountType };
+            this.db
+              .collection(accountTypeToCollection[accountType])
+              .doc(res.user.uid)
+              .set(userData)
+              .then(() => {
+                console.log('Created:', `${fName} ${lName}`);
+                return <Redirect to="/dashboard" />;
+              });
+          }
         })
         .catch(err => console.log(err));
     } else {
