@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
-import '../assets/css/Forms.css';
+import '../assets/css/Login.css';
 
 class Login extends React.Component {
   constructor(props) {

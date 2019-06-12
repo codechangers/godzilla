@@ -7,6 +7,7 @@ import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
+import '../assets/css/Signup.css';
 
 const accountTypeToCollection = {
   '': null,
