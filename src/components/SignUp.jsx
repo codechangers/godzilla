@@ -40,11 +40,8 @@ class SignUp extends React.Component {
       accountType: '',
       isLoggedIn: false
     };
-    this.firebase = firebase();
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.firebase = this.props.firebase;
+    this.db = this.props.db;
     autoBind(this);
   }
 

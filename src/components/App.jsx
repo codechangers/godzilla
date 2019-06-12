@@ -16,6 +16,16 @@ import 'firebase/firestore';
 
 let authSubscription = () => {};
 
+const pathToComponent = {
+  '/': HomePage,
+  '/login': Login,
+  '/signup': SignUp,
+  '/parent': Parent,
+  '/teacher': Teacher,
+  '/trainingteacher': TrainingTeacher,
+  '/organization': Organization
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +33,10 @@ class App extends React.Component {
       user: null
     };
     this.firebase = firebase();
+    this.db = this.firebase
+      .firestore()
+      .collection('env')
+      .doc('DEVELOPMENT');
   }
 
   componentDidMount() {
@@ -42,19 +56,19 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <Route path="/" exact component={HomePage} />
-
-          {/* <Route path="/login" component={Login} user={this.state.user} firebase={this.firebase} /> */}
-          <Route
-            path="/login"
-            render={props => <Login {...props} user={this.state.user} firebase={this.firebase} />}
-          />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/parent" component={Parent} />
-          <Route path="/trainingteacher" component={TrainingTeacher} />
-          <Route path="/teacher" component={Teacher} />
-          <Route path="/organization" component={Organization} />
+          {Object.keys(pathToComponent).map((path, index) => (
+            <Route
+              exact={index === 0}
+              key={path}
+              path={path}
+              render={props => {
+                const Comp = pathToComponent[path];
+                return (
+                  <Comp {...props} user={this.state.user} firebase={this.firebase} db={this.db} />
+                );
+              }}
+            />
+          ))}
         </Router>
       </div>
     );
