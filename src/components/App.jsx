@@ -5,6 +5,7 @@ import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
+import AdminDashboard from './Dashboards/Admin';
 import Parent from './Dashboards/Parent';
 import TrainingTeacher from './Dashboards/TeacherInTraining';
 import Teacher from './Dashboards/TeacherOutOfTraining';
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/admin" component={AdminDashboard} />
         <Route path="/parent" component={Parent} />
         <Route path="/trainingteacher" component={TrainingTeacher} />
         <Route path="/teacher" component={Teacher} />
