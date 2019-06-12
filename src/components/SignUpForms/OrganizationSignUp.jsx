@@ -6,7 +6,8 @@ const propTypes = {
   state: PropTypes.shape({
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired
+    address: PropTypes.string.isRequired,
+    aboutMe: PropTypes.string.isRequired
   }).isRequired
 };
 
@@ -30,6 +31,11 @@ const ParentSignUp = ({ handleChange, state }) => (
     <label htmlFor="address">
       Address:
       <input id="address" type="text" value={state.address} onChange={handleChange} />
+    </label>
+    <br />
+    <label htmlFor="aboutMe">
+      About You:
+      <textarea id="aboutMe" value={state.aboutMe} onChange={handleChange} />
     </label>
   </div>
 );

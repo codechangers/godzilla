@@ -9,7 +9,8 @@ const propTypes = {
     email: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     gender: PropTypes.string.isRequired,
-    birthDate: PropTypes.string.isRequired
+    birthDate: PropTypes.string.isRequired,
+    aboutMe: PropTypes.string.isRequired
   }).isRequired
 };
 

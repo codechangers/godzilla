@@ -84,6 +84,41 @@ class SignUp extends React.Component {
     }
   }
 
+  getUserData() {
+    const {
+      name,
+      fName,
+      lName,
+      address,
+      email,
+      phone,
+      canText,
+      gender,
+      birthDate,
+      aboutMe
+    } = this.state;
+    switch (this.state.accountType) {
+      case 'Parent':
+        return { fName, lName, address, email, phone, canText };
+      case 'Teacher':
+        return {
+          fName,
+          lName,
+          email,
+          phone,
+          gender,
+          birthDate,
+          aboutMe,
+          isVerrified: false,
+          isTraining: true
+        };
+      case 'Organization':
+        return { name, email, address, aboutMe, isVerrified: false };
+      default:
+        return null;
+    }
+  }
+
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
@@ -105,17 +140,21 @@ class SignUp extends React.Component {
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {
-            const userData = { fName, lName, email, accountType };
-            this.db
-              .collection(accountTypeToCollection[accountType])
-              .doc(res.user.uid)
-              .set(userData)
-              .then(() => {
-                console.log('Created:', `${fName} ${lName}`);
-                this.setState({
-                  isLoggedIn: true
+            const userData = this.getUserData();
+            if (userData !== null) {
+              this.db
+                .collection(accountTypeToCollection[accountType])
+                .doc(res.user.uid)
+                .set(userData)
+                .then(() => {
+                  console.log('Created:', `${fName} ${lName}`);
+                  this.setState({
+                    isLoggedIn: true
+                  });
                 });
-              });
+            } else {
+              console.log('Invalid Account Type');
+            }
           }
         })
         .catch(err => console.log(err));
