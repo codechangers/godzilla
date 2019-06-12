@@ -10,3 +10,30 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+}
+
+.buttons > a {
+  text-decoration: none;
+  width: 150px;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0e0e0e;
+  transition: 200ms ease;
+  margin: 0 20px;
+}
+
+.buttons > a:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
