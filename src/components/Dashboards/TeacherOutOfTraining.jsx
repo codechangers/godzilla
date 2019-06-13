@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
@@ -11,5 +12,10 @@ const Teacher = ({ firebase, user }) =>
   ) : (
     <Redirect to="/" />
   );
+
+Teacher.propTypes = {
+  firebase: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
+};
 
 export default Teacher;

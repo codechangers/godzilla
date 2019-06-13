@@ -4,7 +4,6 @@ import { Route } from 'react-router';
 import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
-import Dashboard from './Dashboard';
 import AdminDashboard from './Dashboards/Admin';
 import Parent from './Dashboards/Parent';
 import TrainingTeacher from './Dashboards/TeacherInTraining';

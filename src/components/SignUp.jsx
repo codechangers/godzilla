@@ -1,12 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import ParentSignUp from './SignUpForms/ParentSignUp';
 import TeacherSignUp from './SignUpForms/TeacherSignUp';
 import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
-import firebase from '../firebase';
-import 'firebase/auth';
-import 'firebase/firestore';
 import '../assets/css/Signup.css';
 
 const accountTypeToCollection = {
@@ -37,6 +35,11 @@ const idToDataMember = {
   accountType: 'accountType',
   password: 'password',
   confirmPassword: 'confirmPassword'
+};
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 class SignUp extends React.Component {
@@ -203,5 +206,7 @@ class SignUp extends React.Component {
     );
   }
 }
+
+SignUp.propTypes = propTypes;
 
 export default SignUp;

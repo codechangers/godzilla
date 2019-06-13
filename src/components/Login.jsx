@@ -1,8 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
-import firebase from '../firebase';
-import 'firebase/auth';
 import '../assets/css/Login.css';
 
 const accountTypeToRoute = {
@@ -12,13 +11,17 @@ const accountTypeToRoute = {
   teachers: '/trainingteacher'
 };
 
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
+};
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
-      isLoggedIn: false,
       shouldRedirect: ''
     };
     this.firebase = props.firebase;
@@ -33,7 +36,7 @@ class Login extends React.Component {
     this.getUserDashboard();
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps() {
     this.getUserDashboard();
   }
 
@@ -74,11 +77,6 @@ class Login extends React.Component {
     this.firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({
-          isLoggedIn: true
-        });
-      })
       .catch(err => {
         if (err.code === 'auth/user-not-found') {
           console.log(err, 'Invalid Email...');
@@ -115,5 +113,7 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = propTypes;
 
 export default Login;
