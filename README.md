@@ -1,6 +1,6 @@
-# New CodeChangers Platform
+# Godzilla
 
-This is a new platform, that will allow for anyone to take charge, and teach code.
+Code Name: Project Godzilla is a new platform that will allow for anyone to take charge and teach code.
 
 ### Setup:
 

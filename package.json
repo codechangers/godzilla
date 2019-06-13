@@ -1,8 +1,11 @@
 {
-  "name": "new-platform",
+  "name": "godzilla",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dotenv": "^8.0.0",
+    "firebase": "^6.1.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router": "^5.0.1",
@@ -10,8 +13,8 @@
     "react-scripts": "3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts -r dotenv/config start",
+    "build": "react-scripts -r dotenv/config build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
