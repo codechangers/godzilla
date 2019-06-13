@@ -1,9 +1,13 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import ParentSignUp from './SignUpForms/ParentSignUp';
+import TeacherSignUp from './SignUpForms/TeacherSignUp';
+import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
 import firebase from '../firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
+import '../assets/css/Signup.css';
 
 const accountTypeToCollection = {
   '': null,
@@ -20,9 +24,16 @@ const accountTypeToRoute = {
 };
 
 const idToDataMember = {
+  name: 'name',
   firstName: 'fName',
   lastName: 'lName',
+  address: 'address',
   Email: 'email',
+  phone: 'phone',
+  canText: 'canText',
+  gender: 'gender',
+  birthDate: 'birthDate',
+  aboutMe: 'aboutMe',
   accountType: 'accountType',
   password: 'password',
   confirmPassword: 'confirmPassword'
@@ -32,9 +43,16 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       fName: '',
       lName: '',
+      address: '',
       email: '',
+      phone: '',
+      canText: false,
+      gender: '',
+      birthDate: '',
+      aboutMe: '',
       password: '',
       confirmPassword: '',
       accountType: '',
@@ -45,11 +63,71 @@ class SignUp extends React.Component {
     autoBind(this);
   }
 
+  getForm() {
+    switch (this.state.accountType) {
+      case 'Parent':
+        return (
+          <ParentSignUp
+            handleChange={this.handleChange}
+            toggleCanText={this.toggleCanText}
+            state={{ ...this.state }}
+          />
+        );
+      case 'Teacher':
+        return <TeacherSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
+      case 'Organization':
+        return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
+      default:
+        return null;
+    }
+  }
+
+  getUserData() {
+    const {
+      name,
+      fName,
+      lName,
+      address,
+      email,
+      phone,
+      canText,
+      gender,
+      birthDate,
+      aboutMe
+    } = this.state;
+    switch (this.state.accountType) {
+      case 'Parent':
+        return { fName, lName, address, email, phone, canText };
+      case 'Teacher':
+        return {
+          fName,
+          lName,
+          email,
+          phone,
+          gender,
+          birthDate,
+          aboutMe,
+          isVerrified: false,
+          isTraining: true
+        };
+      case 'Organization':
+        return { name, email, address, aboutMe, isVerrified: false };
+      default:
+        return null;
+    }
+  }
+
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
     newState[idToDataMember[id]] = value;
     this.setState(newState);
+  }
+
+  toggleCanText() {
+    let { canText } = this.state;
+    canText = !canText;
+    this.setState({ canText });
   }
 
   handleSubmit() {
@@ -60,17 +138,21 @@ class SignUp extends React.Component {
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {
-            const userData = { fName, lName, email, accountType };
-            this.db
-              .collection(accountTypeToCollection[accountType])
-              .doc(res.user.uid)
-              .set(userData)
-              .then(() => {
-                console.log('Created:', `${fName} ${lName}`);
-                this.setState({
-                  isLoggedIn: true
+            const userData = this.getUserData();
+            if (userData !== null) {
+              this.db
+                .collection(accountTypeToCollection[accountType])
+                .doc(res.user.uid)
+                .set(userData)
+                .then(() => {
+                  console.log('Created:', `${fName} ${lName}`);
+                  this.setState({
+                    isLoggedIn: true
+                  });
                 });
-              });
+            } else {
+              console.log('Invalid Account Type');
+            }
           }
         })
         .catch(err => console.log(err));
@@ -84,20 +166,7 @@ class SignUp extends React.Component {
       <Redirect to={accountTypeToRoute[this.state.accountType]} />
     ) : (
       <div className="signup-form">
-        <label htmlFor="firstname">
-          First Name:
-          <input id="firstName" type="text" value={this.state.fName} onChange={this.handleChange} />
-        </label>
-        <br />
-        <label htmlFor="lastname">
-          Last Name:
-          <input id="lastName" type="text" value={this.state.lName} onChange={this.handleChange} />
-        </label>
-        <br />
-        <label htmlFor="email">
-          Email Address:
-          <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
-        </label>
+        {this.getForm()}
         <br />
         <p>Account Type:</p>
         <select id="accountType" value={this.state.accountType} onChange={this.handleChange}>

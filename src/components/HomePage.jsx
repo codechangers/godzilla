@@ -8,13 +8,10 @@ const HomePage = () => (
     <div className="overlay banner">
       <img src={logo} className="App-logo" alt="logo" />
       <h1>Hello New Platform</h1>
-      <ul>
-        <li>
-          <Link to="/login">Login</Link>
-          <br />
-          <Link to="/signup">Sign Up</Link>
-        </li>
-      </ul>
+      <div className="buttons">
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Sign Up</Link>
+      </div>
     </div>
   </div>
 );

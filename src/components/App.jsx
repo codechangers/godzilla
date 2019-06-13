@@ -5,6 +5,7 @@ import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
+import AdminDashboard from './Dashboards/Admin';
 import Parent from './Dashboards/Parent';
 import TrainingTeacher from './Dashboards/TeacherInTraining';
 import Teacher from './Dashboards/TeacherOutOfTraining';
@@ -23,7 +24,8 @@ const pathToComponent = {
   '/parent': Parent,
   '/teacher': Teacher,
   '/trainingteacher': TrainingTeacher,
-  '/organization': Organization
+  '/organization': Organization,
+  '/admin': AdminDashboard
 };
 
 class App extends React.Component {

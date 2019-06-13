@@ -3,5 +3,10 @@
   "javascript.format.enable": false,
   "prettier.eslintIntegration": true,
   "eslint.packageManager": "yarn",
-  "eslint.validate": ["javascript", "javascriptreact", "html"]
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html"
+  ],
+  "editor.tabSize": 2
 }
