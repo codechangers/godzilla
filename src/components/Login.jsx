@@ -10,7 +10,7 @@ const accountTypeToRoute = {
   organizations: '/organization',
   teachers: '/teacher',
   trainingteachers: '/trainingteacher',
-  admin: '/admin'
+  admins: '/admin'
 };
 
 const propTypes = {
@@ -42,7 +42,7 @@ class Login extends React.Component {
 
   getUserDashboard(user) {
     if (user.isSignedIn) {
-      ['teachers', 'organizations', 'parents'].forEach(collection => {
+      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
         this.db
           .collection(collection)
           .doc(user.uid)
