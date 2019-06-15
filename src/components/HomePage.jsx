@@ -6,7 +6,14 @@ import '../assets/css/HomePage.css';
 const HomePage = () => (
   <div className="HomePage-banner">
     <div className="overlay banner">
-      <img src={logo} className="App-logo" alt="logo" />
+      <div className="logo">
+        <img
+          src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b0052e33-d5c4-4d8e-9645-ca6c9d9d793b/dd2smfi-2c025397-8d76-4d09-8db1-1b7e763ebf3f.png/v1/fill/w_1018,h_785,strp/godzilla_2019_official_png_render_01_by_awesomeness360_dd2smfi-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTIzNCIsInBhdGgiOiJcL2ZcL2IwMDUyZTMzLWQ1YzQtNGQ4ZS05NjQ1LWNhNmM5ZDlkNzkzYlwvZGQyc21maS0yYzAyNTM5Ny04ZDc2LTRkMDktOGRiMS0xYjdlNzYzZWJmM2YucG5nIiwid2lkdGgiOiI8PTE2MDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.dJKUoyMaZNROi4jSmQydfj7DSa_xNFKQC58EIlSubx4"
+          alt="godzilla"
+          className="godzilla"
+        />
+        <img src={logo} className="App-logo" alt="logo" />
+      </div>
       <h1>Hello New Platform</h1>
       <div className="buttons">
         <Link to="/login">Login</Link>
