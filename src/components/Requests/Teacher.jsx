@@ -16,7 +16,7 @@ class TeacherRequest extends React.Component {
     autoBind(this);
   }
 
-  select() {
+  toggleInfo() {
     let { showInfo } = this.state;
     showInfo = !showInfo;
     this.setState({ showInfo });
@@ -26,7 +26,7 @@ class TeacherRequest extends React.Component {
     const { teacher } = this.props;
     return (
       <div className="teacher-request">
-        <button type="button" className="select" onClick={this.select}>
+        <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${teacher.fName} ${teacher.lName}`}</p>
         </button>
         <button
@@ -41,7 +41,7 @@ class TeacherRequest extends React.Component {
         {this.state.showInfo ? (
           <div className="request-info-wrapper">
             <div className="request-info">
-              <button type="button" onClick={this.select}>
+              <button type="button" onClick={this.toggleInfo}>
                 Close
               </button>
               <div>
@@ -78,7 +78,7 @@ class TeacherRequest extends React.Component {
                 >
                   Accept
                 </button>
-                <button type="button" className="decline" onClick={this.select}>
+                <button type="button" className="decline" onClick={this.toggleInfo}>
                   Decline
                 </button>
               </div>
