@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
-const Teacher = ({ firebase, user }) =>
+const PendingOrganizationDashboard = ({ firebase, user }) =>
   user.isSignedIn ? (
     <div>
-      <h1>Welcome to the Teacher out of Training Dashboard</h1>
+      <h1>Welcome to the Pending Organization Dashboard</h1>
       <Logout firebase={firebase} />
     </div>
   ) : (
     <Redirect to="/" />
   );
 
-Teacher.propTypes = {
+PendingOrganizationDashboard.propTypes = {
   firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 };
 
-export default Teacher;
+export default PendingOrganizationDashboard;

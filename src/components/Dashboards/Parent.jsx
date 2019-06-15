@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
-const Parent = ({ firebase, user }) =>
+const ParentDashboard = ({ firebase, user }) =>
   user.isSignedIn ? (
     <div>
       <h1>Welcome to the Parent Dashboard</h1>
@@ -13,9 +13,9 @@ const Parent = ({ firebase, user }) =>
     <Redirect to="/" />
   );
 
-Parent.propTypes = {
+ParentDashboard.propTypes = {
   firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 };
 
-export default Parent;
+export default ParentDashboard;

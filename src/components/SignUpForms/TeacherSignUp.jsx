@@ -37,7 +37,7 @@ const ParentSignUp = ({ handleChange, state }) => (
     </label>
     <br />
     <p>Gender:</p>
-    <select id="genter" value={state.gender} onChange={handleChange}>
+    <select id="gender" value={state.gender} onChange={handleChange}>
       <option value="" />
       <option value="male">Male</option>
       <option value="female">Female</option>

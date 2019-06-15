@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
-const Organization = ({ firebase, user }) =>
+const OrganizationDashboard = ({ firebase, user }) =>
   user.isSignedIn ? (
     <div>
       <h1>Welcome to the Organization Dashboard</h1>
@@ -13,9 +13,9 @@ const Organization = ({ firebase, user }) =>
     <Redirect to="/" />
   );
 
-Organization.propTypes = {
+OrganizationDashboard.propTypes = {
   firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 };
 
-export default Organization;
+export default OrganizationDashboard;

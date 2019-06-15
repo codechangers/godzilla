@@ -5,10 +5,11 @@ import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
 import AdminDashboard from './Dashboards/Admin';
-import Parent from './Dashboards/Parent';
-import TrainingTeacher from './Dashboards/TeacherInTraining';
-import Teacher from './Dashboards/TeacherOutOfTraining';
-import Organization from './Dashboards/Organization';
+import ParentDashboard from './Dashboards/Parent';
+import TeacherDashboard from './Dashboards/Teacher';
+import TeacherInTrainingDashboard from './Dashboards/TeacherInTraining';
+import OrganizationDashboard from './Dashboards/Organization';
+import PendingOrganizationDashboard from './Dashboards/PendingOrganization';
 import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
@@ -20,10 +21,11 @@ const pathToComponent = {
   '/': HomePage,
   '/login': Login,
   '/signup': SignUp,
-  '/parent': Parent,
-  '/teacher': Teacher,
-  '/trainingteacher': TrainingTeacher,
-  '/organization': Organization,
+  '/parent': ParentDashboard,
+  '/teacher': TeacherDashboard,
+  '/trainingteacher': TeacherInTrainingDashboard,
+  '/organization': OrganizationDashboard,
+  '/pendingorganization': PendingOrganizationDashboard,
   '/admin': AdminDashboard
 };
 
