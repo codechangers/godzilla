@@ -1,11 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import Logout from '../Logout';
 import Spinner from '../Spinner';
 import autoBind from '../../autoBind';
-import firebase from '../../firebase';
-import 'firebase/firestore';
 import '../../assets/css/Admin.css';
 
 let cancelSub = () => {};
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
+};
 
 class AdminDashboard extends React.Component {
   constructor(props) {
@@ -14,11 +21,8 @@ class AdminDashboard extends React.Component {
       isLoading: true,
       teacherReqs: []
     };
-    this.firebase = firebase();
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.firebase = this.props.firebase;
+    this.db = this.props.db;
     autoBind(this);
   }
 
@@ -45,9 +49,10 @@ class AdminDashboard extends React.Component {
   }
 
   render() {
-    return (
+    return this.props.user.isSignedIn ? (
       <div className="admin-dashboard">
         <h1>Hello Admin</h1>
+        <Logout firebase={this.firebase} />
         <h4>Teacher Requests:</h4>
         {this.state.isLoading ? (
           <Spinner color="primary" />
@@ -67,8 +72,12 @@ class AdminDashboard extends React.Component {
           ))
         )}
       </div>
+    ) : (
+      <Redirect to="/" />
     );
   }
 }
+
+AdminDashboard.propTypes = propTypes;
 
 export default AdminDashboard;

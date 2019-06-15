@@ -1,9 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
-import firebase from '../firebase';
-import 'firebase/auth';
 import '../assets/css/Login.css';
+
+const accountTypeToRoute = {
+  '': '/login',
+  parents: '/parent',
+  organizations: '/organization',
+  teachers: '/teacher',
+  trainingteachers: '/trainingteacher',
+  admins: '/admin'
+};
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
+};
 
 class Login extends React.Component {
   constructor(props) {
@@ -11,10 +25,41 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      isLoggedIn: false
+      shouldRedirect: ''
     };
-    this.firebase = firebase();
+    this.firebase = props.firebase;
+    this.db = props.db;
     autoBind(this);
+  }
+
+  componentDidMount() {
+    this.getUserDashboard(this.props.user);
+  }
+
+  componentWillReceiveProps(props) {
+    this.getUserDashboard(props.user);
+  }
+
+  getUserDashboard(user) {
+    if (user.isSignedIn) {
+      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
+        this.db
+          .collection(collection)
+          .doc(user.uid)
+          .get()
+          .then(doc => {
+            let c = collection;
+            if (doc.exists) {
+              if (collection === 'teachers' && !doc.data().isVerrified) {
+                c = 'trainingteachers';
+              }
+              this.setState({
+                shouldRedirect: accountTypeToRoute[c]
+              });
+            }
+          });
+      });
+    }
   }
 
   handleChange(e) {
@@ -34,12 +79,6 @@ class Login extends React.Component {
     this.firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('>>>>>>>>>>>logging in');
-        this.setState({
-          isLoggedIn: true
-        });
-      })
       .catch(err => {
         if (err.code === 'auth/user-not-found') {
           console.log(err, 'Invalid Email...');
@@ -52,8 +91,8 @@ class Login extends React.Component {
   }
 
   render() {
-    return this.state.isLoggedIn ? (
-      <Redirect to="/dashboard" />
+    return this.state.shouldRedirect.length > 0 ? (
+      <Redirect to={this.state.shouldRedirect} />
     ) : (
       <div className="login-form">
         <label htmlFor="email">
@@ -76,5 +115,7 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = propTypes;
 
 export default Login;
