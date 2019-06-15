@@ -14,7 +14,8 @@
   text-align: left;
 }
 
-.teacher-request {
+.teacher-request,
+.org-request {
   width: 50%;
   height: 80px;
   background-color: #ddd;
@@ -28,7 +29,8 @@
   border-radius: 8px;
 }
 
-.teacher-request button {
+.teacher-request button,
+.org-request button {
   background-color: var(--primary-color);
   color: #fff;
   border: none;

@@ -8,6 +8,7 @@ const accountTypeToRoute = {
   '': '/login',
   parents: '/parent',
   organizations: '/organization',
+  pendingorganization: '/pendingorganization',
   teachers: '/teacher',
   trainingteachers: '/trainingteacher',
   admins: '/admin'
@@ -52,6 +53,8 @@ class Login extends React.Component {
             if (doc.exists) {
               if (collection === 'teachers' && !doc.data().isVerrified) {
                 c = 'trainingteachers';
+              } else if (collection === 'organizations' && !doc.data().isVerrified) {
+                c = 'pendingorganization';
               }
               this.setState({
                 shouldRedirect: accountTypeToRoute[c]
