@@ -14,6 +14,11 @@ const collectionToDataMember = {
   organizations: 'orgReqs'
 };
 
+const collectionToLoadingType = {
+  teachers: 'isLoadingTeachers',
+  organizations: 'isLoadingOrgs'
+};
+
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
@@ -24,7 +29,8 @@ class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoadingTeachers: true,
+      isLoadingOrgs: true,
       teacherReqs: [],
       orgReqs: []
     };
@@ -48,12 +54,13 @@ class AdminDashboard extends React.Component {
       const requests = users.docs.map(u => ({ id: u.id, ...u.data() }));
       const newState = {};
       newState[collectionToDataMember[col]] = requests.filter(t => !t.isVerrified);
-      this.setState({ ...newState, isLoading: false });
+      newState[collectionToLoadingType[col]] = false;
+      this.setState({ ...newState });
     });
   }
 
   getTeacherRequests() {
-    return this.state.isLoading ? (
+    return this.state.isLoadingTeachers ? (
       <Spinner color="primary" />
     ) : (
       this.state.teacherReqs.map(teacher => (
@@ -73,7 +80,7 @@ class AdminDashboard extends React.Component {
   }
 
   getOrgRequests() {
-    return this.state.isLoading ? (
+    return this.state.isLoadingOrgs ? (
       <Spinner color="primary" />
     ) : (
       this.state.orgReqs.map(org => (
