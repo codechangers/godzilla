@@ -31,7 +31,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: { isSignedIn: false }
     };
     this.firebase = firebase();
     this.db = this.firebase
@@ -41,11 +41,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(`>>>>>>>${this.firebase}`);
-    authSubscription = this.firebase.auth().onAuthStateChanged(user => {
-      this.setState({
-        user
-      });
+    authSubscription = this.firebase.auth().onAuthStateChanged(u => {
+      const user = u !== null ? { isSignedIn: true, ...u } : { isSignedIn: false };
+      this.setState({ user });
     });
   }
 

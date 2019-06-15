@@ -1,11 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Spinner from '../Spinner';
 import autoBind from '../../autoBind';
-import firebase from '../../firebase';
-import 'firebase/firestore';
 import '../../assets/css/Admin.css';
 
 let cancelSub = () => {};
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
+};
 
 class AdminDashboard extends React.Component {
   constructor(props) {
@@ -14,11 +18,8 @@ class AdminDashboard extends React.Component {
       isLoading: true,
       teacherReqs: []
     };
-    this.firebase = firebase();
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.firebase = this.props.firebase;
+    this.db = this.props.db;
     autoBind(this);
   }
 
@@ -70,5 +71,7 @@ class AdminDashboard extends React.Component {
     );
   }
 }
+
+AdminDashboard.propTypes = propTypes;
 
 export default AdminDashboard;

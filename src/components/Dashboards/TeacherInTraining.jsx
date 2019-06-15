@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
 const TrainingTeacher = ({ firebase, user }) =>
-  user !== null ? (
+  user.isSignedIn ? (
     <div>
       <h1>Welcome to the Teacher in Training Dashboard</h1>
       <Logout firebase={firebase} />

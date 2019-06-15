@@ -5,15 +5,18 @@ import autoBind from '../autoBind';
 import '../assets/css/Login.css';
 
 const accountTypeToRoute = {
-  '': '/signup',
+  '': '/login',
   parents: '/parent',
   organizations: '/organization',
-  teachers: '/trainingteacher'
+  teachers: '/teacher',
+  trainingteachers: '/trainingteacher',
+  admin: '/admin'
 };
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -25,35 +28,34 @@ class Login extends React.Component {
       shouldRedirect: ''
     };
     this.firebase = props.firebase;
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.db = props.db;
     autoBind(this);
   }
 
   componentDidMount() {
-    this.getUserDashboard();
+    this.getUserDashboard(this.props.user);
   }
 
-  componentWillReceiveProps() {
-    this.getUserDashboard();
+  componentWillReceiveProps(props) {
+    this.getUserDashboard(props.user);
   }
 
-  getUserDashboard() {
-    console.log(this.props.user);
-    if (this.props.user != null) {
+  getUserDashboard(user) {
+    if (user.isSignedIn) {
       ['teachers', 'organizations', 'parents'].forEach(collection => {
         this.db
           .collection(collection)
-          .doc(this.props.user.uid)
+          .doc(user.uid)
           .get()
           .then(doc => {
+            let c = collection;
             if (doc.exists) {
+              if (collection === 'teachers' && !doc.data().isVerrified) {
+                c = 'trainingteachers';
+              }
               this.setState({
-                shouldRedirect: accountTypeToRoute[collection]
+                shouldRedirect: accountTypeToRoute[c]
               });
-              console.log(accountTypeToRoute[collection]);
             }
           });
       });

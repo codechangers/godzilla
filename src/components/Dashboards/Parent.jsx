@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
 const Parent = ({ firebase, user }) =>
-  user !== null ? (
+  user.isSignedIn ? (
     <div>
       <h1>Welcome to the Parent Dashboard</h1>
       <Logout firebase={firebase} />

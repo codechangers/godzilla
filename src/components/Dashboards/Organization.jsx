@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Logout from '../Logout';
 
 const Organization = ({ firebase, user }) =>
-  user !== null ? (
+  user.isSignedIn ? (
     <div>
       <h1>Welcome to the Organization Dashboard</h1>
       <Logout firebase={firebase} />
