@@ -4,7 +4,8 @@ import autoBind from '../../autoBind';
 
 const propTypes = {
   org: PropTypes.object.isRequired,
-  acceptRequest: PropTypes.func.isRequired
+  acceptRequest: PropTypes.func.isRequired,
+  declineRequest: PropTypes.func.isRequired
 };
 
 class OrganizationRequest extends React.Component {
@@ -29,15 +30,26 @@ class OrganizationRequest extends React.Component {
         <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${org.name}`}</p>
         </button>
-        <button
-          type="button"
-          className="accept"
-          onClick={() => {
-            this.props.acceptRequest(org);
-          }}
-        >
-          Accept
-        </button>
+        <div className="options">
+          <button
+            type="button"
+            className="accept"
+            onClick={() => {
+              this.props.acceptRequest(org);
+            }}
+          >
+            Accept
+          </button>
+          <button
+            type="button"
+            className="decline"
+            onClick={() => {
+              this.props.declineRequest(org);
+            }}
+          >
+            Decline
+          </button>
+        </div>
         {this.state.showInfo ? (
           <div className="request-info-wrapper">
             <div className="request-info">
@@ -70,7 +82,13 @@ class OrganizationRequest extends React.Component {
                 >
                   Accept
                 </button>
-                <button type="button" className="decline" onClick={this.toggleInfo}>
+                <button
+                  type="button"
+                  className="decline"
+                  onClick={() => {
+                    this.props.declineRequest(org);
+                  }}
+                >
                   Decline
                 </button>
               </div>
