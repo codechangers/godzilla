@@ -17,7 +17,7 @@ const accountTypeToCollection = {
 const accountTypeToRoute = {
   '': '/signup',
   Parent: '/parent',
-  Organization: '/organization',
+  Organization: '/pendingorganization',
   Teacher: '/trainingteacher'
 };
 
