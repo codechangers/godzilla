@@ -55,7 +55,9 @@ class AdminDashboard extends React.Component {
     return this.db.collection(col).onSnapshot(users => {
       const requests = users.docs.map(u => ({ id: u.id, ...u.data() }));
       const newState = {};
-      newState[collectionToDataMember[col]] = requests.filter(t => !t.isVerrified);
+      newState[collectionToDataMember[col]] = requests
+        .filter(t => !t.isVerrified)
+        .filter(t => !t.isDeclined);
       newState[collectionToLoadingType[col]] = false;
       this.setState({ ...newState });
     });
@@ -69,6 +71,7 @@ class AdminDashboard extends React.Component {
         <TeacherRequest
           teacher={teacher}
           acceptRequest={t => this.acceptRequest(t, 'teachers')}
+          declineRequest={t => this.declineRequest(t, 'teachers')}
           key={teacher.id}
         />
       ))
@@ -83,6 +86,7 @@ class AdminDashboard extends React.Component {
         <OrganizationRequest
           org={org}
           acceptRequest={o => this.acceptRequest(o, 'organizations')}
+          declineRequest={o => this.declineRequest(o, 'organizations')}
           key={org.id}
         />
       ))
@@ -94,6 +98,13 @@ class AdminDashboard extends React.Component {
       .collection(collection)
       .doc(user.id)
       .update({ isVerrified: true });
+  }
+
+  declineRequest(user, collection) {
+    this.db
+      .collection(collection)
+      .doc(user.id)
+      .update({ isDeclined: true });
   }
 
   render() {
