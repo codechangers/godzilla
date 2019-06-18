@@ -37,3 +37,9 @@
   background-color: var(--primary-color);
   color: #fff;
 }
+
+img.godzilla {
+  width: 20%;
+  margin-left: -20%;
+  transform: rotateY(180deg);
+}

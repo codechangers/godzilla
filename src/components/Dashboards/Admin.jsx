@@ -1,74 +1,136 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import TeacherRequest from '../Requests/Teacher';
+import Logout from '../Logout';
 import Spinner from '../Spinner';
 import autoBind from '../../autoBind';
-import firebase from '../../firebase';
-import 'firebase/firestore';
 import '../../assets/css/Admin.css';
+import OrganizationRequest from '../Requests/Organization';
 
-let cancelSub = () => {};
+let cancelTeacherSub = () => {};
+let cancelOrganizationSub = () => {};
+
+const collectionToDataMember = {
+  teachers: 'teacherReqs',
+  organizations: 'orgReqs'
+};
+
+const collectionToLoadingType = {
+  teachers: 'isLoadingTeachers',
+  organizations: 'isLoadingOrgs'
+};
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
+};
 
 class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      teacherReqs: []
+      isLoadingTeachers: true,
+      isLoadingOrgs: true,
+      teacherReqs: [],
+      orgReqs: []
     };
-    this.firebase = firebase();
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.firebase = this.props.firebase;
+    this.db = this.props.db;
     autoBind(this);
   }
 
   componentDidMount() {
-    cancelSub = this.getTeacherRequests();
+    cancelTeacherSub = this.getRequestsFromCollection('teachers');
+    cancelOrganizationSub = this.getRequestsFromCollection('organizations');
   }
 
   componentWillUnmount() {
-    cancelSub();
+    cancelTeacherSub();
+    cancelOrganizationSub();
   }
 
-  getTeacherRequests() {
-    return this.db.collection('teachers').onSnapshot(teachers => {
-      const teacherReqs = teachers.docs.map(t => ({ id: t.id, ...t.data() }));
-      this.setState({ teacherReqs: teacherReqs.filter(t => !t.isVerrified), isLoading: false });
+  getRequestsFromCollection(col) {
+    return this.db.collection(col).onSnapshot(users => {
+      const requests = users.docs.map(u => ({ id: u.id, ...u.data() }));
+      const newState = {};
+      newState[collectionToDataMember[col]] = requests
+        .filter(t => !t.isVerrified)
+        .filter(t => !t.isDeclined);
+      newState[collectionToLoadingType[col]] = false;
+      this.setState({ ...newState });
     });
   }
 
-  acceptTeacher(teacher) {
+  getTeacherRequests() {
+    return this.state.isLoadingTeachers ? (
+      <Spinner color="primary" />
+    ) : (
+      this.state.teacherReqs.map(teacher => (
+        <TeacherRequest
+          teacher={teacher}
+          acceptRequest={t => this.acceptRequest(t, 'teachers')}
+          declineRequest={t => this.declineRequest(t, 'teachers')}
+          key={teacher.id}
+        />
+      ))
+    );
+  }
+
+  getOrgRequests() {
+    return this.state.isLoadingOrgs ? (
+      <Spinner color="primary" />
+    ) : (
+      this.state.orgReqs.map(org => (
+        <OrganizationRequest
+          org={org}
+          acceptRequest={o => this.acceptRequest(o, 'organizations')}
+          declineRequest={o => this.declineRequest(o, 'organizations')}
+          key={org.id}
+        />
+      ))
+    );
+  }
+
+  acceptRequest(user, collection) {
     this.db
-      .collection('teachers')
-      .doc(teacher.id)
+      .collection(collection)
+      .doc(user.id)
       .update({ isVerrified: true });
   }
 
+  declineRequest(user, collection) {
+    this.db
+      .collection(collection)
+      .doc(user.id)
+      .update({ isDeclined: true });
+  }
+
   render() {
-    return (
+    return this.props.user.isSignedIn ? (
       <div className="admin-dashboard">
         <h1>Hello Admin</h1>
+        <Logout firebase={this.firebase} />
         <h4>Teacher Requests:</h4>
-        {this.state.isLoading ? (
-          <Spinner color="primary" />
+        {this.state.teacherReqs.length > 0 || this.state.isLoadingTeachers ? (
+          this.getTeacherRequests()
         ) : (
-          this.state.teacherReqs.map(teacher => (
-            <div className="teacher-request" key={teacher.id}>
-              <p>{`${teacher.fName} ${teacher.lName}`}</p>
-              <button
-                type="button"
-                onClick={() => {
-                  this.acceptTeacher(teacher);
-                }}
-              >
-                Accept
-              </button>
-            </div>
-          ))
+          <h2>There are currently no teacher requests</h2>
+        )}
+        <h4>Organization Requests:</h4>
+        {this.state.orgReqs.length > 0 || this.state.isLoadingOrgs ? (
+          this.getOrgRequests()
+        ) : (
+          <h2>There are currently no organization requests</h2>
         )}
       </div>
+    ) : (
+      <Redirect to="/" />
     );
   }
 }
+
+AdminDashboard.propTypes = propTypes;
 
 export default AdminDashboard;
