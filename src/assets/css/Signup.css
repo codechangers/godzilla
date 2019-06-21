@@ -11,6 +11,10 @@
   justify-content: center;
 }
 
+.signup-form h1 {
+  margin-top: 0;
+}
+
 .signup-form > div {
   width: 100%;
 }
