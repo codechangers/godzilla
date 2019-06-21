@@ -41,10 +41,8 @@ const idToDataMember = {
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  location: PropTypes.objectOf({
-    state: PropTypes.objectOf({
-      accountType: PropTypes.string
-    })
+  location: PropTypes.shape({
+    state: PropTypes.objectOf(PropTypes.string)
   })
 };
 
