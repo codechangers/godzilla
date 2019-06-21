@@ -10,16 +10,16 @@ import '../assets/css/Signup.css';
 
 const accountTypeToCollection = {
   '': null,
-  Parent: 'parents',
-  Teacher: 'teachers',
-  Organization: 'organizations'
+  parent: 'parents',
+  teacher: 'teachers',
+  organization: 'organizations'
 };
 
 const accountTypeToRoute = {
   '': '/signup',
-  Parent: '/parent',
-  Organization: '/pendingorganization',
-  Teacher: '/trainingteacher'
+  parent: '/parent',
+  teacher: '/trainingteacher',
+  organization: '/pendingorganization'
 };
 
 const idToDataMember = {
@@ -49,7 +49,7 @@ const propTypes = {
 const defaultProps = {
   location: {
     state: {
-      accountType: 'Parent'
+      accountType: 'parent'
     }
   }
 };
