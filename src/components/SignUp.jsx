@@ -70,21 +70,17 @@ class SignUp extends React.Component {
       aboutMe: '',
       password: '',
       confirmPassword: '',
-      isLoggedIn: false
+      isLoggedIn: false,
+      isRegistered: false
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
     autoBind(this);
   }
 
-  componentDidMount() {
-    const { accountType } = this.props.location.state;
-    console.log(accountType);
-  }
-
   getForm() {
     switch (this.props.location.state.accountType) {
-      case 'Parent':
+      case 'parent':
         return (
           <ParentSignUp
             handleChange={this.handleChange}
@@ -92,16 +88,54 @@ class SignUp extends React.Component {
             state={{ ...this.state }}
           />
         );
-      case 'Teacher':
+      case 'teacher':
         return <TeacherSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
-      case 'Organization':
+      case 'organization':
         return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
       default:
         return null;
     }
   }
 
-  getUserData() {
+  getSignUp() {
+    return this.state.isRegistered ? (
+      this.getForm()
+    ) : (
+      <div className="signup-form">
+        <h1>Create an Account:</h1>
+        <GenericSignUp
+          handleChange={this.handleChange}
+          toggleCanText={this.toggleCanText}
+          state={{ ...this.state }}
+        />
+        <label htmlFor="password">
+          Password:
+          <input
+            id="password"
+            type="password"
+            value={this.state.password}
+            onChange={this.handleChange}
+          />
+        </label>
+        <br />
+        <label htmlFor="confirm-password">
+          Confirm Password:
+          <input
+            id="confirmPassword"
+            type="password"
+            value={this.state.confirmPassword}
+            onChange={this.handleChange}
+          />
+        </label>
+        <br />
+        <button type="submit" onClick={this.handleSubmit}>
+          Signup
+        </button>
+      </div>
+    );
+  }
+
+  getUserData(isGeneric) {
     const {
       name,
       fName,
@@ -114,6 +148,9 @@ class SignUp extends React.Component {
       birthDate,
       aboutMe
     } = this.state;
+    if (isGeneric) {
+      return { fName, lName, email, phone, canText };
+    }
     switch (this.props.location.state.accountType) {
       case 'Parent':
         return { fName, lName, address, email, phone, canText };
@@ -150,25 +187,22 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { fName, lName, email, password, confirmPassword } = this.state;
-    const { accountType } = this.props.location.state;
-    const shouldCreateAccounts = false;
-    if (password === confirmPassword && shouldCreateAccounts) {
+    const { email, password, confirmPassword } = this.state;
+    if (password === confirmPassword) {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {
-            const userData = this.getUserData();
+            const userData = this.getUserData(true);
             if (userData !== null) {
               this.db
-                .collection(accountTypeToCollection[accountType])
+                .collection(accountTypeToCollection.parent)
                 .doc(res.user.uid)
                 .set(userData)
                 .then(() => {
-                  console.log('Created:', `${fName} ${lName}`);
                   this.setState({
-                    isLoggedIn: true
+                    isRegistered: true // Change this to show account type form
                   });
                 });
             } else {
@@ -177,8 +211,6 @@ class SignUp extends React.Component {
           }
         })
         .catch(err => console.log(err));
-    } else if (password === confirmPassword) {
-      console.log(`Creating account for ${fName} ${lName}`);
     } else {
       console.log("passwords don't match");
     }
@@ -189,36 +221,7 @@ class SignUp extends React.Component {
     return this.state.isLoggedIn ? (
       <Redirect to={accountTypeToRoute[accountType]} />
     ) : (
-      <div className="signup-form">
-        <GenericSignUp
-          handleChange={this.handleChange}
-          toggleCanText={this.toggleCanText}
-          state={{ ...this.state }}
-        />
-        <label htmlFor="password">
-          Password:
-          <input
-            id="password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-        </label>
-        <br />
-        <label htmlFor="confirm-password">
-          Confirm Password:
-          <input
-            id="confirmPassword"
-            type="password"
-            value={this.state.confirmPassword}
-            onChange={this.handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit" onClick={this.handleSubmit}>
-          Signup
-        </button>
-      </div>
+      this.getSignUp()
     );
   }
 }
