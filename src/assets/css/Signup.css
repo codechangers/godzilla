@@ -10,3 +10,63 @@
   align-items: center;
   justify-content: center;
 }
+
+.signup-form > div {
+  width: 100%;
+}
+
+.signup-form label {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signup-form label {
+  width: 20;
+}
+
+.signup-form label.collapse {
+  width: 100%;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+}
+
+.signup-form label input[type='text'],
+.signup-form label input[type='password'] {
+  height: 26px;
+  width: calc(50% + 4px);
+  outline: none;
+  border: none;
+  border-radius: 22px;
+  padding: 7px 10px;
+  transition: 100ms ease;
+  box-sizing: border-box;
+}
+
+.signup-form label input[type='checkbox'] {
+  margin-left: 40px;
+}
+
+.signup-form input:focus {
+  border: 2px solid var(--primary-color);
+  padding: 5px 8px;
+}
+
+.signup-form button {
+  width: 50%;
+  height: 30px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 30px;
+  opacity: 0.8;
+  transition: 200ms ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.signup-form button:hover,
+.signup-form button:focus {
+  opacity: 1;
+}
