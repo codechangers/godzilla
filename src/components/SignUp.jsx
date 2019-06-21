@@ -66,6 +66,11 @@ class SignUp extends React.Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    const { accountType } = this.props.location.state;
+    console.log(accountType);
+  }
+
   getForm() {
     switch (this.state.accountType) {
       case 'Parent':
