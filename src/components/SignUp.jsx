@@ -129,7 +129,7 @@ class SignUp extends React.Component {
         </label>
         <br />
         <button type="submit" onClick={this.handleSubmit}>
-          Signup
+          Next
         </button>
       </div>
     );
