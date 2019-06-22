@@ -19,6 +19,17 @@
   width: 100%;
 }
 
+.signup-form .inline {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.signup-form .inline select {
+  margin-left: 20px;
+}
+
 .signup-form label {
   width: 100%;
   display: flex;
@@ -37,6 +48,11 @@
   padding-bottom: 20px;
 }
 
+.signup-form label.tall {
+  margin: 20px 0;
+  flex-direction: column;
+}
+
 .signup-form label input[type='text'],
 .signup-form label input[type='password'] {
   height: 26px;
@@ -47,6 +63,23 @@
   padding: 7px 10px;
   transition: 100ms ease;
   box-sizing: border-box;
+  margin: 10px 0;
+}
+
+.signup-form label textarea {
+  max-width: 70%;
+  min-width: 70%;
+  min-height: 100px;
+  margin-top: 20px;
+  padding: 8px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+  transition: 100ms ease;
+}
+.signup-form label textarea:focus {
+  border: 2px solid var(--primary-color);
 }
 
 .signup-form label input[type='checkbox'] {

@@ -35,7 +35,11 @@ const idToDataMember = {
   aboutMe: 'aboutMe',
   accountType: 'accountType',
   password: 'password',
-  confirmPassword: 'confirmPassword'
+  confirmPassword: 'confirmPassword',
+  whyTeach: 'whyTeach',
+  prevExp: 'prevExp',
+  region: 'region',
+  location: 'location'
 };
 
 const propTypes = {
@@ -68,10 +72,14 @@ class SignUp extends React.Component {
       gender: '',
       birthDate: '',
       aboutMe: '',
+      whyTeach: '',
+      prevExp: '',
+      region: '',
+      location: '',
       password: '',
       confirmPassword: '',
       isLoggedIn: false,
-      isRegistered: false
+      isRegistered: true
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;

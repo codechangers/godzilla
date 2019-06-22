@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const locationToPrompt = {
+  '': 'Location Name:',
+  school: 'What is the name of the school?',
+  office: 'What is the name of the company?',
+  house: 'What is the Address of the house?',
+  other: 'Describe the Location:'
+};
+
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
   state: PropTypes.shape({
@@ -14,48 +22,37 @@ const propTypes = {
   }).isRequired
 };
 
-const ParentSignUp = ({ handleChange, state }) => (
-  <div>
-    <label htmlFor="firstname">
-      First Name:
-      <input id="firstName" type="text" value={state.fName} onChange={handleChange} />
+const TeacherSignUp = ({ handleChange, state }) => (
+  <div className="signup-form">
+    <label htmlFor="whyTeach" className="tall">
+      Why do you want to teach STEM topics to kids?
+      <textarea id="whyTeach" value={state.whyTeach} onChange={handleChange} />
     </label>
-    <br />
-    <label htmlFor="lastname">
-      Last Name:
-      <input id="lastName" type="text" value={state.lName} onChange={handleChange} />
+    <label htmlFor="prevExp" className="tall">
+      Do you have any previous teaching experience?
+      <textarea id="prevExp" value={state.prevExp} onChange={handleChange} />
     </label>
-    <br />
-    <label htmlFor="email">
-      Email Address:
-      <input id="Email" type="text" value={state.email} onChange={handleChange} />
+    <label htmlFor="region">
+      Where Will you Teach? (City, State)
+      <input id="region" type="text" value={state.region} onChange={handleChange} />
     </label>
-    <br />
-    <label htmlFor="phone">
-      Phone:
-      <input id="phone" type="text" value={state.phone} onChange={handleChange} />
-    </label>
-    <br />
-    <p>Gender:</p>
-    <select id="gender" value={state.gender} onChange={handleChange}>
-      <option value="" />
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option vale="other">Other</option>
-    </select>
-    <br />
-    <label htmlFor="birthDate">
-      Birth Date:
-      <input id="birthDate" type="text" value={state.birthDate} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="aboutMe">
-      About You:
-      <textarea id="aboutMe" value={state.aboutMe} onChange={handleChange} />
+    <div className="inline">
+      <p>What type of Location will you teach at?</p>
+      <select id="location" value={state.location} onChange={handleChange}>
+        <option value="" />
+        <option value="school">School</option>
+        <option value="office">Company&apos;s Offices</option>
+        <option value="house">House</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <label htmlFor="address">
+      {locationToPrompt[state.location]}
+      <input id="address" type="text" value={state.address} onChange={handleChange} />
     </label>
   </div>
 );
 
-ParentSignUp.propTypes = propTypes;
+TeacherSignUp.propTypes = propTypes;
 
-export default ParentSignUp;
+export default TeacherSignUp;
