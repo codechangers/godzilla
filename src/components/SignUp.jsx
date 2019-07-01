@@ -86,10 +86,19 @@ class SignUp extends React.Component {
             handleChange={this.handleChange}
             toggleCanText={this.toggleCanText}
             state={{ ...this.state }}
+            db={this.db}
+            firebase={this.firebase}
           />
         );
       case 'teacher':
-        return <TeacherSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
+        return (
+          <TeacherSignUp
+            handleChange={this.handleChange}
+            state={{ ...this.state }}
+            db={this.db}
+            firebase={this.firebase}
+          />
+        );
       case 'organization':
         return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
       default:
@@ -204,6 +213,7 @@ class SignUp extends React.Component {
                   this.setState({
                     isRegistered: true // Change this to show account type form
                   });
+                  this.getForm();
                 });
             } else {
               console.log('Invalid Account Type');

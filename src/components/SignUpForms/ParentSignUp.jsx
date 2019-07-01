@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ChildInfo from './ChildInfo';
+import '../../assets/css/Signup.css';
 
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
@@ -15,13 +16,21 @@ const propTypes = {
   }).isRequired
 };
 
-const ParentSignUp = ({ handleChange, state, toggleCanText }) => (
-  <div>
+const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
+  <div className="signup-form">
+    <h1>Parent Account Information:</h1>
     <label htmlFor="firstname">
       Street Address:
-      <input id="address" type="text" value={state.address} onChange={handleChange} />
+      <input id="address" type="text" value={props.state.address} onChange={handleChange} />
     </label>
-    <ChildInfo />
+    <br />
+    <ChildInfo
+      handleChange={handleChange}
+      state={state}
+      toggleCanText={toggleCanText}
+      db={props.db}
+      firebase={props.firebase}
+    />
     <br />
   </div>
 );
