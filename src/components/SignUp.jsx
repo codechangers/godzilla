@@ -103,6 +103,9 @@ class SignUp extends React.Component {
             state={{ ...this.state }}
             db={this.db}
             firebase={this.firebase}
+            login={() => {
+              this.setState({ isLoggedIn: true });
+            }}
           />
         );
       case 'organization':

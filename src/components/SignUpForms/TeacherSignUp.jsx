@@ -19,10 +19,11 @@ const propTypes = {
     address: PropTypes.string.isRequired
   }).isRequired,
   db: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired
+  firebase: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
 };
 
-const createTeacher = (state, db, firebase) => {
+const createTeacher = (state, db, firebase, callback) => {
   const { whyTeach, prevExp, region, location, address } = state;
   const { uid } = firebase.auth().currentUser;
   db.collection('teachers')
@@ -34,12 +35,10 @@ const createTeacher = (state, db, firebase) => {
       location,
       address
     })
-    .then(() => {
-      console.log('Go to Teacher Pending Dashboard...');
-    });
+    .then(callback);
 };
 
-const TeacherSignUp = ({ handleChange, state, db, firebase }) => (
+const TeacherSignUp = ({ handleChange, state, db, firebase, login }) => (
   <div className="signup-form">
     <label htmlFor="whyTeach" className="tall">
       Why do you want to teach STEM topics to kids?
@@ -68,7 +67,7 @@ const TeacherSignUp = ({ handleChange, state, db, firebase }) => (
       <input id="address" type="text" value={state.address} onChange={handleChange} />
     </label>
     <br />
-    <button type="submit" onClick={() => createTeacher(state, db, firebase)}>
+    <button type="submit" onClick={() => createTeacher(state, db, firebase, login)}>
       Become a Teacher
     </button>
   </div>
