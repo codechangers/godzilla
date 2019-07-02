@@ -15,7 +15,7 @@ const propTypes = {
     canText: PropTypes.bool.isRequired
   }).isRequired
 };
-
+// blablablablablablablablablablablalbalbla
 function handleChange(e) {
   const { id, value } = e.target;
   const newState = {};
