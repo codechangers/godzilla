@@ -4,6 +4,12 @@ import '../../assets/css/Signup.css';
 import Parent from '../Dashboards/Parent';
 import autoBind from '../../autoBind';
 
+const propTypes = {
+  db: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
+  address: PropTypes.string.isRequired
+};
+
 class ChildInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -54,17 +60,17 @@ class ChildInfo extends React.Component {
     return (
       <div>
         <label htmlFor="lastname">
-          Child's First Name:
+          Child&apos;s First Name:
           <input id="fName" type="text" value={this.state.cFName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="address">
-          Child's Last Name:
+          Child&apos;s Last Name:
           <input id="lName" type="text" value={this.state.cLName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="email">
-          Child's Birthdate:
+          Child&apos;s Birthdate:
           <input
             id="birthDate"
             type="text"
@@ -74,7 +80,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="phone">
-          Child's Current School:
+          Child&apos;s Current School:
           <input
             id="currentSchool"
             type="text"
@@ -84,7 +90,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Current Grade (Or entering grade if it's the summer):
+          Child&apos;s Current Grade (Or entering grade if it&apos;s the summer):
           <input
             id="currentGrade"
             type="text"
@@ -94,7 +100,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Shirt Size:
+          Child&apos;s Shirt Size:
           <input
             id="shirtSize"
             type="text"
@@ -104,7 +110,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Gender:
+          Child&apos;s Gender:
           <input
             id="gender"
             type="text"
@@ -120,5 +126,7 @@ class ChildInfo extends React.Component {
     );
   }
 }
+
+ChildInfo.propTypes = propTypes;
 
 export default ChildInfo;
