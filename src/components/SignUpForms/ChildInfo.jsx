@@ -31,7 +31,10 @@ class ChildInfo extends React.Component {
           this.props.db
             .collection('parents')
             .doc(user.uid)
-            .update({ children: [this.props.db.collection('children').doc(child.id)] })
+            .update({
+              children: [this.props.db.collection('children').doc(child.id)],
+              address: this.props.address
+            })
             .then(() => {
               return <Parent firebase={this.props.firebase} user={user} />;
             });
