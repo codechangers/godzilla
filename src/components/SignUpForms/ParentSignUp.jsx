@@ -16,12 +16,19 @@ const propTypes = {
   }).isRequired
 };
 
+function handleChange(e) {
+  const { id, value } = e.target;
+  const newState = {};
+  newState[id] = value;
+  this.setState(newState);
+}
+
 const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
   <div className="signup-form">
     <h1>Parent Account Information:</h1>
     <label htmlFor="firstname">
       Street Address:
-      <input id="address" type="text" value={props.state.address} onChange={handleChange} />
+      <input id="address" type="text" value={props.state.address} onChange={this.handleChange} />
     </label>
     <br />
     <ChildInfo
@@ -30,6 +37,7 @@ const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
       toggleCanText={toggleCanText}
       db={props.db}
       firebase={props.firebase}
+      address={this.address}
     />
     <br />
   </div>

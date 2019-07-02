@@ -8,19 +8,21 @@ class ChildInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cFName: PropTypes.func.isRequired,
-      cLName: PropTypes.func.isRequired,
-      cBirthDate: PropTypes.func.isRequired,
-      cCurrentSchool: PropTypes.func.isRequired,
-      cCurrentGrade: PropTypes.func.isRequired,
-      cShirtSize: PropTypes.func.isRequired,
-      cGender: PropTypes.func.isRequired
+      fName: PropTypes.func.isRequired,
+      lName: PropTypes.func.isRequired,
+      birthDate: PropTypes.func.isRequired,
+      currentSchool: PropTypes.func.isRequired,
+      currentGrade: PropTypes.func.isRequired,
+      shirtSize: PropTypes.func.isRequired,
+      gender: PropTypes.func.isRequired
     };
     autoBind(this);
   }
 
   updateParent() {
     const user = this.props.firebase.auth().currentUser;
+    // const childUser = this.props.db.collection('children').add(this.state);
+    // console.log('child user: ', childUser);
     if (user) {
       this.props.db
         .collection('children')
@@ -29,7 +31,7 @@ class ChildInfo extends React.Component {
           this.props.db
             .collection('parents')
             .doc(user.uid)
-            .update({ children: [child.id] })
+            .update({ children: [this.props.db.collection('children').doc(child.id)] })
             .then(() => {
               return <Parent firebase={this.props.firebase} user={user} />;
             });
@@ -49,18 +51,18 @@ class ChildInfo extends React.Component {
       <div>
         <label htmlFor="lastname">
           Child's First Name:
-          <input id="cFName" type="text" value={this.state.cFName} onChange={this.handleChange} />
+          <input id="fName" type="text" value={this.state.cFName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="address">
           Child's Last Name:
-          <input id="cLName" type="text" value={this.state.cLName} onChange={this.handleChange} />
+          <input id="lName" type="text" value={this.state.cLName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="email">
           Child's Birthdate:
           <input
-            id="cBirthDate"
+            id="birthDate"
             type="text"
             value={this.state.cBirthDate}
             onChange={this.handleChange}
@@ -70,7 +72,7 @@ class ChildInfo extends React.Component {
         <label htmlFor="phone">
           Child's Current School:
           <input
-            id="cCurrentSchool"
+            id="currentSchool"
             type="text"
             value={this.state.cCurrentSchool}
             onChange={this.handleChange}
@@ -80,7 +82,7 @@ class ChildInfo extends React.Component {
         <label htmlFor="canText">
           Child's Current Grade (Or entering grade if it's the summer):
           <input
-            id="cCurrentGrade"
+            id="currentGrade"
             type="text"
             checked={this.state.cCurrentGrade}
             onChange={this.handleChange}
@@ -90,7 +92,7 @@ class ChildInfo extends React.Component {
         <label htmlFor="canText">
           Child's Shirt Size:
           <input
-            id="cShirtSize"
+            id="shirtSize"
             type="text"
             checked={this.state.cShirtSize}
             onChange={this.handleChange}
@@ -100,7 +102,7 @@ class ChildInfo extends React.Component {
         <label htmlFor="canText">
           Child's Gender:
           <input
-            id="cGender"
+            id="gender"
             type="text"
             checked={this.state.cGender}
             onChange={this.handleChange}
