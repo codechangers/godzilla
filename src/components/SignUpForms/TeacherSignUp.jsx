@@ -12,17 +12,34 @@ const locationToPrompt = {
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
   state: PropTypes.shape({
-    fName: PropTypes.string.isRequired,
-    lName: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    gender: PropTypes.string.isRequired,
-    birthDate: PropTypes.string.isRequired,
-    aboutMe: PropTypes.string.isRequired
-  }).isRequired
+    whyTeach: PropTypes.string.isRequired,
+    prevExp: PropTypes.string.isRequired,
+    region: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired
+  }).isRequired,
+  db: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired
 };
 
-const TeacherSignUp = ({ handleChange, state }) => (
+const createTeacher = (state, db, firebase) => {
+  const { whyTeach, prevExp, region, location, address } = state;
+  const { uid } = firebase.auth().currentUser;
+  db.collection('teachers')
+    .doc(uid)
+    .set({
+      whyTeach,
+      prevExp,
+      region,
+      location,
+      address
+    })
+    .then(() => {
+      console.log('Go to Teacher Pending Dashboard...');
+    });
+};
+
+const TeacherSignUp = ({ handleChange, state, db, firebase }) => (
   <div className="signup-form">
     <label htmlFor="whyTeach" className="tall">
       Why do you want to teach STEM topics to kids?
@@ -50,6 +67,10 @@ const TeacherSignUp = ({ handleChange, state }) => (
       {locationToPrompt[state.location]}
       <input id="address" type="text" value={state.address} onChange={handleChange} />
     </label>
+    <br />
+    <button type="submit" onClick={() => createTeacher(state, db, firebase)}>
+      Become a Teacher
+    </button>
   </div>
 );
 

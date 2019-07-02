@@ -79,7 +79,7 @@ class SignUp extends React.Component {
       password: '',
       confirmPassword: '',
       isLoggedIn: false,
-      isRegistered: true
+      isRegistered: false
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -97,7 +97,14 @@ class SignUp extends React.Component {
           />
         );
       case 'teacher':
-        return <TeacherSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
+        return (
+          <TeacherSignUp
+            handleChange={this.handleChange}
+            state={{ ...this.state }}
+            db={this.db}
+            firebase={this.firebase}
+          />
+        );
       case 'organization':
         return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
       default:
