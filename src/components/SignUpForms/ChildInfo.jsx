@@ -23,6 +23,7 @@ class ChildInfo extends React.Component {
     const user = this.props.firebase.auth().currentUser;
     // const childUser = this.props.db.collection('children').add(this.state);
     // console.log('child user: ', childUser);
+    console.log('address: ', this.props.address);
     if (user) {
       this.props.db
         .collection('children')

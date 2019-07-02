@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ChildInfo from './ChildInfo';
 import '../../assets/css/Signup.css';
+import autoBind from '../../autoBind';
 
 class ParentSignUp extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class ParentSignUp extends React.Component {
     this.state = {
       address: PropTypes.string.isRequired
     };
+    autoBind(this);
   }
 
   // const propTypes = {
@@ -41,12 +43,12 @@ class ParentSignUp extends React.Component {
         </label>
         <br />
         <ChildInfo
-          handleChange={handleChange}
-          state={state}
-          toggleCanText={toggleCanText}
-          db={props.db}
-          firebase={props.firebase}
-          address={this.address}
+          /* handleChange={handleChange}
+          state={this.state}
+          toggleCanText={toggleCanText} */
+          db={this.props.db}
+          firebase={this.props.firebase}
+          address={this.state.address}
         />
         <br />
       </div>
@@ -55,6 +57,6 @@ class ParentSignUp extends React.Component {
   // );
 }
 
-ParentSignUp.propTypes = propTypes;
+// ParentSignUp.propTypes = propTypes;
 
 export default ParentSignUp;
