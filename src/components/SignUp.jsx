@@ -81,15 +81,16 @@ class SignUp extends React.Component {
   getForm() {
     switch (this.props.location.state.accountType) {
       case 'parent':
+        return <ParentSignUp db={this.db} firebase={this.firebase} />;
+      case 'teacher':
         return (
-          <ParentSignUp
+          <TeacherSignUp
             handleChange={this.handleChange}
-            toggleCanText={this.toggleCanText}
             state={{ ...this.state }}
+            db={this.db}
+            firebase={this.firebase}
           />
         );
-      case 'teacher':
-        return <TeacherSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
       case 'organization':
         return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
       default:
@@ -129,7 +130,7 @@ class SignUp extends React.Component {
         </label>
         <br />
         <button type="submit" onClick={this.handleSubmit}>
-          Signup
+          Next
         </button>
       </div>
     );
@@ -202,8 +203,9 @@ class SignUp extends React.Component {
                 .set(userData)
                 .then(() => {
                   this.setState({
-                    isRegistered: true // Change this to show account type form
+                    isRegistered: true
                   });
+                  this.getForm();
                 });
             } else {
               console.log('Invalid Account Type');
