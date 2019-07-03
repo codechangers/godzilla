@@ -39,7 +39,7 @@ class ParentSignUp extends React.Component {
 
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
-    console.log('childRef: ', childRef);
+    // console.log('childRef: ', childRef);
     this.setState({ childrenRefs: [...this.state.childrenRefs, childRef] });
     this.props.db
       .collection('parents')
@@ -51,14 +51,10 @@ class ParentSignUp extends React.Component {
     childRef.get().then(newChildDoc => {
       const newChildData = newChildDoc.data();
       this.setState({ childrenData: [...this.state.childrenData, newChildData] });
-      console.log('child data array: ', this.state.childrenData);
-      console.log('new child data: ', newChildData);
+      // console.log('child data array: ', this.state.childrenData);
+      // console.log('new child data: ', newChildData);
     });
-
     // console.log('childrenRef array: ', this.state.childrenRefs);
-
-    // this.props.db
-    //   .collection()
   }
 
   handleClose() {

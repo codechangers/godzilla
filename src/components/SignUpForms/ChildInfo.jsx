@@ -36,8 +36,8 @@ class ChildInfo extends React.Component {
           //     // address: this.props.address
           //   });
           this.props.addChildRef(this.props.db.collection('children').doc(child.id));
-          console.log('this: ', this.props.db.collection('children').doc(child.id));
-          console.log('child id: ', child.id);
+          // console.log('this: ', this.props.db.collection('children').doc(child.id));
+          // console.log('child id: ', child.id);
         });
       this.props.handleClose();
       // return <Parent firebase={this.props.firebase} user={user} />;
