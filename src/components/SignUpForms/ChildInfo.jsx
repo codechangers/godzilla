@@ -1,7 +1,6 @@
 import React from 'react';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
-// import Parent from '../Dashboards/Parent';
 import autoBind from '../../autoBind';
 
 class ChildInfo extends React.Component {
@@ -21,26 +20,14 @@ class ChildInfo extends React.Component {
 
   createChild() {
     const user = this.props.firebase.auth().currentUser;
-    // const childUser = this.props.db.collection('children').add(this.state);
-    // console.log('child user: ', childUser);
     if (user) {
       this.props.db
         .collection('children')
         .add(this.state)
         .then(child => {
-          // this.props.db
-          //   .collection('parents')
-          //   .doc(user.uid)
-          //   .update({
-          //     children: [this.props.db.collection('children').doc(child.id)]
-          //     // address: this.props.address
-          //   });
           this.props.addChildRef(this.props.db.collection('children').doc(child.id));
-          // console.log('this: ', this.props.db.collection('children').doc(child.id));
-          // console.log('child id: ', child.id);
         });
       this.props.handleClose();
-      // return <Parent firebase={this.props.firebase} user={user} />;
     }
   }
 

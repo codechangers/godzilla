@@ -81,15 +81,7 @@ class SignUp extends React.Component {
   getForm() {
     switch (this.props.location.state.accountType) {
       case 'parent':
-        return (
-          <ParentSignUp
-            /* handleChange={this.handleChange}
-            toggleCanText={this.toggleCanText}
-            state={{ ...this.state }} */
-            db={this.db}
-            firebase={this.firebase}
-          />
-        );
+        return <ParentSignUp db={this.db} firebase={this.firebase} />;
       case 'teacher':
         return (
           <TeacherSignUp
@@ -211,7 +203,7 @@ class SignUp extends React.Component {
                 .set(userData)
                 .then(() => {
                   this.setState({
-                    isRegistered: true // Change this to show account type form
+                    isRegistered: true
                   });
                   this.getForm();
                 });

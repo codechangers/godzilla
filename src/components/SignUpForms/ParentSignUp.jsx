@@ -18,18 +18,6 @@ class ParentSignUp extends React.Component {
     autoBind(this);
   }
 
-  // const propTypes = {
-  //   handleChange: PropTypes.func.isRequired,
-  //   toggleCanText: PropTypes.func.isRequired,
-  //   state: PropTypes.shape({
-  //     fName: PropTypes.string.isRequired,
-  //     lName: PropTypes.string.isRequired,
-  //     address: PropTypes.string.isRequired,
-  //     email: PropTypes.string.isRequired,
-  //     phone: PropTypes.string.isRequired,
-  //     canText: PropTypes.bool.isRequired
-  //   }).isRequired
-  // };
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
@@ -39,7 +27,6 @@ class ParentSignUp extends React.Component {
 
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
-    // console.log('childRef: ', childRef);
     this.setState({ childrenRefs: [...this.state.childrenRefs, childRef] });
     this.props.db
       .collection('parents')
@@ -51,10 +38,7 @@ class ParentSignUp extends React.Component {
     childRef.get().then(newChildDoc => {
       const newChildData = newChildDoc.data();
       this.setState({ childrenData: [...this.state.childrenData, newChildData] });
-      // console.log('child data array: ', this.state.childrenData);
-      // console.log('new child data: ', newChildData);
     });
-    // console.log('childrenRef array: ', this.state.childrenRefs);
   }
 
   handleClose() {
@@ -72,7 +56,6 @@ class ParentSignUp extends React.Component {
         .collection('parents')
         .doc(user.uid)
         .update({
-          // children: this.state.childrenRefs
           address: this.state.address
         });
       
@@ -80,7 +63,6 @@ class ParentSignUp extends React.Component {
     }
   }
 
-  // const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
   render() {
     return this.state.redirect === true ? (
       <Redirect to='/parent' user={this.props.firebase.auth().currentUser} firebase={this.props.firebase} />
@@ -102,9 +84,6 @@ class ParentSignUp extends React.Component {
           {this.state.show ? (
           <div className="request-info-wrapper">
               <ChildInfo
-                /* handleChange={handleChange}
-                state={this.state}
-                toggleCanText={toggleCanText} */
                 db={this.props.db}
                 firebase={this.props.firebase}
                 addChildRef={this.addChildRef}
@@ -125,9 +104,7 @@ class ParentSignUp extends React.Component {
       </div>
     );
   }
-  // );
 }
 
-// ParentSignUp.propTypes = propTypes;
 
 export default ParentSignUp;
