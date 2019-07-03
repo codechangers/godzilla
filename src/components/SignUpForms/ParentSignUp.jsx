@@ -1,9 +1,15 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import ChildInfo from './ChildInfo';
+import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
-import React from 'react';
-import ChildInfo from './ChildInfo';
-import { Redirect } from 'react-router-dom'
-import autoBind from '../../autoBind';
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
+};
 
 class ParentSignUp extends React.Component {
   constructor(props) {
@@ -40,7 +46,9 @@ class ParentSignUp extends React.Component {
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
     // console.log('childRef: ', childRef);
-    this.setState({ childrenRefs: [...this.state.childrenRefs, childRef] });
+    const { childrenRefs } = this.state;
+    childrenRefs.push(childRef);
+    this.setState({ childrenRefs });
     this.props.db
       .collection('parents')
       .doc(user.uid)
@@ -50,7 +58,9 @@ class ParentSignUp extends React.Component {
 
     childRef.get().then(newChildDoc => {
       const newChildData = newChildDoc.data();
-      this.setState({ childrenData: [...this.state.childrenData, newChildData] });
+      const { childrenData } = this.state;
+      childrenData.push(newChildData);
+      this.setState({ childrenData });
       // console.log('child data array: ', this.state.childrenData);
       // console.log('new child data: ', newChildData);
     });
@@ -75,15 +85,19 @@ class ParentSignUp extends React.Component {
           // children: this.state.childrenRefs
           address: this.state.address
         });
-      
-      this.setState({redirect: true});
+
+      this.setState({ redirect: true });
     }
   }
 
   // const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
   render() {
     return this.state.redirect === true ? (
-      <Redirect to='/parent' user={this.props.firebase.auth().currentUser} firebase={this.props.firebase} />
+      <Redirect
+        to="/parent"
+        user={this.props.firebase.auth().currentUser}
+        firebase={this.props.firebase}
+      />
     ) : (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
@@ -94,30 +108,29 @@ class ParentSignUp extends React.Component {
         <br />
         {this.state.childrenData.map(child => (
           <div className="child" key={child.id}>
-            <p>{child.fName} {child.lName}</p>
+            <p>{`${child.fName} ${child.lName}`}</p>
           </div>
         ))}
         <br />
-          
-          {this.state.show ? (
+
+        {this.state.show ? (
           <div className="request-info-wrapper">
-              <ChildInfo
-                /* handleChange={handleChange}
+            <ChildInfo
+              /* handleChange={handleChange}
                 state={this.state}
                 toggleCanText={toggleCanText} */
-                db={this.props.db}
-                firebase={this.props.firebase}
-                addChildRef={this.addChildRef}
-                handleClose={this.handleClose}
-              />
+              db={this.props.db}
+              firebase={this.props.firebase}
+              addChildRef={this.addChildRef}
+              handleClose={this.handleClose}
+            />
           </div>
         ) : null}
-
 
         <button type="submit" onClick={this.handleShow}>
           Add Child
         </button>
-        
+
         <br />
         <button type="submit" onClick={this.updateParent}>
           Sign Up
@@ -128,6 +141,6 @@ class ParentSignUp extends React.Component {
   // );
 }
 
-// ParentSignUp.propTypes = propTypes;
+ParentSignUp.propTypes = propTypes;
 
 export default ParentSignUp;

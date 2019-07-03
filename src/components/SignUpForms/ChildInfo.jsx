@@ -1,8 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
-// import Parent from '../Dashboards/Parent';
-import autoBind from '../../autoBind';
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  addChildRef: PropTypes.func.isRequired
+};
 
 class ChildInfo extends React.Component {
   constructor(props) {
@@ -55,17 +62,17 @@ class ChildInfo extends React.Component {
     return (
       <div className="request-info">
         <label htmlFor="lastname">
-          Child's First Name:
+          Child&apos;s First Name:
           <input id="fName" type="text" value={this.state.fName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="address">
-          Child's Last Name:
+          Child&apos;s Last Name:
           <input id="lName" type="text" value={this.state.lName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="email">
-          Child's Birthdate:
+          Child&apos;s Birthdate:
           <input
             id="birthDate"
             type="text"
@@ -75,7 +82,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="phone">
-          Child's Current School:
+          Child&apos;s Current School:
           <input
             id="currentSchool"
             type="text"
@@ -85,7 +92,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Current Grade (Or entering grade if it's the summer):
+          Child&apos;s Current Grade (Or entering grade if it&apos;s the summer):
           <input
             id="currentGrade"
             type="text"
@@ -95,7 +102,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Shirt Size:
+          Child&apos;s Shirt Size:
           <input
             id="shirtSize"
             type="text"
@@ -105,7 +112,7 @@ class ChildInfo extends React.Component {
         </label>
         <br />
         <label htmlFor="canText">
-          Child's Gender:
+          Child&apos;s Gender:
           <input id="gender" type="text" checked={this.state.gender} onChange={this.handleChange} />
         </label>
         <br />
@@ -121,5 +128,7 @@ class ChildInfo extends React.Component {
     );
   }
 }
+
+ChildInfo.propTypes = propTypes;
 
 export default ChildInfo;
