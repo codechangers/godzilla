@@ -73,13 +73,7 @@ class SignUp extends React.Component {
   getForm() {
     switch (this.props.location.state.accountType) {
       case 'parent':
-        return (
-          <ParentSignUp
-            handleChange={this.handleChange}
-            toggleCanText={this.toggleCanText}
-            state={{ ...this.state }}
-          />
-        );
+        return <ParentSignUp db={this.db} firebase={this.firebase} />;
       case 'teacher':
         return (
           <TeacherSignUp
@@ -129,7 +123,7 @@ class SignUp extends React.Component {
         </label>
         <br />
         <button type="submit" onClick={this.handleSubmit}>
-          Signup
+          Next
         </button>
       </div>
     );

@@ -1,52 +1,123 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import ChildInfo from './ChildInfo';
+import autoBind from '../../autoBind';
+import '../../assets/css/Signup.css';
+import '../../assets/css/Admin.css';
 
 const propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  toggleCanText: PropTypes.func.isRequired,
-  state: PropTypes.shape({
-    fName: PropTypes.string.isRequired,
-    lName: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    canText: PropTypes.bool.isRequired
-  }).isRequired
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
-const ParentSignUp = ({ handleChange, state, toggleCanText }) => (
-  <div>
-    <label htmlFor="firstname">
-      First Name:
-      <input id="firstName" type="text" value={state.fName} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="lastname">
-      Last Name:
-      <input id="lastName" type="text" value={state.lName} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="address">
-      Address:
-      <input id="address" type="text" value={state.address} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="email">
-      Email Address:
-      <input id="Email" type="text" value={state.email} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="phone">
-      Phone:
-      <input id="phone" type="text" value={state.phone} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="canText">
-      Phone can Text:
-      <input id="canText" type="checkbox" checked={state.canText} onChange={toggleCanText} />
-    </label>
-  </div>
-);
+class ParentSignUp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      address: '',
+      childrenRefs: [],
+      childrenData: [],
+      show: false,
+      redirect: false
+    };
+    autoBind(this);
+  }
+
+  handleChange(e) {
+    const { id, value } = e.target;
+    const newState = {};
+    newState[id] = value;
+    this.setState(newState);
+  }
+
+  addChildRef(childRef) {
+    const user = this.props.firebase.auth().currentUser;
+    const { childrenRefs } = this.state;
+    childrenRefs.push(childRef);
+    this.setState({ childrenRefs });
+    this.props.db
+      .collection('parents')
+      .doc(user.uid)
+      .update({
+        children: this.state.childrenRefs
+      });
+
+    childRef.get().then(newChildDoc => {
+      const newChildData = newChildDoc.data();
+      const { childrenData } = this.state;
+      childrenData.push(newChildData);
+      this.setState({ childrenData });
+    });
+  }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
+
+  updateParent() {
+    const user = this.props.firebase.auth().currentUser;
+    if (user) {
+      this.props.db
+        .collection('parents')
+        .doc(user.uid)
+        .update({
+          address: this.state.address
+        });
+
+      this.setState({ redirect: true });
+    }
+  }
+
+  render() {
+    return this.state.redirect === true ? (
+      <Redirect
+        to="/parent"
+        user={this.props.firebase.auth().currentUser}
+        firebase={this.props.firebase}
+      />
+    ) : (
+      <div className="signup-form">
+        <h1>Parent Account Information:</h1>
+        <label htmlFor="firstname">
+          Street Address:
+          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
+        </label>
+        <br />
+        {this.state.childrenData.map(child => (
+          <div className="child" key={`${child.fName}${child.lName}`}>
+            <p>{`${child.fName} ${child.lName}`}</p>
+          </div>
+        ))}
+        <br />
+
+        {this.state.show ? (
+          <div className="request-info-wrapper">
+            <ChildInfo
+              db={this.props.db}
+              firebase={this.props.firebase}
+              addChildRef={this.addChildRef}
+              handleClose={this.handleClose}
+            />
+          </div>
+        ) : null}
+
+        <button type="submit" onClick={this.handleShow}>
+          Add Child
+        </button>
+
+        <br />
+        <button type="submit" onClick={this.updateParent}>
+          Sign Up
+        </button>
+      </div>
+    );
+  }
+}
 
 ParentSignUp.propTypes = propTypes;
 
