@@ -81,15 +81,14 @@ class ParentSignUp extends React.Component {
         });
       
       this.setState({redirect: true});
-      if (this.state.redirect === true) {
-      return <Redirect to="/parent" />;
-      }
     }
   }
 
   // const ParentSignUp = (props, { handleChange, state, toggleCanText }) => (
   render() {
-    return (
+    return this.state.redirect === true ? (
+      <Redirect to='/parent' user={this.props.firebase.auth().currentUser} firebase={this.props.firebase} />
+    ) : (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
         <label htmlFor="firstname">
