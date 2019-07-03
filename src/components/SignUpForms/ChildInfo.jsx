@@ -1,7 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  addChildRef: PropTypes.func.isRequired
+};
 
 class ChildInfo extends React.Component {
   constructor(props) {
@@ -108,5 +116,7 @@ class ChildInfo extends React.Component {
     );
   }
 }
+
+ChildInfo.propTypes = propTypes;
 
 export default ChildInfo;

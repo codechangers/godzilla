@@ -1,9 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
+
+const propTypes = {
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
+};
 
 class ParentSignUp extends React.Component {
   constructor(props) {
@@ -27,7 +33,9 @@ class ParentSignUp extends React.Component {
 
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
-    this.setState({ childrenRefs: [...this.state.childrenRefs, childRef] });
+    const { childrenRefs } = this.state;
+    childrenRefs.push(childRef);
+    this.setState({ childrenRefs });
     this.props.db
       .collection('parents')
       .doc(user.uid)
@@ -37,7 +45,9 @@ class ParentSignUp extends React.Component {
 
     childRef.get().then(newChildDoc => {
       const newChildData = newChildDoc.data();
-      this.setState({ childrenData: [...this.state.childrenData, newChildData] });
+      const { childrenData } = this.state;
+      childrenData.push(newChildData);
+      this.setState({ childrenData });
     });
   }
 
@@ -108,5 +118,7 @@ class ParentSignUp extends React.Component {
     );
   }
 }
+
+ParentSignUp.propTypes = propTypes;
 
 export default ParentSignUp;
