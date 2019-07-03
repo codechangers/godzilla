@@ -1,9 +1,9 @@
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import ChildInfo from './ChildInfo';
+import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
-import React from 'react';
-import ChildInfo from './ChildInfo';
-import { Redirect } from 'react-router-dom'
-import autoBind from '../../autoBind';
 
 class ParentSignUp extends React.Component {
   constructor(props) {
@@ -58,14 +58,18 @@ class ParentSignUp extends React.Component {
         .update({
           address: this.state.address
         });
-      
-      this.setState({redirect: true});
+
+      this.setState({ redirect: true });
     }
   }
 
   render() {
     return this.state.redirect === true ? (
-      <Redirect to='/parent' user={this.props.firebase.auth().currentUser} firebase={this.props.firebase} />
+      <Redirect
+        to="/parent"
+        user={this.props.firebase.auth().currentUser}
+        firebase={this.props.firebase}
+      />
     ) : (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
@@ -75,28 +79,27 @@ class ParentSignUp extends React.Component {
         </label>
         <br />
         {this.state.childrenData.map(child => (
-          <div className="child" key={child.id}>
-            <p>{child.fName} {child.lName}</p>
+          <div className="child" key={`${child.fName}${child.lName}`}>
+            <p>{`${child.fName} ${child.lName}`}</p>
           </div>
         ))}
         <br />
-          
-          {this.state.show ? (
+
+        {this.state.show ? (
           <div className="request-info-wrapper">
-              <ChildInfo
-                db={this.props.db}
-                firebase={this.props.firebase}
-                addChildRef={this.addChildRef}
-                handleClose={this.handleClose}
-              />
+            <ChildInfo
+              db={this.props.db}
+              firebase={this.props.firebase}
+              addChildRef={this.addChildRef}
+              handleClose={this.handleClose}
+            />
           </div>
         ) : null}
-
 
         <button type="submit" onClick={this.handleShow}>
           Add Child
         </button>
-        
+
         <br />
         <button type="submit" onClick={this.updateParent}>
           Sign Up
@@ -105,6 +108,5 @@ class ParentSignUp extends React.Component {
     );
   }
 }
-
 
 export default ParentSignUp;
