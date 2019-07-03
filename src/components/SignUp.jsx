@@ -23,20 +23,16 @@ const accountTypeToRoute = {
 };
 
 const idToDataMember = {
-  name: 'name',
   firstName: 'fName',
   lastName: 'lName',
-  address: 'address',
   Email: 'email',
   phone: 'phone',
   canText: 'canText',
-  gender: 'gender',
-  birthDate: 'birthDate',
-  aboutMe: 'aboutMe',
-  accountType: 'accountType',
   password: 'password',
   confirmPassword: 'confirmPassword'
 };
+
+const genericFields = ['fName', 'lName', 'email', 'phone', 'canText'];
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -58,16 +54,12 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
       fName: '',
       lName: '',
       address: '',
       email: '',
       phone: '',
       canText: false,
-      gender: '',
-      birthDate: '',
-      aboutMe: '',
       password: '',
       confirmPassword: '',
       isLoggedIn: false,
@@ -85,10 +77,11 @@ class SignUp extends React.Component {
       case 'teacher':
         return (
           <TeacherSignUp
-            handleChange={this.handleChange}
-            state={{ ...this.state }}
             db={this.db}
             firebase={this.firebase}
+            login={() => {
+              this.setState({ isLoggedIn: true });
+            }}
           />
         );
       case 'organization':
@@ -136,42 +129,15 @@ class SignUp extends React.Component {
     );
   }
 
-  getUserData(isGeneric) {
-    const {
-      name,
-      fName,
-      lName,
-      address,
-      email,
-      phone,
-      canText,
-      gender,
-      birthDate,
-      aboutMe
-    } = this.state;
-    if (isGeneric) {
-      return { fName, lName, email, phone, canText };
-    }
-    switch (this.props.location.state.accountType) {
-      case 'Parent':
-        return { fName, lName, address, email, phone, canText };
-      case 'Teacher':
-        return {
-          fName,
-          lName,
-          email,
-          phone,
-          gender,
-          birthDate,
-          aboutMe,
-          isVerrified: false,
-          isTraining: true
-        };
-      case 'Organization':
-        return { name, email, address, aboutMe, isVerrified: false };
-      default:
-        return null;
-    }
+  getUserData() {
+    // Filter out any fields for local state that shouldn't be saved to the generic document.
+    return Object.keys(this.state)
+      .filter(key => genericFields.includes(key))
+      .reduce((obj, key) => {
+        const newObj = { ...obj };
+        newObj[key] = this.state[key];
+        return newObj;
+      }, {});
   }
 
   handleChange(e) {
@@ -195,21 +161,15 @@ class SignUp extends React.Component {
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {
-            const userData = this.getUserData(true);
-            if (userData !== null) {
-              this.db
-                .collection(accountTypeToCollection.parent)
-                .doc(res.user.uid)
-                .set(userData)
-                .then(() => {
-                  this.setState({
-                    isRegistered: true
-                  });
-                  this.getForm();
+            this.db
+              .collection(accountTypeToCollection.parent)
+              .doc(res.user.uid)
+              .set(this.getUserData())
+              .then(() => {
+                this.setState({
+                  isRegistered: true
                 });
-            } else {
-              console.log('Invalid Account Type');
-            }
+              });
           }
         })
         .catch(err => console.log(err));
