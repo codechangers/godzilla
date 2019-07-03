@@ -1,45 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import '../../assets/css/Signup.css';
-import Parent from '../Dashboards/Parent';
+import '../../assets/css/Admin.css';
+// import Parent from '../Dashboards/Parent';
 import autoBind from '../../autoBind';
 
 class ChildInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fName: PropTypes.func.isRequired,
-      lName: PropTypes.func.isRequired,
-      birthDate: PropTypes.func.isRequired,
-      currentSchool: PropTypes.func.isRequired,
-      currentGrade: PropTypes.func.isRequired,
-      shirtSize: PropTypes.func.isRequired,
-      gender: PropTypes.func.isRequired
+      fName: '',
+      lName: '',
+      birthDate: '',
+      currentSchool: '',
+      currentGrade: '',
+      shirtSize: '',
+      gender: ''
     };
     autoBind(this);
   }
 
-  updateParent() {
+  createChild() {
     const user = this.props.firebase.auth().currentUser;
     // const childUser = this.props.db.collection('children').add(this.state);
     // console.log('child user: ', childUser);
-    console.log('address: ', this.props.address);
     if (user) {
       this.props.db
         .collection('children')
         .add(this.state)
         .then(child => {
-          this.props.db
-            .collection('parents')
-            .doc(user.uid)
-            .update({
-              children: [this.props.db.collection('children').doc(child.id)],
-              address: this.props.address
-            })
-            .then(() => {
-              return <Parent firebase={this.props.firebase} user={user} />;
-            });
+          // this.props.db
+          //   .collection('parents')
+          //   .doc(user.uid)
+          //   .update({
+          //     children: [this.props.db.collection('children').doc(child.id)]
+          //     // address: this.props.address
+          //   });
+          this.props.addChildRef(this.props.db.collection('children').doc(child.id));
+          console.log('this: ', this.props.db.collection('children').doc(child.id));
+          console.log('child id: ', child.id);
         });
+      this.props.handleClose();
+      // return <Parent firebase={this.props.firebase} user={user} />;
     }
   }
 
@@ -52,15 +53,15 @@ class ChildInfo extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="request-info">
         <label htmlFor="lastname">
           Child's First Name:
-          <input id="fName" type="text" value={this.state.cFName} onChange={this.handleChange} />
+          <input id="fName" type="text" value={this.state.fName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="address">
           Child's Last Name:
-          <input id="lName" type="text" value={this.state.cLName} onChange={this.handleChange} />
+          <input id="lName" type="text" value={this.state.lName} onChange={this.handleChange} />
         </label>
         <br />
         <label htmlFor="email">
@@ -68,7 +69,7 @@ class ChildInfo extends React.Component {
           <input
             id="birthDate"
             type="text"
-            value={this.state.cBirthDate}
+            value={this.state.birthDate}
             onChange={this.handleChange}
           />
         </label>
@@ -78,7 +79,7 @@ class ChildInfo extends React.Component {
           <input
             id="currentSchool"
             type="text"
-            value={this.state.cCurrentSchool}
+            value={this.state.currentSchool}
             onChange={this.handleChange}
           />
         </label>
@@ -88,7 +89,7 @@ class ChildInfo extends React.Component {
           <input
             id="currentGrade"
             type="text"
-            checked={this.state.cCurrentGrade}
+            checked={this.state.currentGrade}
             onChange={this.handleChange}
           />
         </label>
@@ -98,24 +99,24 @@ class ChildInfo extends React.Component {
           <input
             id="shirtSize"
             type="text"
-            checked={this.state.cShirtSize}
+            checked={this.state.shirtSize}
             onChange={this.handleChange}
           />
         </label>
         <br />
         <label htmlFor="canText">
           Child's Gender:
-          <input
-            id="gender"
-            type="text"
-            checked={this.state.cGender}
-            onChange={this.handleChange}
-          />
+          <input id="gender" type="text" checked={this.state.gender} onChange={this.handleChange} />
         </label>
         <br />
-        <button type="submit" onClick={this.updateParent}>
-          Sign Up
-        </button>
+        <div className="modalButtonContainer">
+          <button className="modalButton" type="submit" onClick={this.createChild}>
+            Finish Adding Child
+          </button>
+          <button className="modalButton" type="submit" onClick={this.props.handleClose}>
+            Cancel
+          </button>
+        </div>
       </div>
     );
   }

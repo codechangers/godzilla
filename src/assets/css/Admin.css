@@ -65,6 +65,7 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.4);
   animation: fadeIn 200ms ease;
+  z-index: 100;
 }
 
 .request-info {
@@ -124,6 +125,16 @@
   outline: none;
   padding: 10px;
   cursor: pointer;
+}
+
+.modalButtonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.modalButton {
 }
 
 @keyframes fadeIn {

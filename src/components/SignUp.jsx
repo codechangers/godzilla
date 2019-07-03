@@ -83,9 +83,9 @@ class SignUp extends React.Component {
       case 'parent':
         return (
           <ParentSignUp
-            handleChange={this.handleChange}
+            /* handleChange={this.handleChange}
             toggleCanText={this.toggleCanText}
-            state={{ ...this.state }}
+            state={{ ...this.state }} */
             db={this.db}
             firebase={this.firebase}
           />
