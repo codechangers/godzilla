@@ -107,7 +107,7 @@ class ParentSignUp extends React.Component {
         </label>
         <br />
         {this.state.childrenData.map(child => (
-          <div className="child" key={child.id}>
+          <div className="child" key={`${child.fName}${child.lName}`}>
             <p>{`${child.fName} ${child.lName}`}</p>
           </div>
         ))}
