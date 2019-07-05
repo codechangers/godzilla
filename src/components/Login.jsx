@@ -16,8 +16,8 @@ const accountTypeToRoute = {
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -34,35 +34,30 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.getUserDashboard(this.props.user);
+    this.checkAccounts();
   }
 
-  componentWillReceiveProps(props) {
-    this.getUserDashboard(props.user);
+  componentWillReceiveProps() {
+    this.checkAccounts();
   }
 
-  getUserDashboard(user) {
-    if (user.isSignedIn) {
-      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
-        this.db
-          .collection(collection)
-          .doc(user.uid)
-          .get()
-          .then(doc => {
-            let c = collection;
-            if (doc.exists) {
-              if (collection === 'teachers' && !doc.data().isVerrified) {
-                c = 'trainingteachers';
-              } else if (collection === 'organizations' && !doc.data().isVerrified) {
-                c = 'pendingorganization';
-              }
-              this.setState({
-                shouldRedirect: accountTypeToRoute[c]
-              });
-            }
-          });
-      });
+  checkAccounts() {
+    const { accounts } = this.props;
+    let shouldRedirect = '';
+    if (accounts.admins) {
+      shouldRedirect = accountTypeToRoute.admins;
+    } else if (accounts.trainingteachers) {
+      shouldRedirect = accountTypeToRoute.trainingteachers;
+    } else if (accounts.teachers) {
+      shouldRedirect = accountTypeToRoute.teachers;
+    } else if (accounts.pendingorganization) {
+      shouldRedirect = accountTypeToRoute.pendingorganization;
+    } else if (accounts.organizations) {
+      shouldRedirect = accountTypeToRoute.organizations;
+    } else if (accounts.parents) {
+      shouldRedirect = accountTypeToRoute.parents;
     }
+    this.setState({ shouldRedirect });
   }
 
   handleChange(e) {
