@@ -109,3 +109,7 @@
 .signup-form button:focus {
   opacity: 1;
 }
+
+.errormessage {
+  color: red;
+}
