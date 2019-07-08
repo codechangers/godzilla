@@ -55,7 +55,7 @@ class App extends React.Component {
     authSubscription();
   }
 
-  updateAccounts(user) {
+  updateAccounts(user, callback) {
     if (user.isSignedIn) {
       ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
         this.db
@@ -68,6 +68,9 @@ class App extends React.Component {
             if (doc.exists) {
               if (collection === 'teachers' && !doc.data().isVerrified) {
                 c = 'trainingteachers';
+                if (callback) {
+                  callback();
+                }
               } else if (collection === 'organizations' && !doc.data().isVerrified) {
                 c = 'pendingorganization';
               }
@@ -99,7 +102,7 @@ class App extends React.Component {
                     {...props}
                     user={this.state.user}
                     accounts={this.state.accounts}
-                    updateAccounts={user => this.updateAccounts(user)}
+                    updateAccounts={(user, callback) => this.updateAccounts(user, callback)}
                     firebase={this.firebase}
                     db={this.db}
                   />

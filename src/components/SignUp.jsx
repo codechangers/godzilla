@@ -83,8 +83,9 @@ class SignUp extends React.Component {
             db={this.db}
             firebase={this.firebase}
             login={() => {
-              this.props.updateAccounts(this.props.user);
-              this.setState({ waitForTeacherAccount: true });
+              this.props.updateAccounts(this.props.user, () => {
+                this.setState({ waitForTeacherAccount: true });
+              });
             }}
           />
         );
