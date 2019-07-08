@@ -189,8 +189,6 @@ class SignUp extends React.Component {
       this.setState({ formValid: true });
     }
 
-    console.log('email error: ', document.getElementById('Email'));
-
     if (email === '') {
       this.setState({ emailError: 'This field may not be empty' });
       this.setState({ formValid: false });
