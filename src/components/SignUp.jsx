@@ -171,73 +171,63 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password, confirmPassword, fName, lName, phone, formValid } = this.state;
+    let { email, password, confirmPassword, fName, lName, phone, formValid } = this.state;
 
     if (fName === '') {
       this.setState({ fNameError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       this.setState({ fNameError: '' });
-      this.setState({ formValid: true });
+      formValid = true;
     }
 
     if (lName === '') {
       this.setState({ lNameError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       this.setState({ lNameError: '' });
-      this.setState({ formValid: true });
+      formValid = true;
     }
 
     if (email === '') {
       this.setState({ emailError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      /* eslint-disable */
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (re.test(String(email).toLowerCase()) !== true) {
-        this.setState({ emailError: 'Invalid Email Address' });
-        this.setState({ formValid: false });
+      formValid = false;
       } else {
         this.setState({ emailError: '' });
-        this.setState({ formValid: true });
+        formValid = true;
       }
-    }
 
     if (phone === '') {
       this.setState({ phoneError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       var phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
       if (phoneRegex.test(phone) !== true) {
         this.setState({ phoneError: 'Invalid Phone Number' });
-        this.setState({ formValid: false });
+        formValid = false;
       } else {
         this.setState({ phoneError: '' });
-        this.setState({ formValid: true });
+        formValid = true;
       }
     }
 
     if (password === '') {
       this.setState({ passwordError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else if (password.length < 9) {
-      this.setState({ passwordError: 'Password must be at least 9 characters' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       this.setState({ passwordError: '' });
-      this.setState({ formValid: true });
+      formValid = true;
     }
 
     if (confirmPassword === '') {
       this.setState({ confirmPasswordError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else if (confirmPassword !== password) {
       this.setState({ confirmPasswordError: 'Password and Confirm Password do not match' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       this.setState({ confirmPasswordError: '' });
-      this.setState({ formValid: true });
+      formValid = true;
     }
 
     if (formValid === true) {
@@ -245,6 +235,8 @@ class SignUp extends React.Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
+          this.setState({ emailError: ''});
+          this.setState({ passwordError: ''});
           if (res.user) {
             this.db
               .collection(accountTypeToCollection.parent)
@@ -257,7 +249,15 @@ class SignUp extends React.Component {
               });
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log('error: ', err);
+          if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
+            this.setState({ emailError: err.message });
+          } else if (err.code === 'auth/weak-password') {
+            this.setState({ emailError: ''});
+            this.setState({ passwordError: err.message});
+          }
+        });
     }
   }
 
