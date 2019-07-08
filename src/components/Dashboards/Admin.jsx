@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import TeacherRequest from '../Requests/Teacher';
-import Logout from '../Logout';
+import NavBar from '../NavBar';
 import Spinner from '../Spinner';
 import autoBind from '../../autoBind';
 import '../../assets/css/Admin.css';
@@ -24,7 +24,8 @@ const collectionToLoadingType = {
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 class AdminDashboard extends React.Component {
@@ -110,8 +111,8 @@ class AdminDashboard extends React.Component {
   render() {
     return this.props.user.isSignedIn ? (
       <div className="admin-dashboard">
+        <NavBar accounts={this.props.accounts} firebase={this.firebase} />
         <h1>Hello Admin</h1>
-        <Logout firebase={this.firebase} />
         <h4>Teacher Requests:</h4>
         {this.state.teacherReqs.length > 0 || this.state.isLoadingTeachers ? (
           this.getTeacherRequests()
