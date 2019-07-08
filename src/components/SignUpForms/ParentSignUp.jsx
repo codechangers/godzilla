@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
@@ -8,7 +7,8 @@ import '../../assets/css/Admin.css';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -18,8 +18,7 @@ class ParentSignUp extends React.Component {
       address: '',
       childrenRefs: [],
       childrenData: [],
-      show: false,
-      redirect: false
+      show: false
     };
     autoBind(this);
   }
@@ -67,20 +66,13 @@ class ParentSignUp extends React.Component {
         .doc(user.uid)
         .update({
           address: this.state.address
-        });
-
-      this.setState({ redirect: true });
+        })
+        .then(this.props.login);
     }
   }
 
   render() {
-    return this.state.redirect === true ? (
-      <Redirect
-        to="/parent"
-        user={this.props.firebase.auth().currentUser}
-        firebase={this.props.firebase}
-      />
-    ) : (
+    return (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
         <label htmlFor="firstname">

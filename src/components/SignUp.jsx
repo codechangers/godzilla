@@ -76,7 +76,15 @@ class SignUp extends React.Component {
   getForm() {
     switch (this.props.location.state.accountType) {
       case 'parent':
-        return <ParentSignUp db={this.db} firebase={this.firebase} />;
+        return (
+          <ParentSignUp
+            db={this.db}
+            firebase={this.firebase}
+            login={() => {
+              this.setState({ isLoggedIn: true });
+            }}
+          />
+        );
       case 'teacher':
         return (
           <TeacherSignUp
