@@ -127,11 +127,12 @@ class Login extends React.Component {
       <Redirect to={this.state.shouldRedirect} />
     ) : (
       <div className="login-form">
+        <span className="errormessage">{this.state.emailError}</span>
         <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.emailError}</span>
+        <span className="errormessage">{this.state.passwordError}</span>
         <label htmlFor="password">
           Password:
           <input
@@ -141,7 +142,6 @@ class Login extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.passwordError}</span>
         <button type="submit" onClick={this.handleSubmit}>
           Submit
         </button>

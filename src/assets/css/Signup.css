@@ -112,4 +112,8 @@
 
 .errormessage {
   color: red;
+  margin-bottom: 10px;
+  width: calc(50% + 4px);
+  height: 20px;
+  align-self: flex-end;
 }
