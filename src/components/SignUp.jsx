@@ -162,13 +162,6 @@ class SignUp extends React.Component {
     const newState = {};
     newState[idToDataMember[id]] = value;
     this.setState(newState);
-
-    // switch (id) {
-    //   case 'firstName':
-    //     value === ''
-    //       ? this.setState({ fNameError: 'First Name Field is Empty' })
-    //       : (this.state.fNameError = '');
-    // }
   }
 
   toggleCanText() {
@@ -178,16 +171,7 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    const {
-      email,
-      password,
-      confirmPassword,
-      fName,
-      lName,
-      // address,
-      phone,
-      formValid
-    } = this.state;
+    const { email, password, confirmPassword, fName, lName, phone, formValid } = this.state;
 
     if (fName === '') {
       this.setState({ fNameError: 'This field may not be empty' });
@@ -277,9 +261,6 @@ class SignUp extends React.Component {
         })
         .catch(err => console.log(err));
     }
-    // } else {
-    //   console.log("passwords don't match");
-    // }
   }
 
   render() {
