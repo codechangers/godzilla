@@ -99,6 +99,7 @@ class App extends React.Component {
                     {...props}
                     user={this.state.user}
                     accounts={this.state.accounts}
+                    updateAccounts={user => this.updateAccounts(user)}
                     firebase={this.firebase}
                     db={this.db}
                   />

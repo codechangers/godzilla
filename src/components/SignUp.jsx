@@ -15,13 +15,6 @@ const accountTypeToCollection = {
   organization: 'organizations'
 };
 
-const accountTypeToRoute = {
-  '': '/signup',
-  parent: '/parent',
-  teacher: '/trainingteacher',
-  organization: '/pendingorganization'
-};
-
 const idToDataMember = {
   firstName: 'fName',
   lastName: 'lName',
@@ -37,6 +30,9 @@ const genericFields = ['fName', 'lName', 'email', 'phone', 'canText'];
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  updateAccounts: PropTypes.func.isRequired,
   location: PropTypes.shape({
     state: PropTypes.objectOf(PropTypes.string)
   })
@@ -63,11 +59,18 @@ class SignUp extends React.Component {
       password: '',
       confirmPassword: '',
       isLoggedIn: false,
-      isRegistered: false
+      isRegistered: false,
+      waitForTeacherAccount: false
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
     autoBind(this);
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.accounts.trainingteachers) {
+      this.setState({ isLoggedIn: true });
+    }
   }
 
   getForm() {
@@ -80,7 +83,8 @@ class SignUp extends React.Component {
             db={this.db}
             firebase={this.firebase}
             login={() => {
-              this.setState({ isLoggedIn: true });
+              this.props.updateAccounts(this.props.user);
+              this.setState({ waitForTeacherAccount: true });
             }}
           />
         );
@@ -179,12 +183,7 @@ class SignUp extends React.Component {
   }
 
   render() {
-    const { accountType } = this.props.location.state;
-    return this.state.isLoggedIn ? (
-      <Redirect to={accountTypeToRoute[accountType]} />
-    ) : (
-      this.getSignUp()
-    );
+    return this.state.isLoggedIn ? <Redirect to="/login" /> : this.getSignUp();
   }
 }
 
