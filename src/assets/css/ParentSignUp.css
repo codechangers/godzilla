@@ -39,3 +39,21 @@
 .request-info button {
   align-self: flex-end;
 }
+
+@keyframes fadeIn {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+@keyframes slideFromTop {
+  0% {
+    margin-top: -100%;
+  }
+  100% {
+    margin-top: 0;
+  }
+}

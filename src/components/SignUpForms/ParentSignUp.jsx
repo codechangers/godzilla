@@ -80,11 +80,11 @@ class ParentSignUp extends React.Component {
     return (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
+        <span className="errormessage">{this.state.addressError}</span>
         <label htmlFor="firstname">
           Street Address:
           <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.addressError}</span>
         <br />
         {this.state.childrenData.map(child => (
           <div className="child" key={`${child.fName}${child.lName}`}>

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
-import '../../assets/css/Admin.css';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -126,18 +125,17 @@ class ChildInfo extends React.Component {
   render() {
     return (
       <div className="request-info">
+        <span className="errormessage">{this.state.fNameError}</span>
         <label htmlFor="lastname">
           Child&apos;s First Name:
           <input id="fName" type="text" value={this.state.fName} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.fNameError}</span>
-        <br />
+        <span className="errormessage">{this.state.lNameError}</span>
         <label htmlFor="address">
           Child&apos;s Last Name:
           <input id="lName" type="text" value={this.state.lName} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.lNameError}</span>
-        <br />
+        <span className="errormessage">{this.state.birthDateError}</span>
         <label htmlFor="email">
           Child&apos;s Birthdate:
           <input
@@ -147,8 +145,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.birthDateError}</span>
-        <br />
+        <span className="errormessage">{this.state.currentSchoolError}</span>
         <label htmlFor="phone">
           Child&apos;s Current School:
           <input
@@ -158,8 +155,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.currentSchoolError}</span>
-        <br />
+        <span className="errormessage">{this.state.currentGradeError}</span>
         <label htmlFor="canText">
           Child&apos;s Current Grade (Or entering grade if it&apos;s the summer):
           <input
@@ -169,8 +165,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.currentGradeError}</span>
-        <br />
+        <span className="errormessage">{this.state.shirtSizeError}</span>
         <label htmlFor="canText">
           Child&apos;s Shirt Size:
           <input
@@ -180,14 +175,11 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.shirtSizeError}</span>
-        <br />
+        <span className="errormessage">{this.state.genderError}</span>
         <label htmlFor="canText">
           Child&apos;s Gender:
           <input id="gender" type="text" checked={this.state.gender} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.genderError}</span>
-        <br />
         <div className="modalButtonContainer">
           <button className="modalButton" type="submit" onClick={this.createChild}>
             Finish Adding Child

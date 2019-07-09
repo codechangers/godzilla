@@ -122,6 +122,7 @@ class SignUp extends React.Component {
           toggleCanText={this.toggleCanText}
           state={{ ...this.state }}
         />
+        <span className="errormessage">{this.state.passwordError}</span>
         <label htmlFor="password">
           Password:
           <input
@@ -131,8 +132,7 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.passwordError}</span>
-        <br />
+        <span className="errormessage">{this.state.confirmPasswordError}</span>
         <label htmlFor="confirm-password">
           Confirm Password:
           <input
@@ -142,8 +142,6 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.confirmPasswordError}</span>
-        <br />
         <button type="submit" onClick={this.handleSubmit}>
           Next
         </button>
@@ -224,7 +222,7 @@ class SignUp extends React.Component {
       this.setState({ confirmPasswordError: 'This field may not be empty' });
       formValid = false;
     } else if (confirmPassword !== password) {
-      this.setState({ confirmPasswordError: 'Password and Confirm Password do not match' });
+      this.setState({ confirmPasswordError: 'Password fields do not match' });
       formValid = false;
     } else {
       this.setState({ confirmPasswordError: '' });
