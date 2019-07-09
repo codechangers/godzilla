@@ -63,12 +63,50 @@ class AdminDashboard extends React.Component {
     });
   }
 
+  // getParentOfTeacher(teacher) {
+  //   let parentObject = null;
+  //   const parent = this.db
+  //     .collection('parents')
+  //     .doc(teacher.id)
+  //     .get()
+  //     .then(doc => {
+  //       const promise = new Promise(function(resolve, reject) {
+  //         resolve(doc);
+  //       });
+  //       console.log('promise: ', promise);
+  //       return promise;
+  //     })
+  //     .catch(err => {
+  //       console.log('error: ', err);
+  //     });
+
+  //   parent.then(result => {
+  //     console.log('result data: ', result.data());
+  //     parentObject = result;
+  //   });
+  //   console.log('parentobject: ', parentObject);
+
+  //   return parent;
+  // }
+
+  // getParent(teacher) {
+  //   let parent = null;
+  //   // console.log('teacher: ', teacher);
+  //   this.getParentOfTeacher(teacher).then(result => {
+  //     parent = result.data();
+  //     console.log('final parent: ', parent);
+  //   });
+  //   console.log('final final parent: ', parent);
+  //   return parent;
+  // }
+
   getTeacherRequests() {
     return this.state.isLoadingTeachers ? (
       <Spinner color="primary" />
     ) : (
       this.state.teacherReqs.map(teacher => (
         <TeacherRequest
+          db={this.db}
           teacher={teacher}
           acceptRequest={t => this.acceptRequest(t, 'teachers')}
           declineRequest={t => this.declineRequest(t, 'teachers')}
