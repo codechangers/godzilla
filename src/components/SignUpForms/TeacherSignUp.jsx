@@ -44,6 +44,7 @@ class TeacherSignUp extends React.Component {
   }
 
   getTeacherData() {
+    const date = new Date();
     // Filter out any fields for local state that shouldn't be saved to the teacher document.
     return Object.keys(this.state)
       .filter(key => Object.keys(idToDataMember).includes(key))
@@ -53,7 +54,7 @@ class TeacherSignUp extends React.Component {
           newObj[key] = this.state[key];
           return newObj;
         },
-        { isVerrified: false, isTraining: true }
+        { isVerrified: false, isTraining: true, dateApplied: date, isRead: false }
       );
   }
 

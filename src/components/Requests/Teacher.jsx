@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
-import Spinner from '../Spinner';
 
 const propTypes = {
   teacher: PropTypes.object.isRequired,
@@ -25,15 +24,7 @@ class TeacherRequest extends React.Component {
     this.setState({ showInfo });
   }
 
-  // componentWillReceiveProps(props) {
-  //   props.parent.then(parent => {
-  //     this.setState({ parent });
-  //     console.log('parent after prop change: ', parent);
-  //   });
-  // }
-
   componentDidMount() {
-    console.log('teacher in compdidmount: ', this.props.teacher);
     this.props.db
       .collection('parents')
       .doc(this.props.teacher.id)
