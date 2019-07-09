@@ -60,7 +60,14 @@ class SignUp extends React.Component {
       confirmPassword: '',
       isLoggedIn: false,
       isRegistered: false,
-      waitForTeacherAccount: false
+      waitForTeacherAccount: false,
+      fNameError: '',
+      lNameError: '',
+      phoneError: '',
+      emailError: '',
+      passwordError: '',
+      confirmPasswordError: '',
+      formValid: true
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -124,6 +131,7 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
+        <span className="errormessage">{this.state.passwordError}</span>
         <br />
         <label htmlFor="confirm-password">
           Confirm Password:
@@ -134,6 +142,7 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
+        <span className="errormessage">{this.state.confirmPasswordError}</span>
         <br />
         <button type="submit" onClick={this.handleSubmit}>
           Next
@@ -167,12 +176,67 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password, confirmPassword } = this.state;
-    if (password === confirmPassword) {
+    let formValid = true;
+    const { email, password, confirmPassword, fName, lName, phone } = this.state;
+
+    if (fName === '') {
+      this.setState({ fNameError: 'This field may not be empty' });
+      formValid = false;
+    } else {
+      this.setState({ fNameError: '' });
+    }
+
+    if (lName === '') {
+      this.setState({ lNameError: 'This field may not be empty' });
+      formValid = false;
+    } else {
+      this.setState({ lNameError: '' });
+    }
+
+    if (email === '') {
+      this.setState({ emailError: 'This field may not be empty' });
+      formValid = false;
+    } else {
+      this.setState({ emailError: '' });
+    }
+
+    if (phone === '') {
+      this.setState({ phoneError: 'This field may not be empty' });
+      formValid = false;
+    } else {
+      const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; // eslint-disable-line
+      if (phoneRegex.test(phone) !== true) {
+        this.setState({ phoneError: 'Invalid Phone Number' });
+        formValid = false;
+      } else {
+        this.setState({ phoneError: '' });
+      }
+    }
+
+    if (password === '') {
+      this.setState({ passwordError: 'This field may not be empty' });
+      formValid = false;
+    } else {
+      this.setState({ passwordError: '' });
+    }
+
+    if (confirmPassword === '') {
+      this.setState({ confirmPasswordError: 'This field may not be empty' });
+      formValid = false;
+    } else if (confirmPassword !== password) {
+      this.setState({ confirmPasswordError: 'Password and Confirm Password do not match' });
+      formValid = false;
+    } else {
+      this.setState({ confirmPasswordError: '' });
+    }
+
+    if (formValid === true) {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
+          this.setState({ emailError: '' });
+          this.setState({ passwordError: '' });
           if (res.user) {
             this.db
               .collection(accountTypeToCollection.parent)
@@ -185,9 +249,15 @@ class SignUp extends React.Component {
               });
           }
         })
-        .catch(err => console.log(err));
-    } else {
-      console.log("passwords don't match");
+        .catch(err => {
+          console.log('error: ', err);
+          if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
+            this.setState({ emailError: err.message });
+          } else if (err.code === 'auth/weak-password') {
+            this.setState({ emailError: '' });
+            this.setState({ passwordError: err.message });
+          }
+        });
     }
   }
 

@@ -16,6 +16,7 @@ class ParentSignUp extends React.Component {
     super(props);
     this.state = {
       address: '',
+      addressError: '',
       childrenRefs: [],
       childrenData: [],
       show: false
@@ -60,14 +61,18 @@ class ParentSignUp extends React.Component {
 
   updateParent() {
     const user = this.props.firebase.auth().currentUser;
-    if (user) {
-      this.props.db
-        .collection('parents')
-        .doc(user.uid)
-        .update({
-          address: this.state.address
-        })
-        .then(this.props.login);
+    if (this.state.address !== '') {
+      if (user) {
+        this.props.db
+          .collection('parents')
+          .doc(user.uid)
+          .update({
+            address: this.state.address
+          })
+          .then(this.props.login);
+      }
+    } else {
+      this.setState({ addressError: 'This field may not be empty' });
     }
   }
 
@@ -79,10 +84,11 @@ class ParentSignUp extends React.Component {
           Street Address:
           <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
         </label>
+        <span className="errormessage">{this.state.addressError}</span>
         <br />
         {this.state.childrenData.map(child => (
           <div className="child" key={`${child.fName}${child.lName}`}>
-            <p>{`${child.fName} ${child.lName}`}</p>
+            <p className="errormessage">{`${child.fName} ${child.lName}`}</p>
           </div>
         ))}
         <br />
