@@ -49,7 +49,7 @@ class TeacherRequest extends React.Component {
   render() {
     const { teacher } = this.props;
     return this.state.parent === null ? (
-      <Spinner color="primary" />
+      <div className="teacher-request" />
     ) : (
       <div className="teacher-request">
         <button type="button" className="select" onClick={this.toggleInfo}>
