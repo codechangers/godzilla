@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
+import Spinner from '../Spinner';
 
 const propTypes = {
-  parent: PropTypes.object.isRequired,
   teacher: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -25,10 +25,18 @@ class TeacherRequest extends React.Component {
     this.setState({ showInfo });
   }
 
-  componentDidMount(teacher) {
-    this.db
+  // componentWillReceiveProps(props) {
+  //   props.parent.then(parent => {
+  //     this.setState({ parent });
+  //     console.log('parent after prop change: ', parent);
+  //   });
+  // }
+
+  componentDidMount() {
+    console.log('teacher in compdidmount: ', this.props.teacher);
+    this.props.db
       .collection('parents')
-      .doc(teacher.id)
+      .doc(this.props.teacher.id)
       .get()
       .then(doc => {
         this.setState({ parent: doc.data() });
@@ -40,11 +48,12 @@ class TeacherRequest extends React.Component {
 
   render() {
     const { teacher } = this.props;
-    const { parent } = this.state;
-    return (
+    return this.state.parent === null ? (
+      <Spinner color="primary" />
+    ) : (
       <div className="teacher-request">
         <button type="button" className="select" onClick={this.toggleInfo}>
-          <p>{`${parent.fName} ${parent.lName}`}</p>
+          <p>{`${this.state.parent.fName} ${this.state.parent.lName}`}</p>
         </button>
         <div className="options">
           <button
@@ -74,27 +83,27 @@ class TeacherRequest extends React.Component {
               </button>
               <div>
                 <p>Name:</p>
-                <span>{`${parent.fName} ${parent.lName}`}</span>
+                <span>{`${this.state.parent.fName} ${this.state.parent.lName}`}</span>
               </div>
               <div>
                 <p>Email:</p>
-                <span>{parent.email}</span>
+                <span>{this.state.parent.email}</span>
               </div>
               <div>
                 <p>Phone:</p>
-                <span>{parent.phone}</span>
+                <span>{this.state.parent.phone}</span>
               </div>
               <div>
                 <p>Birth Date:</p>
-                <span>{parent.birthDate}</span>
+                <span>{this.state.parent.birthDate}</span>
               </div>
               <div>
                 <p>Gender:</p>
-                <span>{parent.gender}</span>
+                <span>{this.state.parent.gender}</span>
               </div>
               <div>
                 <p>Bio:</p>
-                <span>{parent.aboutMe}</span>
+                <span>{this.state.parent.aboutMe}</span>
               </div>
               <div className="options">
                 <button
