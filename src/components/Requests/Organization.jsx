@@ -8,11 +8,17 @@ const propTypes = {
   declineRequest: PropTypes.func.isRequired
 };
 
+const isReadToBackgroundColor = {
+  true: 'is-read',
+  false: 'is-not-read'
+};
+
 class OrganizationRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInfo: false
+      showInfo: false,
+      isRead: null
     };
     autoBind(this);
   }
@@ -21,12 +27,37 @@ class OrganizationRequest extends React.Component {
     let { showInfo } = this.state;
     showInfo = !showInfo;
     this.setState({ showInfo });
+
+    this.props.db
+      .collection('organizations')
+      .doc(this.props.org.id)
+      .update({
+        isRead: true
+      });
+
+    this.setState({
+      isRead: true
+    });
+  }
+
+  componentDidMount() {
+    this.props.db
+      .collection('organizations')
+      .doc(this.props.org.id)
+      .get()
+      .then(thisOrg => {
+        this.setState({
+          isRead: thisOrg.data().isRead
+        });
+      });
   }
 
   render() {
     const { org } = this.props;
-    return (
-      <div className="org-request">
+    return this.state.isRead === null ? (
+      <div className="org-request" />
+    ) : (
+      <div className={`org-request ${isReadToBackgroundColor[this.state.isRead]}`}>
         <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${org.name}`}</p>
         </button>

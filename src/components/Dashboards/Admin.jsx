@@ -89,6 +89,7 @@ class AdminDashboard extends React.Component {
     ) : (
       this.state.orgReqs.map(org => (
         <OrganizationRequest
+          db={this.db}
           org={org}
           acceptRequest={o => this.acceptRequest(o, 'organizations')}
           declineRequest={o => this.declineRequest(o, 'organizations')}

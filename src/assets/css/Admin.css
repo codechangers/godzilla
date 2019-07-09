@@ -29,6 +29,14 @@
   border-radius: 8px;
 }
 
+.is-read {
+  background-color: darkgrey;
+}
+
+.is-not-read {
+  background-color: lightgrey;
+}
+
 .teacher-request button.decline,
 .org-request button.decline {
   background-color: var(--danger-color);

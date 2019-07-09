@@ -8,12 +8,19 @@ const propTypes = {
   declineRequest: PropTypes.func.isRequired
 };
 
+const isReadToBackgroundColor = {
+  true: 'is-read',
+  false: 'is-not-read'
+};
+
 class TeacherRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showInfo: false,
-      parent: null
+      parent: null,
+      teacher: null,
+      isRead: null
     };
     autoBind(this);
   }
@@ -22,6 +29,24 @@ class TeacherRequest extends React.Component {
     let { showInfo } = this.state;
     showInfo = !showInfo;
     this.setState({ showInfo });
+    // change isRead to true
+    this.props.db
+      .collection('teachers')
+      .doc(this.props.teacher.id)
+      .update({
+        isRead: true
+      });
+
+    this.props.db
+      .collection('teachers')
+      .doc(this.props.teacher.id)
+      .get()
+      .then(updatedTeacher => {
+        this.setState({
+          teacher: updatedTeacher,
+          isRead: true
+        });
+      });
   }
 
   componentDidMount() {
@@ -30,7 +55,11 @@ class TeacherRequest extends React.Component {
       .doc(this.props.teacher.id)
       .get()
       .then(doc => {
-        this.setState({ parent: doc.data() });
+        this.setState({
+          parent: doc.data(),
+          teacher: this.props.teacher,
+          isRead: this.props.teacher.isRead
+        });
       })
       .catch(err => {
         console.log('error: ', err);
@@ -39,10 +68,10 @@ class TeacherRequest extends React.Component {
 
   render() {
     const { teacher } = this.props;
-    return this.state.parent === null ? (
+    return this.state.parent === null || this.state.teacher === null ? (
       <div className="teacher-request" />
     ) : (
-      <div className="teacher-request">
+      <div className={`teacher-request ${isReadToBackgroundColor[this.state.isRead]}`}>
         <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${this.state.parent.fName} ${this.state.parent.lName}`}</p>
         </button>
