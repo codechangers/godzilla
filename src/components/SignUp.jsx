@@ -15,13 +15,6 @@ const accountTypeToCollection = {
   organization: 'organizations'
 };
 
-const accountTypeToRoute = {
-  '': '/signup',
-  parent: '/parent',
-  teacher: '/trainingteacher',
-  organization: '/pendingorganization'
-};
-
 const idToDataMember = {
   firstName: 'fName',
   lastName: 'lName',
@@ -37,6 +30,9 @@ const genericFields = ['fName', 'lName', 'email', 'phone', 'canText'];
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  updateAccounts: PropTypes.func.isRequired,
   location: PropTypes.shape({
     state: PropTypes.objectOf(PropTypes.string)
   })
@@ -64,6 +60,7 @@ class SignUp extends React.Component {
       confirmPassword: '',
       isLoggedIn: false,
       isRegistered: false,
+      waitForTeacherAccount: false,
       fNameError: '',
       lNameError: '',
       phoneError: '',
@@ -75,6 +72,12 @@ class SignUp extends React.Component {
     this.firebase = this.props.firebase;
     this.db = this.props.db;
     autoBind(this);
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.accounts.trainingteachers) {
+      this.setState({ isLoggedIn: true });
+    }
   }
 
   getForm() {
@@ -95,7 +98,9 @@ class SignUp extends React.Component {
             db={this.db}
             firebase={this.firebase}
             login={() => {
-              this.setState({ isLoggedIn: true });
+              this.props.updateAccounts(this.props.user, () => {
+                this.setState({ waitForTeacherAccount: true });
+              });
             }}
           />
         );
@@ -117,6 +122,7 @@ class SignUp extends React.Component {
           toggleCanText={this.toggleCanText}
           state={{ ...this.state }}
         />
+        <span className="errormessage">{this.state.passwordError}</span>
         <label htmlFor="password">
           Password:
           <input
@@ -126,8 +132,7 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.passwordError}</span>
-        <br />
+        <span className="errormessage">{this.state.confirmPasswordError}</span>
         <label htmlFor="confirm-password">
           Confirm Password:
           <input
@@ -137,8 +142,6 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.confirmPasswordError}</span>
-        <br />
         <button type="submit" onClick={this.handleSubmit}>
           Next
         </button>
@@ -171,14 +174,14 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    let { email, password, confirmPassword, fName, lName, phone, formValid } = this.state;
+    let formValid = true;
+    const { email, password, confirmPassword, fName, lName, phone } = this.state;
 
     if (fName === '') {
       this.setState({ fNameError: 'This field may not be empty' });
       formValid = false;
     } else {
       this.setState({ fNameError: '' });
-      formValid = true;
     }
 
     if (lName === '') {
@@ -186,28 +189,25 @@ class SignUp extends React.Component {
       formValid = false;
     } else {
       this.setState({ lNameError: '' });
-      formValid = true;
     }
 
     if (email === '') {
       this.setState({ emailError: 'This field may not be empty' });
       formValid = false;
-      } else {
-        this.setState({ emailError: '' });
-        formValid = true;
-      }
+    } else {
+      this.setState({ emailError: '' });
+    }
 
     if (phone === '') {
       this.setState({ phoneError: 'This field may not be empty' });
       formValid = false;
     } else {
-      var phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+      const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; // eslint-disable-line
       if (phoneRegex.test(phone) !== true) {
         this.setState({ phoneError: 'Invalid Phone Number' });
         formValid = false;
       } else {
         this.setState({ phoneError: '' });
-        formValid = true;
       }
     }
 
@@ -216,18 +216,16 @@ class SignUp extends React.Component {
       formValid = false;
     } else {
       this.setState({ passwordError: '' });
-      formValid = true;
     }
 
     if (confirmPassword === '') {
       this.setState({ confirmPasswordError: 'This field may not be empty' });
       formValid = false;
     } else if (confirmPassword !== password) {
-      this.setState({ confirmPasswordError: 'Password and Confirm Password do not match' });
+      this.setState({ confirmPasswordError: 'Password fields do not match' });
       formValid = false;
     } else {
       this.setState({ confirmPasswordError: '' });
-      formValid = true;
     }
 
     if (formValid === true) {
@@ -235,8 +233,8 @@ class SignUp extends React.Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
-          this.setState({ emailError: ''});
-          this.setState({ passwordError: ''});
+          this.setState({ emailError: '' });
+          this.setState({ passwordError: '' });
           if (res.user) {
             this.db
               .collection(accountTypeToCollection.parent)
@@ -254,20 +252,15 @@ class SignUp extends React.Component {
           if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
             this.setState({ emailError: err.message });
           } else if (err.code === 'auth/weak-password') {
-            this.setState({ emailError: ''});
-            this.setState({ passwordError: err.message});
+            this.setState({ emailError: '' });
+            this.setState({ passwordError: err.message });
           }
         });
     }
   }
 
   render() {
-    const { accountType } = this.props.location.state;
-    return this.state.isLoggedIn ? (
-      <Redirect to={accountTypeToRoute[accountType]} />
-    ) : (
-      this.getSignUp()
-    );
+    return this.state.isLoggedIn ? <Redirect to="/login" /> : this.getSignUp();
   }
 }
 
