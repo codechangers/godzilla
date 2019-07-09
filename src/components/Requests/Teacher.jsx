@@ -114,16 +114,16 @@ class TeacherRequest extends React.Component {
                 <span>{this.state.parent.phone}</span>
               </div>
               <div>
-                <p>Birth Date:</p>
-                <span>{this.state.parent.birthDate}</span>
+                <p>Date Applied:</p>
+                <span>{this.state.parent.dateApplied}</span>
               </div>
               <div>
-                <p>Gender:</p>
-                <span>{this.state.parent.gender}</span>
+                <p>Why they want to Teach:</p>
+                <span>{this.state.parent.whyTeach}</span>
               </div>
               <div>
-                <p>Bio:</p>
-                <span>{this.state.parent.aboutMe}</span>
+                <p>Previous Experience:</p>
+                <span>{this.state.parent.prevExp}</span>
               </div>
               <div className="options">
                 <button
