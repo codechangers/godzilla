@@ -33,7 +33,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { isSignedIn: false }
+      user: { isSignedIn: false },
+      accounts: {}
     };
     this.firebase = firebase();
     this.db = this.firebase
@@ -45,12 +46,44 @@ class App extends React.Component {
   componentDidMount() {
     authSubscription = this.firebase.auth().onAuthStateChanged(u => {
       const user = u !== null ? { isSignedIn: true, ...u } : { isSignedIn: false };
+      this.updateAccounts(user);
       this.setState({ user });
     });
   }
 
   componentWillUnmount() {
     authSubscription();
+  }
+
+  updateAccounts(user, callback) {
+    if (user.isSignedIn) {
+      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
+        this.db
+          .collection(collection)
+          .doc(user.uid)
+          .get()
+          .then(doc => {
+            const { accounts } = this.state;
+            let c = collection;
+            if (doc.exists) {
+              if (collection === 'teachers' && !doc.data().isVerrified) {
+                c = 'trainingteachers';
+                if (callback) {
+                  callback();
+                }
+              } else if (collection === 'organizations' && !doc.data().isVerrified) {
+                c = 'pendingorganization';
+              }
+              accounts[c] = doc;
+            } else {
+              delete accounts[c];
+            }
+            this.setState({ accounts });
+          });
+      });
+    } else {
+      this.setState({ accounts: {} });
+    }
   }
 
   render() {
@@ -65,7 +98,14 @@ class App extends React.Component {
               render={props => {
                 const Comp = pathToComponent[path];
                 return (
-                  <Comp {...props} user={this.state.user} firebase={this.firebase} db={this.db} />
+                  <Comp
+                    {...props}
+                    user={this.state.user}
+                    accounts={this.state.accounts}
+                    updateAccounts={(user, callback) => this.updateAccounts(user, callback)}
+                    firebase={this.firebase}
+                    db={this.db}
+                  />
                 );
               }}
             />

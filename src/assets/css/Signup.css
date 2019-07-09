@@ -17,8 +17,12 @@
   margin-top: 0;
 }
 
-.signup-form > div {
+.signup-form > div.generic-signup-wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .signup-form .inline {
@@ -108,4 +112,12 @@
 .signup-form button:hover,
 .signup-form button:focus {
   opacity: 1;
+}
+
+.errormessage {
+  color: red;
+  margin-bottom: 4px;
+  width: calc(50% + 4px) !important;
+  height: 20px;
+  align-self: flex-end;
 }

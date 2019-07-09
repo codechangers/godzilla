@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Logout from '../Logout';
+import NavBar from '../NavBar';
 
-const ParentDashboard = ({ firebase, user }) =>
+const ParentDashboard = ({ firebase, user, accounts }) =>
   user.isSignedIn ? (
     <div>
+      <NavBar accounts={accounts} firebase={firebase} />
       <h1>Welcome to the Parent Dashboard</h1>
-      <Logout firebase={firebase} />
     </div>
   ) : (
     <Redirect to="/" />
@@ -15,7 +15,8 @@ const ParentDashboard = ({ firebase, user }) =>
 
 ParentDashboard.propTypes = {
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 export default ParentDashboard;

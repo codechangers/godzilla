@@ -16,8 +16,8 @@ const accountTypeToRoute = {
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -26,7 +26,10 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      shouldRedirect: ''
+      shouldRedirect: '',
+      emailError: '',
+      passwordError: '',
+      formValid: false
     };
     this.firebase = props.firebase;
     this.db = props.db;
@@ -34,35 +37,30 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.getUserDashboard(this.props.user);
+    this.checkAccounts();
   }
 
-  componentWillReceiveProps(props) {
-    this.getUserDashboard(props.user);
+  componentWillReceiveProps() {
+    this.checkAccounts();
   }
 
-  getUserDashboard(user) {
-    if (user.isSignedIn) {
-      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
-        this.db
-          .collection(collection)
-          .doc(user.uid)
-          .get()
-          .then(doc => {
-            let c = collection;
-            if (doc.exists) {
-              if (collection === 'teachers' && !doc.data().isVerrified) {
-                c = 'trainingteachers';
-              } else if (collection === 'organizations' && !doc.data().isVerrified) {
-                c = 'pendingorganization';
-              }
-              this.setState({
-                shouldRedirect: accountTypeToRoute[c]
-              });
-            }
-          });
-      });
+  checkAccounts() {
+    const { accounts } = this.props;
+    let shouldRedirect = '';
+    if (accounts.admins) {
+      shouldRedirect = accountTypeToRoute.admins;
+    } else if (accounts.trainingteachers) {
+      shouldRedirect = accountTypeToRoute.trainingteachers;
+    } else if (accounts.teachers) {
+      shouldRedirect = accountTypeToRoute.teachers;
+    } else if (accounts.pendingorganization) {
+      shouldRedirect = accountTypeToRoute.pendingorganization;
+    } else if (accounts.organizations) {
+      shouldRedirect = accountTypeToRoute.organizations;
+    } else if (accounts.parents) {
+      shouldRedirect = accountTypeToRoute.parents;
     }
+    this.setState({ shouldRedirect });
   }
 
   handleChange(e) {
@@ -78,19 +76,45 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password } = this.state;
-    this.firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch(err => {
-        if (err.code === 'auth/user-not-found') {
-          console.log(err, 'Invalid Email...');
-        } else if (err.code === 'auth/wrong-password') {
-          console.log(err, 'Invalid Password...');
-        } else {
-          console.log(err);
-        }
-      });
+    const { email, password, formValid } = this.state;
+
+    if (email === '') {
+      this.setState({ emailError: 'This field may not be empty' });
+      this.setState({ formValid: false });
+    } else {
+      /* eslint-disable */
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (re.test(String(email).toLowerCase()) !== true) {
+        this.setState({ emailError: 'Invalid Email Address' });
+        this.setState({ formValid: false });
+      } else {
+        this.setState({ emailError: '' });
+        this.setState({ formValid: true });
+      }
+    }
+
+    if (password === '') {
+      this.setState({ passwordError: 'This field may not be empty' });
+      this.setState({ formValid: false });
+    } else {
+      this.setState({ passwordError: '' });
+      this.setState({ formValid: true });
+    }
+
+    if (formValid === true) {
+      this.firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(err => {
+          if (err.code === 'auth/user-not-found') {
+            console.log(err, 'Invalid Email...');
+          } else if (err.code === 'auth/wrong-password') {
+            console.log(err, 'Invalid Password...');
+          } else {
+            console.log(err);
+          }
+        });
+    }
   }
 
   render() {
@@ -98,10 +122,12 @@ class Login extends React.Component {
       <Redirect to={this.state.shouldRedirect} />
     ) : (
       <div className="login-form">
+        <span className="errormessage">{this.state.emailError}</span>
         <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
         </label>
+        <span className="errormessage">{this.state.passwordError}</span>
         <label htmlFor="password">
           Password:
           <input

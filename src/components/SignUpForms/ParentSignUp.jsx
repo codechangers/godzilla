@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
@@ -8,7 +7,8 @@ import '../../assets/css/Admin.css';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -16,10 +16,10 @@ class ParentSignUp extends React.Component {
     super(props);
     this.state = {
       address: '',
+      addressError: '',
       childrenRefs: [],
       childrenData: [],
-      show: false,
-      redirect: false
+      show: false
     };
     autoBind(this);
   }
@@ -61,28 +61,26 @@ class ParentSignUp extends React.Component {
 
   updateParent() {
     const user = this.props.firebase.auth().currentUser;
-    if (user) {
-      this.props.db
-        .collection('parents')
-        .doc(user.uid)
-        .update({
-          address: this.state.address
-        });
-
-      this.setState({ redirect: true });
+    if (this.state.address !== '') {
+      if (user) {
+        this.props.db
+          .collection('parents')
+          .doc(user.uid)
+          .update({
+            address: this.state.address
+          })
+          .then(this.props.login);
+      }
+    } else {
+      this.setState({ addressError: 'This field may not be empty' });
     }
   }
 
   render() {
-    return this.state.redirect === true ? (
-      <Redirect
-        to="/parent"
-        user={this.props.firebase.auth().currentUser}
-        firebase={this.props.firebase}
-      />
-    ) : (
+    return (
       <div className="signup-form">
         <h1>Parent Account Information:</h1>
+        <span className="errormessage">{this.state.addressError}</span>
         <label htmlFor="firstname">
           Street Address:
           <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
@@ -90,7 +88,7 @@ class ParentSignUp extends React.Component {
         <br />
         {this.state.childrenData.map(child => (
           <div className="child" key={`${child.fName}${child.lName}`}>
-            <p>{`${child.fName} ${child.lName}`}</p>
+            <p className="errormessage">{`${child.fName} ${child.lName}`}</p>
           </div>
         ))}
         <br />
