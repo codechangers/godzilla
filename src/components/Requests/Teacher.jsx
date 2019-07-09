@@ -13,7 +13,8 @@ class TeacherRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInfo: false
+      showInfo: false,
+      parent: null
     };
     autoBind(this);
   }
@@ -24,8 +25,22 @@ class TeacherRequest extends React.Component {
     this.setState({ showInfo });
   }
 
+  componentDidMount(teacher) {
+    this.db
+      .collection('parents')
+      .doc(teacher.id)
+      .get()
+      .then(doc => {
+        this.setState({ parent: doc.data() });
+      })
+      .catch(err => {
+        console.log('error: ', err);
+      });
+  }
+
   render() {
-    const { teacher, parent } = this.props;
+    const { teacher } = this.props;
+    const { parent } = this.state;
     return (
       <div className="teacher-request">
         <button type="button" className="select" onClick={this.toggleInfo}>

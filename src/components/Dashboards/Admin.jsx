@@ -63,22 +63,6 @@ class AdminDashboard extends React.Component {
     });
   }
 
-  getParentOfTeacher(teacher) {
-    this.db
-      .collection('parents')
-      .doc(teacher.id)
-      .get()
-      .then(doc => {
-        const parent = doc.data();
-        console.log('parent: ', parent);
-      })
-      .catch(err => {
-        console.log('error: ', err);
-      });
-
-    return window.parent;
-  }
-
   getTeacherRequests() {
     return this.state.isLoadingTeachers ? (
       <Spinner color="primary" />
@@ -86,7 +70,6 @@ class AdminDashboard extends React.Component {
       this.state.teacherReqs.map(teacher => (
         <TeacherRequest
           db={this.db}
-          parent={this.getParentOfTeacher(teacher)}
           teacher={teacher}
           acceptRequest={t => this.acceptRequest(t, 'teachers')}
           declineRequest={t => this.declineRequest(t, 'teachers')}
