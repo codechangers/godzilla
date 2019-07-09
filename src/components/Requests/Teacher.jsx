@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 
 const propTypes = {
-  // parent: PropTypes.object.isRequired,
+  parent: PropTypes.object.isRequired,
   teacher: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -25,95 +25,87 @@ class TeacherRequest extends React.Component {
   }
 
   render() {
-    const { teacher } = this.props;
-
-    this.props.db
-      .collection('parents')
-      .doc(teacher.id)
-      .get()
-      .then(doc => {
-        const parent = doc.data();
-        return (
-          <div className="teacher-request">
-            <button type="button" className="select" onClick={this.toggleInfo}>
-              <p>{`${parent.fName} ${parent.lName}`}</p>
-            </button>
-            <div className="options">
-              <button
-                type="button"
-                className="accept"
-                onClick={() => {
-                  this.props.acceptRequest(teacher);
-                }}
-              >
-                Accept
+    const { teacher, parent } = this.props;
+    return (
+      <div className="teacher-request">
+        <button type="button" className="select" onClick={this.toggleInfo}>
+          <p>{`${parent.fName} ${parent.lName}`}</p>
+        </button>
+        <div className="options">
+          <button
+            type="button"
+            className="accept"
+            onClick={() => {
+              this.props.acceptRequest(teacher);
+            }}
+          >
+            Accept
+          </button>
+          <button
+            type="button"
+            className="decline"
+            onClick={() => {
+              this.props.declineRequest(teacher);
+            }}
+          >
+            Decline
+          </button>
+        </div>
+        {this.state.showInfo ? (
+          <div className="request-info-wrapper">
+            <div className="request-info">
+              <button type="button" onClick={this.toggleInfo}>
+                Close
               </button>
-              <button
-                type="button"
-                className="decline"
-                onClick={() => {
-                  this.props.declineRequest(teacher);
-                }}
-              >
-                Decline
-              </button>
-            </div>
-            {this.state.showInfo ? (
-              <div className="request-info-wrapper">
-                <div className="request-info">
-                  <button type="button" onClick={this.toggleInfo}>
-                    Close
-                  </button>
-                  <div>
-                    <p>Name:</p>
-                    <span>{`${teacher.fName} ${teacher.lName}`}</span>
-                  </div>
-                  <div>
-                    <p>Email:</p>
-                    <span>{teacher.email}</span>
-                  </div>
-                  <div>
-                    <p>Phone:</p>
-                    <span>{teacher.phone}</span>
-                  </div>
-                  <div>
-                    <p>Birth Date:</p>
-                    <span>{teacher.birthDate}</span>
-                  </div>
-                  <div>
-                    <p>Gender:</p>
-                    <span>{teacher.gender}</span>
-                  </div>
-                  <div>
-                    <p>Bio:</p>
-                    <span>{teacher.aboutMe}</span>
-                  </div>
-                  <div className="options">
-                    <button
-                      type="button"
-                      className="accept"
-                      onClick={() => {
-                        this.props.acceptRequest(teacher);
-                      }}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      type="button"
-                      className="decline"
-                      onClick={() => {
-                        this.props.declineRequest(teacher);
-                      }}
-                    >
-                      Decline
-                    </button>
-                  </div>
-                </div>
+              <div>
+                <p>Name:</p>
+                <span>{`${parent.fName} ${parent.lName}`}</span>
               </div>
-            ) : null}
+              <div>
+                <p>Email:</p>
+                <span>{parent.email}</span>
+              </div>
+              <div>
+                <p>Phone:</p>
+                <span>{parent.phone}</span>
+              </div>
+              <div>
+                <p>Birth Date:</p>
+                <span>{parent.birthDate}</span>
+              </div>
+              <div>
+                <p>Gender:</p>
+                <span>{parent.gender}</span>
+              </div>
+              <div>
+                <p>Bio:</p>
+                <span>{parent.aboutMe}</span>
+              </div>
+              <div className="options">
+                <button
+                  type="button"
+                  className="accept"
+                  onClick={() => {
+                    this.props.acceptRequest(teacher);
+                  }}
+                >
+                  Accept
+                </button>
+                <button
+                  type="button"
+                  className="decline"
+                  onClick={() => {
+                    this.props.declineRequest(teacher);
+                  }}
+                >
+                  Decline
+                </button>
+              </div>
+            </div>
           </div>
-        );
-      });
+        ) : null}
+      </div>
+    );
   }
 }
 
