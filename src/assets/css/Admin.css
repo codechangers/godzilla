@@ -29,6 +29,14 @@
   border-radius: 8px;
 }
 
+.is-read {
+  background-color: darkgrey;
+}
+
+.is-not-read {
+  background-color: lightgrey;
+}
+
 .teacher-request button.decline,
 .org-request button.decline {
   background-color: var(--danger-color);
@@ -53,7 +61,7 @@
 }
 
 .request-info-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -131,6 +139,13 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
+}
+
+.next-back-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
 }
 
