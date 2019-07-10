@@ -28,8 +28,7 @@ class Login extends React.Component {
       password: '',
       shouldRedirect: '',
       emailError: '',
-      passwordError: '',
-      formValid: false
+      passwordError: ''
     };
     this.firebase = props.firebase;
     this.db = props.db;
@@ -76,29 +75,28 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password, formValid } = this.state;
+    let formValid = true;
+    const { email, password } = this.state;
 
     if (email === '') {
       this.setState({ emailError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       /* eslint-disable */
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (re.test(String(email).toLowerCase()) !== true) {
         this.setState({ emailError: 'Invalid Email Address' });
-        this.setState({ formValid: false });
+        formValid = false;
       } else {
         this.setState({ emailError: '' });
-        this.setState({ formValid: true });
       }
     }
 
     if (password === '') {
       this.setState({ passwordError: 'This field may not be empty' });
-      this.setState({ formValid: false });
+      formValid = false;
     } else {
       this.setState({ passwordError: '' });
-      this.setState({ formValid: true });
     }
 
     if (formValid === true) {
