@@ -10,7 +10,6 @@ const accountTypeToRoute = {
   organizations: '/organization',
   pendingorganization: '/pendingorganization',
   teachers: '/teacher',
-  trainingteachers: '/trainingteacher',
   admins: '/admin'
 };
 
@@ -19,7 +18,6 @@ const collectionToLabel = {
   organizations: 'Organization Dashboard',
   pendingorganization: 'Organization Dashboard',
   teachers: 'Teacher Dashboard',
-  trainingteachers: 'Teacher Dashboard',
   admins: 'Admin Dashboard'
 };
 

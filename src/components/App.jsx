@@ -6,8 +6,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import AdminDashboard from './Dashboards/Admin';
 import ParentDashboard from './Dashboards/Parent';
-import TeacherDashboard from './Dashboards/Teacher';
-import TeacherInTrainingDashboard from './Dashboards/TeacherInTraining';
+import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization';
 import PendingOrganizationDashboard from './Dashboards/PendingOrganization';
 import '../assets/css/App.css';
@@ -23,7 +22,6 @@ const pathToComponent = {
   '/signup': SignUp,
   '/parent': ParentDashboard,
   '/teacher': TeacherDashboard,
-  '/trainingteacher': TeacherInTrainingDashboard,
   '/organization': OrganizationDashboard,
   '/pendingorganization': PendingOrganizationDashboard,
   '/admin': AdminDashboard
@@ -66,9 +64,7 @@ class App extends React.Component {
             const { accounts } = this.state;
             let c = collection;
             if (doc.exists) {
-              if (collection === 'teachers' && !doc.data().isVerrified) {
-                c = 'trainingteachers';
-              } else if (collection === 'organizations' && !doc.data().isVerrified) {
+              if (collection === 'organizations' && !doc.data().isVerrified) {
                 c = 'pendingorganization';
               }
               accounts[c] = doc;

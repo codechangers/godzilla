@@ -10,7 +10,6 @@ const accountTypeToRoute = {
   organizations: '/organization',
   pendingorganization: '/pendingorganization',
   teachers: '/teacher',
-  trainingteachers: '/trainingteacher',
   admins: '/admin'
 };
 
@@ -48,8 +47,6 @@ class Login extends React.Component {
     let shouldRedirect = '';
     if (accounts.admins) {
       shouldRedirect = accountTypeToRoute.admins;
-    } else if (accounts.trainingteachers) {
-      shouldRedirect = accountTypeToRoute.trainingteachers;
     } else if (accounts.teachers) {
       shouldRedirect = accountTypeToRoute.teachers;
     } else if (accounts.pendingorganization) {
@@ -120,6 +117,7 @@ class Login extends React.Component {
       <Redirect to={this.state.shouldRedirect} />
     ) : (
       <div className="login-form">
+        <h1>Login to Godzilla:</h1>
         <span className="errormessage">{this.state.emailError}</span>
         <label htmlFor="email">
           Email Address:
