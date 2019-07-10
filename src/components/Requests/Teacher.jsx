@@ -18,6 +18,7 @@ class TeacherRequest extends React.Component {
     super(props);
     this.state = {
       showInfo: false,
+      showInfo2: false,
       parent: null,
       teacher: null,
       isRead: null
@@ -47,6 +48,12 @@ class TeacherRequest extends React.Component {
           isRead: true
         });
       });
+  }
+
+  switchInfo() {
+    let { showInfo2 } = this.state;
+    showInfo2 = !showInfo2;
+    this.setState({ showInfo2 });
   }
 
   componentDidMount() {
@@ -95,11 +102,14 @@ class TeacherRequest extends React.Component {
             Decline
           </button>
         </div>
-        {this.state.showInfo ? (
+        {this.state.showInfo && this.state.showInfo2 === false ? (
           <div className="request-info-wrapper">
             <div className="request-info">
               <button type="button" onClick={this.toggleInfo}>
                 Close
+              </button>
+              <button type="button" onClick={this.switchInfo}>
+                Next
               </button>
               <div>
                 <p>Name:</p>
@@ -115,15 +125,56 @@ class TeacherRequest extends React.Component {
               </div>
               <div>
                 <p>Date Applied:</p>
-                <span>{this.state.parent.dateApplied}</span>
+                <span>
+                  {new Date(this.props.teacher.dateApplied.seconds * 1000).toDateString()}
+                </span>
               </div>
               <div>
+                <p>Type of Teaching Location:</p>
+                <span>{this.props.teacher.location}</span>
+              </div>
+              <div>
+                <p>Desired Region:</p>
+                <span>{this.props.teacher.region}</span>
+              </div>
+              <div className="options">
+                <button
+                  type="button"
+                  className="accept"
+                  onClick={() => {
+                    this.props.acceptRequest(teacher);
+                  }}
+                >
+                  Accept
+                </button>
+                <button
+                  type="button"
+                  className="decline"
+                  onClick={() => {
+                    this.props.declineRequest(teacher);
+                  }}
+                >
+                  Decline
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : this.state.showInfo && this.state.showInfo2 ? (
+          <div className="request-info-wrapper">
+            <div className="request-info">
+              <button type="button" onClick={this.switchInfo}>
+                Back
+              </button>
+              <button type="button" onClick={this.toggleInfo}>
+                Close
+              </button>
+              <div>
                 <p>Why they want to Teach:</p>
-                <span>{this.state.parent.whyTeach}</span>
+                <span>{this.props.teacher.whyTeach}</span>
               </div>
               <div>
                 <p>Previous Experience:</p>
-                <span>{this.state.parent.prevExp}</span>
+                <span>{this.props.teacher.prevExp}</span>
               </div>
               <div className="options">
                 <button
