@@ -4,6 +4,16 @@ import { Link, withRouter } from 'react-router-dom';
 import Logout from './Logout';
 import '../assets/css/NavBar.css';
 
+const accountTypeToRoute = {
+  '': '/',
+  parents: '/parent',
+  organizations: '/organization',
+  pendingorganization: '/pendingorganization',
+  teachers: '/teacher',
+  trainingteachers: '/trainingteacher',
+  admins: '/admin'
+};
+
 const collectionToLabel = {
   parents: 'Parent Dashboard',
   organizations: 'Organization Dashboard',
@@ -20,7 +30,7 @@ const NavBar = ({ accounts, firebase, location }) => {
     <nav className="nav-bar">
       <div className="third">
         {Object.keys(accounts).map(account => {
-          const path = `/${account.slice(0, -1)}`;
+          const path = accountTypeToRoute[account];
           const selected = location.pathname === path ? ' selected' : '';
           return (
             <Link to={path} key={account} className={`nav-link${selected}`}>

@@ -61,6 +61,14 @@ const HomePage = () => (
         </div>
       </div>
     </div>
+    <footer>
+      <Link
+        to={{ pathname: '/signup', state: { accountType: 'organization' } }}
+        className="footer-buttons"
+      >
+        Create an Organization
+      </Link>
+    </footer>
   </div>
 );
 

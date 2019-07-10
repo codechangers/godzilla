@@ -60,7 +60,6 @@ class SignUp extends React.Component {
       confirmPassword: '',
       isLoggedIn: false,
       isRegistered: false,
-      waitForTeacherAccount: false,
       fNameError: '',
       lNameError: '',
       phoneError: '',
@@ -76,6 +75,9 @@ class SignUp extends React.Component {
 
   componentWillReceiveProps(props) {
     if (props.accounts.trainingteachers) {
+      this.setState({ isLoggedIn: true });
+    }
+    if (props.accounts.pendingorganization) {
       this.setState({ isLoggedIn: true });
     }
   }
@@ -98,14 +100,20 @@ class SignUp extends React.Component {
             db={this.db}
             firebase={this.firebase}
             login={() => {
-              this.props.updateAccounts(this.props.user, () => {
-                this.setState({ waitForTeacherAccount: true });
-              });
+              this.props.updateAccounts(this.props.user);
             }}
           />
         );
       case 'organization':
-        return <OrganizationSignUp handleChange={this.handleChange} state={{ ...this.state }} />;
+        return (
+          <OrganizationSignUp
+            db={this.db}
+            firebase={this.firebase}
+            login={() => {
+              this.props.updateAccounts(this.props.user);
+            }}
+          />
+        );
       default:
         return null;
     }

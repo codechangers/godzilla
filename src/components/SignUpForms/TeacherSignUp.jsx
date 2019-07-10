@@ -119,6 +119,7 @@ class TeacherSignUp extends React.Component {
   render() {
     return (
       <div className="signup-form">
+        <h1>Teacher Account Information:</h1>
         <label htmlFor="whyTeach" className="tall">
           Why do you want to teach STEM topics to kids?
           <textarea id="whyTeach" value={this.state.whyTeach} onChange={this.handleChange} />
