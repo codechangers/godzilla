@@ -105,12 +105,14 @@ class TeacherRequest extends React.Component {
         {this.state.showInfo && this.state.showInfo2 === false ? (
           <div className="request-info-wrapper">
             <div className="request-info">
-              <button type="button" onClick={this.toggleInfo}>
-                Close
-              </button>
-              <button type="button" onClick={this.switchInfo}>
-                Next
-              </button>
+              <div className="next-back-close-buttons">
+                <button type="button" onClick={this.toggleInfo} className="left-side-button">
+                  Close
+                </button>
+                <button type="button" onClick={this.switchInfo} className="right-side-button">
+                  Next
+                </button>
+              </div>
               <div>
                 <p>Name:</p>
                 <span>{`${this.state.parent.fName} ${this.state.parent.lName}`}</span>
@@ -162,12 +164,14 @@ class TeacherRequest extends React.Component {
         ) : this.state.showInfo && this.state.showInfo2 ? (
           <div className="request-info-wrapper">
             <div className="request-info">
-              <button type="button" onClick={this.switchInfo}>
-                Back
-              </button>
-              <button type="button" onClick={this.toggleInfo}>
-                Close
-              </button>
+              <div className="next-back-close-buttons">
+                <button type="button" onClick={this.switchInfo} className="left-side-button">
+                  Back
+                </button>
+                <button type="button" onClick={this.toggleInfo} className="right-side-button">
+                  Close
+                </button>
+              </div>
               <div>
                 <p>Why they want to Teach:</p>
                 <span>{this.props.teacher.whyTeach}</span>
