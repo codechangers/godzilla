@@ -8,7 +8,6 @@ const accountTypeToRoute = {
   '': '/',
   parents: '/parent',
   organizations: '/organization',
-  pendingorganization: '/pendingorganization',
   teachers: '/teacher',
   admins: '/admin'
 };
@@ -16,7 +15,6 @@ const accountTypeToRoute = {
 const collectionToLabel = {
   parents: 'Parent Dashboard',
   organizations: 'Organization Dashboard',
-  pendingorganization: 'Organization Dashboard',
   teachers: 'Teacher Dashboard',
   admins: 'Admin Dashboard'
 };

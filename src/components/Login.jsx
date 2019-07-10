@@ -8,7 +8,6 @@ const accountTypeToRoute = {
   '': '/login',
   parents: '/parent',
   organizations: '/organization',
-  pendingorganization: '/pendingorganization',
   teachers: '/teacher',
   admins: '/admin'
 };
@@ -49,8 +48,6 @@ class Login extends React.Component {
       shouldRedirect = accountTypeToRoute.admins;
     } else if (accounts.teachers) {
       shouldRedirect = accountTypeToRoute.teachers;
-    } else if (accounts.pendingorganization) {
-      shouldRedirect = accountTypeToRoute.pendingorganization;
     } else if (accounts.organizations) {
       shouldRedirect = accountTypeToRoute.organizations;
     } else if (accounts.parents) {

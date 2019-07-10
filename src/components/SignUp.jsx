@@ -77,7 +77,7 @@ class SignUp extends React.Component {
     if (props.accounts.teachers) {
       this.setState({ isLoggedIn: true });
     }
-    if (props.accounts.pendingorganization) {
+    if (props.accounts.organizations) {
       this.setState({ isLoggedIn: true });
     }
   }
