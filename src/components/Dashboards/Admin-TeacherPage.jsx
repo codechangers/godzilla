@@ -19,7 +19,9 @@ class AdminTeacherPage extends React.Component {
       originalReqs: [],
       isLoadingTeachers: true,
       shouldShowRead: 'both',
-      shouldShowTeacherType: 'pending'
+      shouldShowTeacherType: 'pending',
+      shouldShowLocation: 'all',
+      shouldShowName: ''
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -36,7 +38,17 @@ class AdminTeacherPage extends React.Component {
 
   getRequestsFromCollection() {
     return this.db.collection('teachers').onSnapshot(users => {
-      const requests = users.docs.map(u => ({ id: u.id, ...u.data() }));
+      const requests = users.docs.map(u => ({
+        id: u.id,
+        ...u.data(),
+        parent: this.db
+          .collection('parents')
+          .doc(u.id)
+          .get()
+          .then(doc => {
+            return doc.data();
+          })
+      }));
       requests.sort(function(a, b) {
         return new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds);
       });
@@ -67,32 +79,58 @@ class AdminTeacherPage extends React.Component {
     const newState = {};
     newState[id] = value;
     this.setState({ ...newState }, function() {
-      const teacherArray = this.state.originalReqs;
+      let teacherArray = this.state.originalReqs;
 
-      if (this.state.shouldShowRead === 'true') {
-        newState.teacherReqs = teacherArray.filter(function(t) {
-          return t.isRead;
-        });
-      } else if (this.state.shouldShowRead === 'false') {
-        newState.teacherReqs = teacherArray.filter(function(t) {
-          return !t.isRead;
+      if (this.state.shouldShowName === '') {
+        if (this.state.shouldShowRead === 'true') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.isRead;
+          });
+        } else if (this.state.shouldShowRead === 'false') {
+          teacherArray = teacherArray.filter(function(t) {
+            return !t.isRead;
+          });
+        }
+
+        if (this.state.shouldShowTeacherType === 'pending') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.isVerrified === false && t.isDeclined === false;
+          });
+        } else if (this.state.shouldShowTeacherType === 'approved') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.isVerrified;
+          });
+        } else if (this.state.shouldShowTeacherType === 'declined') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.isDeclined;
+          });
+        }
+
+        if (this.state.shouldShowLocation === 'school') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.location === 'school';
+          });
+        } else if (this.state.shouldShowLocation === 'house') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.location === 'house';
+          });
+        } else if (this.state.shouldShowLocation === 'office') {
+          teacherArray = teacherArray.filter(function(t) {
+            return t.location === 'office';
+          });
+        }
+      } else {
+        teacherArray = teacherArray.filter(function(t) {
+          t.parent.then(function(parent) {
+            t.fullName = `${parent.fName.toLowerCase()} ${parent.lName.toLowerCase()}`;
+          });
+          if (t.fullName !== undefined) {
+            return t.fullName.includes(value.toLowerCase());
+          }
         });
       }
 
-      if (this.state.shouldShowTeacherType === 'pending') {
-        newState.teacherReqs = teacherArray.filter(function(t) {
-          return t.isVerrified === false && t.isDeclined === false;
-        });
-      } else if (this.state.shouldShowTeacherType === 'approved') {
-        newState.teacherReqs = teacherArray.filter(function(t) {
-          return t.isVerrified;
-        });
-      } else if (this.state.shouldShowTeacherType === 'declined') {
-        newState.teacherReqs = teacherArray.filter(function(t) {
-          return t.isDeclined;
-        });
-      }
-
+      newState.teacherReqs = teacherArray;
       this.setState({ ...newState });
     });
   }
@@ -133,6 +171,17 @@ class AdminTeacherPage extends React.Component {
               </select>
               Teachers
             </p>
+            <p>Search by location:</p>
+            <select id="shouldShowLocation" onChange={this.handleChange}>
+              <option value="all">All</option>
+              <option value="school">School</option>
+              <option value="house">House</option>
+              <option value="office">Office</option>
+            </select>
+            <br />
+            <p>Search by Name: </p>
+            <input type="text" id="shouldShowName" onChange={this.handleChange} />
+            <br />
           </div>
         </div>
         {this.getFilteredTeachers()}
