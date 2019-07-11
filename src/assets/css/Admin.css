@@ -149,6 +149,20 @@
   align-items: center;
 }
 
+.left-side-filters {
+  background-color: lightgrey;
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 60px;
+  margin-top: 60px;
+  transition: 0.5s;
+}
+
 @keyframes fadeIn {
   0% {
     background-color: rgba(0, 0, 0, 0);
