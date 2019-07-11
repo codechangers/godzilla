@@ -16,7 +16,10 @@ class AdminTeacherPage extends React.Component {
     super(props);
     this.state = {
       teacherReqs: [],
-      isLoadingTeachers: true
+      originalReqs: [],
+      isLoadingTeachers: true,
+      shouldShowRead: 'both',
+      shouldShowTeacherType: 'pending'
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -38,9 +41,8 @@ class AdminTeacherPage extends React.Component {
         return new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds);
       });
       const newState = {};
-      newState.teacherReqs = requests;
-      // .filter(t => !t.isVerrified)
-      // .filter(t => !t.isDeclined);
+      newState.teacherReqs = requests.filter(t => !t.isVerrified).filter(t => !t.isDeclined);
+      newState.originalReqs = requests;
       newState.isLoadingTeachers = false;
       this.setState({ ...newState });
     });
@@ -64,22 +66,47 @@ class AdminTeacherPage extends React.Component {
     const { id, value } = e.target;
     const newState = {};
     newState[id] = value;
-    this.setState(newState);
+    this.setState({ ...newState }, function() {
+      const teacherArray = this.state.originalReqs;
+
+      if (this.state.shouldShowRead === 'true') {
+        newState.teacherReqs = teacherArray.filter(function(t) {
+          return t.isRead;
+        });
+      } else if (this.state.shouldShowRead === 'false') {
+        newState.teacherReqs = teacherArray.filter(function(t) {
+          return !t.isRead;
+        });
+      }
+
+      if (this.state.shouldShowTeacherType === 'pending') {
+        newState.teacherReqs = teacherArray.filter(function(t) {
+          return t.isVerrified === false && t.isDeclined === false;
+        });
+      } else if (this.state.shouldShowTeacherType === 'approved') {
+        newState.teacherReqs = teacherArray.filter(function(t) {
+          return t.isVerrified;
+        });
+      } else if (this.state.shouldShowTeacherType === 'declined') {
+        newState.teacherReqs = teacherArray.filter(function(t) {
+          return t.isDeclined;
+        });
+      }
+
+      this.setState({ ...newState });
+    });
   }
 
-  filter(event) {
-    event.persist();
-    const { id, value } = event.target;
-    const newTeachers = this.state.teacherReqs;
-    const newState = {};
-    console.log('new teachers: ', newTeachers);
-    newState.teacherReqs = newTeachers.filter(t => {
-      console.log('t id: ', t[id]);
-      console.log('value: ', value);
-      return t[id] === value;
-    });
-    console.log('new state teacher reqs: ', newState.teacherReqs);
-    this.setState({ newState });
+  getFilteredTeachers() {
+    return this.state.teacherReqs.map(teacher => (
+      <TeacherRequest
+        db={this.db}
+        teacher={teacher}
+        acceptRequest={t => this.acceptRequest(t, 'teachers')}
+        declineRequest={t => this.declineRequest(t, 'teachers')}
+        key={teacher.id}
+      />
+    ));
   }
 
   render() {
@@ -91,22 +118,24 @@ class AdminTeacherPage extends React.Component {
           <h4>Filters</h4>
           <div className="inline">
             <p>Read, Unread, Both</p>
-            <select id="isRead" onChange={this.filter}>
+            <select id="shouldShowRead" onChange={this.handleChange}>
               <option value="both">Both</option>
               <option value="true">Read Only</option>
               <option value="false">Unread Only</option>
             </select>
+            <br />
+            <p>
+              Show only
+              <select id="shouldShowTeacherType" onChange={this.handleChange}>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="declined">Declined</option>
+              </select>
+              Teachers
+            </p>
           </div>
         </div>
-        {this.state.teacherReqs.map(teacher => (
-          <TeacherRequest
-            db={this.db}
-            teacher={teacher}
-            acceptRequest={t => this.acceptRequest(t, 'teachers')}
-            declineRequest={t => this.declineRequest(t, 'teachers')}
-            key={teacher.id}
-          />
-        ))}
+        {this.getFilteredTeachers()}
       </>
     );
   }

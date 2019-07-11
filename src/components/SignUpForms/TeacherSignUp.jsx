@@ -54,7 +54,13 @@ class TeacherSignUp extends React.Component {
           newObj[key] = this.state[key];
           return newObj;
         },
-        { isVerrified: false, isTraining: true, dateApplied: date, isRead: false }
+        {
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        }
       );
   }
 
