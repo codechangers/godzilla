@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 
 const propTypes = {
+  db: PropTypes.object.isRequired,
   org: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -23,6 +24,18 @@ class OrganizationRequest extends React.Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    this.props.db
+      .collection('organizations')
+      .doc(this.props.org.id)
+      .get()
+      .then(thisOrg => {
+        this.setState({
+          isRead: thisOrg.data().isRead
+        });
+      });
+  }
+
   toggleInfo() {
     let { showInfo } = this.state;
     showInfo = !showInfo;
@@ -38,18 +51,6 @@ class OrganizationRequest extends React.Component {
     this.setState({
       isRead: true
     });
-  }
-
-  componentDidMount() {
-    this.props.db
-      .collection('organizations')
-      .doc(this.props.org.id)
-      .get()
-      .then(thisOrg => {
-        this.setState({
-          isRead: thisOrg.data().isRead
-        });
-      });
   }
 
   render() {

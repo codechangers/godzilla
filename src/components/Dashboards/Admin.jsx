@@ -55,9 +55,7 @@ class AdminDashboard extends React.Component {
   getRequestsFromCollection(col) {
     return this.db.collection(col).onSnapshot(users => {
       const requests = users.docs.map(u => ({ id: u.id, ...u.data() }));
-      requests.sort(function(a, b) {
-        return new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds);
-      });
+      requests.sort((a, b) => new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds));
       const newState = {};
       newState[collectionToDataMember[col]] = requests
         .filter(t => !t.isVerrified)

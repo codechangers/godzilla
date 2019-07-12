@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 
 const propTypes = {
+  db: PropTypes.object.isRequired,
   teacher: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -24,6 +25,23 @@ class TeacherRequest extends React.Component {
       isRead: null
     };
     autoBind(this);
+  }
+
+  componentDidMount() {
+    this.props.db
+      .collection('parents')
+      .doc(this.props.teacher.id)
+      .get()
+      .then(doc => {
+        this.setState({
+          parent: doc.data(),
+          teacher: this.props.teacher,
+          isRead: this.props.teacher.isRead
+        });
+      })
+      .catch(err => {
+        console.log('error: ', err);
+      });
   }
 
   toggleInfo() {
@@ -54,23 +72,6 @@ class TeacherRequest extends React.Component {
     let { showInfo2 } = this.state;
     showInfo2 = !showInfo2;
     this.setState({ showInfo2 });
-  }
-
-  componentDidMount() {
-    this.props.db
-      .collection('parents')
-      .doc(this.props.teacher.id)
-      .get()
-      .then(doc => {
-        this.setState({
-          parent: doc.data(),
-          teacher: this.props.teacher,
-          isRead: this.props.teacher.isRead
-        });
-      })
-      .catch(err => {
-        console.log('error: ', err);
-      });
   }
 
   render() {
