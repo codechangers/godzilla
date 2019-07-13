@@ -8,6 +8,14 @@ import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
 import '../assets/css/Signup.css';
 
+const phoneValidation = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; // eslint-disable-line
+const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
+
+const errorCodeToMessage = {
+  'auth/invalid-email': 'Invalid Email Address',
+  'auth/email-already-in-use': 'Email Address is taken'
+};
+
 const accountTypeToCollection = {
   '': null,
   parent: 'parents',
@@ -25,7 +33,21 @@ const idToDataMember = {
   confirmPassword: 'confirmPassword'
 };
 
+const dataMemberToValidation = {
+  fName: () => '',
+  lName: () => '',
+  email: state =>
+    emailValidation.test(String(state.email).toLowerCase()) ? '' : 'Invalid Email Address',
+  phone: state => (phoneValidation.test(state.phone) ? '' : 'Invalid Phone Number'),
+  canText: () => '',
+  password: state =>
+    state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
+  confirmPassword: state =>
+    state.password === state.confirmPassword ? '' : 'Password fields do not match'
+};
+
 const genericFields = ['fName', 'lName', 'email', 'phone', 'canText'];
+const allFields = [...genericFields, 'password', 'confirmPassword'];
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -60,13 +82,7 @@ class SignUp extends React.Component {
       confirmPassword: '',
       isLoggedIn: false,
       isRegistered: false,
-      fNameError: '',
-      lNameError: '',
-      phoneError: '',
-      emailError: '',
-      passwordError: '',
-      confirmPasswordError: '',
-      formValid: true
+      errors: {}
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -130,7 +146,7 @@ class SignUp extends React.Component {
           toggleCanText={this.toggleCanText}
           state={{ ...this.state }}
         />
-        <span className="errormessage">{this.state.passwordError}</span>
+        <span className="errormessage">{this.state.errors.password}</span>
         <label htmlFor="password">
           Password:
           <input
@@ -140,7 +156,7 @@ class SignUp extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.confirmPasswordError}</span>
+        <span className="errormessage">{this.state.errors.confirmPassword}</span>
         <label htmlFor="confirm-password">
           Confirm Password:
           <input
@@ -157,15 +173,31 @@ class SignUp extends React.Component {
     );
   }
 
-  getUserData() {
-    // Filter out any fields for local state that shouldn't be saved to the generic document.
+  getUserData(fields) {
     return Object.keys(this.state)
-      .filter(key => genericFields.includes(key))
+      .filter(key => fields.includes(key))
       .reduce((obj, key) => {
         const newObj = { ...obj };
         newObj[key] = this.state[key];
         return newObj;
       }, {});
+  }
+
+  validateForms() {
+    const { errors } = this.state;
+    let formValid = true;
+    Object.keys(this.getUserData(allFields)).forEach(field => {
+      if (this.state[field] === '') {
+        errors[field] = 'This field may not be empty';
+        formValid = false;
+      } else {
+        const valid = dataMemberToValidation[field](this.state);
+        errors[field] = valid;
+        if (valid !== '') formValid = false;
+      }
+    });
+    this.setState({ errors });
+    return formValid;
   }
 
   handleChange(e) {
@@ -182,60 +214,8 @@ class SignUp extends React.Component {
   }
 
   handleSubmit() {
-    let formValid = true;
-    const { email, password, confirmPassword, fName, lName, phone } = this.state;
-
-    if (fName === '') {
-      this.setState({ fNameError: 'This field may not be empty' });
-      formValid = false;
-    } else {
-      this.setState({ fNameError: '' });
-    }
-
-    if (lName === '') {
-      this.setState({ lNameError: 'This field may not be empty' });
-      formValid = false;
-    } else {
-      this.setState({ lNameError: '' });
-    }
-
-    if (email === '') {
-      this.setState({ emailError: 'This field may not be empty' });
-      formValid = false;
-    } else {
-      this.setState({ emailError: '' });
-    }
-
-    if (phone === '') {
-      this.setState({ phoneError: 'This field may not be empty' });
-      formValid = false;
-    } else {
-      const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; // eslint-disable-line
-      if (phoneRegex.test(phone) !== true) {
-        this.setState({ phoneError: 'Invalid Phone Number' });
-        formValid = false;
-      } else {
-        this.setState({ phoneError: '' });
-      }
-    }
-
-    if (password === '') {
-      this.setState({ passwordError: 'This field may not be empty' });
-      formValid = false;
-    } else {
-      this.setState({ passwordError: '' });
-    }
-
-    if (confirmPassword === '') {
-      this.setState({ confirmPasswordError: 'This field may not be empty' });
-      formValid = false;
-    } else if (confirmPassword !== password) {
-      this.setState({ confirmPasswordError: 'Password fields do not match' });
-      formValid = false;
-    } else {
-      this.setState({ confirmPasswordError: '' });
-    }
-
+    const { email, password } = this.state;
+    const formValid = this.validateForms();
     if (formValid === true) {
       this.firebase
         .auth()
@@ -247,7 +227,7 @@ class SignUp extends React.Component {
             this.db
               .collection(accountTypeToCollection.parent)
               .doc(res.user.uid)
-              .set(this.getUserData())
+              .set(this.getUserData(genericFields))
               .then(() => {
                 this.setState({
                   isRegistered: true
@@ -256,13 +236,13 @@ class SignUp extends React.Component {
           }
         })
         .catch(err => {
-          console.log('error: ', err);
-          if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
-            this.setState({ emailError: err.message });
-          } else if (err.code === 'auth/weak-password') {
-            this.setState({ emailError: '' });
-            this.setState({ passwordError: err.message });
-          }
+          const { errors } = this.state;
+          errors.email =
+            err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use'
+              ? errorCodeToMessage[err.code]
+              : '';
+          errors.password = err.code === 'auth/weak-password' ? err.message : '';
+          this.setState({ errors });
         });
     }
   }
