@@ -21,7 +21,8 @@ class AdminTeacherPage extends React.Component {
       shouldShowRead: 'both',
       shouldShowTeacherType: 'pending',
       shouldShowLocation: 'all',
-      shouldShowName: ''
+      shouldShowName: '',
+      shouldShowRegion: ''
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -81,7 +82,7 @@ class AdminTeacherPage extends React.Component {
     this.setState({ ...newState }, function() {
       let teacherArray = this.state.originalReqs;
 
-      if (this.state.shouldShowName === '') {
+      if (this.state.shouldShowName === '' && this.state.shouldShowRegion === '') {
         if (this.state.shouldShowRead === 'true') {
           teacherArray = teacherArray.filter(function(t) {
             return t.isRead;
@@ -120,13 +121,19 @@ class AdminTeacherPage extends React.Component {
           });
         }
       } else {
+        const nameSearchValue = this.state.shouldShowName;
+        const regionSearchValue = this.state.shouldShowRegion;
         teacherArray = teacherArray.filter(function(t) {
           t.parent.then(function(parent) {
             t.fullName = `${parent.fName.toLowerCase()} ${parent.lName.toLowerCase()}`;
           });
           if (t.fullName !== undefined) {
-            return t.fullName.includes(value.toLowerCase());
+            return t.fullName.includes(nameSearchValue.toLowerCase());
           }
+        });
+
+        teacherArray = teacherArray.filter(function(t) {
+          return t.region.toLowerCase().includes(regionSearchValue.toLowerCase());
         });
       }
 
@@ -182,6 +189,8 @@ class AdminTeacherPage extends React.Component {
             <p>Search by Name: </p>
             <input type="text" id="shouldShowName" onChange={this.handleChange} />
             <br />
+            <p>Search by Region: </p>
+            <input type="text" id="shouldShowRegion" onChange={this.handleChange} />
           </div>
         </div>
         {this.getFilteredTeachers()}
