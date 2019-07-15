@@ -16,7 +16,11 @@ class AdminOrganizationPage extends React.Component {
     super(props);
     this.state = {
       orgReqs: [],
-      isLoadingOrgs: true
+      originalReqs: [],
+      isLoadingOrgs: true,
+      shouldShowRead: '',
+      shouldShowOrgType: '',
+      shouldShowName: ''
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -38,27 +42,100 @@ class AdminOrganizationPage extends React.Component {
         return new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds);
       });
       const newState = {};
-      newState.orgReqs = requests;
-      // .filter(t => !t.isVerrified)
-      // .filter(t => !t.isDeclined);
+      newState.orgReqs = requests.filter(t => !t.isVerrified).filter(t => !t.isDeclined);
+      newState.originalReqs = requests;
       newState.isLoadingOrgs = false;
       this.setState({ ...newState });
     });
+  }
+
+  handleChange(e) {
+    const { id, value } = e.target;
+    const newState = {};
+    newState[id] = value;
+    this.setState({ ...newState }, function() {
+      let orgArray = this.state.originalReqs;
+
+      if (this.state.shouldShowName === '') {
+        if (this.state.shouldShowRead === 'true') {
+          orgArray = orgArray.filter(function(t) {
+            return t.isRead;
+          });
+        } else if (this.state.shouldShowRead === 'false') {
+          orgArray = orgArray.filter(function(t) {
+            return !t.isRead;
+          });
+        }
+
+        if (this.state.shouldShowOrgType === 'pending') {
+          orgArray = orgArray.filter(function(t) {
+            return t.isVerrified === false && t.isDeclined === false;
+          });
+        } else if (this.state.shouldShowOrgType === 'approved') {
+          orgArray = orgArray.filter(function(t) {
+            return t.isVerrified;
+          });
+        } else if (this.state.shouldShowOrgType === 'declined') {
+          orgArray = orgArray.filter(function(t) {
+            return t.isDeclined;
+          });
+        }
+      } else {
+        const orgNameSearch = this.state.shouldShowName;
+        orgArray = orgArray.filter(function(t) {
+          return t.name.toLowerCase().includes(orgNameSearch.toLowerCase());
+        });
+      }
+
+      newState.orgReqs = orgArray;
+      this.setState({ ...newState });
+    });
+  }
+
+  getFilteredOrgs() {
+    return this.state.orgReqs.map(org => (
+      <OrganizationRequest
+        db={this.db}
+        org={org}
+        acceptRequest={o => this.acceptRequest(o, 'organizations')}
+        declineRequest={o => this.declineRequest(o, 'organizations')}
+        key={org.id}
+      />
+    ));
   }
 
   render() {
     return this.state.isLoadingOrgs ? (
       <Spinner color="primary" />
     ) : (
-      this.state.orgReqs.map(org => (
-        <OrganizationRequest
-          db={this.db}
-          org={org}
-          acceptRequest={o => this.acceptRequest(o, 'organizations')}
-          declineRequest={o => this.declineRequest(o, 'organizations')}
-          key={org.id}
-        />
-      ))
+      <>
+        <div className="left-side-filters">
+          <h4>Filters</h4>
+          <div className="inline">
+            <p>Read, Unread, Both</p>
+            <select id="shouldShowRead" onChange={this.handleChange}>
+              <option value="both">Both</option>
+              <option value="true">Read Only</option>
+              <option value="false">Unread Only</option>
+            </select>
+            <br />
+            <p>
+              Show only
+              <select id="shouldShowOrgType" onChange={this.handleChange}>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="declined">Declined</option>
+              </select>
+              Teachers
+            </p>
+            <br />
+            <p>Search by Name: </p>
+            <input type="text" id="shouldShowName" onChange={this.handleChange} />
+            <br />
+          </div>
+        </div>
+        {this.getFilteredOrgs()}
+      </>
     );
   }
 
