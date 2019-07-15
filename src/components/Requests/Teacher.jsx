@@ -108,7 +108,6 @@ class TeacherRequest extends React.Component {
   }
 
   render() {
-    const { teacher } = this.props;
     return this.state.parent === null || this.state.teacher === null ? (
       <div className="teacher-request" />
     ) : (
