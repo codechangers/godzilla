@@ -50,94 +50,13 @@ class AdminTeacherPage extends React.Component {
             return doc.data();
           })
       }));
-      requests.sort(function(a, b) {
+      requests.sort((a, b) => {
         return new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds);
       });
       const newState = {};
       newState.teacherReqs = requests.filter(t => !t.isVerrified).filter(t => !t.isDeclined);
       newState.originalReqs = requests;
       newState.isLoadingTeachers = false;
-      this.setState({ ...newState });
-    });
-  }
-
-  acceptRequest(user, collection) {
-    this.db
-      .collection(collection)
-      .doc(user.id)
-      .update({ isVerrified: true });
-  }
-
-  declineRequest(user, collection) {
-    this.db
-      .collection(collection)
-      .doc(user.id)
-      .update({ isDeclined: true });
-  }
-
-  handleChange(e) {
-    const { id, value } = e.target;
-    const newState = {};
-    newState[id] = value;
-    this.setState({ ...newState }, function() {
-      let teacherArray = this.state.originalReqs;
-
-      if (this.state.shouldShowName === '' && this.state.shouldShowRegion === '') {
-        if (this.state.shouldShowRead === 'true') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.isRead;
-          });
-        } else if (this.state.shouldShowRead === 'false') {
-          teacherArray = teacherArray.filter(function(t) {
-            return !t.isRead;
-          });
-        }
-
-        if (this.state.shouldShowTeacherType === 'pending') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.isVerrified === false && t.isDeclined === false;
-          });
-        } else if (this.state.shouldShowTeacherType === 'approved') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.isVerrified;
-          });
-        } else if (this.state.shouldShowTeacherType === 'declined') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.isDeclined;
-          });
-        }
-
-        if (this.state.shouldShowLocation === 'school') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.location === 'school';
-          });
-        } else if (this.state.shouldShowLocation === 'house') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.location === 'house';
-          });
-        } else if (this.state.shouldShowLocation === 'office') {
-          teacherArray = teacherArray.filter(function(t) {
-            return t.location === 'office';
-          });
-        }
-      } else {
-        const nameSearchValue = this.state.shouldShowName;
-        const regionSearchValue = this.state.shouldShowRegion;
-        teacherArray = teacherArray.filter(function(t) {
-          t.parent.then(function(parent) {
-            t.fullName = `${parent.fName.toLowerCase()} ${parent.lName.toLowerCase()}`;
-          });
-          if (t.fullName !== undefined) {
-            return t.fullName.includes(nameSearchValue.toLowerCase());
-          }
-        });
-
-        teacherArray = teacherArray.filter(function(t) {
-          return t.region.toLowerCase().includes(regionSearchValue.toLowerCase());
-        });
-      }
-
-      newState.teacherReqs = teacherArray;
       this.setState({ ...newState });
     });
   }
@@ -152,6 +71,89 @@ class AdminTeacherPage extends React.Component {
         key={teacher.id}
       />
     ));
+  }
+
+  declineRequest(user, collection) {
+    this.db
+      .collection(collection)
+      .doc(user.id)
+      .update({ isDeclined: true });
+  }
+
+  handleChange(e) {
+    const { id, value } = e.target;
+    const newState = {};
+    newState[id] = value;
+    this.setState({ ...newState }, () => {
+      let teacherArray = this.state.originalReqs;
+
+      if (this.state.shouldShowName === '' && this.state.shouldShowRegion === '') {
+        if (this.state.shouldShowRead === 'true') {
+          teacherArray = teacherArray.filter(t => {
+            return t.isRead;
+          });
+        } else if (this.state.shouldShowRead === 'false') {
+          teacherArray = teacherArray.filter(t => {
+            return !t.isRead;
+          });
+        }
+
+        if (this.state.shouldShowTeacherType === 'pending') {
+          teacherArray = teacherArray.filter(t => {
+            return t.isVerrified === false && t.isDeclined === false;
+          });
+        } else if (this.state.shouldShowTeacherType === 'approved') {
+          teacherArray = teacherArray.filter(t => {
+            return t.isVerrified;
+          });
+        } else if (this.state.shouldShowTeacherType === 'declined') {
+          teacherArray = teacherArray.filter(t => {
+            return t.isDeclined;
+          });
+        }
+
+        if (this.state.shouldShowLocation === 'school') {
+          teacherArray = teacherArray.filter(t => {
+            return t.location === 'school';
+          });
+        } else if (this.state.shouldShowLocation === 'house') {
+          teacherArray = teacherArray.filter(t => {
+            return t.location === 'house';
+          });
+        } else if (this.state.shouldShowLocation === 'office') {
+          teacherArray = teacherArray.filter(t => {
+            return t.location === 'office';
+          });
+        }
+      } else {
+        const nameSearchValue = this.state.shouldShowName;
+        const regionSearchValue = this.state.shouldShowRegion;
+        teacherArray = teacherArray.filter(t => {
+          const y = { ...t };
+          y.parent.then(parent => {
+            y.fullName = `${parent.fName.toLowerCase()} ${parent.lName.toLowerCase()}`;
+          });
+          if (y.fullName !== undefined) {
+            return y.fullName.includes(nameSearchValue.toLowerCase());
+          }
+          return null;
+        });
+
+        teacherArray = teacherArray.filter(t => {
+          return t.region.toLowerCase().includes(regionSearchValue.toLowerCase());
+        });
+      }
+
+      newState.teacherReqs = teacherArray;
+      this.setState({ ...newState });
+    });
+  }
+
+  acceptRequest(user, collection) {
+    this.db
+      .collection(collection)
+      .doc(user.id)
+      .update({ isVerrified: true });
   }
 
   render() {

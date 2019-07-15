@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 
 const propTypes = {
+  db: PropTypes.object.isRequired,
   teacher: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -24,36 +25,6 @@ class TeacherRequest extends React.Component {
       isRead: null
     };
     autoBind(this);
-  }
-
-  toggleInfo() {
-    let { showInfo } = this.state;
-    showInfo = !showInfo;
-    this.setState({ showInfo });
-    // change isRead to true
-    this.props.db
-      .collection('teachers')
-      .doc(this.props.teacher.id)
-      .update({
-        isRead: true
-      });
-
-    this.props.db
-      .collection('teachers')
-      .doc(this.props.teacher.id)
-      .get()
-      .then(updatedTeacher => {
-        this.setState({
-          teacher: updatedTeacher,
-          isRead: true
-        });
-      });
-  }
-
-  switchInfo() {
-    let { showInfo2 } = this.state;
-    showInfo2 = !showInfo2;
-    this.setState({ showInfo2 });
   }
 
   componentDidMount() {
@@ -105,6 +76,36 @@ class TeacherRequest extends React.Component {
         <p>Accepted</p>
       </div>
     );
+  }
+
+  toggleInfo() {
+    let { showInfo } = this.state;
+    showInfo = !showInfo;
+    this.setState({ showInfo });
+    // change isRead to true
+    this.props.db
+      .collection('teachers')
+      .doc(this.props.teacher.id)
+      .update({
+        isRead: true
+      });
+
+    this.props.db
+      .collection('teachers')
+      .doc(this.props.teacher.id)
+      .get()
+      .then(updatedTeacher => {
+        this.setState({
+          teacher: updatedTeacher,
+          isRead: true
+        });
+      });
+  }
+
+  switchInfo() {
+    let { showInfo2 } = this.state;
+    showInfo2 = !showInfo2;
+    this.setState({ showInfo2 });
   }
 
   render() {
