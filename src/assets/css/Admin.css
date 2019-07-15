@@ -37,6 +37,14 @@
   background-color: rgb(225, 226, 227);
 }
 
+.declined {
+  color: red;
+}
+
+.accepted {
+  color: rgb(0, 255, 0);
+}
+
 .teacher-request button.decline,
 .org-request button.decline {
   background-color: var(--danger-color);
