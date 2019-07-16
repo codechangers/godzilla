@@ -6,10 +6,8 @@ import ParentSignUp from './SignUpForms/ParentSignUp';
 import TeacherSignUp from './SignUpForms/TeacherSignUp';
 import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
+import { phoneValidation, emailValidation } from '../globals';
 import '../assets/css/Signup.css';
-
-const phoneValidation = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; // eslint-disable-line
-const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
 
 const errorCodeToMessage = {
   'auth/invalid-email': 'Invalid Email Address',

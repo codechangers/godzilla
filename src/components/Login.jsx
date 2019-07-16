@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
+import { emailValidation } from '../globals';
 import '../assets/css/Login.css';
+
+const errorCodeToMessage = {
+  'auth/wrong-password': 'Incorrect Password',
+  'auth/user-not-found': 'No Account found with this Email'
+};
 
 const accountTypeToRoute = {
   '': '/login',
@@ -25,8 +31,7 @@ class Login extends React.Component {
       email: '',
       password: '',
       shouldRedirect: '',
-      emailError: '',
-      passwordError: ''
+      errors: {}
     };
     this.firebase = props.firebase;
     this.db = props.db;
@@ -70,27 +75,23 @@ class Login extends React.Component {
 
   handleSubmit() {
     let formValid = true;
-    const { email, password } = this.state;
+    const { email, password, errors } = this.state;
 
     if (email === '') {
-      this.setState({ emailError: 'This field may not be empty' });
+      errors.email = 'This field may not be empty';
+      formValid = false;
+    } else if (emailValidation.test(String(email).toLowerCase()) !== true) {
+      errors.email = 'Invalid Email Address';
       formValid = false;
     } else {
-      /* eslint-disable */
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (re.test(String(email).toLowerCase()) !== true) {
-        this.setState({ emailError: 'Invalid Email Address' });
-        formValid = false;
-      } else {
-        this.setState({ emailError: '' });
-      }
+      errors.email = '';
     }
 
     if (password === '') {
-      this.setState({ passwordError: 'This field may not be empty' });
+      errors.password = 'This field may not be empty';
       formValid = false;
     } else {
-      this.setState({ passwordError: '' });
+      errors.password = '';
     }
 
     if (formValid === true) {
@@ -98,14 +99,12 @@ class Login extends React.Component {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .catch(err => {
-          if (err.code === 'auth/user-not-found') {
-            console.log(err, 'Invalid Email...');
-          } else if (err.code === 'auth/wrong-password') {
-            console.log(err, 'Invalid Password...');
-          } else {
-            console.log(err);
-          }
+          errors.email = err.code === 'auth/user-not-found' ? errorCodeToMessage[err.code] : '';
+          errors.password = err.code === 'auth/wrong-password' ? errorCodeToMessage[err.code] : '';
+          this.setState({ errors });
         });
+    } else {
+      this.setState({ errors });
     }
   }
 
@@ -115,12 +114,12 @@ class Login extends React.Component {
     ) : (
       <div className="login-form">
         <h1>Login to Godzilla:</h1>
-        <span className="errormessage">{this.state.emailError}</span>
+        <span className="errormessage">{this.state.errors.email}</span>
         <label htmlFor="email">
           Email Address:
           <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.passwordError}</span>
+        <span className="errormessage">{this.state.errors.password}</span>
         <label htmlFor="password">
           Password:
           <input
