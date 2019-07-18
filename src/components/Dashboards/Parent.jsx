@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import autoBind from '../../autoBind';
 import Profile from './ParentDashComponents/Profile';
 import NavBar from '../NavBar';
 import '../../assets/css/ParentDash.css';
@@ -42,75 +43,128 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar
 }));
 
-export default function ParentDashboard({ firebase, user, accounts }) {
-  const classes = useStyles();
-  return user.isSignedIn ? (
-    <>
-      <NavBar accounts={accounts} firebase={firebase} />
-      <div id="drawer">
-        <div className={classes.root}>
-          <CssBaseline />
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            <List>
-              {['Find a Class', 'Sign up for Classes'].map((text, index) => (
-                <ListItem button key={text}>
-                  {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {['My Profile'].map((text, index) => (
-                <ListItem button key={text}>
-                  {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div>
-              <h1>Welcome to the Parent Dashboard</h1>
-            </div>
-            <Profile firebase={firebase} user={user} />
-            <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-              elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-              hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-              velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-              Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-              viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-              Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus
-              at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-              ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-            </Typography>
-            <Typography paragraph>
-              Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-              facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-              tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-              volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at
-              quis risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-              accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec
-              nam aliquam sem et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-              tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis eleifend.
-              Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-              aliquam ultrices sagittis orci a.
-            </Typography>
-          </main>
+// const classes = useStyles();
+
+const buttonToComponent = {
+  'Find a Class': 'findAClass',
+  'My Profile': 'Profile'
+};
+
+class ParentDashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeComponent: 'default'
+    };
+    this.firebase = this.props.firebase;
+    this.user = this.props.user;
+    this.accounts = this.props.accounts;
+    autoBind(this);
+  }
+
+  handleClick(val) {
+    // const { id, value } = e.target;
+    // const newState = {};
+    // newState[id] = value;
+    // this.setState({ ...newState });
+    console.log('val: ', val);
+    const newState = {};
+    newState.activeComponent = buttonToComponent[val];
+    this.setState({ ...newState });
+  }
+
+  render() {
+    return this.user.isSignedIn ? (
+      <>
+        <NavBar accounts={this.accounts} firebase={this.firebase} />
+        <div id="drawer">
+          <div className={useStyles.root}>
+            <CssBaseline />
+            <Drawer
+              className={useStyles.drawer}
+              variant="permanent"
+              classes={{
+                paper: useStyles.drawerPaper
+              }}
+            >
+              <List>
+                {['Find a Class', 'Sign up for Classes'].map((text, index) => (
+                  <ListItem
+                    button
+                    key={text}
+                    onClick={() => {
+                      this.handleClick(text);
+                    }}
+                  >
+                    {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+              <List>
+                {['My Profile'].map((text, index) => (
+                  <ListItem
+                    button
+                    key={text}
+                    onClick={() => {
+                      this.handleClick(text);
+                    }}
+                  >
+                    {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+            </Drawer>
+            <main className={useStyles.content}>
+              {this.state.activeComponent === 'default' ? (
+                <>
+                  <div>
+                    <h1>Welcome to the Parent Dashboard</h1>
+                  </div>
+                  <Typography paragraph>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim
+                    praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet.
+                    Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis
+                    tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio
+                    aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
+                    integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu
+                    scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet
+                    massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
+                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
+                    tincidunt. Lorem donec massa sapien faucibus et molestie ac.
+                  </Typography>
+                  <Typography paragraph>
+                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget
+                    nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim neque
+                    volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus.
+                    Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
+                    Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt ornare massa
+                    eget egestas purus viverra accumsan in. In hendrerit gravida rutrum quisque non
+                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant morbi
+                    tristique senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
+                    Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
+                    accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
+                    sagittis orci a.
+                  </Typography>
+                </>
+              ) : this.state.activeComponent === 'Profile' ? (
+                <Profile firebase={this.firebase} user={this.user} />
+              ) : (
+                <div>
+                  <p>sup</p>
+                </div>
+              )}
+            </main>
+          </div>
         </div>
-      </div>
-    </>
-  ) : (
-    <Redirect to="/" />
-  );
+      </>
+    ) : (
+      <Redirect to="/" />
+    );
+  }
 }
 
 ParentDashboard.propTypes = {
@@ -119,4 +173,4 @@ ParentDashboard.propTypes = {
   accounts: PropTypes.object.isRequired
 };
 
-// export default ParentDashboard;
+export default ParentDashboard;
