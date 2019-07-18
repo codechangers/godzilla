@@ -36,6 +36,40 @@ class OrganizationRequest extends React.Component {
       });
   }
 
+  getOptionButtons() {
+    const { org } = this.props;
+    return this.props.org.isDeclined === false && this.props.org.isVerrified === false ? (
+      <div className="options">
+        <button
+          type="button"
+          className="accept"
+          onClick={() => {
+            this.props.acceptRequest(org);
+          }}
+        >
+          Accept
+        </button>
+        <button
+          type="button"
+          className="decline"
+          onClick={() => {
+            this.props.declineRequest(org);
+          }}
+        >
+          Decline
+        </button>
+      </div>
+    ) : this.props.org.isDeclined === true ? (
+      <div className="declined">
+        <p>Declined</p>
+      </div>
+    ) : (
+      <div className="accepted">
+        <p>Accepted</p>
+      </div>
+    );
+  }
+
   toggleInfo() {
     let { showInfo } = this.state;
     showInfo = !showInfo;
@@ -62,26 +96,7 @@ class OrganizationRequest extends React.Component {
         <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${org.name}`}</p>
         </button>
-        <div className="options">
-          <button
-            type="button"
-            className="accept"
-            onClick={() => {
-              this.props.acceptRequest(org);
-            }}
-          >
-            Accept
-          </button>
-          <button
-            type="button"
-            className="decline"
-            onClick={() => {
-              this.props.declineRequest(org);
-            }}
-          >
-            Decline
-          </button>
-        </div>
+        {this.getOptionButtons()}
         {this.state.showInfo ? (
           <div className="request-info-wrapper">
             <div className="request-info">
@@ -104,26 +119,7 @@ class OrganizationRequest extends React.Component {
                 <p>Bio:</p>
                 <span>{org.aboutMe}</span>
               </div>
-              <div className="options">
-                <button
-                  type="button"
-                  className="accept"
-                  onClick={() => {
-                    this.props.acceptRequest(org);
-                  }}
-                >
-                  Accept
-                </button>
-                <button
-                  type="button"
-                  className="decline"
-                  onClick={() => {
-                    this.props.declineRequest(org);
-                  }}
-                >
-                  Decline
-                </button>
-              </div>
+              {this.getOptionButtons()}
             </div>
           </div>
         ) : null}

@@ -44,6 +44,40 @@ class TeacherRequest extends React.Component {
       });
   }
 
+  getOptionButtons() {
+    const { teacher } = this.props;
+    return this.props.teacher.isDeclined === false && this.props.teacher.isVerrified === false ? (
+      <div className="options">
+        <button
+          type="button"
+          className="accept"
+          onClick={() => {
+            this.props.acceptRequest(teacher);
+          }}
+        >
+          Accept
+        </button>
+        <button
+          type="button"
+          className="decline"
+          onClick={() => {
+            this.props.declineRequest(teacher);
+          }}
+        >
+          Decline
+        </button>
+      </div>
+    ) : this.props.teacher.isDeclined === true ? (
+      <div className="declined">
+        <p>Declined</p>
+      </div>
+    ) : (
+      <div className="accepted">
+        <p>Accepted</p>
+      </div>
+    );
+  }
+
   toggleInfo() {
     let { showInfo } = this.state;
     showInfo = !showInfo;
@@ -75,7 +109,6 @@ class TeacherRequest extends React.Component {
   }
 
   render() {
-    const { teacher } = this.props;
     return this.state.parent === null || this.state.teacher === null ? (
       <div className="teacher-request" />
     ) : (
@@ -83,26 +116,7 @@ class TeacherRequest extends React.Component {
         <button type="button" className="select" onClick={this.toggleInfo}>
           <p>{`${this.state.parent.fName} ${this.state.parent.lName}`}</p>
         </button>
-        <div className="options">
-          <button
-            type="button"
-            className="accept"
-            onClick={() => {
-              this.props.acceptRequest(teacher);
-            }}
-          >
-            Accept
-          </button>
-          <button
-            type="button"
-            className="decline"
-            onClick={() => {
-              this.props.declineRequest(teacher);
-            }}
-          >
-            Decline
-          </button>
-        </div>
+        {this.getOptionButtons()}
         {this.state.showInfo && this.state.showInfo2 === false ? (
           <div className="request-info-wrapper">
             <div className="request-info">
@@ -140,26 +154,7 @@ class TeacherRequest extends React.Component {
                 <p>Desired Region:</p>
                 <span>{this.props.teacher.region}</span>
               </div>
-              <div className="options">
-                <button
-                  type="button"
-                  className="accept"
-                  onClick={() => {
-                    this.props.acceptRequest(teacher);
-                  }}
-                >
-                  Accept
-                </button>
-                <button
-                  type="button"
-                  className="decline"
-                  onClick={() => {
-                    this.props.declineRequest(teacher);
-                  }}
-                >
-                  Decline
-                </button>
-              </div>
+              {this.getOptionButtons()}
             </div>
           </div>
         ) : this.state.showInfo && this.state.showInfo2 ? (
@@ -181,26 +176,7 @@ class TeacherRequest extends React.Component {
                 <p>Previous Experience:</p>
                 <span>{this.props.teacher.prevExp}</span>
               </div>
-              <div className="options">
-                <button
-                  type="button"
-                  className="accept"
-                  onClick={() => {
-                    this.props.acceptRequest(teacher);
-                  }}
-                >
-                  Accept
-                </button>
-                <button
-                  type="button"
-                  className="decline"
-                  onClick={() => {
-                    this.props.declineRequest(teacher);
-                  }}
-                >
-                  Decline
-                </button>
-              </div>
+              {this.getOptionButtons()}
             </div>
           </div>
         ) : null}
