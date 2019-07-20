@@ -4,14 +4,14 @@
 - [x] SignUp.jsx
 - [x] NavBar.jsx
 - [x] Logout.jsx
-- [ ] Login.jsx
+- [x] Login.jsx
 - [x] HomePage.jsx
 - [x] Dashboard.jsx
 - [x] App.jsx
 
 #### /SignUpForms/
 
-- [ ] ChildInfo.jsx
+- [x] ChildInfo.jsx
 - [x] GenericSignUp.jsx
 - [x] OrganizationSignUp.jsx
 - [x] ParentSignUp.jsx

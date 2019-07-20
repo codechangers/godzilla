@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import autoBind from '../autoBind';
-import { emailValidation } from '../globals';
+import { getUserData, validateFields } from '../helpers';
 import '../assets/css/Login.css';
 
 const errorCodeToMessage = {
@@ -35,6 +35,8 @@ class Login extends React.Component {
     };
     this.firebase = props.firebase;
     this.db = props.db;
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
@@ -48,15 +50,14 @@ class Login extends React.Component {
 
   checkAccounts() {
     const { accounts } = this.props;
+    const order = ['admins', 'teachers', 'organizations', 'parents'];
     let shouldRedirect = '';
-    if (accounts.admins) {
-      shouldRedirect = accountTypeToRoute.admins;
-    } else if (accounts.teachers) {
-      shouldRedirect = accountTypeToRoute.teachers;
-    } else if (accounts.organizations) {
-      shouldRedirect = accountTypeToRoute.organizations;
-    } else if (accounts.parents) {
-      shouldRedirect = accountTypeToRoute.parents;
+    for (let i = 0; i < order.length; i++) {
+      const key = order[i];
+      if (accounts[key]) {
+        shouldRedirect = accountTypeToRoute[key];
+        break;
+      }
     }
     this.setState({ shouldRedirect });
   }
@@ -74,27 +75,9 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    let formValid = true;
     const { email, password, errors } = this.state;
 
-    if (email === '') {
-      errors.email = 'This field may not be empty';
-      formValid = false;
-    } else if (emailValidation.test(String(email).toLowerCase()) !== true) {
-      errors.email = 'Invalid Email Address';
-      formValid = false;
-    } else {
-      errors.email = '';
-    }
-
-    if (password === '') {
-      errors.password = 'This field may not be empty';
-      formValid = false;
-    } else {
-      errors.password = '';
-    }
-
-    if (formValid === true) {
+    if (this.validateFields(['email', 'password']) === true) {
       this.firebase
         .auth()
         .signInWithEmailAndPassword(email, password)

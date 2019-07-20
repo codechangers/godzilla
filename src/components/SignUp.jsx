@@ -6,7 +6,7 @@ import ParentSignUp from './SignUpForms/ParentSignUp';
 import TeacherSignUp from './SignUpForms/TeacherSignUp';
 import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
-import { phoneValidation, emailValidation } from '../globals';
+import { getUserData, validateFields } from '../helpers';
 import '../assets/css/Signup.css';
 
 const errorCodeToMessage = {
@@ -29,19 +29,6 @@ const idToDataMember = {
   canText: 'canText',
   password: 'password',
   confirmPassword: 'confirmPassword'
-};
-
-const dataMemberToValidation = {
-  fName: () => '',
-  lName: () => '',
-  email: state =>
-    emailValidation.test(String(state.email).toLowerCase()) ? '' : 'Invalid Email Address',
-  phone: state => (phoneValidation.test(state.phone) ? '' : 'Invalid Phone Number'),
-  canText: () => '',
-  password: state =>
-    state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
-  confirmPassword: state =>
-    state.password === state.confirmPassword ? '' : 'Password fields do not match'
 };
 
 const genericFields = ['fName', 'lName', 'email', 'phone', 'canText'];
@@ -84,6 +71,8 @@ class SignUp extends React.Component {
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
@@ -171,33 +160,6 @@ class SignUp extends React.Component {
     );
   }
 
-  getUserData(fields) {
-    return Object.keys(this.state)
-      .filter(key => fields.includes(key))
-      .reduce((obj, key) => {
-        const newObj = { ...obj };
-        newObj[key] = this.state[key];
-        return newObj;
-      }, {});
-  }
-
-  validateForms() {
-    const { errors } = this.state;
-    let formValid = true;
-    Object.keys(this.getUserData(allFields)).forEach(field => {
-      if (this.state[field] === '') {
-        errors[field] = 'This field may not be empty';
-        formValid = false;
-      } else {
-        const valid = dataMemberToValidation[field](this.state);
-        errors[field] = valid;
-        if (valid !== '') formValid = false;
-      }
-    });
-    this.setState({ errors });
-    return formValid;
-  }
-
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
@@ -213,8 +175,7 @@ class SignUp extends React.Component {
 
   handleSubmit() {
     const { email, password } = this.state;
-    const formValid = this.validateForms();
-    if (formValid === true) {
+    if (this.validateFields(allFields) === true) {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
