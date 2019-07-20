@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
+import { getUserData, validateFields } from '../../helpers';
 
 const locationToPrompt = {
   '': 'Location Name:',
@@ -17,6 +18,8 @@ const idToDataMember = {
   region: 'region',
   location: 'location'
 };
+
+const allFields = ['whyTeach', 'prevExp', 'region', 'location', 'address'];
 
 const propTypes = {
   db: PropTypes.object.isRequired,
@@ -38,8 +41,10 @@ class TeacherSignUp extends React.Component {
       regionError: '',
       locationError: '',
       addressError: '',
-      formValid: ''
+      errors: {}
     };
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
@@ -72,49 +77,7 @@ class TeacherSignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { whyTeach, prevExp, region, location, address, formValid } = this.state;
-
-    if (whyTeach === '') {
-      this.setState({ whyTeachError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ whyTeachError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (prevExp === '') {
-      this.setState({ prevExpError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ prevExpError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (region === '') {
-      this.setState({ regionError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ regionError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (location === '') {
-      this.setState({ locationError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ locationError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (address === '') {
-      this.setState({ addressError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ addressError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (formValid === true) {
+    if (this.validateFields(allFields) === true) {
       this.props.db
         .collection('teachers')
         .doc(this.props.firebase.auth().currentUser.uid)
@@ -124,24 +87,26 @@ class TeacherSignUp extends React.Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div className="signup-form">
         <h1>Teacher Account Information:</h1>
+        <span className="errormessage">{errors.whyTeach}</span>
         <label htmlFor="whyTeach" className="tall">
           Why do you want to teach STEM topics to kids?
           <textarea id="whyTeach" value={this.state.whyTeach} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.whyTeachError}</span>
+        <span className="errormessage">{errors.prevExp}</span>
         <label htmlFor="prevExp" className="tall">
           Do you have any previous teaching experience?
           <textarea id="prevExp" value={this.state.prevExp} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.prevExpError}</span>
+        <span className="errormessage">{errors.region}</span>
         <label htmlFor="region">
           Where Will you Teach? (City, State)
           <input id="region" type="text" value={this.state.region} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.regionError}</span>
+        <span className="errormessage">{errors.location}</span>
         <div className="inline">
           <p>What type of Location will you teach at?</p>
           <select id="location" value={this.state.location} onChange={this.handleChange}>
@@ -152,12 +117,11 @@ class TeacherSignUp extends React.Component {
             <option value="other">Other</option>
           </select>
         </div>
-        <span className="errormessage">{this.state.locationError}</span>
+        <span className="errormessage">{errors.address}</span>
         <label htmlFor="address">
           {locationToPrompt[this.state.location]}
           <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.addressError}</span>
         <br />
         <button type="submit" onClick={this.handleSubmit}>
           Submit Teacher Application
