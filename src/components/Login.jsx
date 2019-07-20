@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import autoBind from '../autoBind';
 import { getUserData, validateFields } from '../helpers';
 import '../assets/css/Login.css';
@@ -92,29 +97,39 @@ class Login extends React.Component {
   }
 
   render() {
+    const { errors } = this.state;
     return this.state.shouldRedirect.length > 0 ? (
       <Redirect to={this.state.shouldRedirect} />
     ) : (
-      <div className="login-form">
-        <h1>Login to Godzilla:</h1>
-        <span className="errormessage">{this.state.errors.email}</span>
-        <label htmlFor="email">
-          Email Address:
-          <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{this.state.errors.password}</span>
-        <label htmlFor="password">
-          Password:
-          <input
-            id="Password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-        </label>
-        <button type="submit" onClick={this.handleSubmit}>
-          Submit
-        </button>
+      <div className="login-wrapper">
+        <Card className="login-form">
+          <CardHeader title="Login to Godzilla" />
+          <CardContent className="column">
+            <TextField
+              error={errors.email}
+              id="Email"
+              type="text"
+              label="Email Address"
+              variant="outlined"
+              helperText={errors.email}
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={errors.password}
+              id="Password"
+              type="password"
+              label="Password"
+              variant="outlined"
+              helperText={errors.password}
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Login
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
