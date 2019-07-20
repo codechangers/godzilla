@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autoBind from '../../autoBind';
-import OrganizationRequest from '../Requests/Organization';
-import Spinner from '../Spinner';
+import autoBind from '../../../autoBind';
+import OrganizationRequest from '../../Requests/Organization';
+import Spinner from '../../Spinner';
 
 let cancelOrganizationSub = () => {};
 

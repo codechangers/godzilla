@@ -25,9 +25,9 @@
 #### /Dashboards/
 
 - [x] Parent.jsx
-- [ ] Admin.jsx
-- [ ] Admin-TeacherPage.jsx
-- [ ] Admin-OrganizationPage.jsx
+- [x] Admin.jsx
+- [x] Admin-TeacherPage.jsx
+- [x] Admin-OrganizationPage.jsx
 - [x] Teacher/ApprovedTeacher.jsx
 - [x] Teacher/DeclinedTeacher.jsx
 - [x] Teacher/index.jsx

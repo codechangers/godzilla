@@ -4,7 +4,7 @@ import { Route } from 'react-router';
 import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
-import AdminDashboard from './Dashboards/Admin';
+import AdminDashboard from './Dashboards/Admin/index';
 import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
