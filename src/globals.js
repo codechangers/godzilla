@@ -3,6 +3,7 @@ export const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"
 export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/; // eslint-disable-line
 
 export const dataMemberToValidation = {
+  name: () => '',
   fName: () => '',
   lName: () => '',
   email: state =>
@@ -22,6 +23,7 @@ export const dataMemberToValidation = {
   region: () => '',
   location: () => '',
   address: () => '',
+  aboutMe: () => '',
   password: state =>
     state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
   confirmPassword: state =>

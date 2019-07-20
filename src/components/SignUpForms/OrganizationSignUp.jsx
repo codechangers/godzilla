@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
+import { getUserData, validateFields } from '../../helpers';
 
 const idToDataMember = {
   name: 'name',
   address: 'address',
   aboutMe: 'aboutMe'
 };
+
+const allFields = ['name', 'address', 'aboutMe'];
 
 const propTypes = {
   db: PropTypes.object.isRequired,
@@ -20,8 +23,11 @@ class ParentSignUp extends React.Component {
     this.state = {
       name: '',
       address: '',
-      aboutMe: ''
+      aboutMe: '',
+      errors: {}
     };
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
@@ -47,25 +53,31 @@ class ParentSignUp extends React.Component {
   }
 
   handleSubmit() {
-    this.props.db
-      .collection('organizations')
-      .doc(this.props.firebase.auth().currentUser.uid)
-      .set(this.getOrgData())
-      .then(this.props.login);
+    if (this.validateFields(allFields)) {
+      this.props.db
+        .collection('organizations')
+        .doc(this.props.firebase.auth().currentUser.uid)
+        .set(this.getOrgData())
+        .then(this.props.login);
+    }
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div className="signup-form">
         <h1>Oranization Account Information:</h1>
+        <span className="errormessage">{errors.name}</span>
         <label htmlFor="name">
           Organization Name:
           <input id="name" type="text" value={this.state.name} onChange={this.handleChange} />
         </label>
+        <span className="errormessage">{errors.address}</span>
         <label htmlFor="address">
           Address:
           <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
         </label>
+        <span className="errormessage">{errors.aboutMe}</span>
         <label htmlFor="aboutMe">
           Describe your Organization:
           <textarea id="aboutMe" value={this.state.aboutMe} onChange={this.handleChange} />

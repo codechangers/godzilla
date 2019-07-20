@@ -13,8 +13,8 @@
 
 - [x] ChildInfo.jsx
 - [x] GenericSignUp.jsx
-- [ ] OrganizationSignUp.jsx
-- [ ] ParentSignUp.jsx
+- [x] OrganizationSignUp.jsx
+- [x] ParentSignUp.jsx
 - [x] TeacherSignUp.jsx
 
 #### /Requests/
