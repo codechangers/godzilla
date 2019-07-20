@@ -19,8 +19,8 @@
 
 #### /Requests/
 
-- [ ] Organization.jsx
-- [ ] Teacher.jsx
+- [x] Organization.jsx
+- [x] Teacher.jsx
 
 #### /Dashboards/
 
