@@ -39,3 +39,5 @@ export function validateFields(fields) {
   this.setState({ errors });
   return formValid;
 }
+
+export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;

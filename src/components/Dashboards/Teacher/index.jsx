@@ -5,6 +5,7 @@ import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
+import '../../../assets/css/Dashboards.css';
 
 const TeacherDashboard = props => {
   const { user, accounts } = props;
