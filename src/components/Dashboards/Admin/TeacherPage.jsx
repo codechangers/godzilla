@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import autoBind from '../../autoBind';
-import TeacherRequest from '../Requests/Teacher';
-import Spinner from '../Spinner';
+import autoBind from '../../../autoBind';
+import TeacherRequest from '../../Requests/Teacher';
+import Spinner from '../../Spinner';
 
 let cancelTeacherSub = () => {};
 

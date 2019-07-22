@@ -36,6 +36,18 @@ class OrganizationRequest extends React.Component {
       });
   }
 
+  getStatus() {
+    return this.props.org.isDeclined === true ? (
+      <div className="declined">
+        <p>Declined</p>
+      </div>
+    ) : (
+      <div className="accepted">
+        <p>Accepted</p>
+      </div>
+    );
+  }
+
   getOptionButtons() {
     const { org } = this.props;
     return this.props.org.isDeclined === false && this.props.org.isVerrified === false ? (
@@ -59,14 +71,8 @@ class OrganizationRequest extends React.Component {
           Decline
         </button>
       </div>
-    ) : this.props.org.isDeclined === true ? (
-      <div className="declined">
-        <p>Declined</p>
-      </div>
     ) : (
-      <div className="accepted">
-        <p>Accepted</p>
-      </div>
+      this.getStatus()
     );
   }
 

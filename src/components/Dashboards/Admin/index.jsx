@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import NavBar from '../NavBar';
-import autoBind from '../../autoBind';
-import '../../assets/css/Admin.css';
-import AdminTeacherPage from './Admin-TeacherPage';
-import AdminOrganizationPage from './Admin-OrganizationPage';
+import NavBar from '../../NavBar';
+import autoBind from '../../../autoBind';
+import '../../../assets/css/Admin.css';
+import AdminTeacherPage from './TeacherPage';
+import AdminOrganizationPage from './OrganizationPage';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
