@@ -62,8 +62,6 @@ img.godzilla {
   border-radius: 5px; /* 5px rounded corners */
   width: 30%;
   height: 400px;
-  float: left;
-  margin: 0 50px;
 }
 
 /* On mouse-over, add a deeper shadow */

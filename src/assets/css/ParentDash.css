@@ -1,4 +1,26 @@
 #drawer {
-  margin-top: 60px;
+  position: absolute;
   overflow: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: 175px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.profile {
+  margin-top: 30px;
+}
+
+#left-nav {
+  position: relative;
+}
+
+.MuiPaper-root {
+  margin-top: 60px !important;
 }
