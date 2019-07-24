@@ -1,13 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
@@ -16,7 +12,7 @@ import AccountChildIcon from '@material-ui/icons/AccountBox';
 import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/ParentDash.css';
-import { string } from 'postcss-selector-parser';
+import EditModal from './EditModal';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -24,7 +20,9 @@ class Profile extends React.Component {
     this.state = {
       isLoadingUser: true,
       currentUser: null,
-      childrenArray: undefined
+      childrenArray: undefined,
+      showEditAttribute: false,
+      editableData: null
     };
     this.user = this.props.user;
     this.firebase = this.props.firebase;
@@ -61,9 +59,13 @@ class Profile extends React.Component {
         if (doc.data().children !== undefined) {
           doc.data().children.map(childRef => {
             childRef.get().then(child => {
-              console.log('child: ', child.data());
-              newState.childrenArray.push(child.data());
-              console.log('new state obj: ', newState);
+              var newChild = {};
+              console.log('child id: ', child.id);
+              newChild.id = child.id;
+              console.log('child data: ', child.data());
+              newChild.data = child.data();
+              console.log('new child obj: ', newChild);
+              newState.childrenArray.push({...newChild});
               newState.isLoadingUser = false;
               this.setState({ ...newState });
             });
@@ -75,6 +77,13 @@ class Profile extends React.Component {
       });
   }
 
+  editAttribute(data) {
+    var newState = {};
+    newState.showEditAttribute = !this.state.showEditAttribute;
+    newState.editableData = data;
+    this.setState({ ...newState });
+  }
+
   render() {
     return this.state.isLoadingUser === false ? (
       <>
@@ -84,7 +93,7 @@ class Profile extends React.Component {
             aria-labelledby="nested-list-subheader"
             className={this.useStyles.root}
           >
-            <ListItem button>
+            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.fName + ' ' + this.state.currentUser.lName, attribute: 'name', id: this.user.uid})}>
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
@@ -92,13 +101,13 @@ class Profile extends React.Component {
                 primary={`${this.state.currentUser.fName} ${this.state.currentUser.lName}`}
               />
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.email, attribute: 'email', id: this.user.uid})}>
               <ListItemIcon>
                 <EmailIcon />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.email} />
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.phone, attribute: 'phone', id: this.user.uid})}>
               <ListItemIcon>
                 <SmartPhoneIcon />
               </ListItemIcon>
@@ -112,13 +121,12 @@ class Profile extends React.Component {
                   </ListItemIcon>
                   <ListItemText primary="Children" />
                 </ListItem>
-                {console.log('state children array: ', this.state.childrenArray)}
                 {this.state.childrenArray.map(child => (
-                  <ListItem button className={this.useStyles.nested}>
+                  <ListItem button className="child-list-item" onClick={() => this.editAttribute({value: child.data.fName + ' ' + child.data.lName, attribute: 'childName', id: child.id})}>
                     <ListItemIcon>
                       <StarBorder />
                     </ListItemIcon>
-                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                    <ListItemText primary={`${child.data.fName} ${child.data.lName}`} />
                   </ListItem>
                 ))}
               </>
@@ -127,6 +135,7 @@ class Profile extends React.Component {
             )}
           </List>
         </div>
+        {this.state.showEditAttribute === true ? <EditModal data={this.state.editableData}/> : <></>}
       </>
     ) : (
       <Spinner color="primary" />
