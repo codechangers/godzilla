@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
 import autoBind from '../autoBind';
 import { getUserData, validateFields } from '../helpers';
 import '../assets/css/Login.css';

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Fab from '@material-ui/core/Fab';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import { Fab, Button, Paper, Modal } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../../NavBar';
+import CreateClass from '../../Classes/CreateClass';
 import autoBind from '../../../autoBind';
 import { getMMDDYYYY } from '../../../helpers';
 
@@ -30,7 +29,8 @@ class ApprovedTeacher extends React.Component {
           minStudents: 10,
           kids: ['1111111', '2222222', '3333333']
         }
-      ]
+      ],
+      showCreate: false
     };
     autoBind(this);
   }
@@ -66,13 +66,24 @@ class ApprovedTeacher extends React.Component {
       <div className="list-view">
         <NavBar accounts={accounts} firebase={firebase} />
         <div className="top-right">
-          <Fab variant="extended" color="primary">
+          <Fab
+            variant="extended"
+            color="primary"
+            onClick={() => this.setState({ showCreate: true })}
+          >
             <AddIcon />
             Create a Class
           </Fab>
         </div>
         <h1>Welcome to the Approved Teacher Dashboard</h1>
         <div className="classes-wrapper">{this.getClasses()}</div>
+        <Modal
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          open={this.state.showCreate}
+          onClose={() => this.setState({ showCreate: false })}
+        >
+          <CreateClass />
+        </Modal>
       </div>
     );
   }
