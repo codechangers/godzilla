@@ -8,13 +8,16 @@ class CreateClass extends React.Component {
     super(props);
     this.state = {
       name: '',
-      startDate: new Date()
+      startDate: new Date(),
+      endDate: new Date()
     };
     autoBind(this);
   }
 
-  setDate(date) {
-    this.setState({ startDate: date });
+  setDate(date, dateType) {
+    const newState = {};
+    newState[dateType] = date;
+    this.setState(newState);
   }
 
   handleInput(e) {
@@ -38,12 +41,20 @@ class CreateClass extends React.Component {
           />
           <KeyboardDatePicker
             clearable
-            id="startDate"
             value={this.state.startDate}
             placeholder="10/10/2010"
-            onChange={this.setDate}
+            onChange={date => this.setDate(date, 'startDate')}
             minDate={new Date()}
             helperText="Start Date"
+            format="MM/dd/yyyy"
+          />
+          <KeyboardDatePicker
+            clearable
+            value={this.state.endDate}
+            placeholder="11/11/2011"
+            onChange={date => this.setDate(date, 'endDate')}
+            minDate={new Date()}
+            helperText="End Date"
             format="MM/dd/yyyy"
           />
         </CardContent>
