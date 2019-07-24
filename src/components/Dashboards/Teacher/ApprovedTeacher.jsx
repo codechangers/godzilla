@@ -47,7 +47,7 @@ class ApprovedTeacher extends React.Component {
           <div className="top">
             <p style={{ marginRight: '8px' }}>
               <strong>Price:</strong>
-              {`$${cls.price}`}
+              {` $${cls.price}`}
             </p>
             <div className="info">
               <PersonIcon />
