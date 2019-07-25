@@ -11,7 +11,8 @@ class EditModal extends React.Component {
       textFieldValue: '',
       firstName: '',
       lastName: '',
-      errorMessage: ''
+      errorMessage: '',
+      emailValidation: ''
     };
     this.db = this.props.db;
     autoBind(this);
@@ -29,20 +30,43 @@ class EditModal extends React.Component {
     const data = {};
     let formValid = false;
     let errorMessage = '';
+    const loadingEmails = true;
     if (attr !== 'name') {
       if (this.state.textFieldValue === '') {
         errorMessage = 'This field may not be left blank';
       } else if (attr === 'email') {
-        var orgEmail = this.db.collection('organizations').where('email', '==', this.state.textFieldValue);
-        var teacherEmail = this.db.collection('teachers').where('email', '==', this.state.textFieldValue);
-        var parentEmail = this.db.collection('parents').where('email', '==', this.state.textFieldValue);
+        this.db
+          .collection('organizations')
+          .where('email', '==', this.state.textFieldValue)
+          .get()
+          .then(querySnapshot => {
+            console.log('in here', querySnapshot.docs.length);
+            if (querySnapshot.docs.length === 0) {
+              data[attr] = this.state.textFieldValue;
+              formValid = true;
+            } else {
+              errorMessage = 'This email is already in use, please enter another email address';
+            }
+          });
+        // const teacherEmail = this.db
+        //   .collection('teachers')
+        //   .where('email', '==', this.state.textFieldValue)
+        //   .get();
+        // const parentEmail = this.db
+        //   .collection('parents')
+        //   .where('email', '==', this.state.textFieldValue)
+        //   .get();
 
-        if (orgEmail !== undefined || teacherEmail !== undefined || parentEmail !== undefined){
-          errorMessage = "This email is already in use, please enter a different email address";
-        } else {
-          data[attr] = this.state.textFieldValue;
-          formValid = true;
-        }
+        // console.log('orgEmail: ', orgEmail);
+        // console.log('teacherEmail: ', teacherEmail);
+        // console.log('parentEmail: ', parentEmail);
+
+        // if (orgEmail !== undefined || teacherEmail !== undefined || parentEmail !== undefined) {
+        //   errorMessage = 'This email is already in use, please enter a different email address';
+        // } else {
+        //   data[attr] = this.state.textFieldValue;
+        //   formValid = true;
+        // }
       } else {
         data[attr] = this.state.textFieldValue;
         formValid = true;
@@ -54,7 +78,7 @@ class EditModal extends React.Component {
       data.lName = this.state.lastName;
       formValid = true;
     }
-
+    // this gets called before emails are checked, need to work with those promises to wait to execute this.
     if (formValid === true) {
       this.db
         .collection(collection)
@@ -66,7 +90,7 @@ class EditModal extends React.Component {
         .catch(err => {
           this.setState({ errorMessage: err });
         });
-      } else {
+    } else {
       this.setState({ errorMessage });
     }
   }
