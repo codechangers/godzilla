@@ -11,7 +11,7 @@ import SmartPhoneIcon from '@material-ui/icons/Smartphone';
 import AccountChildIcon from '@material-ui/icons/AccountBox';
 import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
-import '../../../assets/css/ParentDash.css';
+import '../../../assets/css/Parent-Dash.css';
 import EditModal from './EditModal';
 
 class Profile extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import autoBind from '../../../autoBind';
-import '../../../assets/css/ParentDash.css';
+import '../../../assets/css/Parent-Dash.css';
 
 class EditModal extends React.Component {
   constructor(props) {

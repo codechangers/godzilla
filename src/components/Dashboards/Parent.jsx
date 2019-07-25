@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import autoBind from '../../autoBind';
 import Profile from './ParentDashComponents/Profile';
 import NavBar from '../NavBar';
-import '../../assets/css/ParentDash.css';
+import '../../assets/css/Parent-Dash.css';
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
 // import MailIcon from '@material-ui/icons/Mail';
 
