@@ -16,22 +16,22 @@ const propTypes = {
 
 const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
   <div className="generic-signup-wrapper">
-    <span className="errormessage">{state.fNameError}</span>
+    <span className="errormessage">{state.errors.fName}</span>
     <label htmlFor="firstname">
       First Name:
       <input id="firstName" type="text" value={state.fName} onChange={handleChange} />
     </label>
-    <span className="errormessage">{state.lNameError}</span>
+    <span className="errormessage">{state.errors.lName}</span>
     <label htmlFor="lastname">
       Last Name:
       <input id="lastName" type="text" value={state.lName} onChange={handleChange} />
     </label>
-    <span className="errormessage">{state.emailError}</span>
+    <span className="errormessage">{state.errors.email}</span>
     <label htmlFor="email">
       Email Address:
       <input id="Email" type="text" value={state.email} onChange={handleChange} />
     </label>
-    <span className="errormessage">{state.phoneError}</span>
+    <span className="errormessage">{state.errors.phone}</span>
     <label htmlFor="phone">
       Phone:
       <input id="phone" type="text" value={state.phone} onChange={handleChange} />

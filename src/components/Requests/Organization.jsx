@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
 
 const propTypes = {
+  db: PropTypes.object.isRequired,
   org: PropTypes.object.isRequired,
   acceptRequest: PropTypes.func.isRequired,
   declineRequest: PropTypes.func.isRequired
@@ -23,23 +24,6 @@ class OrganizationRequest extends React.Component {
     autoBind(this);
   }
 
-  toggleInfo() {
-    let { showInfo } = this.state;
-    showInfo = !showInfo;
-    this.setState({ showInfo });
-
-    this.props.db
-      .collection('organizations')
-      .doc(this.props.org.id)
-      .update({
-        isRead: true
-      });
-
-    this.setState({
-      isRead: true
-    });
-  }
-
   componentDidMount() {
     this.props.db
       .collection('organizations')
@@ -50,6 +34,18 @@ class OrganizationRequest extends React.Component {
           isRead: thisOrg.data().isRead
         });
       });
+  }
+
+  getStatus() {
+    return this.props.org.isDeclined === true ? (
+      <div className="declined">
+        <p>Declined</p>
+      </div>
+    ) : (
+      <div className="accepted">
+        <p>Accepted</p>
+      </div>
+    );
   }
 
   getOptionButtons() {
@@ -75,15 +71,26 @@ class OrganizationRequest extends React.Component {
           Decline
         </button>
       </div>
-    ) : this.props.org.isDeclined === true ? (
-      <div className="declined">
-        <p>Declined</p>
-      </div>
     ) : (
-      <div className="accepted">
-        <p>Accepted</p>
-      </div>
+      this.getStatus()
     );
+  }
+
+  toggleInfo() {
+    let { showInfo } = this.state;
+    showInfo = !showInfo;
+    this.setState({ showInfo });
+
+    this.props.db
+      .collection('organizations')
+      .doc(this.props.org.id)
+      .update({
+        isRead: true
+      });
+
+    this.setState({
+      isRead: true
+    });
   }
 
   render() {

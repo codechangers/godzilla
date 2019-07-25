@@ -5,6 +5,12 @@
     "prettier/prettier": ["error"],
     "react/destructuring-assignment": [false, "always"],
     "no-console": 0,
-    "react/forbid-prop-types": 0
+    "react/forbid-prop-types": 0,
+    "no-plusplus": [
+      "error",
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ]
   }
 }

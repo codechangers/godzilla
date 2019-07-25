@@ -1,7 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../autoBind';
+import { getUserData, validateFields } from '../../helpers';
 import '../../assets/css/Signup.css';
+
+const allFields = [
+  'fName',
+  'lName',
+  'birthDate',
+  'currentSchool',
+  'currentGrade',
+  'shirtSize',
+  'gender'
+];
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -21,87 +32,15 @@ class ChildInfo extends React.Component {
       currentGrade: '',
       shirtSize: '',
       gender: '',
-      fNameError: '',
-      lNameError: '',
-      birthDateError: '',
-      currentSchoolError: '',
-      currentGradeError: '',
-      shirtSizeError: '',
-      genderError: '',
-      formValid: false
+      errors: {}
     };
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
   createChild() {
-    const {
-      fName,
-      lName,
-      birthDate,
-      currentSchool,
-      currentGrade,
-      shirtSize,
-      gender,
-      formValid
-    } = this.state;
-
-    if (fName === '') {
-      this.setState({ fNameError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ fNameError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (lName === '') {
-      this.setState({ lNameError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ lNameError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (birthDate === '') {
-      this.setState({ birthDateError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ birthDateError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (currentSchool === '') {
-      this.setState({ currentSchoolError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ currentSchoolError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (currentGrade === '') {
-      this.setState({ currentGradeError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ currentGradeError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (shirtSize === '') {
-      this.setState({ shirtSizeError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ shirtSizeError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (gender === '') {
-      this.setState({ genderError: 'This field may not be empty' });
-      this.setState({ formValid: false });
-    } else {
-      this.setState({ genderError: '' });
-      this.setState({ formValid: true });
-    }
-
-    if (formValid === true) {
+    if (this.validateFields(allFields) === true) {
       const user = this.props.firebase.auth().currentUser;
       if (user) {
         this.props.db
@@ -123,19 +62,20 @@ class ChildInfo extends React.Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div className="request-info">
-        <span className="errormessage">{this.state.fNameError}</span>
+        <span className="errormessage">{errors.fName}</span>
         <label htmlFor="lastname">
           Child&apos;s First Name:
           <input id="fName" type="text" value={this.state.fName} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.lNameError}</span>
+        <span className="errormessage">{errors.lName}</span>
         <label htmlFor="address">
           Child&apos;s Last Name:
           <input id="lName" type="text" value={this.state.lName} onChange={this.handleChange} />
         </label>
-        <span className="errormessage">{this.state.birthDateError}</span>
+        <span className="errormessage">{errors.birthDate}</span>
         <label htmlFor="email">
           Child&apos;s Birthdate:
           <input
@@ -145,7 +85,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.currentSchoolError}</span>
+        <span className="errormessage">{errors.currentSchool}</span>
         <label htmlFor="phone">
           Child&apos;s Current School:
           <input
@@ -155,7 +95,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.currentGradeError}</span>
+        <span className="errormessage">{errors.currentGrade}</span>
         <label htmlFor="canText">
           Child&apos;s Current Grade (Or entering grade if it&apos;s the summer):
           <input
@@ -165,7 +105,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.shirtSizeError}</span>
+        <span className="errormessage">{errors.shirtSize}</span>
         <label htmlFor="canText">
           Child&apos;s Shirt Size:
           <input
@@ -175,7 +115,7 @@ class ChildInfo extends React.Component {
             onChange={this.handleChange}
           />
         </label>
-        <span className="errormessage">{this.state.genderError}</span>
+        <span className="errormessage">{errors.gender}</span>
         <label htmlFor="canText">
           Child&apos;s Gender:
           <input id="gender" type="text" checked={this.state.gender} onChange={this.handleChange} />

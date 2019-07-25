@@ -4,12 +4,10 @@ import { Route } from 'react-router';
 import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
-import AdminDashboard from './Dashboards/Admin';
+import AdminDashboard from './Dashboards/Admin/index';
 import ParentDashboard from './Dashboards/Parent';
-import TeacherDashboard from './Dashboards/Teacher';
-import TeacherInTrainingDashboard from './Dashboards/TeacherInTraining';
-import OrganizationDashboard from './Dashboards/Organization';
-import PendingOrganizationDashboard from './Dashboards/PendingOrganization';
+import TeacherDashboard from './Dashboards/Teacher/index';
+import OrganizationDashboard from './Dashboards/Organization/index';
 import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
@@ -23,9 +21,7 @@ const pathToComponent = {
   '/signup': SignUp,
   '/parent': ParentDashboard,
   '/teacher': TeacherDashboard,
-  '/trainingteacher': TeacherInTrainingDashboard,
   '/organization': OrganizationDashboard,
-  '/pendingorganization': PendingOrganizationDashboard,
   '/admin': AdminDashboard
 };
 
@@ -55,7 +51,7 @@ class App extends React.Component {
     authSubscription();
   }
 
-  updateAccounts(user, callback) {
+  updateAccounts(user) {
     if (user.isSignedIn) {
       ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
         this.db
@@ -64,19 +60,10 @@ class App extends React.Component {
           .get()
           .then(doc => {
             const { accounts } = this.state;
-            let c = collection;
             if (doc.exists) {
-              if (collection === 'teachers' && !doc.data().isVerrified) {
-                c = 'trainingteachers';
-                if (callback) {
-                  callback();
-                }
-              } else if (collection === 'organizations' && !doc.data().isVerrified) {
-                c = 'pendingorganization';
-              }
-              accounts[c] = doc;
+              accounts[collection] = doc;
             } else {
-              delete accounts[c];
+              delete accounts[collection];
             }
             this.setState({ accounts });
           });
@@ -102,7 +89,7 @@ class App extends React.Component {
                     {...props}
                     user={this.state.user}
                     accounts={this.state.accounts}
-                    updateAccounts={(user, callback) => this.updateAccounts(user, callback)}
+                    updateAccounts={user => this.updateAccounts(user)}
                     firebase={this.firebase}
                     db={this.db}
                   />
