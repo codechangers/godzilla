@@ -99,7 +99,7 @@ class Profile extends React.Component {
             aria-labelledby="nested-list-subheader"
             className={this.useStyles.root}
           >
-            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.fName + ' ' + this.state.currentUser.lName, heading: 'Name', attribute: 'name', id: this.user.uid, collection: 'parents'})}>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Name', attribute: 'name', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
@@ -107,13 +107,13 @@ class Profile extends React.Component {
                 primary={`${this.state.currentUser.fName} ${this.state.currentUser.lName}`}
               />
             </ListItem>
-            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.email, heading: 'Email', attribute: 'email', id: this.user.uid, collection: 'parents'})}>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Email', attribute: 'email', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <EmailIcon />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.email} />
             </ListItem>
-            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.phone, heading: 'Phone', attribute: 'phone', id: this.user.uid, collection: 'parents'})}>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Phone', attribute: 'phone', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <SmartPhoneIcon />
               </ListItemIcon>
@@ -128,7 +128,7 @@ class Profile extends React.Component {
                   <ListItemText primary="Children" />
                 </ListItem>
                 {this.state.childrenArray.map(child => (
-                  <ListItem button className="child-list-item" onClick={() => this.showModal({value: child.data.fName + ' ' + child.data.lName, heading: "Child's Name", attribute: 'name', id: child.id, collection: 'children'})}>
+                  <ListItem button className="child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Name", attribute: 'name', id: child.id, collection: 'children'})}>
                     <ListItemIcon>
                       <StarBorder />
                     </ListItemIcon>

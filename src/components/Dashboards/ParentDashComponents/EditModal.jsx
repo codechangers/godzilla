@@ -45,11 +45,29 @@ class EditModal extends React.Component {
     }
 
     if (formValid === true) {
-      this.db
-        .collection(collection)
-        .doc(id)
-        .update(data);
-      this.props.cancel();
+      switch (attr) {
+        case 'email':
+          var user = this.props.firebase.auth().currentUser;
+          user
+            .updateEmail(this.state.textFieldValue)
+            .then(result => {
+              this.props.cancel();
+            })
+            .catch(err => {
+              this.setState({ errorMessage: err });
+            });
+        default:
+          this.db
+            .collection(collection)
+            .doc(id)
+            .update(data)
+            .then(() => {
+              this.props.cancel();
+            })
+            .catch(err => {
+              this.setState({ errorMessage: err });
+            });
+      }
     } else {
       this.setState({ errorMessage });
     }
