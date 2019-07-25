@@ -32,6 +32,17 @@ class EditModal extends React.Component {
     if (attr !== 'name') {
       if (this.state.textFieldValue === '') {
         errorMessage = 'This field may not be left blank';
+      } else if (attr === 'email') {
+        var orgEmail = this.db.collection('organizations').where('email', '==', this.state.textFieldValue);
+        var teacherEmail = this.db.collection('teachers').where('email', '==', this.state.textFieldValue);
+        var parentEmail = this.db.collection('parents').where('email', '==', this.state.textFieldValue);
+
+        if (orgEmail !== undefined || teacherEmail !== undefined || parentEmail !== undefined){
+          errorMessage = "This email is already in use, please enter a different email address";
+        } else {
+          data[attr] = this.state.textFieldValue;
+          formValid = true;
+        }
       } else {
         data[attr] = this.state.textFieldValue;
         formValid = true;
@@ -45,30 +56,17 @@ class EditModal extends React.Component {
     }
 
     if (formValid === true) {
-      switch (attr) {
-        case 'email':
-          var user = this.props.firebase.auth().currentUser;
-          user
-            .updateEmail(this.state.textFieldValue)
-            .then(result => {
-              this.props.cancel();
-            })
-            .catch(err => {
-              this.setState({ errorMessage: err });
-            });
-        default:
-          this.db
-            .collection(collection)
-            .doc(id)
-            .update(data)
-            .then(() => {
-              this.props.cancel();
-            })
-            .catch(err => {
-              this.setState({ errorMessage: err });
-            });
-      }
-    } else {
+      this.db
+        .collection(collection)
+        .doc(id)
+        .update(data)
+        .then(() => {
+          this.props.cancel();
+        })
+        .catch(err => {
+          this.setState({ errorMessage: err });
+        });
+      } else {
       this.setState({ errorMessage });
     }
   }
