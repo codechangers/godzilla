@@ -47,25 +47,29 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    const newState = {
-      childrenArray: []
-    };
     this.db
       .collection('parents')
       .doc(this.user.uid)
-      .get()
-      .then(doc => {
+      .onSnapshot((doc) => {
+        const newState = {
+          childrenArray: []
+        };
         newState.currentUser = doc.data();
         if (doc.data().children !== undefined) {
           doc.data().children.map(childRef => {
-            childRef.get().then(child => {
+            childRef.onSnapshot(child => {
+
+              var childExists = newState.childrenArray.findIndex(existingChild => {
+                return existingChild.id === child.id;
+              });
+              if (childExists === -1) {
               var newChild = {};
-              console.log('child id: ', child.id);
               newChild.id = child.id;
-              console.log('child data: ', child.data());
               newChild.data = child.data();
-              console.log('new child obj: ', newChild);
               newState.childrenArray.push({...newChild});
+              } else {
+                newState.childrenArray[childExists].data = child.data();
+              }
               newState.isLoadingUser = false;
               this.setState({ ...newState });
             });
@@ -77,10 +81,12 @@ class Profile extends React.Component {
       });
   }
 
-  editAttribute(data) {
+  showModal(data) {
     var newState = {};
     newState.showEditAttribute = !this.state.showEditAttribute;
-    newState.editableData = data;
+    if (data !== null) {
+      newState.editableData = data;
+    }
     this.setState({ ...newState });
   }
 
@@ -93,7 +99,7 @@ class Profile extends React.Component {
             aria-labelledby="nested-list-subheader"
             className={this.useStyles.root}
           >
-            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.fName + ' ' + this.state.currentUser.lName, attribute: 'name', id: this.user.uid})}>
+            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.fName + ' ' + this.state.currentUser.lName, heading: 'Name', attribute: 'name', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
@@ -101,13 +107,13 @@ class Profile extends React.Component {
                 primary={`${this.state.currentUser.fName} ${this.state.currentUser.lName}`}
               />
             </ListItem>
-            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.email, attribute: 'email', id: this.user.uid})}>
+            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.email, heading: 'Email', attribute: 'email', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <EmailIcon />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.email} />
             </ListItem>
-            <ListItem button onClick={() => this.editAttribute({value: this.state.currentUser.phone, attribute: 'phone', id: this.user.uid})}>
+            <ListItem button onClick={() => this.showModal({value: this.state.currentUser.phone, heading: 'Phone', attribute: 'phone', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <SmartPhoneIcon />
               </ListItemIcon>
@@ -122,7 +128,7 @@ class Profile extends React.Component {
                   <ListItemText primary="Children" />
                 </ListItem>
                 {this.state.childrenArray.map(child => (
-                  <ListItem button className="child-list-item" onClick={() => this.editAttribute({value: child.data.fName + ' ' + child.data.lName, attribute: 'childName', id: child.id})}>
+                  <ListItem button className="child-list-item" onClick={() => this.showModal({value: child.data.fName + ' ' + child.data.lName, heading: "Child's Name", attribute: 'name', id: child.id, collection: 'children'})}>
                     <ListItemIcon>
                       <StarBorder />
                     </ListItemIcon>
@@ -135,7 +141,7 @@ class Profile extends React.Component {
             )}
           </List>
         </div>
-        {this.state.showEditAttribute === true ? <EditModal data={this.state.editableData}/> : <></>}
+        {this.state.showEditAttribute === true ? <EditModal data={this.state.editableData} cancel={this.showModal} db={this.db}/> : <></>}
       </>
     ) : (
       <Spinner color="primary" />
