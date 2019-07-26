@@ -13,6 +13,7 @@ import autoBind from '../../autoBind';
 import Profile from './ParentDashComponents/Profile';
 import NavBar from '../NavBar';
 import '../../assets/css/Parent-Dash.css';
+import ClassSignUp from './ParentDashComponents/ClassSignUp';
 
 const drawerWidth = 240;
 
@@ -38,7 +39,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const buttonToComponent = {
+  Home: 'Default',
   'Find a Class': 'findAClass',
+  'Sign Up for Classes': 'ClassSignUp',
   'My Profile': 'Profile'
 };
 
@@ -75,7 +78,7 @@ class ParentDashboard extends React.Component {
               }}
             >
               <List>
-                {['Find a Class', 'Sign up for Classes'].map((text, index) => (
+                {['Home', 'Find a Class', 'Sign Up for Classes'].map((text, index) => (
                   <ListItem
                     button
                     key={text}
@@ -103,7 +106,11 @@ class ParentDashboard extends React.Component {
               </List>
             </Drawer>
             <main className="list-item-container">
-              {this.state.activeComponent === 'default' ? (
+              {this.state.activeComponent === 'Profile' ? (
+                <Profile firebase={this.firebase} user={this.user} />
+              ) : this.state.activeComponent === 'ClassSignUp' ? (
+                <ClassSignUp firebase={this.firebase} user={this.user} />
+              ) : (
                 <>
                   <div>
                     <h1>Welcome to the Parent Dashboard</h1>
@@ -135,12 +142,6 @@ class ParentDashboard extends React.Component {
                     sagittis orci a.
                   </Typography>
                 </>
-              ) : this.state.activeComponent === 'Profile' ? (
-                <Profile firebase={this.firebase} user={this.user} />
-              ) : (
-                <div>
-                  <p>sup</p>
-                </div>
               )}
             </main>
           </div>

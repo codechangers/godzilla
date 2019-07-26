@@ -22,6 +22,7 @@ import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 import EditModal from './EditModal';
+import ClassSignUp from './ClassSignUp';
 
 class Profile extends React.Component {
   constructor(props) {
