@@ -8,9 +8,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import StarBorder from '@material-ui/icons/StarBorder';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import EmailIcon from '@material-ui/icons/Email';
+import HomeIcon from '@material-ui/icons/Home';
 import SmartPhoneIcon from '@material-ui/icons/Smartphone';
-import AccountChildIcon from '@material-ui/icons/AccountBox';
+import SchoolIcon from '@material-ui/icons/School';
+import WCIcon from '@material-ui/icons/Wc';
+import FormatSizeIcon from '@material-ui/icons/FormatSize';
+import CakeIcon from '@material-ui/icons/Cake';
+import PersonIcon from '@material-ui/icons/Person';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
@@ -18,7 +22,6 @@ import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 import EditModal from './EditModal';
-// import classes from '*.module.css';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -97,30 +100,17 @@ class Profile extends React.Component {
   }
 
   getChildArrayObj(id) {
-    var tempArray = this.state.showChildData;
-    console.log('1 tempArray: ', tempArray);
-    var index = tempArray.map(function(x) {return x.id}).indexOf(id);
-    console.log('1 index: ', index);
+    var index = this.state.showChildData.map(function(x) {return x.id}).indexOf(id);
     var status = this.state.showChildData[index].open;
     return status;
   }
 
   showChildList(id) {
     var tempArray = this.state.showChildData;
-    console.log('2 tempArray: ', tempArray);
     var index = tempArray.map(function(x) {return x.id}).indexOf(id);
-    console.log('2 index: ', index);
     var status = this.state.showChildData[index].open;
-
     tempArray[index].open = !status;
     this.setState({ showChildData: tempArray });
-    
-    // this.setState(prevState => ({
-    //   showChildData: {
-    //       ...prevState.showChildData,
-    //       [prevState.showChildData[index].open]: !status,
-    //   },
-    // }));
   }
 
   showModal(data) {
@@ -146,12 +136,20 @@ class Profile extends React.Component {
             }
             className={this.useStyles.root}
           >
-            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Name', attribute: 'name', id: this.user.uid, collection: 'parents'})}>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'First Name', attribute: 'fName', id: this.user.uid, collection: 'parents'})}>
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
               <ListItemText
-                primary={`${this.state.currentUser.fName} ${this.state.currentUser.lName}`}
+                primary={this.state.currentUser.fName}
+              />
+            </ListItem>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Last Name', attribute: 'lName', id: this.user.uid, collection: 'parents'})}>
+              <ListItemIcon>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText
+                primary={this.state.currentUser.lName}
               />
             </ListItem>
             <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Phone', attribute: 'phone', id: this.user.uid, collection: 'parents'})}>
@@ -159,6 +157,12 @@ class Profile extends React.Component {
                 <SmartPhoneIcon />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.phone} />
+            </ListItem>
+            <ListItem button onClick={() => this.showModal({firebase: this.firebase, heading: 'Address', attribute: 'address', id: this.user.uid, collection: 'parents'})}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={this.state.currentUser.address} />
             </ListItem>
           </List>
           </Paper>
@@ -185,11 +189,47 @@ class Profile extends React.Component {
                       </ListItem>
                       <Collapse in={this.state.showChildData.find(obj => obj.id === child.id).open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                          <ListItem button className="child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Name", attribute: 'name', id: child.id, collection: 'children'})}>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's First Name", attribute: 'fName', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.fName} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Last Name", attribute: 'lName', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.lName} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Birth Date", attribute: 'birthDate', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <CakeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.birthDate} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Current School", attribute: 'currentSchool', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <SchoolIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.currentSchool} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Current Grade", attribute: 'currentGrade', id: child.id, collection: 'children'})}>
                             <ListItemIcon>
                               <StarBorder />
                             </ListItemIcon>
-                            <ListItemText primary={`${child.data.fName} ${child.data.lName}`} />
+                            <ListItemText primary={child.data.currentGrade} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Shirt Size", attribute: 'shirtSize', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <FormatSizeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.shirtSize} />
+                          </ListItem>
+                          <ListItem button className="sub-child-list-item" onClick={() => this.showModal({firebase: this.firebase, heading: "Child's Gender", attribute: 'gender', id: child.id, collection: 'children'})}>
+                            <ListItemIcon>
+                              <WCIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={child.data.gender} />
                           </ListItem>
                         </List>
                       </Collapse>

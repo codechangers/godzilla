@@ -29,66 +29,11 @@ class EditModal extends React.Component {
   validateAttribute(id, collection, attr) {
     const data = {};
     let errorMessage = '';
-    if (attr !== 'name') {
-      if (this.state.textFieldValue === '') {
-        errorMessage = 'This field may not be left blank';
-
-        // else if (attr === 'email') {
-        //   // first check for matching emails in organizations
-        //   this.setState({ errorMessage: 'loading' });
-        //   this.db
-        //     .collection('parents')
-        //     .where('email', '==', this.state.textFieldValue)
-        //     .get()
-        //     .then(querySnapshot => {
-        //       console.log('in here', querySnapshot.docs.length);
-        //       if (querySnapshot.docs.length === 0) {
-        //         // if none, check for matching emails in teachers
-        //         this.db
-        //           .collection('teachers')
-        //           .where('email', '==', this.state.textFieldValue)
-        //           .get()
-        //           .then(querySnapshot => {
-        //             if (querySnapshot.docs.length === 0) {
-        //               // if none in teachers, check in parents
-        //               this.db
-        //                 .collection('organizations')
-        //                 .where('email', '==', this.state.textFieldValue)
-        //                 .get()
-        //                 .then(querySnapshot => {
-        //                   if (querySnapshot.docs.length === 0) {
-        //                     // if no matching emails then update email.
-        //                     data[attr] = this.state.textFieldValue;
-        //                     this.setState({ formValid: true, errorMessage: '' });
-        //                     this.updateAttribute(id, collection, data);
-        //                   } else {
-        //                     errorMessage =
-        //                       'This email is already in use, please enter another email address';
-        //                     this.setState({ errorMessage });
-        //                   }
-        //                 });
-        //             } else {
-        //               errorMessage =
-        //                 'This email is already in use, please enter another email address';
-        //               this.setState({ errorMessage });
-        //             }
-        //           });
-        //       } else {
-        //         errorMessage = 'This email is already in use, please enter another email address';
-        //         this.setState({ errorMessage });
-        //       }
-        //     });
-      } else {
-        data[attr] = this.state.textFieldValue;
-        this.state.formValid = true;
-        this.updateAttribute(id, collection, data);
-      }
-    } else if (this.state.firstName === '' || this.state.lastName === '') {
-      errorMessage = 'Neither field may be left blank';
+    if (this.state.textFieldValue === '') {
+      errorMessage = 'This field may not be left blank';
       this.setState({ errorMessage });
     } else {
-      data.fName = this.state.firstName;
-      data.lName = this.state.lastName;
+      data[attr] = this.state.textFieldValue;
       this.state.formValid = true;
       this.updateAttribute(id, collection, data);
     }
@@ -114,30 +59,12 @@ class EditModal extends React.Component {
       <div className="modal-container">
         <div className="modal-box">
           <div className="modal-text">
-            {this.props.data.heading.includes('Name') === true ? (
-              <div>
-                <p>{this.props.data.heading}</p>
-                <TextField
-                  id="outlined-name"
-                  label="First Name"
-                  name="firstName"
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  id="outlined-name"
-                  label="Last Name"
-                  name="lastName"
-                  onChange={this.handleChange}
-                />
-              </div>
-            ) : (
-              <TextField
-                id="outlined-name"
-                label={this.props.data.heading}
-                name="textFieldValue"
-                onChange={this.handleChange}
-              />
-            )}
+            <TextField
+              id="outlined-name"
+              label={this.props.data.heading}
+              name="textFieldValue"
+              onChange={this.handleChange}
+            />
           </div>
           {this.state.errorMessage === 'loading' ? (
             <Spinner color="primary" />

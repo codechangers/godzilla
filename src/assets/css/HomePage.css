@@ -51,7 +51,7 @@ img.godzilla {
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 
