@@ -14,8 +14,6 @@ import autoBind from '../../autoBind';
 import Profile from './ParentDashComponents/Profile';
 import NavBar from '../NavBar';
 import '../../assets/css/Parent-Dash.css';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
 
 const drawerWidth = 240;
 
@@ -40,8 +38,6 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar
 }));
 
-// const classes = useStyles();
-
 const buttonToComponent = {
   'Find a Class': 'findAClass',
   'My Profile': 'Profile'
@@ -60,11 +56,6 @@ class ParentDashboard extends React.Component {
   }
 
   handleClick(val) {
-    // const { id, value } = e.target;
-    // const newState = {};
-    // newState[id] = value;
-    // this.setState({ ...newState });
-    console.log('val: ', val);
     const newState = {};
     newState.activeComponent = buttonToComponent[val];
     this.setState({ ...newState });
@@ -75,7 +66,7 @@ class ParentDashboard extends React.Component {
       <>
         <NavBar accounts={this.accounts} firebase={this.firebase} />
         <div id="drawer">
-          <div className={useStyles.root}>
+          <div className="content-container">
             <CssBaseline />
             <Drawer
               className={useStyles.drawer}
@@ -93,7 +84,6 @@ class ParentDashboard extends React.Component {
                       this.handleClick(text);
                     }}
                   >
-                    {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                     <ListItemText primary={text} />
                   </ListItem>
                 ))}
@@ -108,13 +98,12 @@ class ParentDashboard extends React.Component {
                       this.handleClick(text);
                     }}
                   >
-                    {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                     <ListItemText primary={text} />
                   </ListItem>
                 ))}
               </List>
             </Drawer>
-            <main className={useStyles.content}>
+            <main className="list-item-container">
               {this.state.activeComponent === 'default' ? (
                 <>
                   <div>
