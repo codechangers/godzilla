@@ -1,5 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import UserIcon from '@material-ui/icons/PermIdentityOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
@@ -78,40 +91,58 @@ class ParentSignUp extends React.Component {
 
   render() {
     return (
-      <div className="signup-form">
-        <h1>Parent Account Information:</h1>
-        <span className="errormessage">{this.state.addressError}</span>
-        <label htmlFor="firstname">
-          Street Address:
-          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
-        </label>
-        <br />
-        {this.state.childrenData.map(child => (
-          <div className="child" key={`${child.fName}${child.lName}`}>
-            <p className="errormessage">{`${child.fName} ${child.lName}`}</p>
-          </div>
-        ))}
-        <br />
-
-        {this.state.show ? (
-          <div className="request-info-wrapper">
-            <ChildInfo
-              db={this.props.db}
-              firebase={this.props.firebase}
-              addChildRef={this.addChildRef}
-              handleClose={this.handleClose}
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Parent Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={this.state.addressError}
+              id="address"
+              type="text"
+              label="Address"
+              variant="outlined"
+              helperText={this.state.addressError}
+              value={this.state.address}
+              onChange={this.handleChange}
             />
-          </div>
-        ) : null}
 
-        <button type="submit" onClick={this.handleShow}>
-          Add Child
-        </button>
+            <Typography variant="h5">Registered Children</Typography>
+            <List>
+              {this.state.childrenData.map(child => (
+                <div className="child" key={`${child.fName}${child.lName}`}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <UserIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                  </ListItem>
+                </div>
+              ))}
+            </List>
 
-        <br />
-        <button type="submit" onClick={this.updateParent}>
-          Sign Up
-        </button>
+            {this.state.show ? (
+              <div className="request-info-wrapper">
+                <ChildInfo
+                  db={this.props.db}
+                  firebase={this.props.firebase}
+                  addChildRef={this.addChildRef}
+                  handleClose={this.handleClose}
+                />
+              </div>
+            ) : null}
+
+            <Button onClick={this.handleShow} variant="contained" color="default" id="add-child">
+              <AddIcon />
+              Add Child
+            </Button>
+
+            <Button onClick={this.updateParent} variant="contained" color="primary">
+              Sign Up
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

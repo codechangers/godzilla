@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import GenericSignUp from './SignUpForms/GenericSignUp';
 import ParentSignUp from './SignUpForms/ParentSignUp';
 import TeacherSignUp from './SignUpForms/TeacherSignUp';
@@ -126,36 +131,40 @@ class SignUp extends React.Component {
     return this.state.isRegistered ? (
       this.getForm()
     ) : (
-      <div className="signup-form">
-        <h1>Create an Account:</h1>
-        <GenericSignUp
-          handleChange={this.handleChange}
-          toggleCanText={this.toggleCanText}
-          state={{ ...this.state }}
-        />
-        <span className="errormessage">{this.state.errors.password}</span>
-        <label htmlFor="password">
-          Password:
-          <input
-            id="password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-        </label>
-        <span className="errormessage">{this.state.errors.confirmPassword}</span>
-        <label htmlFor="confirm-password">
-          Confirm Password:
-          <input
-            id="confirmPassword"
-            type="password"
-            value={this.state.confirmPassword}
-            onChange={this.handleChange}
-          />
-        </label>
-        <button type="submit" onClick={this.handleSubmit}>
-          Next
-        </button>
+      <div className="signup-wrapper" id="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Create an Account" />
+          <CardContent className="column">
+            <GenericSignUp
+              handleChange={this.handleChange}
+              toggleCanText={this.toggleCanText}
+              state={{ ...this.state }}
+            />
+            <TextField
+              error={this.state.errors.password}
+              id="password"
+              type="password"
+              label="Password"
+              variant="outlined"
+              helperText={this.state.errors.password}
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={this.state.errors.confirmPassword}
+              id="confirmPassword"
+              type="password"
+              label="Confirm Password"
+              variant="outlined"
+              helperText={this.state.errors.confirmPassword}
+              value={this.state.confirmPassword}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Next
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

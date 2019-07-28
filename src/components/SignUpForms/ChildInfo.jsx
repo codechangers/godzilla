@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields } from '../../helpers';
 import '../../assets/css/Signup.css';
@@ -65,68 +67,93 @@ class ChildInfo extends React.Component {
     const { errors } = this.state;
     return (
       <div className="request-info">
-        <span className="errormessage">{errors.fName}</span>
-        <label htmlFor="lastname">
-          Child&apos;s First Name:
-          <input id="fName" type="text" value={this.state.fName} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.lName}</span>
-        <label htmlFor="address">
-          Child&apos;s Last Name:
-          <input id="lName" type="text" value={this.state.lName} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.birthDate}</span>
-        <label htmlFor="email">
-          Child&apos;s Birthdate:
-          <input
-            id="birthDate"
-            type="text"
-            value={this.state.birthDate}
-            onChange={this.handleChange}
-          />
-        </label>
-        <span className="errormessage">{errors.currentSchool}</span>
-        <label htmlFor="phone">
-          Child&apos;s Current School:
-          <input
-            id="currentSchool"
-            type="text"
-            value={this.state.currentSchool}
-            onChange={this.handleChange}
-          />
-        </label>
-        <span className="errormessage">{errors.currentGrade}</span>
-        <label htmlFor="canText">
-          Child&apos;s Current Grade (Or entering grade if it&apos;s the summer):
-          <input
-            id="currentGrade"
-            type="text"
-            checked={this.state.currentGrade}
-            onChange={this.handleChange}
-          />
-        </label>
-        <span className="errormessage">{errors.shirtSize}</span>
-        <label htmlFor="canText">
-          Child&apos;s Shirt Size:
-          <input
-            id="shirtSize"
-            type="text"
-            checked={this.state.shirtSize}
-            onChange={this.handleChange}
-          />
-        </label>
-        <span className="errormessage">{errors.gender}</span>
-        <label htmlFor="canText">
-          Child&apos;s Gender:
-          <input id="gender" type="text" checked={this.state.gender} onChange={this.handleChange} />
-        </label>
+        <TextField
+          error={errors.fName}
+          id="fName"
+          type="text"
+          label="Child's First Name"
+          variant="outlined"
+          helperText={errors.fName}
+          value={this.state.fName}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.lName}
+          id="lName"
+          type="text"
+          label="Child's Last Name"
+          variant="outlined"
+          helperText={errors.lName}
+          value={this.state.lName}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.birthDate}
+          id="birthDate"
+          type="text"
+          label="Child's Birthdate"
+          variant="outlined"
+          helperText={errors.birthDate}
+          value={this.state.birthDate}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.currentSchool}
+          id="currentSchool"
+          type="text"
+          label="Child's Current School"
+          variant="outlined"
+          helperText={errors.currentSchool}
+          value={this.state.currentSchool}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.currentGrade}
+          id="currentGrade"
+          type="text"
+          label="Child's Current Grade"
+          variant="outlined"
+          helperText={errors.currentGrade}
+          value={this.state.currentGrade}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.shirtSize}
+          id="shirtSize"
+          type="text"
+          label="Child's Shirt Size"
+          variant="outlined"
+          helperText={errors.shirtSize}
+          value={this.state.shirtSize}
+          onChange={this.handleChange}
+        />
+        <TextField
+          error={errors.gender}
+          id="gender"
+          type="text"
+          label="Child's Gender"
+          variant="outlined"
+          helperText={errors.gender}
+          value={this.state.gender}
+          onChange={this.handleChange}
+        />
         <div className="modalButtonContainer">
-          <button className="modalButton" type="submit" onClick={this.createChild}>
-            Finish Adding Child
-          </button>
-          <button className="modalButton" type="submit" onClick={this.props.handleClose}>
+          <Button
+            onClick={this.createChild}
+            variant="contained"
+            color="primary"
+            className="modalButton"
+          >
+            Add Child
+          </Button>
+          <Button
+            onClick={this.props.handleClose}
+            variant="contained"
+            color="secondary"
+            className="modalButton"
+          >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     );

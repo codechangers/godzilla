@@ -1,5 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields } from '../../helpers';
 
@@ -65,26 +70,45 @@ class ParentSignUp extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-form">
-        <h1>Oranization Account Information:</h1>
-        <span className="errormessage">{errors.name}</span>
-        <label htmlFor="name">
-          Organization Name:
-          <input id="name" type="text" value={this.state.name} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.address}</span>
-        <label htmlFor="address">
-          Address:
-          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.aboutMe}</span>
-        <label htmlFor="aboutMe">
-          Describe your Organization:
-          <textarea id="aboutMe" value={this.state.aboutMe} onChange={this.handleChange} />
-        </label>
-        <button type="submit" onClick={this.handleSubmit} style={{ marginTop: '20px' }}>
-          Submit Organization Application
-        </button>
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Organization Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={errors.name}
+              id="name"
+              type="text"
+              label="Organization Name"
+              variant="outlined"
+              helperText={errors.name}
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={errors.address}
+              id="address"
+              type="text"
+              label="Address"
+              variant="outlined"
+              helperText={errors.address}
+              value={this.state.address}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={errors.aboutMe}
+              id="aboutMe"
+              type="text"
+              label="Describe your Organization"
+              variant="outlined"
+              helperText={errors.aboutMe}
+              value={this.state.aboutMe}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Submit Organization Application
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
