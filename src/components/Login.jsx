@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
 import autoBind from '../autoBind';
-import { getUserData, validateFields } from '../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../helpers';
 import '../assets/css/Login.css';
 
 const errorCodeToMessage = {
@@ -106,7 +102,7 @@ class Login extends React.Component {
           <CardHeader title="Login to Godzilla" />
           <CardContent className="column">
             <TextField
-              error={errors.email}
+              error={getErrorStatus(errors.email)}
               id="Email"
               type="text"
               label="Email Address"
@@ -116,7 +112,7 @@ class Login extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.password}
+              error={getErrorStatus(errors.password)}
               id="Password"
               type="password"
               label="Password"

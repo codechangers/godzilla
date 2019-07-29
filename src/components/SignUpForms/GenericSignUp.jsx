@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormControlLabel, Checkbox, TextField } from '@material-ui/core';
+import { getErrorStatus } from '../../helpers';
 
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
@@ -16,30 +18,53 @@ const propTypes = {
 
 const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
   <div className="generic-signup-wrapper">
-    <span className="errormessage">{state.errors.fName}</span>
-    <label htmlFor="firstname">
-      First Name:
-      <input id="firstName" type="text" value={state.fName} onChange={handleChange} />
-    </label>
-    <span className="errormessage">{state.errors.lName}</span>
-    <label htmlFor="lastname">
-      Last Name:
-      <input id="lastName" type="text" value={state.lName} onChange={handleChange} />
-    </label>
-    <span className="errormessage">{state.errors.email}</span>
-    <label htmlFor="email">
-      Email Address:
-      <input id="Email" type="text" value={state.email} onChange={handleChange} />
-    </label>
-    <span className="errormessage">{state.errors.phone}</span>
-    <label htmlFor="phone">
-      Phone:
-      <input id="phone" type="text" value={state.phone} onChange={handleChange} />
-    </label>
-    <label htmlFor="canText" className="collapse">
-      Phone can Text:
-      <input id="canText" type="checkbox" checked={state.canText} onChange={toggleCanText} />
-    </label>
+    <TextField
+      error={getErrorStatus(state.errors.fName)}
+      id="firstName"
+      type="text"
+      label="First Name"
+      variant="outlined"
+      helperText={state.errors.fName}
+      value={state.fName}
+      onChange={handleChange}
+    />
+    <TextField
+      error={getErrorStatus(state.errors.lName)}
+      id="lastName"
+      type="text"
+      label="Last Name"
+      variant="outlined"
+      helperText={state.errors.lName}
+      value={state.lName}
+      onChange={handleChange}
+    />
+    <TextField
+      error={getErrorStatus(state.errors.email)}
+      id="Email"
+      type="text"
+      label="Email Address"
+      variant="outlined"
+      helperText={state.errors.email}
+      value={state.email}
+      onChange={handleChange}
+    />
+    <TextField
+      error={getErrorStatus(state.errors.phone)}
+      id="phone"
+      type="text"
+      label="Phone"
+      variant="outlined"
+      helperText={state.errors.phone}
+      value={state.phone}
+      onChange={handleChange}
+    />
+    <FormControlLabel
+      control={
+        <Checkbox id="canText" checked={state.canText} onChange={toggleCanText} color="primary" />
+      }
+      label="Phone can Text"
+      id="phone-can-text"
+    />
   </div>
 );
 
