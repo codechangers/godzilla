@@ -40,4 +40,6 @@ export function validateFields(fields) {
   return formValid;
 }
 
+export const getErrorStatus = error => typeof error === 'string' && error.length > 0;
+
 export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;

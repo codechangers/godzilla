@@ -1,7 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Button,
+  TextField,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+  Typography
+} from '@material-ui/core';
+import UserIcon from '@material-ui/icons/PermIdentityOutlined';
+import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
+import { getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
 
@@ -16,7 +32,7 @@ class ParentSignUp extends React.Component {
     super(props);
     this.state = {
       address: '',
-      addressError: '',
+      errors: {},
       childrenRefs: [],
       childrenData: [],
       show: false
@@ -72,46 +88,64 @@ class ParentSignUp extends React.Component {
           .then(this.props.login);
       }
     } else {
-      this.setState({ addressError: 'This field may not be empty' });
+      this.setState({ errors: { address: 'This field may not be empty' } });
     }
   }
 
   render() {
     return (
-      <div className="signup-form">
-        <h1>Parent Account Information:</h1>
-        <span className="errormessage">{this.state.addressError}</span>
-        <label htmlFor="firstname">
-          Street Address:
-          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
-        </label>
-        <br />
-        {this.state.childrenData.map(child => (
-          <div className="child" key={`${child.fName}${child.lName}`}>
-            <p className="errormessage">{`${child.fName} ${child.lName}`}</p>
-          </div>
-        ))}
-        <br />
-
-        {this.state.show ? (
-          <div className="request-info-wrapper">
-            <ChildInfo
-              db={this.props.db}
-              firebase={this.props.firebase}
-              addChildRef={this.addChildRef}
-              handleClose={this.handleClose}
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Parent Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={getErrorStatus(this.state.errors.address)}
+              id="address"
+              type="text"
+              label="Address"
+              variant="outlined"
+              helperText={this.state.errors.address}
+              value={this.state.address}
+              onChange={this.handleChange}
             />
-          </div>
-        ) : null}
 
-        <button type="submit" onClick={this.handleShow}>
-          Add Child
-        </button>
+            <Typography variant="h5">Registered Children</Typography>
+            <List>
+              {this.state.childrenData.map(child => (
+                <div className="child" key={`${child.fName}${child.lName}`}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <UserIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                  </ListItem>
+                </div>
+              ))}
+            </List>
 
-        <br />
-        <button type="submit" onClick={this.updateParent}>
-          Sign Up
-        </button>
+            {this.state.show ? (
+              <div className="request-info-wrapper">
+                <ChildInfo
+                  db={this.props.db}
+                  firebase={this.props.firebase}
+                  addChildRef={this.addChildRef}
+                  handleClose={this.handleClose}
+                />
+              </div>
+            ) : null}
+
+            <Button onClick={this.handleShow} variant="contained" color="default" id="add-child">
+              <AddIcon />
+              Add Child
+            </Button>
+
+            <Button onClick={this.updateParent} variant="contained" color="primary">
+              Sign Up
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
