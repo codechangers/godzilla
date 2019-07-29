@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
+import { getErrorStatus } from '../../helpers';
 
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
@@ -20,7 +21,7 @@ const propTypes = {
 const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
   <div className="generic-signup-wrapper">
     <TextField
-      error={state.errors.fName}
+      error={getErrorStatus(state.errors.fName)}
       id="firstName"
       type="text"
       label="First Name"
@@ -30,7 +31,7 @@ const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
       onChange={handleChange}
     />
     <TextField
-      error={state.errors.lName}
+      error={getErrorStatus(state.errors.lName)}
       id="lastName"
       type="text"
       label="Last Name"
@@ -40,7 +41,7 @@ const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
       onChange={handleChange}
     />
     <TextField
-      error={state.errors.email}
+      error={getErrorStatus(state.errors.email)}
       id="Email"
       type="text"
       label="Email Address"
@@ -50,7 +51,7 @@ const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
       onChange={handleChange}
     />
     <TextField
-      error={state.errors.phone}
+      error={getErrorStatus(state.errors.phone)}
       id="phone"
       type="text"
       label="Phone"

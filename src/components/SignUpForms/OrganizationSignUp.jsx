@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
 const idToDataMember = {
   name: 'name',
@@ -75,7 +75,7 @@ class ParentSignUp extends React.Component {
           <CardHeader title="Organization Account Information" />
           <CardContent className="column">
             <TextField
-              error={errors.name}
+              error={getErrorStatus(errors.name)}
               id="name"
               type="text"
               label="Organization Name"
@@ -85,7 +85,7 @@ class ParentSignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.address}
+              error={getErrorStatus(errors.address)}
               id="address"
               type="text"
               label="Address"
@@ -95,7 +95,7 @@ class ParentSignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.aboutMe}
+              error={getErrorStatus(errors.aboutMe)}
               id="aboutMe"
               type="text"
               label="Describe your Organization"

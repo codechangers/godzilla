@@ -39,3 +39,5 @@ export function validateFields(fields) {
   this.setState({ errors });
   return formValid;
 }
+
+export const getErrorStatus = error => typeof error === 'string' && error.length > 0;

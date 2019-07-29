@@ -11,7 +11,7 @@ import ParentSignUp from './SignUpForms/ParentSignUp';
 import TeacherSignUp from './SignUpForms/TeacherSignUp';
 import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
 import autoBind from '../autoBind';
-import { getUserData, validateFields } from '../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../helpers';
 import '../assets/css/Signup.css';
 
 const errorCodeToMessage = {
@@ -141,7 +141,7 @@ class SignUp extends React.Component {
               state={{ ...this.state }}
             />
             <TextField
-              error={this.state.errors.password}
+              error={getErrorStatus(this.state.errors.password)}
               id="password"
               type="password"
               label="Password"
@@ -151,7 +151,7 @@ class SignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={this.state.errors.confirmPassword}
+              error={getErrorStatus(this.state.errors.confirmPassword)}
               id="confirmPassword"
               type="password"
               label="Confirm Password"

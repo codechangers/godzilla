@@ -15,6 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
+import { getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
 
@@ -29,7 +30,7 @@ class ParentSignUp extends React.Component {
     super(props);
     this.state = {
       address: '',
-      addressError: '',
+      errors: {},
       childrenRefs: [],
       childrenData: [],
       show: false
@@ -85,7 +86,7 @@ class ParentSignUp extends React.Component {
           .then(this.props.login);
       }
     } else {
-      this.setState({ addressError: 'This field may not be empty' });
+      this.setState({ errors: { address: 'This field may not be empty' } });
     }
   }
 
@@ -96,12 +97,12 @@ class ParentSignUp extends React.Component {
           <CardHeader title="Parent Account Information" />
           <CardContent className="column">
             <TextField
-              error={this.state.addressError}
+              error={getErrorStatus(this.state.errors.address)}
               id="address"
               type="text"
               label="Address"
               variant="outlined"
-              helperText={this.state.addressError}
+              helperText={this.state.errors.address}
               value={this.state.address}
               onChange={this.handleChange}
             />

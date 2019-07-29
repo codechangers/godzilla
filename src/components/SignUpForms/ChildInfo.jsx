@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 
 const allFields = [
@@ -68,7 +68,7 @@ class ChildInfo extends React.Component {
     return (
       <div className="request-info">
         <TextField
-          error={errors.fName}
+          error={getErrorStatus(errors.fName)}
           id="fName"
           type="text"
           label="Child's First Name"
@@ -78,7 +78,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.lName}
+          error={getErrorStatus(errors.lName)}
           id="lName"
           type="text"
           label="Child's Last Name"
@@ -88,7 +88,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.birthDate}
+          error={getErrorStatus(errors.birthDate)}
           id="birthDate"
           type="text"
           label="Child's Birthdate"
@@ -98,7 +98,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.currentSchool}
+          error={getErrorStatus(errors.currentSchool)}
           id="currentSchool"
           type="text"
           label="Child's Current School"
@@ -108,7 +108,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.currentGrade}
+          error={getErrorStatus(errors.currentGrade)}
           id="currentGrade"
           type="text"
           label="Child's Current Grade"
@@ -118,7 +118,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.shirtSize}
+          error={getErrorStatus(errors.shirtSize)}
           id="shirtSize"
           type="text"
           label="Child's Shirt Size"
@@ -128,7 +128,7 @@ class ChildInfo extends React.Component {
           onChange={this.handleChange}
         />
         <TextField
-          error={errors.gender}
+          error={getErrorStatus(errors.gender)}
           id="gender"
           type="text"
           label="Child's Gender"

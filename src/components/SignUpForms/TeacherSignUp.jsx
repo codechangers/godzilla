@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 
 const locationToPrompt = {
@@ -108,7 +108,7 @@ class TeacherSignUp extends React.Component {
           <CardHeader title="Teacher Account Information" />
           <CardContent className="column">
             <TextField
-              error={errors.region}
+              error={getErrorStatus(errors.region)}
               id="whyTeach"
               type="text"
               label="Why do you want to teach STEM topics to kids?"
@@ -119,7 +119,7 @@ class TeacherSignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.region}
+              error={getErrorStatus(errors.region)}
               id="prevExp"
               type="text"
               label="Do you have any previous teaching experience?"
@@ -130,7 +130,7 @@ class TeacherSignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.region}
+              error={getErrorStatus(errors.region)}
               id="region"
               type="text"
               label="Where Will you Teach? (City, State)"
@@ -140,7 +140,7 @@ class TeacherSignUp extends React.Component {
               onChange={this.handleChange}
             />
             <TextField
-              error={errors.region}
+              error={getErrorStatus(errors.region)}
               id="location"
               name="location"
               select
@@ -164,7 +164,7 @@ class TeacherSignUp extends React.Component {
               </MenuItem>
             </TextField>
             <TextField
-              error={errors.region}
+              error={getErrorStatus(errors.region)}
               id="address"
               type="text"
               label={locationToPrompt[this.state.location]}
