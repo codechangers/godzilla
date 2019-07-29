@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
+import { FormControlLabel, Checkbox, TextField } from '@material-ui/core';
 import { getErrorStatus } from '../../helpers';
 
 const propTypes = {
