@@ -1,5 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  ListItem,
+  Divider,
+  Button,
+  ListItemText,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  IconButton,
+  Tooltip
+} from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+import NewIcon from '@material-ui/icons/Lens';
 import autoBind from '../../autoBind';
 
 const propTypes = {
@@ -19,7 +36,8 @@ class OrganizationRequest extends React.Component {
     super(props);
     this.state = {
       showInfo: false,
-      isRead: null
+      isRead: null,
+      open: false
     };
     autoBind(this);
   }
@@ -36,14 +54,52 @@ class OrganizationRequest extends React.Component {
       });
   }
 
+  getModalData() {
+    const { org } = this.props;
+    return (
+      <Table className="modal-table">
+        <TableBody>
+          <TableRow>
+            <TableCell className="table-header">Name</TableCell>
+            <TableCell>{org.name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Email</TableCell>
+            <TableCell>{org.email}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Address</TableCell>
+            <TableCell>{org.address}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Bio</TableCell>
+            <TableCell>{org.aboutMe}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+  }
+
   getStatus() {
     return this.props.org.isDeclined === true ? (
       <div className="declined">
-        <p>Declined</p>
+        <Button
+          variant="contained"
+          size="large"
+          color="secondary"
+          disabled
+          className="applicant-status"
+        >
+          <CloseIcon />
+          Declined
+        </Button>
       </div>
     ) : (
       <div className="accepted">
-        <p>Accepted</p>
+        <Button variant="contained" size="large" disabled className="applicant-status">
+          <DoneIcon />
+          Accepted
+        </Button>
       </div>
     );
   }
@@ -52,34 +108,36 @@ class OrganizationRequest extends React.Component {
     const { org } = this.props;
     return this.props.org.isDeclined === false && this.props.org.isVerrified === false ? (
       <div className="options">
-        <button
-          type="button"
-          className="accept"
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
           onClick={() => {
             this.props.acceptRequest(org);
           }}
         >
           Accept
-        </button>
-        <button
-          type="button"
-          className="decline"
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          color="secondary"
           onClick={() => {
             this.props.declineRequest(org);
           }}
         >
           Decline
-        </button>
+        </Button>
       </div>
     ) : (
       this.getStatus()
     );
   }
 
-  toggleInfo() {
-    let { showInfo } = this.state;
-    showInfo = !showInfo;
-    this.setState({ showInfo });
+  handleOpen() {
+    let { open } = this.state;
+    open = true;
+    this.setState({ open });
 
     this.props.db
       .collection('organizations')
@@ -93,42 +151,42 @@ class OrganizationRequest extends React.Component {
     });
   }
 
+  handleClose() {
+    let { open } = this.state;
+    open = false;
+    this.setState({ open });
+  }
+
   render() {
     const { org } = this.props;
     return this.state.isRead === null ? (
       <div className="org-request" />
     ) : (
-      <div className={`org-request ${isReadToBackgroundColor[this.state.isRead]}`}>
-        <button type="button" className="select" onClick={this.toggleInfo}>
-          <p>{`${org.name}`}</p>
-        </button>
-        {this.getOptionButtons()}
-        {this.state.showInfo ? (
-          <div className="request-info-wrapper">
-            <div className="request-info">
-              <button type="button" onClick={this.toggleInfo}>
-                Close
-              </button>
-              <div>
-                <p>Name:</p>
-                <span>{org.name}</span>
-              </div>
-              <div>
-                <p>Email:</p>
-                <span>{org.email}</span>
-              </div>
-              <div>
-                <p>Address:</p>
-                <span>{org.address}</span>
-              </div>
-              <div>
-                <p>Bio:</p>
-                <span>{org.aboutMe}</span>
-              </div>
-              {this.getOptionButtons()}
-            </div>
-          </div>
-        ) : null}
+      <div>
+        <ListItem button onClick={this.handleOpen} className="org-request">
+          <NewIcon
+            fontSize="small"
+            className={`read-indicator ${isReadToBackgroundColor[this.state.isRead]}`}
+          />
+          <ListItemText className="org-request-name" primary={org.name} />
+          {this.getOptionButtons()}
+        </ListItem>
+        <Divider />
+        <Modal className="admin-modal-wrapper" open={this.state.open} onClose={this.handleClose}>
+          <Paper className="admin-modal">
+            <Tooltip title="Close" placement="left">
+              <IconButton
+                aria-label="close"
+                onClick={this.handleClose}
+                className="admin-modal-close"
+              >
+                <CloseIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
+            {this.getModalData()}
+            {this.getOptionButtons()}
+          </Paper>
+        </Modal>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { MenuItem, TextField, List } from '@material-ui/core';
 import autoBind from '../../../autoBind';
 import TeacherRequest from '../../Requests/Teacher';
 import Spinner from '../../Spinner';
@@ -62,15 +63,19 @@ class AdminTeacherPage extends React.Component {
   }
 
   getFilteredTeachers() {
-    return this.state.teacherReqs.map(teacher => (
-      <TeacherRequest
-        db={this.db}
-        teacher={teacher}
-        acceptRequest={t => this.acceptRequest(t, 'teachers')}
-        declineRequest={t => this.declineRequest(t, 'teachers')}
-        key={teacher.id}
-      />
-    ));
+    return (
+      <List>
+        {this.state.teacherReqs.map(teacher => (
+          <TeacherRequest
+            db={this.db}
+            teacher={teacher}
+            acceptRequest={t => this.acceptRequest(t, 'teachers')}
+            declineRequest={t => this.declineRequest(t, 'teachers')}
+            key={teacher.id}
+          />
+        ))}
+      </List>
+    );
   }
 
   declineRequest(user, collection) {
@@ -81,9 +86,13 @@ class AdminTeacherPage extends React.Component {
   }
 
   handleChange(e) {
-    const { id, value } = e.target;
+    const { id, name, value } = e.target;
     const newState = {};
-    newState[id] = value;
+    if (id) {
+      newState[id] = value;
+    } else {
+      newState[name] = value;
+    }
     this.setState({ ...newState }, () => {
       let teacherArray = this.state.originalReqs;
 
@@ -165,34 +174,66 @@ class AdminTeacherPage extends React.Component {
           <h4>Filters</h4>
           <div className="inline">
             <p>Read, Unread, Both</p>
-            <select id="shouldShowRead" onChange={this.handleChange}>
-              <option value="both">Both</option>
-              <option value="true">Read Only</option>
-              <option value="false">Unread Only</option>
-            </select>
+            <TextField
+              id="shouldShowRead"
+              name="shouldShowRead"
+              select
+              variant="outlined"
+              value={this.state.shouldShowRead}
+              onChange={this.handleChange}
+            >
+              <MenuItem value="both">Both</MenuItem>
+              <MenuItem value="true">Read Only</MenuItem>
+              <MenuItem value="false">Unread Only</MenuItem>
+            </TextField>
             <br />
-            <p>
-              Show only
-              <select id="shouldShowTeacherType" onChange={this.handleChange}>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="declined">Declined</option>
-              </select>
-              Teachers
-            </p>
-            <p>Search by location:</p>
-            <select id="shouldShowLocation" onChange={this.handleChange}>
-              <option value="all">All</option>
-              <option value="school">School</option>
-              <option value="house">House</option>
-              <option value="office">Office</option>
-            </select>
+            <p>Show only Teachers</p>
+            <TextField
+              id="shouldShowTeacherType"
+              name="shouldShowTeacherType"
+              select
+              variant="outlined"
+              value={this.state.shouldShowTeacherType}
+              onChange={this.handleChange}
+            >
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="approved">Approved</MenuItem>
+              <MenuItem value="declined">Declined</MenuItem>
+            </TextField>
+            <p>Search by location</p>
+            <TextField
+              id="shouldShowLocation"
+              name="shouldShowLocation"
+              select
+              variant="outlined"
+              value={this.state.shouldShowLocation}
+              onChange={this.handleChange}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="school">School</MenuItem>
+              <MenuItem value="house">House</MenuItem>
+              <MenuItem value="office">Office</MenuItem>
+            </TextField>
             <br />
-            <p>Search by Name: </p>
-            <input type="text" id="shouldShowName" onChange={this.handleChange} />
             <br />
-            <p>Search by Region: </p>
-            <input type="text" id="shouldShowRegion" onChange={this.handleChange} />
+            <TextField
+              id="shouldShowName"
+              type="text"
+              label="Search by Name"
+              variant="outlined"
+              value={this.state.shouldShowName}
+              onChange={this.handleChange}
+            />
+            <br />
+            <br />
+            <TextField
+              id="shouldShowRegion"
+              type="text"
+              label="Search by Region"
+              variant="outlined"
+              value={this.state.shouldShowRegion}
+              onChange={this.handleChange}
+            />
           </div>
         </div>
         {this.getFilteredTeachers()}

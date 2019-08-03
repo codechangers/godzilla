@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { MenuItem, TextField, List } from '@material-ui/core';
 import autoBind from '../../../autoBind';
 import OrganizationRequest from '../../Requests/Organization';
 import Spinner from '../../Spinner';
@@ -18,8 +19,8 @@ class AdminOrganizationPage extends React.Component {
       orgReqs: [],
       originalReqs: [],
       isLoadingOrgs: true,
-      shouldShowRead: '',
-      shouldShowOrgType: '',
+      shouldShowRead: 'both',
+      shouldShowOrgType: 'pending',
       shouldShowName: ''
     };
     this.firebase = this.props.firebase;
@@ -50,21 +51,29 @@ class AdminOrganizationPage extends React.Component {
   }
 
   getFilteredOrgs() {
-    return this.state.orgReqs.map(org => (
-      <OrganizationRequest
-        db={this.db}
-        org={org}
-        acceptRequest={o => this.acceptRequest(o, 'organizations')}
-        declineRequest={o => this.declineRequest(o, 'organizations')}
-        key={org.id}
-      />
-    ));
+    return (
+      <List>
+        {this.state.orgReqs.map(org => (
+          <OrganizationRequest
+            db={this.db}
+            org={org}
+            acceptRequest={o => this.acceptRequest(o, 'organizations')}
+            declineRequest={o => this.declineRequest(o, 'organizations')}
+            key={org.id}
+          />
+        ))}
+      </List>
+    );
   }
 
   handleChange(e) {
-    const { id, value } = e.target;
+    const { id, name, value } = e.target;
     const newState = {};
-    newState[id] = value;
+    if (id) {
+      newState[id] = value;
+    } else {
+      newState[name] = value;
+    }
     this.setState({ ...newState }, () => {
       let orgArray = this.state.originalReqs;
 
@@ -127,24 +136,42 @@ class AdminOrganizationPage extends React.Component {
           <h4>Filters</h4>
           <div className="inline">
             <p>Read, Unread, Both</p>
-            <select id="shouldShowRead" onChange={this.handleChange}>
-              <option value="both">Both</option>
-              <option value="true">Read Only</option>
-              <option value="false">Unread Only</option>
-            </select>
+            <TextField
+              id="shouldShowRead"
+              name="shouldShowRead"
+              select
+              variant="outlined"
+              value={this.state.shouldShowRead}
+              onChange={this.handleChange}
+            >
+              <MenuItem value="both">Both</MenuItem>
+              <MenuItem value="true">Read Only</MenuItem>
+              <MenuItem value="false">Unread Only</MenuItem>
+            </TextField>
             <br />
-            <p>
-              Show only
-              <select id="shouldShowOrgType" onChange={this.handleChange}>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="declined">Declined</option>
-              </select>
-              Teachers
-            </p>
+            <p>Show only Organizations Teachers</p>
+            <TextField
+              id="shouldShowOrgType"
+              name="shouldShowOrgType"
+              select
+              variant="outlined"
+              value={this.state.shouldShowOrgType}
+              onChange={this.handleChange}
+            >
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="approved">Approved</MenuItem>
+              <MenuItem value="declined">Declined</MenuItem>
+            </TextField>
             <br />
-            <p>Search by Name: </p>
-            <input type="text" id="shouldShowName" onChange={this.handleChange} />
+            <br />
+            <TextField
+              id="shouldShowName"
+              type="text"
+              label="Search by Name"
+              variant="outlined"
+              value={this.state.shouldShowName}
+              onChange={this.handleChange}
+            />
             <br />
           </div>
         </div>

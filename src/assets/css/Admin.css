@@ -29,12 +29,18 @@
   border-radius: 8px;
 }
 
+svg.MuiSvgIcon-root.read-indicator {
+  font-size: 1rem;
+  padding-right: 15px;
+}
+
 .is-read {
-  background-color: rgb(95, 97, 99);
+  visibility: hidden;
 }
 
 .is-not-read {
-  background-color: rgb(225, 226, 227);
+  color: #3f51b5;
+  visibility: visible;
 }
 
 .declined {
@@ -63,8 +69,8 @@
   cursor: pointer;
 }
 
-.teacher-request button.select > p,
-.org-request button.select > p {
+.teacher-request button.select>p,
+.org-request button.select>p {
   font-size: 1rem;
 }
 
@@ -99,7 +105,7 @@
   animation: slideFromTop 400ms ease;
 }
 
-.request-info > div {
+.request-info>div {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -175,6 +181,7 @@
   0% {
     background-color: rgba(0, 0, 0, 0);
   }
+
   100% {
     background-color: rgba(0, 0, 0, 0.4);
   }
@@ -184,7 +191,61 @@
   0% {
     margin-top: -100%;
   }
+
   100% {
     margin-top: 0;
   }
+}
+
+.admin-modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-modal-wrapper .admin-modal {
+  box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.3);
+  padding: 20px 40px 40px 40px;
+  width: 50%;
+  animation: slideFromTop 400ms ease;
+}
+
+.options,
+.admin-modal-wrapper .admin-modal .declined,
+.admin-modal-wrapper .admin-modal .accepted {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-modal .admin-modal-close {
+  padding: 0;
+  float: right;
+}
+
+.admin-modal .modal-table {
+  margin-bottom: 20px;
+}
+
+.admin-modal .table-header {
+  font-weight: bold;
+  width: 30%;
+}
+
+.teacher-request,
+.org-request {
+  min-width: 500px;
+}
+
+.admin-dashboard .accepted .applicant-status,
+.admin-modal-wrapper .admin-modal .accepted .applicant-status {
+  margin-right: 20px;
+  background-color: #289428;
+  color: white;
+}
+
+.admin-dashboard .declined .applicant-status,
+.admin-modal-wrapper .admin-modal .declined .applicant-status {
+  margin-right: 20px;
+  background-color: #f50057;
+  color: white;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Tabs, Tab, Typography, Box } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../../NavBar';
 import autoBind from '../../../autoBind';
@@ -14,11 +15,34 @@ const propTypes = {
   accounts: PropTypes.object.isRequired
 };
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      <Box p={3}>{children}</Box>
+    </Typography>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
+};
+
 class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      teacherOrgToggle: false
+      teacherOrgToggle: 0
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -35,7 +59,12 @@ class AdminDashboard extends React.Component {
 
   toggleTeacherOrg() {
     let { teacherOrgToggle } = this.state;
-    teacherOrgToggle = !teacherOrgToggle;
+    if (teacherOrgToggle === 0) {
+      teacherOrgToggle = 1;
+    } else {
+      teacherOrgToggle = 0;
+    }
+    // teacherOrgToggle = !teacherOrgToggle;
     this.setState({ teacherOrgToggle });
   }
 
@@ -68,7 +97,21 @@ class AdminDashboard extends React.Component {
       <div className="admin-dashboard">
         <NavBar accounts={this.props.accounts} firebase={this.firebase} />
         <h1>Hello Admin</h1>
-        {!this.state.teacherOrgToggle ? this.showTeachers() : this.showOrgs()}
+        {/* {!this.state.teacherOrgToggle ? this.showTeachers() : this.showOrgs()} */}
+        <Tabs
+          value={this.state.teacherOrgToggle}
+          onChange={this.toggleTeacherOrg}
+          indicatorColor="primary"
+        >
+          <Tab label="Teacher Requests" />
+          <Tab label="Organization Requests" />
+        </Tabs>
+        <TabPanel value={this.state.teacherOrgToggle} index={0}>
+          <div className="admin-dashboard">{this.getTeacherRequests()}</div>
+        </TabPanel>
+        <TabPanel value={this.state.teacherOrgToggle} index={1}>
+          <div className="admin-dashboard">{this.getOrgRequests()}</div>
+        </TabPanel>
       </div>
     ) : (
       <Redirect to="/" />
