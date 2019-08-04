@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -210,7 +211,12 @@ class CreateClass extends React.Component {
             />
           </div>
           <div className="full">
-            <Button variant="contained" color="primary" style={{ width: '40%', marginTop: '30px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.props.submit({ ...this.state })}
+              style={{ width: '40%', marginTop: '30px' }}
+            >
               Create Class
             </Button>
           </div>
@@ -219,5 +225,9 @@ class CreateClass extends React.Component {
     );
   }
 }
+
+CreateClass.propTypes = {
+  submit: PropTypes.func.isRequired
+};
 
 export default CreateClass;

@@ -42,4 +42,6 @@ export function validateFields(fields) {
 
 export const getErrorStatus = error => typeof error === 'string' && error.length > 0;
 
+export const getDateFromTimestamp = timestamp => new Date(timestamp.seconds * 1000);
+
 export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;

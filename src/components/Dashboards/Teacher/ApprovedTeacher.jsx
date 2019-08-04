@@ -6,59 +6,83 @@ import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../../NavBar';
 import CreateClass from '../../Classes/CreateClass';
 import autoBind from '../../../autoBind';
-import { getMMDDYYYY } from '../../../helpers';
+import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
+
+let teacherSub = () => null;
 
 class ApprovedTeacher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      classes: [
-        {
-          name: 'My First Class',
-          id: 'class01',
-          startDate: new Date(),
-          endDate: new Date(),
-          startTime: 'MST:2:00:00:am',
-          endTime: 'MST:3:00:00:pm',
-          daysOfWeek: 'MTW',
-          startAge: 10,
-          endAge: 12,
-          price: 10000,
-          locationName: 'Millerman High',
-          locationAddress: '321 American Dr.',
-          maxStudents: 20,
-          minStudents: 10,
-          kids: ['1111111', '2222222', '3333333']
-        }
-      ],
+      classes: [],
       showCreate: false
     };
     autoBind(this);
   }
 
+  componentDidMount() {
+    teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
+      const classRefs = teacher.data().classes || [];
+      const classes = [];
+      classRefs.forEach(classRef => {
+        classRef.get().then(classDoc => {
+          classes.push({ ...classDoc.data(), id: classDoc.id });
+          if (classes.length === classRefs.length) {
+            this.setState({ classes });
+          }
+        });
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    teacherSub();
+    teacherSub = () => null;
+  }
+
   getClasses() {
     const { classes } = this.state;
-    return classes.map(cls => (
-      <Paper className="class-card" key={cls.id}>
-        <div className="left">
-          <h2>{cls.name}</h2>
-          <p>{`${getMMDDYYYY(cls.startDate)} - ${getMMDDYYYY(cls.endDate)}`}</p>
-        </div>
-        <div className="right">
-          <div className="top">
-            <p style={{ marginRight: '8px' }}>
-              <strong>Price:</strong>
-              {` $${cls.price}`}
+    return classes.map(cls => {
+      console.log(cls);
+      return (
+        <Paper className="class-card" key={cls.id}>
+          <div className="left">
+            <h2>{cls.name}</h2>
+            <p>
+              {`${getMMDDYYYY(getDateFromTimestamp(cls.startDate))} - ${getMMDDYYYY(
+                getDateFromTimestamp(cls.endDate)
+              )}`}
             </p>
-            <div className="info">
-              <PersonIcon />
-              <p>{cls.kids.length}</p>
-            </div>
           </div>
-          <Button color="primary">More Info</Button>
-        </div>
-      </Paper>
-    ));
+          <div className="right">
+            <div className="top">
+              <p style={{ marginRight: '8px' }}>
+                <strong>Price:</strong>
+                {` $${cls.price}`}
+              </p>
+              <div className="info">
+                <PersonIcon />
+                <p>{cls.children.length}</p>
+              </div>
+            </div>
+            <Button color="primary">More Info</Button>
+          </div>
+        </Paper>
+      );
+    });
+  }
+
+  createClass(classData) {
+    const { teachers } = this.props.accounts;
+    this.props.db
+      .collection('classes')
+      .add({ ...classData, children: [] })
+      .then(classObj => {
+        const classes = teachers.data().classes || [];
+        classes.push(classObj);
+        teachers.ref.update({ classes });
+      });
+    this.setState({ showCreate: false });
   }
 
   render() {
@@ -83,7 +107,7 @@ class ApprovedTeacher extends React.Component {
           open={this.state.showCreate}
           onClose={() => this.setState({ showCreate: false })}
         >
-          <CreateClass />
+          <CreateClass submit={this.createClass} />
         </Modal>
       </div>
     );
@@ -92,6 +116,7 @@ class ApprovedTeacher extends React.Component {
 
 ApprovedTeacher.propTypes = {
   firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired
 };
 

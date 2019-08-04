@@ -33,6 +33,7 @@
   justify-content: space-between;
   align-items: center;
   width: 60%;
+  margin-bottom: 20px;
 }
 .class-card .left {
   display: flex;
