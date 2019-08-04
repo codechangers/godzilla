@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, Typography, Box } from '@material-ui/core';
+import { Tabs, Tab, Typography, Box, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../../NavBar';
 import autoBind from '../../../autoBind';
@@ -38,11 +39,16 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired
 };
 
+TabPanel.defaultProps = {
+  children: []
+};
+
 class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      teacherOrgToggle: 0
+      teacherOrgToggle: 0,
+      shouldShowSideDrawer: false
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -50,11 +56,36 @@ class AdminDashboard extends React.Component {
   }
 
   getTeacherRequests() {
-    return <AdminTeacherPage db={this.db} firebase={this.firebase} />;
+    return (
+      <AdminTeacherPage
+        db={this.db}
+        firebase={this.firebase}
+        showSideDrawer={this.state.shouldShowSideDrawer}
+      />
+    );
   }
 
   getOrgRequests() {
-    return <AdminOrganizationPage db={this.db} firebase={this.firebase} />;
+    return (
+      <AdminOrganizationPage
+        db={this.db}
+        firebase={this.firebase}
+        showSideDrawer={this.state.shouldShowSideDrawer}
+      />
+    );
+  }
+
+  getSideDrawerButton() {
+    return (
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        onClick={this.toggleSideDrawer}
+        edge="start"
+      >
+        <MenuIcon />
+      </IconButton>
+    );
   }
 
   toggleTeacherOrg() {
@@ -92,10 +123,20 @@ class AdminDashboard extends React.Component {
     );
   }
 
+  toggleSideDrawer() {
+    let { shouldShowSideDrawer } = this.state;
+    shouldShowSideDrawer = !shouldShowSideDrawer;
+    this.setState({ shouldShowSideDrawer });
+  }
+
   render() {
     return this.props.user.isSignedIn ? (
       <div className="admin-dashboard">
-        <NavBar accounts={this.props.accounts} firebase={this.firebase} />
+        <NavBar
+          accounts={this.props.accounts}
+          firebase={this.firebase}
+          getMenuButton={this.getSideDrawerButton}
+        />
         <h1>Hello Admin</h1>
         {/* {!this.state.teacherOrgToggle ? this.showTeachers() : this.showOrgs()} */}
         <Tabs
