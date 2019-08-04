@@ -24,7 +24,8 @@ class ApprovedTeacher extends React.Component {
           startAge: 10,
           endAge: 12,
           price: 10000,
-          Location: '321 American Dr.',
+          locationName: 'Millerman High',
+          locationAddress: '321 American Dr.',
           maxStudents: 20,
           minStudents: 10,
           kids: ['1111111', '2222222', '3333333']
