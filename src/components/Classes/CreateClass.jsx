@@ -73,7 +73,7 @@ class CreateClass extends React.Component {
 
   render() {
     return (
-      <Card style={{ width: '80%', height: '60vh' }}>
+      <Card style={{ width: '80%' }}>
         <CardHeader title="Create a Class" />
         <CardContent>
           <div className="full">
