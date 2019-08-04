@@ -54,3 +54,22 @@
 .number-data > div {
   width: 16%;
 }
+
+.inner-page {
+  width: 100%;
+  height: calc(100vh - 60px);
+  background-color: #fff;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.back-button {
+  position: absolute !important;
+  top: 10px;
+  left: 10px;
+}

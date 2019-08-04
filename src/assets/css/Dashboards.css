@@ -60,6 +60,13 @@
   margin: 5px 0;
 }
 
+.class-wrapper {
+  width: 50%;
+  min-height: 50vh;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
 .info {
   display: flex;
   flex-direction: row;

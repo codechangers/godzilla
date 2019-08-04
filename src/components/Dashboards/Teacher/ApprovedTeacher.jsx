@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../../NavBar';
 import CreateClass from '../../Classes/CreateClass';
+import ViewClass from '../../Classes/ViewClass';
 import autoBind from '../../../autoBind';
 import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
 
@@ -15,7 +16,8 @@ class ApprovedTeacher extends React.Component {
     super(props);
     this.state = {
       classes: [],
-      showCreate: false
+      showCreate: false,
+      selected: null
     };
     autoBind(this);
   }
@@ -63,7 +65,14 @@ class ApprovedTeacher extends React.Component {
               <p>{cls.children.length}</p>
             </div>
           </div>
-          <Button color="primary">More Info</Button>
+          <Button
+            onClick={() => {
+              this.setState({ selected: cls });
+            }}
+            color="primary"
+          >
+            More Info
+          </Button>
         </div>
       </Paper>
     ));
@@ -107,6 +116,9 @@ class ApprovedTeacher extends React.Component {
         >
           <CreateClass submit={this.createClass} />
         </Modal>
+        {this.state.selected ? (
+          <ViewClass cls={this.state.selected} close={() => this.setState({ selected: null })} />
+        ) : null}
       </div>
     );
   }

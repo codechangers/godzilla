@@ -42,6 +42,15 @@ export function validateFields(fields) {
 
 export const getErrorStatus = error => typeof error === 'string' && error.length > 0;
 
+export const getDoubleDigits = number => (number > 9 ? `${number}` : `0${number}`);
+
 export const getDateFromTimestamp = timestamp => new Date(timestamp.seconds * 1000);
 
 export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+
+export const getHrMn = date => {
+  const past12 = date.getHours() / 12 > 1;
+  return `${getDoubleDigits(past12 ? date.getHours() - 12 : date.getHours())}:${getDoubleDigits(
+    date.getMinutes()
+  )} ${past12 ? 'PM' : 'AM'}`;
+};
