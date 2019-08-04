@@ -42,34 +42,31 @@ class ApprovedTeacher extends React.Component {
 
   getClasses() {
     const { classes } = this.state;
-    return classes.map(cls => {
-      console.log(cls);
-      return (
-        <Paper className="class-card" key={cls.id}>
-          <div className="left">
-            <h2>{cls.name}</h2>
-            <p>
-              {`${getMMDDYYYY(getDateFromTimestamp(cls.startDate))} - ${getMMDDYYYY(
-                getDateFromTimestamp(cls.endDate)
-              )}`}
+    return classes.map(cls => (
+      <Paper className="class-card" key={cls.id}>
+        <div className="left">
+          <h2>{cls.name}</h2>
+          <p>
+            {`${getMMDDYYYY(getDateFromTimestamp(cls.startDate))} - ${getMMDDYYYY(
+              getDateFromTimestamp(cls.endDate)
+            )}`}
+          </p>
+        </div>
+        <div className="right">
+          <div className="top">
+            <p style={{ marginRight: '8px' }}>
+              <strong>Price:</strong>
+              {` $${cls.price}`}
             </p>
-          </div>
-          <div className="right">
-            <div className="top">
-              <p style={{ marginRight: '8px' }}>
-                <strong>Price:</strong>
-                {` $${cls.price}`}
-              </p>
-              <div className="info">
-                <PersonIcon />
-                <p>{cls.children.length}</p>
-              </div>
+            <div className="info">
+              <PersonIcon />
+              <p>{cls.children.length}</p>
             </div>
-            <Button color="primary">More Info</Button>
           </div>
-        </Paper>
-      );
-    });
+          <Button color="primary">More Info</Button>
+        </div>
+      </Paper>
+    ));
   }
 
   createClass(classData) {
@@ -106,6 +103,7 @@ class ApprovedTeacher extends React.Component {
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           open={this.state.showCreate}
           onClose={() => this.setState({ showCreate: false })}
+          disableAutoFocus
         >
           <CreateClass submit={this.createClass} />
         </Modal>
