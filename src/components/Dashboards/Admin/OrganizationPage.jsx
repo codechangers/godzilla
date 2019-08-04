@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, TextField, List } from '@material-ui/core';
+import { MenuItem, TextField, List, Divider } from '@material-ui/core';
 import autoBind from '../../../autoBind';
 import OrganizationRequest from '../../Requests/Organization';
 import Spinner from '../../Spinner';
@@ -53,6 +53,7 @@ class AdminOrganizationPage extends React.Component {
   getFilteredOrgs() {
     return (
       <List>
+        <Divider />
         {this.state.orgReqs.map(org => (
           <OrganizationRequest
             db={this.db}

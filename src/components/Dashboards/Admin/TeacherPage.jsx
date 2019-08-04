@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, TextField, List } from '@material-ui/core';
+import { MenuItem, TextField, List, Divider } from '@material-ui/core';
 import autoBind from '../../../autoBind';
 import TeacherRequest from '../../Requests/Teacher';
 import Spinner from '../../Spinner';
@@ -65,6 +65,7 @@ class AdminTeacherPage extends React.Component {
   getFilteredTeachers() {
     return (
       <List>
+        <Divider />
         {this.state.teacherReqs.map(teacher => (
           <TeacherRequest
             db={this.db}
