@@ -205,7 +205,12 @@ class TeacherRequest extends React.Component {
           {this.getOptionButtons()}
         </ListItem>
         <Divider />
-        <Modal className="admin-modal-wrapper" open={this.state.open} onClose={this.handleClose}>
+        <Modal
+          className="admin-modal-wrapper"
+          open={this.state.open}
+          onClose={this.handleClose}
+          disableAutoFocus
+        >
           <Paper className="admin-modal">
             <Tooltip title="Close" placement="left">
               <IconButton
