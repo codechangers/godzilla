@@ -91,14 +91,9 @@ class AdminDashboard extends React.Component {
     );
   }
 
-  toggleTeacherOrg() {
+  toggleTeacherOrg(e, value) {
     let { teacherOrgToggle } = this.state;
-    if (teacherOrgToggle === 0) {
-      teacherOrgToggle = 1;
-    } else {
-      teacherOrgToggle = 0;
-    }
-    // teacherOrgToggle = !teacherOrgToggle;
+    teacherOrgToggle = value;
     this.setState({ teacherOrgToggle });
   }
 

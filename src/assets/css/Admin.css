@@ -270,3 +270,7 @@ svg.MuiSvgIcon-root.read-indicator {
 .close-side-drawer button {
   float: right;
 }
+
+.filter-drawer .inline .filter-input {
+  width: 80%;
+}

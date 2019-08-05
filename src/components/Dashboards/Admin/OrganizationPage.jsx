@@ -153,7 +153,6 @@ class AdminOrganizationPage extends React.Component {
               id="shouldShowRead"
               name="shouldShowRead"
               select
-              variant="outlined"
               value={this.state.shouldShowRead}
               onChange={this.handleChange}
             >
@@ -166,7 +165,6 @@ class AdminOrganizationPage extends React.Component {
               id="shouldShowOrgType"
               name="shouldShowOrgType"
               select
-              variant="outlined"
               value={this.state.shouldShowOrgType}
               onChange={this.handleChange}
             >
@@ -178,9 +176,9 @@ class AdminOrganizationPage extends React.Component {
             <br />
             <TextField
               id="shouldShowName"
+              className="filter-input"
               type="text"
               label="Search by Name"
-              variant="outlined"
               value={this.state.shouldShowName}
               onChange={this.handleChange}
             />

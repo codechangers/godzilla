@@ -191,7 +191,6 @@ class AdminTeacherPage extends React.Component {
               id="shouldShowRead"
               name="shouldShowRead"
               select
-              variant="outlined"
               value={this.state.shouldShowRead}
               onChange={this.handleChange}
             >
@@ -204,7 +203,6 @@ class AdminTeacherPage extends React.Component {
               id="shouldShowTeacherType"
               name="shouldShowTeacherType"
               select
-              variant="outlined"
               value={this.state.shouldShowTeacherType}
               onChange={this.handleChange}
             >
@@ -217,7 +215,6 @@ class AdminTeacherPage extends React.Component {
               id="shouldShowLocation"
               name="shouldShowLocation"
               select
-              variant="outlined"
               value={this.state.shouldShowLocation}
               onChange={this.handleChange}
             >
@@ -230,9 +227,9 @@ class AdminTeacherPage extends React.Component {
             <br />
             <TextField
               id="shouldShowName"
+              className="filter-input"
               type="text"
               label="Search by Name"
-              variant="outlined"
               value={this.state.shouldShowName}
               onChange={this.handleChange}
             />
@@ -240,9 +237,9 @@ class AdminTeacherPage extends React.Component {
             <br />
             <TextField
               id="shouldShowRegion"
+              className="filter-input"
               type="text"
               label="Search by Region"
-              variant="outlined"
               value={this.state.shouldShowRegion}
               onChange={this.handleChange}
             />
