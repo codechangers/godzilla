@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import '../../assets/css/Teacher.css';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
 
 const allFields = [
@@ -26,8 +26,11 @@ const allFields = [
   'maxStudents'
 ];
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const dontConvert = ['name', 'locationName', 'locationAddress', 'daysOfWeek'];
+const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
+const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
 
-class CreateClass extends React.Component {
+class ClassEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +52,21 @@ class CreateClass extends React.Component {
     this.getUserData = getUserData;
     this.validateFields = validateFields;
     autoBind(this);
+  }
+
+  componentDidMount() {
+    const { cls } = this.props;
+    const newState = {};
+    Object.keys(cls).forEach(attr => {
+      if (dontConvert.includes(attr)) {
+        newState[attr] = cls[attr];
+      } else if (convertToNumber.includes(attr)) {
+        newState[attr] = Number(cls[attr]);
+      } else if (convertToDate.includes(attr)) {
+        newState[attr] = getDateFromTimestamp(cls[attr]);
+      }
+    });
+    this.setState(newState);
   }
 
   setDate(date, dateType) {
@@ -87,14 +105,16 @@ class CreateClass extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields)) {
-      this.props.submit({ ...this.state });
+      const data = { ...this.state };
+      delete data.errors;
+      this.props.submit(data);
     }
   }
 
   render() {
     return (
       <Card style={{ width: '80%' }}>
-        <CardHeader title="Create a Class" />
+        <CardHeader title={this.props.title} />
         <CardContent>
           <div className="full">
             <div className="half">
@@ -252,7 +272,7 @@ class CreateClass extends React.Component {
               onClick={this.handleSubmit}
               style={{ width: '40%', marginTop: '30px' }}
             >
-              Create Class
+              {this.props.submitText}
             </Button>
           </div>
         </CardContent>
@@ -261,8 +281,17 @@ class CreateClass extends React.Component {
   }
 }
 
-CreateClass.propTypes = {
-  submit: PropTypes.func.isRequired
+ClassEditor.propTypes = {
+  submit: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  submitText: PropTypes.string,
+  cls: PropTypes.object
 };
 
-export default CreateClass;
+ClassEditor.defaultProps = {
+  title: 'Create a Class',
+  submitText: 'Create Class',
+  cls: {}
+};
+
+export default ClassEditor;

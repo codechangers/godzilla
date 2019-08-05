@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Paper } from '@material-ui/core';
+import { Modal, IconButton, Tooltip, Button, Paper } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ClassEditor from './Editor';
 import { getMMDDYYYY, getHrMn, getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
 import '../../assets/css/Teacher.css';
@@ -9,10 +12,12 @@ import '../../assets/css/Teacher.css';
 const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
 const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
 
-class ViewClass extends React.Component {
+class ClassViewer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showEditor: false
+    };
     autoBind(this);
   }
 
@@ -32,6 +37,18 @@ class ViewClass extends React.Component {
           <ArrowBackIcon />
           Back
         </Button>
+        <div className="actions">
+          <Tooltip title="Edit">
+            <IconButton color="primary" onClick={() => this.setState({ showEditor: true })}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton color="secondary">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
         <h1>{cls.name}</h1>
         <Paper className="class-wrapper">
           <h3>{`Location: ${cls.locationName} - ${cls.locationAddress}`}</h3>
@@ -44,14 +61,31 @@ class ViewClass extends React.Component {
           <h3>{`Expected # of Students: ${cls.minStudents} - ${cls.maxStudents}`}</h3>
           <h3>{`Price: $${cls.price}`}</h3>
         </Paper>
+        <Modal
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          open={this.state.showEditor}
+          onClose={() => this.setState({ showEditor: false })}
+          disableAutoFocus
+        >
+          <ClassEditor
+            submit={classData => {
+              this.props.update(this.props.cls.id, classData);
+              this.setState({ showEditor: false });
+            }}
+            title="Edit Class Info"
+            submitText="Update Class"
+            cls={this.props.cls}
+          />
+        </Modal>
       </div>
     );
   }
 }
 
-ViewClass.propTypes = {
+ClassViewer.propTypes = {
   close: PropTypes.func.isRequired,
-  cls: PropTypes.object.isRequired
+  cls: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired
 };
 
-export default ViewClass;
+export default ClassViewer;

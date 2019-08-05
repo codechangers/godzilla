@@ -4,8 +4,8 @@ import { Fab, Button, Paper, Modal } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../../NavBar';
-import CreateClass from '../../Classes/CreateClass';
-import ViewClass from '../../Classes/ViewClass';
+import ClassEditor from '../../Classes/Editor';
+import ClassViewer from '../../Classes/Viewer';
 import autoBind from '../../../autoBind';
 import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
 
@@ -24,16 +24,7 @@ class ApprovedTeacher extends React.Component {
 
   componentDidMount() {
     teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
-      const classRefs = teacher.data().classes || [];
-      const classes = [];
-      classRefs.forEach(classRef => {
-        classRef.get().then(classDoc => {
-          classes.push({ ...classDoc.data(), id: classDoc.id });
-          if (classes.length === classRefs.length) {
-            this.setState({ classes });
-          }
-        });
-      });
+      this.fetchClasses(teacher);
     });
   }
 
@@ -78,6 +69,23 @@ class ApprovedTeacher extends React.Component {
     ));
   }
 
+  fetchClasses(teacher, selectedId) {
+    const classRefs = teacher.data().classes || [];
+    const classes = [];
+    classRefs.forEach(classRef => {
+      classRef.get().then(classDoc => {
+        const classData = { ...classDoc.data(), id: classDoc.id };
+        classes.push(classData);
+        if (classes.length === classRefs.length) {
+          this.setState({ classes });
+        }
+        if (selectedId && classDoc.id === selectedId) {
+          this.setState({ selected: classData });
+        }
+      });
+    });
+  }
+
   createClass(classData) {
     const { teachers } = this.props.accounts;
     this.props.db
@@ -89,6 +97,16 @@ class ApprovedTeacher extends React.Component {
         teachers.ref.update({ classes });
       });
     this.setState({ showCreate: false });
+  }
+
+  updateClass(classId, classData) {
+    this.props.db
+      .collection('classes')
+      .doc(classId)
+      .update(classData)
+      .then(() => {
+        this.fetchClasses(this.props.accounts.teachers, classId);
+      });
   }
 
   render() {
@@ -114,10 +132,14 @@ class ApprovedTeacher extends React.Component {
           onClose={() => this.setState({ showCreate: false })}
           disableAutoFocus
         >
-          <CreateClass submit={this.createClass} />
+          <ClassEditor submit={this.createClass} />
         </Modal>
         {this.state.selected ? (
-          <ViewClass cls={this.state.selected} close={() => this.setState({ selected: null })} />
+          <ClassViewer
+            cls={this.state.selected}
+            update={(id, data) => this.updateClass(id, data)}
+            close={() => this.setState({ selected: null })}
+          />
         ) : null}
       </div>
     );
