@@ -35,7 +35,6 @@ class OrganizationRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInfo: false,
       isRead: null,
       open: false
     };

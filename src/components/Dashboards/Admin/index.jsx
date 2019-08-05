@@ -91,34 +91,10 @@ class AdminDashboard extends React.Component {
     );
   }
 
-  toggleTeacherOrg(e, value) {
+  toggleTeacherOrg(_, value) {
     let { teacherOrgToggle } = this.state;
     teacherOrgToggle = value;
     this.setState({ teacherOrgToggle });
-  }
-
-  showTeachers() {
-    return (
-      <div className="admin-dashboard">
-        <h4>Teacher Requests:</h4>
-        <button type="submit" onClick={this.toggleTeacherOrg}>
-          Switch to Organization Requests
-        </button>
-        {this.getTeacherRequests()}
-      </div>
-    );
-  }
-
-  showOrgs() {
-    return (
-      <div className="admin-dashboard">
-        <h4>Organization Requests:</h4>
-        <button type="submit" onClick={this.toggleTeacherOrg}>
-          Switch to Teacher Requests
-        </button>
-        {this.getOrgRequests()}
-      </div>
-    );
   }
 
   toggleSideDrawer() {
