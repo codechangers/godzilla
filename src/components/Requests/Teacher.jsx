@@ -1,5 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  ListItem,
+  Divider,
+  Button,
+  ListItemText,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  IconButton,
+  Tooltip
+} from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+import NewIcon from '@material-ui/icons/Lens';
 import autoBind from '../../autoBind';
 
 const propTypes = {
@@ -18,11 +35,10 @@ class TeacherRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showInfo: false,
-      showInfo2: false,
       parent: null,
       teacher: null,
-      isRead: null
+      isRead: null,
+      open: false
     };
     autoBind(this);
   }
@@ -44,82 +60,69 @@ class TeacherRequest extends React.Component {
       });
   }
 
-  getInfo1() {
+  getModalData() {
     return (
-      <div className="request-info-wrapper">
-        <div className="request-info">
-          <div className="next-back-close-buttons">
-            <button type="button" onClick={this.toggleInfo} className="left-side-button">
-              Close
-            </button>
-            <button type="button" onClick={this.switchInfo} className="right-side-button">
-              Next
-            </button>
-          </div>
-          <div>
-            <p>Name:</p>
-            <span>{`${this.state.parent.fName} ${this.state.parent.lName}`}</span>
-          </div>
-          <div>
-            <p>Email:</p>
-            <span>{this.state.parent.email}</span>
-          </div>
-          <div>
-            <p>Phone:</p>
-            <span>{this.state.parent.phone}</span>
-          </div>
-          <div>
-            <p>Date Applied:</p>
-            <span>{new Date(this.props.teacher.dateApplied.seconds * 1000).toDateString()}</span>
-          </div>
-          <div>
-            <p>Type of Teaching Location:</p>
-            <span>{this.props.teacher.location}</span>
-          </div>
-          <div>
-            <p>Desired Region:</p>
-            <span>{this.props.teacher.region}</span>
-          </div>
-          {this.getOptionButtons()}
-        </div>
-      </div>
+      <Table className="modal-table">
+        <TableBody>
+          <TableRow>
+            <TableCell className="table-header">Name</TableCell>
+            <TableCell>{`${this.state.parent.fName} ${this.state.parent.lName}`}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Email</TableCell>
+            <TableCell>{this.state.parent.email}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Phone</TableCell>
+            <TableCell>{this.state.parent.phone}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Date Applied</TableCell>
+            <TableCell>
+              {new Date(this.props.teacher.dateApplied.seconds * 1000).toDateString()}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Type of Teaching Location</TableCell>
+            <TableCell>{this.props.teacher.location}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Desired Region</TableCell>
+            <TableCell>{this.props.teacher.region}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Why they want to Teach</TableCell>
+            <TableCell>{this.props.teacher.whyTeach}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="table-header">Previous Experience</TableCell>
+            <TableCell>{this.props.teacher.prevExp}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     );
-  }
-
-  getInfo2() {
-    return this.state.showInfo && this.state.showInfo2 ? (
-      <div className="request-info-wrapper">
-        <div className="request-info">
-          <div className="next-back-close-buttons">
-            <button type="button" onClick={this.switchInfo} className="left-side-button">
-              Back
-            </button>
-            <button type="button" onClick={this.toggleInfo} className="right-side-button">
-              Close
-            </button>
-          </div>
-          <div>
-            <p>Why they want to Teach:</p>
-            <span>{this.props.teacher.whyTeach}</span>
-          </div>
-          <div>
-            <p>Previous Experience:</p>
-            <span>{this.props.teacher.prevExp}</span>
-          </div>
-          {this.getOptionButtons()}
-        </div>
-      </div>
-    ) : null;
   }
 
   getStatus() {
     return this.props.teacher.isDeclined === true ? (
       <div className="declined">
-        <p>Declined</p>
+        <Button
+          variant="contained"
+          size="large"
+          color="secondary"
+          disabled
+          className="applicant-status"
+        >
+          <CloseIcon />
+          Declined
+        </Button>
       </div>
     ) : (
       <div className="accepted">
-        <p>Accepted</p>
+        <Button variant="contained" size="large" disabled className="applicant-status">
+          <DoneIcon />
+          Accepted
+        </Button>
       </div>
     );
   }
@@ -128,35 +131,37 @@ class TeacherRequest extends React.Component {
     const { teacher } = this.props;
     return this.props.teacher.isDeclined === false && this.props.teacher.isVerrified === false ? (
       <div className="options">
-        <button
-          type="button"
-          className="accept"
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
           onClick={() => {
             this.props.acceptRequest(teacher);
           }}
         >
           Accept
-        </button>
-        <button
-          type="button"
-          className="decline"
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          color="secondary"
           onClick={() => {
             this.props.declineRequest(teacher);
           }}
         >
           Decline
-        </button>
+        </Button>
       </div>
     ) : (
       this.getStatus()
     );
   }
 
-  toggleInfo() {
-    let { showInfo } = this.state;
-    showInfo = !showInfo;
-    this.setState({ showInfo });
-    // change isRead to true
+  handleOpen() {
+    let { open } = this.state;
+    open = true;
+    this.setState({ open });
+
     this.props.db
       .collection('teachers')
       .doc(this.props.teacher.id)
@@ -176,22 +181,50 @@ class TeacherRequest extends React.Component {
       });
   }
 
-  switchInfo() {
-    let { showInfo2 } = this.state;
-    showInfo2 = !showInfo2;
-    this.setState({ showInfo2 });
+  handleClose() {
+    let { open } = this.state;
+    open = false;
+    this.setState({ open });
   }
 
   render() {
     return this.state.parent === null || this.state.teacher === null ? (
       <div className="teacher-request" />
     ) : (
-      <div className={`teacher-request ${isReadToBackgroundColor[this.state.isRead]}`}>
-        <button type="button" className="select" onClick={this.toggleInfo}>
-          <p>{`${this.state.parent.fName} ${this.state.parent.lName}`}</p>
-        </button>
-        {this.getOptionButtons()}
-        {this.state.showInfo && this.state.showInfo2 === false ? this.getInfo1() : this.getInfo2()}
+      <div>
+        <ListItem
+          button
+          onClick={this.handleOpen}
+          className={`teacher-request ${isReadToBackgroundColor[this.state.isRead]}`}
+        >
+          <NewIcon fontSize="small" className="read-indicator" />
+          <ListItemText
+            className="teacher-request-name"
+            primary={`${this.state.parent.fName} ${this.state.parent.lName}`}
+          />
+          {this.getOptionButtons()}
+        </ListItem>
+        <Divider />
+        <Modal
+          className="admin-modal-wrapper"
+          open={this.state.open}
+          onClose={this.handleClose}
+          disableAutoFocus
+        >
+          <Paper className="admin-modal">
+            <Tooltip title="Close" placement="left">
+              <IconButton
+                aria-label="close"
+                onClick={this.handleClose}
+                className="admin-modal-close"
+              >
+                <CloseIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
+            {this.getModalData()}
+            {this.getOptionButtons()}
+          </Paper>
+        </Modal>
       </div>
     );
   }

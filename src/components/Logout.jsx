@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 
 const Logout = ({ firebase }) => (
-  <button type="button" onClick={() => firebase.auth().signOut()}>
+  <Button color="inherit" type="button" onClick={() => firebase.auth().signOut()}>
     LogOut
-  </button>
+  </Button>
 );
 
 Logout.propTypes = { firebase: PropTypes.object.isRequired };
