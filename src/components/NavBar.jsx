@@ -19,11 +19,12 @@ const collectionToLabel = {
   admins: 'Admin Dashboard'
 };
 
-const NavBar = ({ accounts, firebase, location }) => {
+const NavBar = ({ accounts, firebase, location, getMenuButton }) => {
   const { parents } = accounts;
   const greeting = parents ? `Hello ${parents.data().fName}` : '';
   return (
     <nav className="nav-bar">
+      {getMenuButton()}
       <div className="third">
         {Object.keys(accounts).map(account => {
           const path = accountTypeToRoute[account];
@@ -48,7 +49,12 @@ const NavBar = ({ accounts, firebase, location }) => {
 NavBar.propTypes = {
   accounts: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  getMenuButton: PropTypes.func
+};
+
+NavBar.defaultProps = {
+  getMenuButton: () => null
 };
 
 export default withRouter(NavBar);
