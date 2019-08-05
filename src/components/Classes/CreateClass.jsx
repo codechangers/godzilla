@@ -12,8 +12,19 @@ import {
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import '../../assets/css/Teacher.css';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import autoBind from '../../autoBind';
 
+const allFields = [
+  'name',
+  'locationName',
+  'locationAddress',
+  'daysOfWeek',
+  'startAge',
+  'endAge',
+  'minStudents',
+  'maxStudents'
+];
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 class CreateClass extends React.Component {
@@ -32,8 +43,11 @@ class CreateClass extends React.Component {
       endAge: 0,
       price: 0,
       minStudents: 0,
-      maxStudents: 0
+      maxStudents: 0,
+      errors: {}
     };
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
@@ -71,6 +85,12 @@ class CreateClass extends React.Component {
     this.setState({ ...newState });
   }
 
+  handleSubmit() {
+    if (this.validateFields(allFields)) {
+      this.props.submit({ ...this.state });
+    }
+  }
+
   render() {
     return (
       <Card style={{ width: '80%' }}>
@@ -85,6 +105,8 @@ class CreateClass extends React.Component {
                 variant="outlined"
                 value={this.state.name}
                 onChange={this.handleInput}
+                error={getErrorStatus(this.state.errors.name)}
+                helperText={this.state.errors.name}
               />
               <TextField
                 id="locationName"
@@ -93,6 +115,8 @@ class CreateClass extends React.Component {
                 variant="outlined"
                 value={this.state.locationName}
                 onChange={this.handleInput}
+                error={getErrorStatus(this.state.errors.locationName)}
+                helperText={this.state.errors.locationName}
               />
               <TextField
                 id="locationAddress"
@@ -101,6 +125,8 @@ class CreateClass extends React.Component {
                 variant="outlined"
                 value={this.state.locationAddress}
                 onChange={this.handleInput}
+                error={getErrorStatus(this.state.errors.locationAddress)}
+                helperText={this.state.errors.locationAddress}
               />
             </div>
             <div className="half">
@@ -142,6 +168,7 @@ class CreateClass extends React.Component {
               </div>
             </div>
           </div>
+          <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
           <div className="days-of-week">
             {weekDays.map(day => (
               <FormControlLabel
@@ -161,6 +188,8 @@ class CreateClass extends React.Component {
               variant="outlined"
               value={this.state.startAge}
               onChange={this.handleInput}
+              error={getErrorStatus(this.state.errors.startAge)}
+              helperText={this.state.errors.startAge}
               InputProps={{
                 endAdornment: <InputAdornment position="end">years</InputAdornment>
               }}
@@ -172,6 +201,8 @@ class CreateClass extends React.Component {
               variant="outlined"
               value={this.state.endAge}
               onChange={this.handleInput}
+              error={getErrorStatus(this.state.errors.endAge)}
+              helperText={this.state.errors.endAge}
               InputProps={{
                 endAdornment: <InputAdornment position="end">years</InputAdornment>
               }}
@@ -194,6 +225,8 @@ class CreateClass extends React.Component {
               variant="outlined"
               value={this.state.minStudents}
               onChange={this.handleInput}
+              error={getErrorStatus(this.state.errors.minStudents)}
+              helperText={this.state.errors.minStudents}
               InputProps={{
                 endAdornment: <InputAdornment position="end">students</InputAdornment>
               }}
@@ -205,6 +238,8 @@ class CreateClass extends React.Component {
               variant="outlined"
               value={this.state.maxStudents}
               onChange={this.handleInput}
+              error={getErrorStatus(this.state.errors.maxStudents)}
+              helperText={this.state.errors.maxStudents}
               InputProps={{
                 endAdornment: <InputAdornment position="end">students</InputAdornment>
               }}
@@ -214,7 +249,7 @@ class CreateClass extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => this.props.submit({ ...this.state })}
+              onClick={this.handleSubmit}
               style={{ width: '40%', marginTop: '30px' }}
             >
               Create Class
