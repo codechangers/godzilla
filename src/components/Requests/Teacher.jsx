@@ -192,11 +192,12 @@ class TeacherRequest extends React.Component {
       <div className="teacher-request" />
     ) : (
       <div>
-        <ListItem button onClick={this.handleOpen} className="teacher-request">
-          <NewIcon
-            fontSize="small"
-            className={`read-indicator ${isReadToBackgroundColor[this.state.isRead]}`}
-          />
+        <ListItem
+          button
+          onClick={this.handleOpen}
+          className={`teacher-request ${isReadToBackgroundColor[this.state.isRead]}`}
+        >
+          <NewIcon fontSize="small" className="read-indicator" />
           <ListItemText
             className="teacher-request-name"
             primary={`${this.state.parent.fName} ${this.state.parent.lName}`}

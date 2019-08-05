@@ -163,11 +163,12 @@ class OrganizationRequest extends React.Component {
       <div className="org-request" />
     ) : (
       <div>
-        <ListItem button onClick={this.handleOpen} className="org-request">
-          <NewIcon
-            fontSize="small"
-            className={`read-indicator ${isReadToBackgroundColor[this.state.isRead]}`}
-          />
+        <ListItem
+          button
+          onClick={this.handleOpen}
+          className={`org-request ${isReadToBackgroundColor[this.state.isRead]}`}
+        >
+          <NewIcon fontSize="small" className="read-indicator" />
           <ListItemText className="org-request-name" primary={org.name} />
           {this.getOptionButtons()}
         </ListItem>

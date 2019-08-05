@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, TextField, List, Divider } from '@material-ui/core';
+import { MenuItem, TextField, List, Divider, Drawer } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import autoBind from '../../../autoBind';
 import TeacherRequest from '../../Requests/Teacher';
 import Spinner from '../../Spinner';
@@ -171,8 +173,18 @@ class AdminTeacherPage extends React.Component {
       <Spinner color="primary" />
     ) : (
       <>
-        <div className="left-side-filters">
-          <h4>Filters</h4>
+        <Drawer
+          className="filter-drawer"
+          variant="persistent"
+          anchor="left"
+          open={this.props.showSideDrawer}
+        >
+          <div className="close-side-drawer">
+            <IconButton onClick={this.props.toggleDrawer}>
+              <ChevronLeftIcon fontSize="large" />
+            </IconButton>
+          </div>
+          <h3>Filters</h3>
           <div className="inline">
             <p>Read, Unread, Both</p>
             <TextField
@@ -187,7 +199,6 @@ class AdminTeacherPage extends React.Component {
               <MenuItem value="true">Read Only</MenuItem>
               <MenuItem value="false">Unread Only</MenuItem>
             </TextField>
-            <br />
             <p>Show only Teachers</p>
             <TextField
               id="shouldShowTeacherType"
@@ -236,7 +247,7 @@ class AdminTeacherPage extends React.Component {
               onChange={this.handleChange}
             />
           </div>
-        </div>
+        </Drawer>
         {this.getFilteredTeachers()}
       </>
     );

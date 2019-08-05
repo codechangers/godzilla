@@ -34,13 +34,17 @@ svg.MuiSvgIcon-root.read-indicator {
   padding-right: 15px;
 }
 
-.is-read {
+.is-read svg.read-indicator {
   visibility: hidden;
 }
 
-.is-not-read {
+.is-not-read svg.read-indicator {
   color: #3f51b5;
   visibility: visible;
+}
+
+.is-not-read span {
+  font-weight: bold;
 }
 
 .declined {
@@ -248,4 +252,21 @@ svg.MuiSvgIcon-root.read-indicator {
   margin-right: 20px;
   background-color: #f50057;
   color: white;
+}
+
+.filter-drawer .MuiPaper-root {
+  padding: 0 20px;
+  min-width: 300px;
+}
+
+.filter-drawer h3 {
+  margin: 0;
+}
+
+.admin-dashboard .nav-bar .side-drawer-button {
+  margin: 0;
+}
+
+.close-side-drawer button {
+  float: right;
 }

@@ -61,6 +61,7 @@ class AdminDashboard extends React.Component {
         db={this.db}
         firebase={this.firebase}
         showSideDrawer={this.state.shouldShowSideDrawer}
+        toggleDrawer={() => this.toggleSideDrawer()}
       />
     );
   }
@@ -71,6 +72,7 @@ class AdminDashboard extends React.Component {
         db={this.db}
         firebase={this.firebase}
         showSideDrawer={this.state.shouldShowSideDrawer}
+        toggleDrawer={() => this.toggleSideDrawer()}
       />
     );
   }
@@ -82,6 +84,7 @@ class AdminDashboard extends React.Component {
         aria-label="open drawer"
         onClick={this.toggleSideDrawer}
         edge="start"
+        className="side-drawer-button"
       >
         <MenuIcon />
       </IconButton>
@@ -138,7 +141,6 @@ class AdminDashboard extends React.Component {
           getMenuButton={this.getSideDrawerButton}
         />
         <h1>Hello Admin</h1>
-        {/* {!this.state.teacherOrgToggle ? this.showTeachers() : this.showOrgs()} */}
         <Tabs
           value={this.state.teacherOrgToggle}
           onChange={this.toggleTeacherOrg}
