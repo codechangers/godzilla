@@ -33,6 +33,7 @@ class ParentSignUp extends React.Component {
   }
 
   getOrgData() {
+    const date = new Date();
     // Filter out any fields for local state that shouldn't be saved to the organization document.
     return Object.keys(this.state)
       .filter(key => Object.keys(idToDataMember).includes(key))
@@ -42,7 +43,13 @@ class ParentSignUp extends React.Component {
           newObj[key] = this.state[key];
           return newObj;
         },
-        { isVerrified: false }
+        {
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        }
       );
   }
 
@@ -96,6 +103,7 @@ class ParentSignUp extends React.Component {
               type="text"
               label="Describe your Organization"
               variant="outlined"
+              multiline
               helperText={errors.aboutMe}
               value={this.state.aboutMe}
               onChange={this.handleChange}

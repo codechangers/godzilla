@@ -127,7 +127,7 @@ class SignUp extends React.Component {
     return this.state.isRegistered ? (
       this.getForm()
     ) : (
-      <div className="signup-wrapper" id="signup-wrapper">
+      <div className="signup-wrapper">
         <Card className="signup-form">
           <CardHeader title="Create an Account" />
           <CardContent className="column">
