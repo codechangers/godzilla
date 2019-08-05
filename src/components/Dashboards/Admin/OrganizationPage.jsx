@@ -11,7 +11,9 @@ let cancelOrganizationSub = () => {};
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  showSideDrawer: PropTypes.bool.isRequired,
+  toggleDrawer: PropTypes.func.isRequired
 };
 
 class AdminOrganizationPage extends React.Component {
