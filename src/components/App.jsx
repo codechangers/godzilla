@@ -7,7 +7,7 @@ import HomePage from './HomePage';
 import Login from './Login';
 import SignUp from './SignUp';
 import AdminDashboard from './Dashboards/Admin/index';
-import ParentDashboard from './Dashboards/Parent';
+import ParentDashboard from './Dashboards/Parent/index';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
 import '../assets/css/App.css';

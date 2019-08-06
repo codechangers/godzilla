@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import autoBind from '../../autoBind';
-import Profile from './ParentDashComponents/Profile';
-import NavBar from '../NavBar';
-import '../../assets/css/Parent-Dash.css';
-import ClassSignUp from './ParentDashComponents/ClassSignUp';
+import autoBind from '../../../autoBind';
+import Profile from './Profile';
+import NavBar from '../../NavBar';
+import '../../../assets/css/Parent-Dash.css';
+import ClassSignUp from './ClassSignUp';
 
 const drawerWidth = 240;
 
