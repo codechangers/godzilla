@@ -27,5 +27,22 @@ export const dataMemberToValidation = {
   password: state =>
     state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
   confirmPassword: state =>
-    state.password === state.confirmPassword ? '' : 'Password fields do not match'
+    state.password === state.confirmPassword ? '' : 'Password fields do not match',
+  locationName: () => '',
+  locationAddress: () => '',
+  daysOfWeek: state => (state.daysOfWeek.length > 0 ? '' : 'Must select at least one week day'),
+  startAge: state => (state.startAge > 0 ? '' : 'This field may not be empty'),
+  endAge: state => {
+    if (Number(state.endAge) >= Number(state.startAge)) {
+      return state.endAge > 0 ? '' : 'This field may not be empty';
+    }
+    return "Max Age can't be less than Min";
+  },
+  minStudents: state => (state.minStudents > 0 ? '' : 'This field may not be empty'),
+  maxStudents: state => {
+    if (Number(state.maxStudents) >= Number(state.minStudents)) {
+      return state.maxStudents > 0 ? '' : 'This field may not be empty';
+    }
+    return "Max Students can't be less than Min";
+  }
 };
