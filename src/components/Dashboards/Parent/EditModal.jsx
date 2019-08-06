@@ -17,8 +17,7 @@ class EditModal extends React.Component {
     super(props);
     this.state = {
       textFieldValue: '',
-      errorMessage: '',
-      formValid: false
+      errorMessage: ''
     };
     this.db = this.props.db;
     autoBind(this);
@@ -38,24 +37,21 @@ class EditModal extends React.Component {
       this.setState({ errorMessage });
     } else {
       data[attr] = this.state.textFieldValue;
-      this.state.formValid = true;
       this.updateAttribute(id, collection, data);
     }
   }
 
   updateAttribute(id, collection, data) {
-    if (this.state.formValid === true) {
-      this.db
-        .collection(collection)
-        .doc(id)
-        .update(data)
-        .then(() => {
-          this.props.cancel();
-        })
-        .catch(err => {
-          this.setState({ errorMessage: err });
-        });
-    }
+    this.db
+      .collection(collection)
+      .doc(id)
+      .update(data)
+      .then(() => {
+        this.props.cancel();
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err });
+      });
   }
 
   render() {
