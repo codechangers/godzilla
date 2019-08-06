@@ -1,20 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 
+const propTypes = {
+  db: PropTypes.object.isRequired,
+  cancel: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
+};
+
 class EditModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       textFieldValue: '',
-      firstName: '',
-      lastName: '',
       errorMessage: '',
-      formValid: false,
-      emailValidation: ''
+      formValid: false
     };
     this.db = this.props.db;
     autoBind(this);
@@ -94,5 +98,7 @@ class EditModal extends React.Component {
     );
   }
 }
+
+EditModal.propTypes = propTypes;
 
 export default EditModal;
