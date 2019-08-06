@@ -45,6 +45,12 @@ const useStyles = () => {
   }));
 };
 
+const getSubHeader = header => (
+  <ListSubheader component="div" id="nested-list-subheader">
+    {header}
+  </ListSubheader>
+);
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -76,7 +82,7 @@ class Profile extends React.Component {
         };
         newState.currentUser = doc.data();
         if (doc.data().children !== undefined) {
-          doc.data().children.map(childRef => {
+          doc.data().children.forEach(childRef => {
             childRef.onSnapshot(child => {
               const childExists = newState.childrenArray.findIndex(existingChild => {
                 return existingChild.id === child.id;
@@ -111,15 +117,11 @@ class Profile extends React.Component {
   }
 
   showChildList(id) {
-    const tempArray = this.state.showChildData;
-    const index = tempArray
-      .map(function(x) {
-        return x.id;
-      })
-      .indexOf(id);
-    const status = this.state.showChildData[index].open;
-    tempArray[index].open = !status;
-    this.setState({ showChildData: tempArray });
+    const { showChildData } = this.state;
+    const index = showChildData.map(x => x.id).indexOf(id);
+    const status = showChildData[index].open;
+    showChildData[index].open = !status;
+    this.setState({ showChildData });
   }
 
   showModal(data) {
@@ -138,11 +140,7 @@ class Profile extends React.Component {
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Parent Account
-</ListSubheader>
-            }
+            subheader={getSubHeader('Parent Account')}
             className={useStyles.root}
           >
             <ListItem
@@ -222,11 +220,7 @@ class Profile extends React.Component {
                 <List
                   component="nav"
                   aria-labelledby="nested-list-subheader"
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Child's Information
-</ListSubheader>
-                  }
+                  subheader={getSubHeader("Child's Information")}
                   className={useStyles.root}
                 >
                   <ListItem
