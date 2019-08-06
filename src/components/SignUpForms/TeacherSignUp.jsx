@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import '../../assets/css/Signup.css';
 
 const locationToPrompt = {
-  '': 'Location Name:',
+  '': 'Location Name',
   school: 'What is the name of the school?',
   office: 'What is the name of the company?',
-  house: 'What is the Address of the house?',
-  other: 'Describe the Location:'
+  house: 'What is the address of the house?',
+  other: 'Describe the location'
 };
 
 const idToDataMember = {
@@ -76,6 +78,13 @@ class TeacherSignUp extends React.Component {
     this.setState(newState);
   }
 
+  handleSelectLocation(e) {
+    const { name, value } = e.target;
+    const newState = {};
+    newState[idToDataMember[name]] = value;
+    this.setState(newState);
+  }
+
   handleSubmit() {
     if (this.validateFields(allFields) === true) {
       this.props.db
@@ -89,43 +98,81 @@ class TeacherSignUp extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-form">
-        <h1>Teacher Account Information:</h1>
-        <span className="errormessage">{errors.whyTeach}</span>
-        <label htmlFor="whyTeach" className="tall">
-          Why do you want to teach STEM topics to kids?
-          <textarea id="whyTeach" value={this.state.whyTeach} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.prevExp}</span>
-        <label htmlFor="prevExp" className="tall">
-          Do you have any previous teaching experience?
-          <textarea id="prevExp" value={this.state.prevExp} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.region}</span>
-        <label htmlFor="region">
-          Where Will you Teach? (City, State)
-          <input id="region" type="text" value={this.state.region} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.location}</span>
-        <div className="inline">
-          <p>What type of Location will you teach at?</p>
-          <select id="location" value={this.state.location} onChange={this.handleChange}>
-            <option value="" />
-            <option value="school">School</option>
-            <option value="office">Company&apos;s Offices</option>
-            <option value="house">House</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <span className="errormessage">{errors.address}</span>
-        <label htmlFor="address">
-          {locationToPrompt[this.state.location]}
-          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
-        </label>
-        <br />
-        <button type="submit" onClick={this.handleSubmit}>
-          Submit Teacher Application
-        </button>
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Teacher Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="whyTeach"
+              type="text"
+              label="Why do you want to teach STEM topics to kids?"
+              variant="outlined"
+              multiline
+              helperText={errors.whyTeach}
+              value={this.state.whyTeach}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="prevExp"
+              type="text"
+              label="Do you have any previous teaching experience?"
+              variant="outlined"
+              multiline
+              helperText={errors.prevExp}
+              value={this.state.prevExp}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="region"
+              type="text"
+              label="Where Will you Teach? (City, State)"
+              variant="outlined"
+              helperText={errors.region}
+              value={this.state.region}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="location"
+              name="location"
+              select
+              label="What type of Location will you teach at?"
+              variant="outlined"
+              helperText={errors.location}
+              value={this.state.location}
+              onChange={this.handleSelectLocation}
+            >
+              <MenuItem key="school" value="school">
+                School
+              </MenuItem>
+              <MenuItem key="office" value="office">
+                Company&apos;s Office
+              </MenuItem>
+              <MenuItem key="house" value="house">
+                House
+              </MenuItem>
+              <MenuItem key="other" value="other">
+                Other
+              </MenuItem>
+            </TextField>
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="address"
+              type="text"
+              label={locationToPrompt[this.state.location]}
+              variant="outlined"
+              helperText={errors.address}
+              value={this.state.address}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Submit Teacher Application
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

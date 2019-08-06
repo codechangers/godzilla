@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
 const idToDataMember = {
   name: 'name',
@@ -32,6 +33,7 @@ class ParentSignUp extends React.Component {
   }
 
   getOrgData() {
+    const date = new Date();
     // Filter out any fields for local state that shouldn't be saved to the organization document.
     return Object.keys(this.state)
       .filter(key => Object.keys(idToDataMember).includes(key))
@@ -41,7 +43,13 @@ class ParentSignUp extends React.Component {
           newObj[key] = this.state[key];
           return newObj;
         },
-        { isVerrified: false }
+        {
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        }
       );
   }
 
@@ -65,26 +73,46 @@ class ParentSignUp extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-form">
-        <h1>Oranization Account Information:</h1>
-        <span className="errormessage">{errors.name}</span>
-        <label htmlFor="name">
-          Organization Name:
-          <input id="name" type="text" value={this.state.name} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.address}</span>
-        <label htmlFor="address">
-          Address:
-          <input id="address" type="text" value={this.state.address} onChange={this.handleChange} />
-        </label>
-        <span className="errormessage">{errors.aboutMe}</span>
-        <label htmlFor="aboutMe">
-          Describe your Organization:
-          <textarea id="aboutMe" value={this.state.aboutMe} onChange={this.handleChange} />
-        </label>
-        <button type="submit" onClick={this.handleSubmit} style={{ marginTop: '20px' }}>
-          Submit Organization Application
-        </button>
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Organization Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={getErrorStatus(errors.name)}
+              id="name"
+              type="text"
+              label="Organization Name"
+              variant="outlined"
+              helperText={errors.name}
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.address)}
+              id="address"
+              type="text"
+              label="Address"
+              variant="outlined"
+              helperText={errors.address}
+              value={this.state.address}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.aboutMe)}
+              id="aboutMe"
+              type="text"
+              label="Describe your Organization"
+              variant="outlined"
+              multiline
+              helperText={errors.aboutMe}
+              value={this.state.aboutMe}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Submit Organization Application
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

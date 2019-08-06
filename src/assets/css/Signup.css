@@ -1,123 +1,70 @@
-.signup-form {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 50%;
-  min-height: 300px;
-  background-color: #dadada;
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 30px;
+.signup-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
 }
 
-.signup-form h1 {
-  margin-top: 0;
+.signup-form {
+  width: 50%;
+  min-width: 600px;
+  max-width: 1200px;
+  background-color: #dadada;
+  margin: 50px 0;
 }
 
-.signup-form > div.generic-signup-wrapper {
-  width: 100%;
+.column {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-}
-
-.signup-form .inline {
-  display: flex;
-  flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
-}
-
-.signup-form .inline select {
-  margin-left: 20px;
 }
 
 .signup-form label {
-  width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
+  margin-bottom: 30px;
 }
 
-.signup-form label {
-  width: 20;
-}
-
-.signup-form label.collapse {
-  width: 100%;
-  justify-content: flex-start;
-  padding-bottom: 20px;
-}
-
-.signup-form label.tall {
-  margin: 20px 0;
-  flex-direction: column;
-}
-
-.signup-form label input[type='text'],
-.signup-form label input[type='password'] {
-  height: 26px;
-  width: calc(50% + 4px);
-  outline: none;
-  border: none;
-  border-radius: 22px;
-  padding: 7px 10px;
-  transition: 100ms ease;
-  box-sizing: border-box;
-  margin: 10px 0;
-}
-
-.signup-form label textarea {
-  max-width: 70%;
-  min-width: 70%;
-  min-height: 100px;
-  margin-top: 20px;
-  padding: 8px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  outline: none;
-  transition: 100ms ease;
-}
-.signup-form label textarea:focus {
-  border: 2px solid var(--primary-color);
-}
-
-.signup-form label input[type='checkbox'] {
-  margin-left: 40px;
-}
-
-.signup-form input:focus {
-  border: 2px solid var(--primary-color);
-  padding: 5px 8px;
+.signup-form .MuiTextField-root {
+  width: 70%;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .signup-form button {
-  width: 50%;
-  height: 30px;
-  background-color: var(--primary-color);
-  color: #fff;
-  border-radius: 30px;
-  opacity: 0.8;
-  transition: 200ms ease;
-  cursor: pointer;
-  outline: none;
+  width: 40%;
 }
 
-.signup-form button:hover,
-.signup-form button:focus {
-  opacity: 1;
+#phone-can-text {
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.errormessage {
-  color: red;
-  margin-bottom: 4px;
-  width: calc(50% + 4px) !important;
-  height: 20px;
-  align-self: flex-end;
+#add-child {
+  margin-bottom: 20px;
+}
+
+/* may need to change */
+.request-info .MuiInputBase-root {
+  width: 100%;
+}
+
+.request-info-wrapper .request-info {
+  padding: 40px;
+}
+
+.request-info-wrapper .request-info .modalButtonContainer {
+  justify-content: space-evenly;
+}
+
+.request-info .modalButtonContainer span {
+  margin: 0;
 }
