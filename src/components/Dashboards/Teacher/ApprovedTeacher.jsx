@@ -109,6 +109,19 @@ class ApprovedTeacher extends React.Component {
       });
   }
 
+  deleteClass(classId) {
+    const { teachers } = this.props.accounts;
+    this.props.db
+      .collection('classes')
+      .doc(classId)
+      .delete()
+      .then(() => {
+        let classes = teachers.data().classes || [];
+        classes = classes.filter(cls => cls.id !== classId);
+        teachers.ref.update({ classes });
+      });
+  }
+
   render() {
     const { accounts, firebase } = this.props;
     return (
@@ -138,6 +151,7 @@ class ApprovedTeacher extends React.Component {
           <ClassViewer
             cls={this.state.selected}
             update={(id, data) => this.updateClass(id, data)}
+            delete={id => this.deleteClass(id)}
             close={() => this.setState({ selected: null })}
           />
         ) : null}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, IconButton, Tooltip, Button, Paper } from '@material-ui/core';
+import { Modal, IconButton, Tooltip, Button, Paper, Card } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -16,7 +16,8 @@ class ClassViewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEditor: false
+      showEditor: false,
+      showDelete: false
     };
     autoBind(this);
   }
@@ -43,7 +44,7 @@ class ClassViewer extends React.Component {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title="Delete" onClick={() => this.setState({ showDelete: true })}>
             <IconButton color="secondary">
               <DeleteIcon />
             </IconButton>
@@ -63,19 +64,46 @@ class ClassViewer extends React.Component {
         </Paper>
         <Modal
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-          open={this.state.showEditor}
-          onClose={() => this.setState({ showEditor: false })}
+          open={this.state.showEditor || this.state.showDelete}
+          onClose={() => this.setState({ showEditor: false, showDelete: false })}
           disableAutoFocus
         >
-          <ClassEditor
-            submit={classData => {
-              this.props.update(this.props.cls.id, classData);
-              this.setState({ showEditor: false });
-            }}
-            title="Edit Class Info"
-            submitText="Update Class"
-            cls={this.props.cls}
-          />
+          {this.state.showEditor ? (
+            <ClassEditor
+              submit={classData => {
+                this.props.update(this.props.cls.id, classData);
+                this.setState({ showEditor: false });
+              }}
+              title="Edit Class Info"
+              submitText="Update Class"
+              cls={this.props.cls}
+            />
+          ) : (
+            <Card className="delete-card">
+              <h1>{`Are you sure you want to delete ${this.props.cls.name}?`}</h1>
+              <h4>This will remove the class and all signed up students permanently</h4>
+              <div className="options">
+                <Button
+                  color="default"
+                  variant="outlined"
+                  onClick={() => this.setState({ showDelete: false })}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => {
+                    this.props.delete(this.props.cls.id);
+                    this.setState({ showDelete: false });
+                    this.props.close();
+                  }}
+                >
+                  Delete
+                </Button>
+              </div>
+            </Card>
+          )}
         </Modal>
       </div>
     );
@@ -85,7 +113,8 @@ class ClassViewer extends React.Component {
 ClassViewer.propTypes = {
   close: PropTypes.func.isRequired,
   cls: PropTypes.object.isRequired,
-  update: PropTypes.func.isRequired
+  update: PropTypes.func.isRequired,
+  delete: PropTypes.func.isRequired
 };
 
 export default ClassViewer;

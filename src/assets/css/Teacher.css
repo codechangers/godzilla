@@ -87,3 +87,28 @@
 .actions > button {
   margin: 0 5px;
 }
+
+.delete-card {
+  width: 50%;
+  min-height: 40vh;
+  box-sizing: border-box;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-card > h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0;
+}
+
+.delete-card > .options {
+  width: 50%;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
