@@ -111,3 +111,25 @@
   margin-top: 30px;
   width: 60%;
 }
+
+.classes-container {
+  width: 100%;
+}
+
+.class-panel-container {
+  width: 50%;
+  margin: 10px auto;
+}
+
+.class-panel-summary .MuiExpansionPanelSummary-content,
+.class-panel-details {
+  justify-content: space-between;
+}
+
+.class-panel .column {
+  justify-content: center;
+}
+
+.class-panel .class-panel-name {
+  margin: 10px 0;
+}

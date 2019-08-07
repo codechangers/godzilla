@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
+import {
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Button
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import CalendarIcon from '@material-ui/icons/CalendarToday';
 import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
 import '../../../assets/css/Parent-Dash.css';
 
@@ -34,29 +38,51 @@ class ClassSignUp extends React.Component {
           newClasses.push(classData);
         });
         this.setState({ classOptions: newClasses });
-        console.log(this.state.classOptions);
       });
   }
 
   render() {
     return (
-      <div>
-        <h3>Choose a Class</h3>
+      <div className="classes-container">
+        <h2>Choose a Class</h2>
         {this.state.classOptions.map(cls => (
-          <div key={cls.id}>
-            <ExpansionPanel>
+          <div key={cls.id} className="class-panel-container">
+            <ExpansionPanel className="class-panel">
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className="class-panel-summary"
               >
-                <Typography>{cls.name}</Typography>
-                <Typography>{`$${cls.price}`}</Typography>
-                <Typography>{`${cls.startAge}-${cls.endAge}`}</Typography>
-                <Typography>{`${getDate(cls.startDate)}-${getDate(cls.endDate)}`}</Typography>
+                <div className="column">
+                  <h3 className="class-panel-name">{cls.name}</h3>
+                  <div>{`${getDate(cls.startDate)} - ${getDate(cls.endDate)}`}</div>
+                </div>
+                <div className="column">
+                  <div>
+                    <strong>Price: </strong>
+                    {`$${cls.price}`}
+                  </div>
+                  <div>
+                    <strong>Ages: </strong>
+                    {`${cls.startAge} - ${cls.endAge}`}
+                  </div>
+                </div>
               </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <div>Details here</div>
+              <ExpansionPanelDetails className="class-panel-details">
+                <div className="column">
+                  <LocationIcon />
+                  <div>{cls.locationName}</div>
+                  <div>{cls.locationAddress}</div>
+                </div>
+                <div className="column">
+                  <CalendarIcon />
+                  <div>{cls.daysOfWeek}</div>
+                  <div>Start and End time</div>
+                </div>
+                <div className="column">
+                  <Button variant="contained" color="primary">Sign Up</Button>
+                </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </div>
