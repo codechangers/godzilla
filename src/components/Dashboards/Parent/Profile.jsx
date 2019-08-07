@@ -29,6 +29,9 @@ const propTypes = {
   firebase: PropTypes.object.isRequired
 };
 
+let parentListener = () => null;
+let childListeners = [];
+
 const useStyles = () => {
   makeStyles(theme => ({
     root: {
@@ -72,7 +75,7 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    this.db
+    parentListener = this.db
       .collection('parents')
       .doc(this.user.uid)
       .onSnapshot(doc => {
@@ -83,7 +86,7 @@ class Profile extends React.Component {
         newState.currentUser = doc.data();
         if (doc.data().children !== undefined) {
           doc.data().children.forEach(childRef => {
-            childRef.onSnapshot(child => {
+            const listener = childRef.onSnapshot(child => {
               const childExists = newState.childrenArray.findIndex(existingChild => {
                 return existingChild.id === child.id;
               });
@@ -102,12 +105,20 @@ class Profile extends React.Component {
               newState.isLoadingUser = false;
               this.setState({ ...newState });
             });
+            childListeners.push(listener);
           });
         } else {
           newState.isLoadingUser = false;
           this.setState({ ...newState });
         }
       });
+  }
+
+  componentWillUnmount() {
+    parentListener();
+    parentListener = () => null;
+    childListeners.forEach(listener => listener());
+    childListeners = [];
   }
 
   getChildArrayObj(id) {
