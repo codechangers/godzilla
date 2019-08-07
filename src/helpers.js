@@ -54,3 +54,12 @@ export const getHrMn = date => {
     date.getMinutes()
   )} ${past12 ? 'PM' : 'AM'}`;
 };
+
+export const getWeekDays = daysOfWeek => {
+  let weekDays = '';
+  daysOfWeek.forEach(day => {
+    weekDays += `${day}, `;
+  });
+  weekDays = weekDays.substring(0, weekDays.length - 2);
+  return weekDays;
+};

@@ -9,12 +9,11 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
+import { getMMDDYYYY, getHrMn, getDateFromTimestamp, getWeekDays } from '../../../helpers';
 import '../../../assets/css/Parent-Dash.css';
 
-const getDate = timestamp => {
-  return getMMDDYYYY(getDateFromTimestamp(timestamp));
-};
+const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
+const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
 
 class ClassSignUp extends React.Component {
   constructor(props) {
@@ -77,11 +76,13 @@ class ClassSignUp extends React.Component {
                 </div>
                 <div className="column">
                   <CalendarIcon />
-                  <div>{cls.daysOfWeek}</div>
-                  <div>Start and End time</div>
+                  <div>{getWeekDays(cls.daysOfWeek)}</div>
+                  <div>{`${getTime(cls.startTime)} - ${getTime(cls.endTime)}`}</div>
                 </div>
                 <div className="column">
-                  <Button variant="contained" color="primary">Sign Up</Button>
+                  <Button variant="contained" color="primary">
+                    Sign Up
+                  </Button>
                 </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
