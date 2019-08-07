@@ -1,12 +1,70 @@
+.signup-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+}
+
 .signup-form {
   width: 50%;
-  min-height: 300px;
+  min-width: 600px;
+  max-width: 1200px;
   background-color: #dadada;
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 30px;
+  margin: 50px 0;
+}
+
+.column {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+}
+
+.signup-form label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.signup-form .MuiTextField-root {
+  width: 70%;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.signup-form button {
+  width: 40%;
+}
+
+#phone-can-text {
   justify-content: center;
+  margin-bottom: 20px;
+}
+
+#add-child {
+  margin-bottom: 20px;
+}
+
+/* may need to change */
+.request-info .MuiInputBase-root {
+  width: 100%;
+}
+
+.request-info-wrapper .request-info {
+  padding: 40px;
+}
+
+.request-info-wrapper .request-info .modalButtonContainer {
+  justify-content: space-evenly;
+}
+
+.request-info .modalButtonContainer span {
+  margin: 0;
 }

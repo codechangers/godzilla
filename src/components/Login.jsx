@@ -1,23 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
 import autoBind from '../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../helpers';
 import '../assets/css/Login.css';
+
+const errorCodeToMessage = {
+  'auth/wrong-password': 'Incorrect Password',
+  'auth/user-not-found': 'No Account found with this Email'
+};
 
 const accountTypeToRoute = {
   '': '/login',
   parents: '/parent',
   organizations: '/organization',
-  pendingorganization: '/pendingorganization',
   teachers: '/teacher',
-  trainingteachers: '/trainingteacher',
   admins: '/admin'
 };
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -26,43 +31,36 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      shouldRedirect: ''
+      shouldRedirect: '',
+      errors: {}
     };
     this.firebase = props.firebase;
     this.db = props.db;
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
     autoBind(this);
   }
 
   componentDidMount() {
-    this.getUserDashboard(this.props.user);
+    this.checkAccounts();
   }
 
-  componentWillReceiveProps(props) {
-    this.getUserDashboard(props.user);
+  componentWillReceiveProps() {
+    this.checkAccounts();
   }
 
-  getUserDashboard(user) {
-    if (user.isSignedIn) {
-      ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
-        this.db
-          .collection(collection)
-          .doc(user.uid)
-          .get()
-          .then(doc => {
-            let c = collection;
-            if (doc.exists) {
-              if (collection === 'teachers' && !doc.data().isVerrified) {
-                c = 'trainingteachers';
-              } else if (collection === 'organizations' && !doc.data().isVerrified) {
-                c = 'pendingorganization';
-              }
-              this.setState({
-                shouldRedirect: accountTypeToRoute[c]
-              });
-            }
-          });
-      });
+  checkAccounts() {
+    const { accounts } = this.props;
+    const order = ['admins', 'teachers', 'organizations', 'parents'];
+    let shouldRedirect = '';
+    for (let i = 0; i < order.length; i++) {
+      const key = order[i];
+      if (accounts[key]) {
+        shouldRedirect = accountTypeToRoute[key];
+        break;
+      }
     }
+    this.setState({ shouldRedirect });
   }
 
   handleChange(e) {
@@ -78,42 +76,56 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password } = this.state;
-    this.firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch(err => {
-        if (err.code === 'auth/user-not-found') {
-          console.log(err, 'Invalid Email...');
-        } else if (err.code === 'auth/wrong-password') {
-          console.log(err, 'Invalid Password...');
-        } else {
-          console.log(err);
-        }
-      });
+    const { email, password, errors } = this.state;
+
+    if (this.validateFields(['email', 'password']) === true) {
+      this.firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(err => {
+          errors.email = err.code === 'auth/user-not-found' ? errorCodeToMessage[err.code] : '';
+          errors.password = err.code === 'auth/wrong-password' ? errorCodeToMessage[err.code] : '';
+          this.setState({ errors });
+        });
+    } else {
+      this.setState({ errors });
+    }
   }
 
   render() {
+    const { errors } = this.state;
     return this.state.shouldRedirect.length > 0 ? (
       <Redirect to={this.state.shouldRedirect} />
     ) : (
-      <div className="login-form">
-        <label htmlFor="email">
-          Email Address:
-          <input id="Email" type="text" value={this.state.email} onChange={this.handleChange} />
-        </label>
-        <label htmlFor="password">
-          Password:
-          <input
-            id="Password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-        </label>
-        <button type="submit" onClick={this.handleSubmit}>
-          Submit
-        </button>
+      <div className="login-wrapper">
+        <Card className="login-form">
+          <CardHeader title="Login to Godzilla" />
+          <CardContent className="column">
+            <TextField
+              error={getErrorStatus(errors.email)}
+              id="Email"
+              type="text"
+              label="Email Address"
+              variant="outlined"
+              helperText={errors.email}
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.password)}
+              id="Password"
+              type="password"
+              label="Password"
+              variant="outlined"
+              helperText={errors.password}
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Login
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

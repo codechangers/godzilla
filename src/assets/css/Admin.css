@@ -29,6 +29,32 @@
   border-radius: 8px;
 }
 
+svg.MuiSvgIcon-root.read-indicator {
+  font-size: 1rem;
+  padding-right: 15px;
+}
+
+.is-read svg.read-indicator {
+  visibility: hidden;
+}
+
+.is-not-read svg.read-indicator {
+  color: #3f51b5;
+  visibility: visible;
+}
+
+.is-not-read span {
+  font-weight: bold;
+}
+
+.declined {
+  color: red;
+}
+
+.accepted {
+  color: rgb(0, 255, 0);
+}
+
 .teacher-request button.decline,
 .org-request button.decline {
   background-color: var(--danger-color);
@@ -47,13 +73,13 @@
   cursor: pointer;
 }
 
-.teacher-request button.select > p,
-.org-request button.select > p {
+.teacher-request button.select>p,
+.org-request button.select>p {
   font-size: 1rem;
 }
 
 .request-info-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -65,6 +91,7 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.4);
   animation: fadeIn 200ms ease;
+  z-index: 100;
 }
 
 .request-info {
@@ -82,7 +109,7 @@
   animation: slideFromTop 400ms ease;
 }
 
-.request-info > div {
+.request-info>div {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -126,10 +153,39 @@
   cursor: pointer;
 }
 
+.modalButtonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.next-back-close-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.left-side-filters {
+  background-color: lightgrey;
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 60px;
+  margin-top: 60px;
+  transition: 0.5s;
+}
+
 @keyframes fadeIn {
   0% {
     background-color: rgba(0, 0, 0, 0);
   }
+
   100% {
     background-color: rgba(0, 0, 0, 0.4);
   }
@@ -139,7 +195,82 @@
   0% {
     margin-top: -100%;
   }
+
   100% {
     margin-top: 0;
   }
+}
+
+.admin-modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-modal-wrapper .admin-modal {
+  box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.3);
+  padding: 20px 40px 40px 40px;
+  width: 50%;
+  animation: slideFromTop 400ms ease;
+}
+
+.options,
+.admin-modal-wrapper .admin-modal .declined,
+.admin-modal-wrapper .admin-modal .accepted {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-modal .admin-modal-close {
+  padding: 0;
+  float: right;
+}
+
+.admin-modal .modal-table {
+  margin-bottom: 20px;
+}
+
+.admin-modal .table-header {
+  font-weight: bold;
+  width: 30%;
+}
+
+.teacher-request,
+.org-request {
+  min-width: 500px;
+}
+
+.admin-dashboard .accepted .applicant-status,
+.admin-modal-wrapper .admin-modal .accepted .applicant-status {
+  margin-right: 20px;
+  background-color: #289428;
+  color: white;
+}
+
+.admin-dashboard .declined .applicant-status,
+.admin-modal-wrapper .admin-modal .declined .applicant-status {
+  margin-right: 20px;
+  background-color: #f50057;
+  color: white;
+}
+
+.filter-drawer .MuiPaper-root {
+  padding: 0 20px;
+  min-width: 300px;
+}
+
+.filter-drawer h3 {
+  margin: 0;
+}
+
+.admin-dashboard .nav-bar .side-drawer-button {
+  margin: 0;
+}
+
+.close-side-drawer button {
+  float: right;
+}
+
+.filter-drawer .inline .filter-input {
+  width: 80%;
 }

@@ -1,61 +1,183 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
+import autoBind from '../../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import '../../assets/css/Signup.css';
 
-const propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  state: PropTypes.shape({
-    fName: PropTypes.string.isRequired,
-    lName: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    gender: PropTypes.string.isRequired,
-    birthDate: PropTypes.string.isRequired,
-    aboutMe: PropTypes.string.isRequired
-  }).isRequired
+const locationToPrompt = {
+  '': 'Location Name',
+  school: 'What is the name of the school?',
+  office: 'What is the name of the company?',
+  house: 'What is the address of the house?',
+  other: 'Describe the location'
 };
 
-const ParentSignUp = ({ handleChange, state }) => (
-  <div>
-    <label htmlFor="firstname">
-      First Name:
-      <input id="firstName" type="text" value={state.fName} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="lastname">
-      Last Name:
-      <input id="lastName" type="text" value={state.lName} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="email">
-      Email Address:
-      <input id="Email" type="text" value={state.email} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="phone">
-      Phone:
-      <input id="phone" type="text" value={state.phone} onChange={handleChange} />
-    </label>
-    <br />
-    <p>Gender:</p>
-    <select id="gender" value={state.gender} onChange={handleChange}>
-      <option value="" />
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option vale="other">Other</option>
-    </select>
-    <br />
-    <label htmlFor="birthDate">
-      Birth Date:
-      <input id="birthDate" type="text" value={state.birthDate} onChange={handleChange} />
-    </label>
-    <br />
-    <label htmlFor="aboutMe">
-      About You:
-      <textarea id="aboutMe" value={state.aboutMe} onChange={handleChange} />
-    </label>
-  </div>
-);
+const idToDataMember = {
+  address: 'address',
+  whyTeach: 'whyTeach',
+  prevExp: 'prevExp',
+  region: 'region',
+  location: 'location'
+};
 
-ParentSignUp.propTypes = propTypes;
+const allFields = ['whyTeach', 'prevExp', 'region', 'location', 'address'];
 
-export default ParentSignUp;
+const propTypes = {
+  db: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired
+};
+
+class TeacherSignUp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      whyTeach: '',
+      prevExp: '',
+      region: '',
+      location: '',
+      address: '',
+      whyTeachError: '',
+      prevExpError: '',
+      regionError: '',
+      locationError: '',
+      addressError: '',
+      errors: {}
+    };
+    this.getUserData = getUserData;
+    this.validateFields = validateFields;
+    autoBind(this);
+  }
+
+  getTeacherData() {
+    const date = new Date();
+    // Filter out any fields for local state that shouldn't be saved to the teacher document.
+    return Object.keys(this.state)
+      .filter(key => Object.keys(idToDataMember).includes(key))
+      .reduce(
+        (obj, key) => {
+          const newObj = { ...obj };
+          newObj[key] = this.state[key];
+          return newObj;
+        },
+        {
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        }
+      );
+  }
+
+  handleChange(e) {
+    const { id, value } = e.target;
+    const newState = {};
+    newState[idToDataMember[id]] = value;
+    this.setState(newState);
+  }
+
+  handleSelectLocation(e) {
+    const { name, value } = e.target;
+    const newState = {};
+    newState[idToDataMember[name]] = value;
+    this.setState(newState);
+  }
+
+  handleSubmit() {
+    if (this.validateFields(allFields) === true) {
+      this.props.db
+        .collection('teachers')
+        .doc(this.props.firebase.auth().currentUser.uid)
+        .set(this.getTeacherData())
+        .then(this.props.login);
+    }
+  }
+
+  render() {
+    const { errors } = this.state;
+    return (
+      <div className="signup-wrapper">
+        <Card className="signup-form">
+          <CardHeader title="Teacher Account Information" />
+          <CardContent className="column">
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="whyTeach"
+              type="text"
+              label="Why do you want to teach STEM topics to kids?"
+              variant="outlined"
+              multiline
+              helperText={errors.whyTeach}
+              value={this.state.whyTeach}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="prevExp"
+              type="text"
+              label="Do you have any previous teaching experience?"
+              variant="outlined"
+              multiline
+              helperText={errors.prevExp}
+              value={this.state.prevExp}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="region"
+              type="text"
+              label="Where Will you Teach? (City, State)"
+              variant="outlined"
+              helperText={errors.region}
+              value={this.state.region}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="location"
+              name="location"
+              select
+              label="What type of Location will you teach at?"
+              variant="outlined"
+              helperText={errors.location}
+              value={this.state.location}
+              onChange={this.handleSelectLocation}
+            >
+              <MenuItem key="school" value="school">
+                School
+              </MenuItem>
+              <MenuItem key="office" value="office">
+                Company&apos;s Office
+              </MenuItem>
+              <MenuItem key="house" value="house">
+                House
+              </MenuItem>
+              <MenuItem key="other" value="other">
+                Other
+              </MenuItem>
+            </TextField>
+            <TextField
+              error={getErrorStatus(errors.region)}
+              id="address"
+              type="text"
+              label={locationToPrompt[this.state.location]}
+              variant="outlined"
+              helperText={errors.address}
+              value={this.state.address}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Submit Teacher Application
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+}
+
+TeacherSignUp.propTypes = propTypes;
+
+export default TeacherSignUp;
