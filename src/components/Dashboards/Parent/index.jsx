@@ -52,14 +52,12 @@ class ParentDashboard extends React.Component {
       activeComponent: 'default'
     };
     this.firebase = this.props.firebase;
-    this.user = this.props.user;
-    this.accounts = this.props.accounts;
     autoBind(this);
   }
 
   getOthers() {
     return this.state.activeComponent === 'ClassSignUp' ? (
-      <ClassSignUp firebase={this.firebase} user={this.user} db={this.props.db} />
+      <ClassSignUp firebase={this.firebase} user={this.props.user} db={this.props.db} />
     ) : (
       <>
         <div>
@@ -99,9 +97,9 @@ class ParentDashboard extends React.Component {
   }
 
   render() {
-    return this.user.isSignedIn ? (
+    return this.props.user.isSignedIn ? (
       <>
-        <NavBar accounts={this.accounts} firebase={this.firebase} />
+        <NavBar accounts={this.props.accounts} firebase={this.firebase} />
         <div id="drawer">
           <div className="content-container">
             <CssBaseline />
@@ -142,7 +140,7 @@ class ParentDashboard extends React.Component {
             </Drawer>
             <main className="list-item-container">
               {this.state.activeComponent === 'Profile' ? (
-                <Profile firebase={this.firebase} user={this.user} />
+                <Profile firebase={this.firebase} user={this.props.user} />
               ) : (
                 this.getOthers()
               )}
@@ -151,7 +149,7 @@ class ParentDashboard extends React.Component {
         </div>
       </>
     ) : (
-      <Redirect to="/" />
+      <Redirect to="/login" />
     );
   }
 }
