@@ -11,7 +11,7 @@ import {
   Checkbox
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
-import ClassPanel from './ClassPanel';
+import ClassPanel from '../../Classes/Panel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 

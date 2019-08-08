@@ -4,11 +4,8 @@ import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@m
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import { getMMDDYYYY, getHrMn, getDateFromTimestamp, getWeekDays } from '../../../helpers';
-import '../../../assets/css/Parent-Dash.css';
-
-const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
-const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
+import { getDate, getTime, getWeekDays } from '../../helpers';
+import '../../assets/css/Parent-Dash.css';
 
 const ClassPanel = ({ cls, getButton }) => {
   return (

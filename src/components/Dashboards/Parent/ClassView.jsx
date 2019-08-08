@@ -1,36 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Typography, Box, Tabs, Tab, Modal, Card } from '@material-ui/core';
-import ClassPanel from './ClassPanel';
+import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
+import ClassPanel from '../../Classes/Panel';
+import TabPanel from '../../../TabPanel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-TabPanel.defaultProps = {
-  children: []
-};
 
 class ClassView extends React.Component {
   constructor(props) {

@@ -5,12 +5,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ClassEditor from './Editor';
-import { getMMDDYYYY, getHrMn, getDateFromTimestamp } from '../../helpers';
+import { getDate, getTime } from '../../helpers';
 import autoBind from '../../autoBind';
 import '../../assets/css/Teacher.css';
-
-const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
-const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
 
 class ClassViewer extends React.Component {
   constructor(props) {

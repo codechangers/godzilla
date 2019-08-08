@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Fab, Button, Paper, Modal } from '@material-ui/core';
+import { Fab, Button, Modal } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../../NavBar';
 import ClassEditor from '../../Classes/Editor';
 import ClassViewer from '../../Classes/Viewer';
+import ClassPanel from '../../Classes/Panel';
 import autoBind from '../../../autoBind';
-import { getMMDDYYYY, getDateFromTimestamp } from '../../../helpers';
 
 let teacherSub = () => null;
 
@@ -33,40 +32,17 @@ class ApprovedTeacher extends React.Component {
     teacherSub = () => null;
   }
 
-  getClasses() {
-    const { classes } = this.state;
-    return classes.map(cls => (
-      <Paper className="class-card" key={cls.id}>
-        <div className="left">
-          <h2>{cls.name}</h2>
-          <p>
-            {`${getMMDDYYYY(getDateFromTimestamp(cls.startDate))} - ${getMMDDYYYY(
-              getDateFromTimestamp(cls.endDate)
-            )}`}
-          </p>
-        </div>
-        <div className="right">
-          <div className="top">
-            <p style={{ marginRight: '8px' }}>
-              <strong>Price:</strong>
-              {` $${cls.price}`}
-            </p>
-            <div className="info">
-              <PersonIcon />
-              <p>{cls.children.length}</p>
-            </div>
-          </div>
-          <Button
-            onClick={() => {
-              this.setState({ selected: cls });
-            }}
-            color="primary"
-          >
-            More Info
-          </Button>
-        </div>
-      </Paper>
-    ));
+  getMoreInfo(cls) {
+    return (
+      <Button
+        onClick={() => {
+          this.setState({ selected: cls });
+        }}
+        color="primary"
+      >
+        More Info
+      </Button>
+    );
   }
 
   fetchClasses(teacher, selectedId) {
@@ -138,7 +114,11 @@ class ApprovedTeacher extends React.Component {
           </Fab>
         </div>
         <h1>Welcome to the Approved Teacher Dashboard</h1>
-        <div className="classes-wrapper">{this.getClasses()}</div>
+        <div className="classes-wrapper">
+          {this.state.classes.map(cls => (
+            <ClassPanel cls={cls} getButton={this.getMoreInfo} />
+          ))}
+        </div>
         <Modal
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           open={this.state.showCreate}

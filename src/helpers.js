@@ -63,3 +63,7 @@ export const getWeekDays = daysOfWeek => {
   weekDays = weekDays.substring(0, weekDays.length - 2);
   return weekDays;
 };
+
+export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
+
+export const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
