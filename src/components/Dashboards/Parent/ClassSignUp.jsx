@@ -97,7 +97,7 @@ class ClassSignUp extends React.Component {
       children.push(child.ref);
     });
     this.state.selectedClass.ref.update({ children });
-    this.setState({ selectedClass: null, selectedChildren: [] })
+    this.setState({ selectedClass: null, selectedChildren: [] });
   }
 
   render() {
@@ -174,10 +174,7 @@ class ClassSignUp extends React.Component {
                       <AccountIcon />
                     </ListItemAvatar>
                     <ListItemText primary={`${child.fName} ${child.lName}`} />
-                    <Checkbox
-                      edge="end"
-                      checked={this.checkToggle(child)}
-                    />
+                    <Checkbox edge="end" checked={this.checkToggle(child)} />
                   </ListItem>
                 );
               })}
