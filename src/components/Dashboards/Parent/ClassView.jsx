@@ -50,7 +50,7 @@ class ClassView extends React.Component {
   getButton(cls) {
     return (
       <Button
-        onClick={() => { this.setState({ selectedClass: cls })}}
+        onClick={() => this.setState({ selectedClass: cls })}
         variant="contained"
         color="secondary"
       >
@@ -118,22 +118,24 @@ class ClassView extends React.Component {
         {this.state.children.map((child, i) => {
           return (
             <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
-              {child.classesData.map(cls => {
-                return (
-                  <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
-                );
-              })}
+              {child.classesData.map(cls => (
+                <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
+              ))}
             </TabPanel>
           );
         })}
-        <Modal 
+        <Modal
           open={this.state.selectedClass !== null}
-          onClose={() => this.setState({
-            selectedClass: null
-          })}
+          onClose={() =>
+            this.setState({
+              selectedClass: null
+            })
+          }
           disableAutoFocus
         >
-          {this.state.selectedClass === null ? <div></div> : (
+          {this.state.selectedClass === null ? (
+            <div />
+          ) : (
             <Card className="delete-card">
               <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
               <h4>This will remove your child from this class permanently.</h4>
@@ -145,11 +147,7 @@ class ClassView extends React.Component {
                 >
                   Cancel
                 </Button>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={this.removeClass}
-                >
+                <Button color="secondary" variant="contained" onClick={this.removeClass}>
                   Delete
                 </Button>
               </div>

@@ -56,12 +56,16 @@ class ClassSignUp extends React.Component {
     });
   }
 
-  checkDisabled(child) {
-    if (this.state.selectedClass !== null) {
-      const children = this.state.selectedClass.children || [];
-      return children.some(c => c.id === child.id);
-    }
-    return false;
+  getButton(cls) {
+    return (
+      <Button
+        onClick={() => this.setState({ selectedClass: cls })}
+        variant="contained"
+        color="primary"
+      >
+        Sign Up
+      </Button>
+    );
   }
 
   checkToggle(child) {
@@ -91,16 +95,12 @@ class ClassSignUp extends React.Component {
     this.setState({ selectedClass: null, selectedChildren: [] });
   }
 
-  getButton(cls) {
-    return (
-      <Button
-        onClick={() => this.setState({ selectedClass: cls })}
-        variant="contained"
-        color="primary"
-      >
-        Sign Up
-      </Button>
-    );
+  checkDisabled(child) {
+    if (this.state.selectedClass !== null) {
+      const children = this.state.selectedClass.children || [];
+      return children.some(c => c.id === child.id);
+    }
+    return false;
   }
 
   render() {
