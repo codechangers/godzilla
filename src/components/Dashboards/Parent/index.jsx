@@ -2,19 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import autoBind from '../../../autoBind';
-import Profile from './Profile';
-import NavBar from '../../NavBar';
-import '../../../assets/css/Parent-Dash.css';
+import {
+  Drawer,
+  CssBaseline,
+  List,
+  Typography,
+  Divider,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
 import ClassSignUp from './ClassSignUp';
 import ClassView from './ClassView';
+import Profile from './Profile';
+import NavBar from '../../NavBar';
+import autoBind from '../../../autoBind';
+import '../../../assets/css/Parent-Dash.css';
 
 const drawerWidth = 240;
 

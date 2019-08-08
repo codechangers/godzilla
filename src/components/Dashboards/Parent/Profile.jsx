@@ -1,28 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import StarBorder from '@material-ui/icons/StarBorder';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import HomeIcon from '@material-ui/icons/Home';
-import SmartPhoneIcon from '@material-ui/icons/Smartphone';
-import SchoolIcon from '@material-ui/icons/School';
-import WCIcon from '@material-ui/icons/Wc';
-import FormatSizeIcon from '@material-ui/icons/FormatSize';
-import CakeIcon from '@material-ui/icons/Cake';
-import PersonIcon from '@material-ui/icons/Person';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Paper from '@material-ui/core/Paper';
+import {
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  Paper
+} from '@material-ui/core';
+import {
+  StarBorder,
+  AccountCircle,
+  Home,
+  Smartphone,
+  School,
+  Wc,
+  FormatSize,
+  Cake,
+  Person,
+  ExpandLess,
+  ExpandMore
+} from '@material-ui/icons';
+import EditModal from './EditModal';
 import Spinner from '../../Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
-import EditModal from './EditModal';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -201,7 +205,7 @@ class Profile extends React.Component {
               }
             >
               <ListItemIcon>
-                <SmartPhoneIcon />
+                <Smartphone />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.phone} />
             </ListItem>
@@ -218,7 +222,7 @@ class Profile extends React.Component {
               }
             >
               <ListItemIcon>
-                <HomeIcon />
+                <Home />
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.address} />
             </ListItem>
@@ -265,7 +269,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <PersonIcon />
+                          <Person />
                         </ListItemIcon>
                         <ListItemText primary={child.data.fName} />
                       </ListItem>
@@ -283,7 +287,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <PersonIcon />
+                          <Person />
                         </ListItemIcon>
                         <ListItemText primary={child.data.lName} />
                       </ListItem>
@@ -301,7 +305,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <CakeIcon />
+                          <Cake />
                         </ListItemIcon>
                         <ListItemText primary={child.data.birthDate} />
                       </ListItem>
@@ -319,7 +323,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <SchoolIcon />
+                          <School />
                         </ListItemIcon>
                         <ListItemText primary={child.data.currentSchool} />
                       </ListItem>
@@ -355,7 +359,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <FormatSizeIcon />
+                          <FormatSize />
                         </ListItemIcon>
                         <ListItemText primary={child.data.shirtSize} />
                       </ListItem>
@@ -373,7 +377,7 @@ class Profile extends React.Component {
                         }
                       >
                         <ListItemIcon>
-                          <WCIcon />
+                          <Wc />
                         </ListItemIcon>
                         <ListItemText primary={child.data.gender} />
                       </ListItem>
