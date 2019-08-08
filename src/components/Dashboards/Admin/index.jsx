@@ -102,7 +102,7 @@ class AdminDashboard extends React.Component {
         </TabPanel>
       </div>
     ) : (
-      <Redirect to="/" />
+      <Redirect to="/login" />
     );
   }
 }
