@@ -4,12 +4,21 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  Button
+  Button,
+  Modal,
+  Paper,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Checkbox
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
+import AccountIcon from '@material-ui/icons/AccountCircle';
 import { getMMDDYYYY, getHrMn, getDateFromTimestamp, getWeekDays } from '../../../helpers';
+import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 
 const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
@@ -19,8 +28,12 @@ class ClassSignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      classOptions: []
+      classOptions: [],
+      selectedClass: null,
+      children: [],
+      selectedChildren: []
     };
+    autoBind(this);
   }
 
   componentDidMount() {
@@ -32,12 +45,59 @@ class ClassSignUp extends React.Component {
         classDocs.forEach(classDoc => {
           const classData = {
             ...classDoc.data(),
-            id: classDoc.id
+            id: classDoc.id,
+            ref: classDoc.ref
           };
           newClasses.push(classData);
         });
         this.setState({ classOptions: newClasses });
       });
+    const childrenData = [];
+    const { children } = this.props.accounts.parents.data();
+    children.forEach(child => {
+      child.get().then(childDoc => {
+        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+        childrenData.push(childData);
+        if (childrenData.length === children.length) {
+          this.setState({ children: childrenData });
+        }
+      });
+    });
+  }
+
+  checkDisabled(child) {
+    if (this.state.selectedClass !== null) {
+      const children = this.state.selectedClass.children || [];
+      return children.some(c => c.id === child.id);
+    }
+    return false;
+  }
+
+  checkToggle(child) {
+    return this.state.selectedChildren.includes(child) || this.checkDisabled(child);
+  }
+
+  toggleChild(childId) {
+    const { selectedChildren } = this.state;
+    const index = selectedChildren.indexOf(childId);
+    if (index === -1) {
+      selectedChildren.push(childId);
+    } else {
+      selectedChildren.splice(index, 1);
+    }
+    this.setState({ selectedChildren });
+  }
+
+  handleSubmit() {
+    const children = this.state.selectedClass.children || [];
+    this.state.selectedChildren.forEach(child => {
+      const classes = child.classes || [];
+      classes.push(this.state.selectedClass.ref);
+      child.ref.update({ classes });
+      children.push(child.ref);
+    });
+    this.state.selectedClass.ref.update({ children });
+    this.setState({ selectedClass: null, selectedChildren: [] })
   }
 
   render() {
@@ -80,7 +140,11 @@ class ClassSignUp extends React.Component {
                   <div>{`${getTime(cls.startTime)} - ${getTime(cls.endTime)}`}</div>
                 </div>
                 <div className="column">
-                  <Button variant="contained" color="primary">
+                  <Button
+                    onClick={() => this.setState({ selectedClass: cls })}
+                    variant="contained"
+                    color="primary"
+                  >
                     Sign Up
                   </Button>
                 </div>
@@ -88,13 +152,49 @@ class ClassSignUp extends React.Component {
             </ExpansionPanel>
           </div>
         ))}
+        <Modal
+          open={this.state.selectedClass !== null}
+          onClose={() => {
+            this.setState({ selectedClass: null });
+          }}
+          disableAutoFocus
+        >
+          <Paper>
+            <h2>Select your children</h2>
+            <List>
+              {this.state.children.map(child => {
+                return (
+                  <ListItem
+                    key={child.id}
+                    button
+                    onClick={() => this.toggleChild(child)}
+                    disabled={this.checkDisabled(child)}
+                  >
+                    <ListItemAvatar>
+                      <AccountIcon />
+                    </ListItemAvatar>
+                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                    <Checkbox
+                      edge="end"
+                      checked={this.checkToggle(child)}
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Submit
+            </Button>
+          </Paper>
+        </Modal>
       </div>
     );
   }
 }
 
 ClassSignUp.propTypes = {
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 export default ClassSignUp;

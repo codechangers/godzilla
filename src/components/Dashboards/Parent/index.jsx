@@ -57,7 +57,7 @@ class ParentDashboard extends React.Component {
 
   getOthers() {
     return this.state.activeComponent === 'ClassSignUp' ? (
-      <ClassSignUp firebase={this.firebase} user={this.props.user} db={this.props.db} />
+      <ClassSignUp accounts={this.props.accounts} db={this.props.db} />
     ) : (
       <>
         <div>
