@@ -83,9 +83,7 @@ class ClassView extends React.Component {
   }
 
   render() {
-    return this.state.isLoading ? (
-      <Spinner color="primary" />
-    ) : (
+    return (
       <div className="classes-container">
         <h2>View Classes</h2>
         <Tabs
@@ -98,15 +96,19 @@ class ClassView extends React.Component {
             return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
           })}
         </Tabs>
-        {this.state.children.map((child, i) => {
-          return (
-            <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
-              {child.classesData.map(cls => (
-                <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
-              ))}
-            </TabPanel>
-          );
-        })}
+        {this.state.isLoading ? (
+          <Spinner color="primary" />
+        ) : (
+          this.state.children.map((child, i) => {
+            return (
+              <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
+                {child.classesData.map(cls => (
+                  <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
+                ))}
+              </TabPanel>
+            );
+          })
+        )}
         <Modal
           className="modal-wrapper"
           open={this.state.selectedClass !== null}

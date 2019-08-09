@@ -106,14 +106,16 @@ class ClassSignUp extends React.Component {
   }
 
   render() {
-    return this.state.isLoading ? (
-      <Spinner color="primary" />
-    ) : (
+    return (
       <div className="classes-container">
         <h2>Choose a Class</h2>
-        {this.state.classOptions.map(cls => (
-          <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
-        ))}
+        {this.state.isLoading ? (
+          <Spinner color="primary" />
+        ) : (
+          this.state.classOptions.map(cls => (
+            <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
+          ))
+        )}
         <Modal
           className="modal-wrapper"
           open={this.state.selectedClass !== null}
@@ -146,7 +148,7 @@ class ClassSignUp extends React.Component {
               <Button onClick={this.handleSubmit} variant="contained" color="primary">
                 Submit
               </Button>
-              <Button 
+              <Button
                 onClick={() => {
                   this.setState({ selectedClass: null });
                 }}
