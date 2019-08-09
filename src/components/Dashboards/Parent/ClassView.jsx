@@ -5,6 +5,7 @@ import ClassPanel from '../../Classes/Panel';
 import TabPanel from '../../../TabPanel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
+import Spinner from '../../Spinner';
 
 class ClassView extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class ClassView extends React.Component {
     this.state = {
       tabIndex: 0,
       children: [],
-      selectedClass: null
+      selectedClass: null,
+      isLoading: true
     };
     autoBind(this);
   }
@@ -49,7 +51,7 @@ class ClassView extends React.Component {
                 childData.classesData = childClasses;
                 childrenData.push(childData);
                 if (childrenData.length === children.length) {
-                  this.setState({ children: childrenData });
+                  this.setState({ children: childrenData, isLoading: false });
                 }
               }
             });
@@ -58,7 +60,7 @@ class ClassView extends React.Component {
           childData.classesData = [];
           childrenData.push(childData);
           if (childrenData.length === children.length) {
-            this.setState({ children: childrenData });
+            this.setState({ children: childrenData, isLoading: false });
           }
         }
       });
@@ -81,10 +83,17 @@ class ClassView extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.isLoading ? (
+      <Spinner color="primary" />
+    ) : (
       <div className="classes-container">
         <h2>View Classes</h2>
-        <Tabs value={this.state.tabIndex} onChange={this.changeTab} indicatorColor="primary">
+        <Tabs
+          className="view-classes-tabs"
+          value={this.state.tabIndex}
+          onChange={this.changeTab}
+          indicatorColor="primary"
+        >
           {this.state.children.map(child => {
             return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
           })}
@@ -99,6 +108,7 @@ class ClassView extends React.Component {
           );
         })}
         <Modal
+          className="modal-wrapper"
           open={this.state.selectedClass !== null}
           onClose={() =>
             this.setState({
@@ -110,13 +120,13 @@ class ClassView extends React.Component {
           {this.state.selectedClass === null ? (
             <div />
           ) : (
-            <Card className="delete-card">
+            <Card className="delete-card modal-content">
               <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
               <h4>This will remove your child from this class permanently.</h4>
               <div className="options">
                 <Button
                   color="default"
-                  variant="outlined"
+                  variant="contained"
                   onClick={() => this.setState({ selectedClass: null })}
                 >
                   Cancel

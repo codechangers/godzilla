@@ -133,3 +133,28 @@
 .class-panel .class-panel-name {
   margin: 10px 0;
 }
+
+.modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  padding: 40px;
+  min-width: 400px;
+}
+
+.modal-wrapper .modal-content.delete-card .options {
+  margin: 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 15px;
+}
+
+.view-classes-tabs {
+  margin: 0 50px;
+}

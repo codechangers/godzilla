@@ -14,6 +14,7 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import ClassPanel from '../../Classes/Panel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
+import Spinner from '../../Spinner';
 
 class ClassSignUp extends React.Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class ClassSignUp extends React.Component {
       classOptions: [],
       selectedClass: null,
       children: [],
-      selectedChildren: []
+      selectedChildren: [],
+      isLoading: true
     };
     autoBind(this);
   }
@@ -41,7 +43,7 @@ class ClassSignUp extends React.Component {
           };
           newClasses.push(classData);
         });
-        this.setState({ classOptions: newClasses });
+        this.setState({ classOptions: newClasses, isLoading: false });
       });
     const childrenData = [];
     const { children } = this.props.accounts.parents.data();
@@ -104,21 +106,24 @@ class ClassSignUp extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.isLoading ? (
+      <Spinner color="primary" />
+    ) : (
       <div className="classes-container">
         <h2>Choose a Class</h2>
         {this.state.classOptions.map(cls => (
           <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
         ))}
         <Modal
+          className="modal-wrapper"
           open={this.state.selectedClass !== null}
           onClose={() => {
             this.setState({ selectedClass: null });
           }}
           disableAutoFocus
         >
-          <Paper>
-            <h2>Select your children</h2>
+          <Paper className="modal-content">
+            <h2>Select Your Children</h2>
             <List>
               {this.state.children.map(child => {
                 return (
@@ -137,9 +142,20 @@ class ClassSignUp extends React.Component {
                 );
               })}
             </List>
-            <Button onClick={this.handleSubmit} variant="contained" color="primary">
-              Submit
-            </Button>
+            <div className="modal-buttons">
+              <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                Submit
+              </Button>
+              <Button 
+                onClick={() => {
+                  this.setState({ selectedClass: null });
+                }}
+                variant="contained"
+                color="default"
+              >
+                Cancel
+              </Button>
+            </div>
           </Paper>
         </Modal>
       </div>
