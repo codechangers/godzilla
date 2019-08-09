@@ -1,46 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, Typography, Box, IconButton } from '@material-ui/core';
+import { Tabs, Tab, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Redirect } from 'react-router-dom';
-import NavBar from '../../NavBar';
-import autoBind from '../../../autoBind';
-import '../../../assets/css/Admin.css';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
+import NavBar from '../../NavBar';
+import TabPanel from '../../../TabPanel';
+import autoBind from '../../../autoBind';
+import '../../../assets/css/Admin.css';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired
-};
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-TabPanel.defaultProps = {
-  children: []
 };
 
 class AdminDashboard extends React.Component {
@@ -128,7 +102,7 @@ class AdminDashboard extends React.Component {
         </TabPanel>
       </div>
     ) : (
-      <Redirect to="/" />
+      <Redirect to="/login" />
     );
   }
 }
