@@ -1,7 +1,8 @@
 :root {
   --primary-color: #05bce5;
   --secondary-color: #50769a;
-  --danger-color: #cd0b0b;
+  --error-color: #cd0b0b;
+  --background-color: #f4f4f4;
 }
 
 body {

@@ -1,4 +1,5 @@
 import React from 'react';
+import SideBar from '../../SideBar';
 
 class ApprovedTeacher extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class ApprovedTeacher extends React.Component {
   render() {
     return (
       <div>
+        <SideBar />
         <h1>Hello Teachers</h1>
       </div>
     );
