@@ -20,6 +20,14 @@
   color: #fff;
 }
 
+.page-content {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px 132px 0 132px;
+  background-color: var(--background-color);
+}
+
 /**** SideBar ****/
 .sidebar-wrapper {
   position: absolute;

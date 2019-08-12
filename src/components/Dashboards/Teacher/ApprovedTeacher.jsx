@@ -28,10 +28,10 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ width: '100%' }}>
         <SideBar />
         {this.getInterface() || (
-          <div>
+          <div className="page-content">
             <h1>Dashboard Interface</h1>
           </div>
         )}
