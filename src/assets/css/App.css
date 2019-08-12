@@ -1,12 +1,3 @@
-h5 {
-  font-size: 24px;
-  line-height: 28px;
-  text-align: left;
-  color: rgba(0, 0, 0, 0.87);
-  margin: 0;
-  font-weight: 400;
-}
-
 .App {
   text-align: center;
   display: flex;

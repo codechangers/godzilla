@@ -7,6 +7,10 @@ const ClassInfoCard = () => (
     <div className="infocard-header">
       <div>
         <h5>Name of Class</h5>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <p style={{ marginRight: '24px' }}>Start Date: October 5, 2019</p>
+          <p>End Date: October 5, 2019</p>
+        </div>
       </div>
       <Template2 />
     </div>
