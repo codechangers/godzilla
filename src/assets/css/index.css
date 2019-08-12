@@ -19,3 +19,17 @@ code {
 .full-width {
   width: 100%;
 }
+
+/**** Background Images ****/
+#logo-img {
+  background-image: url('../images//logo.svg');
+}
+#background1-img {
+  background-image: url('../images/background1.png');
+}
+#template1-img {
+  background-image: url('../images/template1.png');
+}
+#template2-img {
+  background-image: url('../images/template2.jpeg');
+}
