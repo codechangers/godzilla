@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import SideBar from '../../SideBar';
 import CurriculumInterface from '../../Interfaces/Curriculum';
 import PaymentInterface from '../../Interfaces/Payment';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
+import SideBar from '../../SideBar';
+import ClassInfoCard from '../../Classes/InfoCard';
+import '../../../assets/css/Teacher.css';
 
 const routeToInterface = {
   '/teacher': null,
@@ -28,11 +30,11 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     return (
-      <div style={{ width: '100%' }}>
+      <div className="page-wrapper">
         <SideBar />
         {this.getInterface() || (
           <div className="page-content">
-            <h1>Dashboard Interface</h1>
+            <ClassInfoCard />
           </div>
         )}
       </div>

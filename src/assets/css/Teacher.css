@@ -112,3 +112,23 @@
   justify-content: space-around;
   align-items: center;
 }
+
+/**** InfoCard ****/
+.infocard-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.infocard-header > img {
+  max-width: 58%;
+  max-height: 370px;
+  border-radius: 4px;
+}
+.infocard-header > div {
+  width: 42%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+}
