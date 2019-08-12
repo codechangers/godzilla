@@ -8,7 +8,7 @@ import {
   Settings
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
-import logo from '../assets/images/logo.svg';
+import { Logo } from './Images';
 
 const nameToIcon = {
   Dashboard,
@@ -30,7 +30,7 @@ const isSelected = (name, location) => nameToRoute[name] === location.pathname;
 
 const SideBar = ({ location }) => (
   <div className="sidebar-wrapper">
-    <img src={logo} alt="logo" />
+    <Logo />
     {Object.keys(nameToIcon).map(name => {
       const Icon = nameToIcon[name];
       return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/logo.svg';
+import { Logo } from './Images';
 import '../assets/css/HomePage.css';
 
 const HomePage = () => (
@@ -13,7 +13,7 @@ const HomePage = () => (
             alt="godzilla"
             className="godzilla"
           />
-          <img src={logo} className="App-logo" alt="logo" />
+          <Logo className="App-logo" />
         </div>
         <h1>Hello New Platform</h1>
         <div className="buttons">
