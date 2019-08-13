@@ -131,6 +131,7 @@
   height: 100%;
   box-sizing: border-box;
   padding: 24px;
+  padding-bottom: 0;
 }
 .infocard-header h5 {
   font-size: 24px;
@@ -146,4 +147,66 @@
   text-align: left;
   color: rgba(0, 0, 0, 0.6);
   margin-top: 0;
+}
+.infocard-header .inliner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.infocard-header .inliner p {
+  margin-right: 24px;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 0;
+}
+.infocard-header .inliner p:last-child {
+  margin-right: 0;
+}
+.infocard-header .inliner.big p {
+  font-size: inherit;
+  line-height: inherit;
+}
+.infocard-header .description {
+  text-align: left;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 40px;
+}
+.infocard-header .bottom-line {
+  width: 100%;
+  height: 0px;
+  border: 1px solid #e0e0e0;
+}
+.infocard-header .progress-label {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.infocard-header .progress-label h6 {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+.infocard-header .progress-label p {
+  width: 108px;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 1.5px;
+}
+.infocard-header .progress-bar {
+  width: 100%;
+  margin-bottom: 26px;
 }
