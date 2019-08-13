@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, LinearProgress } from '@material-ui/core';
+import { Paper, LinearProgress, Button } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import LinkIcon from '@material-ui/icons/Link';
 import { getDateString, getTime, calcSessions } from '../../helpers';
 import { Template2 } from '../Images';
 
@@ -69,8 +72,22 @@ InfoCardHeader.propTypes = {
 };
 
 const ClassInfoCard = ({ cls }) => (
-  <Paper style={{ marginBottom: 40, paddingBottom: 10 }}>
+  <Paper className="infocard-wrapper">
     <InfoCardHeader cls={cls} />
+    <div className="options">
+      <Button variant="contained">
+        <EditIcon />
+        EDIT CLASS DETAILS
+      </Button>
+      <Button variant="contained">
+        <LinkIcon />
+        STUDENT SIGN UP LINK
+      </Button>
+      <Button variant="contained">
+        <DeleteIcon />
+        DELETE CLASS
+      </Button>
+    </div>
   </Paper>
 );
 

@@ -114,12 +114,17 @@
 }
 
 /**** InfoCard ****/
+.infocard-wrapper {
+  margin-bottom: 40px;
+  padding-bottom: 36px;
+}
 .infocard-header {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 24px;
 }
 .infocard-header > img {
   max-width: 58%;
@@ -232,4 +237,20 @@
   height: 10px;
   background-color: #13506e;
   display: block;
+}
+.infocard-wrapper > .options {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  box-sizing: border-box;
+  padding: 0 24px;
+  margin-bottom: 40px;
+}
+.infocard-wrapper > .options > button {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 16px 0 0;
+}
+.infocard-wrapper > .options > button svg {
+  margin-right: 8px;
 }
