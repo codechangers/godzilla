@@ -1,4 +1,4 @@
-import { dataMemberToValidation, months } from './globals';
+import { dataMemberToValidation, months, weekDays } from './globals';
 
 /*
  * For all functions that need to be binded to a component, ES5 functions must be used,
@@ -49,7 +49,7 @@ export const getDateFromTimestamp = timestamp => new Date(timestamp.seconds * 10
 export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
 export const getMonthDDYYYY = date =>
-  `${months[date.getMonth() + 1]} ${date.getDate()}, ${date.getFullYear()}`;
+  `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
 export const getHrMn = date => {
   const past12 = date.getHours() / 12 > 1;
@@ -59,12 +59,25 @@ export const getHrMn = date => {
 };
 
 export const getWeekDays = daysOfWeek => {
-  let weekDays = '';
+  let wDays = '';
   daysOfWeek.forEach(day => {
-    weekDays += `${day}, `;
+    wDays += `${day}, `;
   });
-  weekDays = weekDays.substring(0, weekDays.length - 2);
-  return weekDays;
+  wDays = wDays.substring(0, wDays.length - 2);
+  return wDays;
+};
+
+export const calcSessions = cls => {
+  const { startDate, endDate, daysOfWeek } = cls;
+  const start = getDateFromTimestamp(startDate);
+  let count = 0;
+  while (start.getTime() / 1000 <= endDate.seconds) {
+    if (daysOfWeek.includes(weekDays[start.getDay()])) {
+      count += 1;
+    }
+    start.setDate(start.getDate() + 1);
+  }
+  return count;
 };
 
 export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));

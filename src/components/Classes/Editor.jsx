@@ -13,6 +13,7 @@ import {
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import '../../assets/css/Teacher.css';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
+import { weekDays } from '../../globals';
 import autoBind from '../../autoBind';
 
 const allFields = [
@@ -25,7 +26,6 @@ const allFields = [
   'minStudents',
   'maxStudents'
 ];
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const dontConvert = ['name', 'locationName', 'locationAddress', 'daysOfWeek'];
 const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
 const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, LinearProgress } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
-import { getDateString, getTime } from '../../helpers';
+import { getDateString, getTime, calcSessions } from '../../helpers';
 import { Template2 } from '../Images';
 
 const SignUpsProgress = withStyles({
@@ -26,8 +26,7 @@ const InfoCardHeader = ({ cls }) => (
         <p>{`End Date: ${getDateString(cls.endDate)}`}</p>
       </div>
       <div className="inliner close">
-        {/* TODO: Calculate Sessions */}
-        <p>6 Sessions</p>
+        <p>{`${calcSessions(cls)} Sessions`}</p>
         <p>
           <AccessTime fontSize="inherit" />
           {getTime(cls.startTime)}
@@ -70,7 +69,7 @@ InfoCardHeader.propTypes = {
 };
 
 const ClassInfoCard = ({ cls }) => (
-  <Paper style={{ marginBottom: 40 }}>
+  <Paper style={{ marginBottom: 40, paddingBottom: 10 }}>
     <InfoCardHeader cls={cls} />
   </Paper>
 );

@@ -17,6 +17,8 @@ export const months = [
   'December'
 ];
 
+export const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 export const dataMemberToValidation = {
   name: () => '',
   fName: () => '',
