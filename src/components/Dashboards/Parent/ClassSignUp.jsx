@@ -14,7 +14,7 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import ClassPanel from '../../Classes/Panel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
-import Spinner from '../../Spinner';
+import Spinner from '../../UI/Spinner';
 
 class ClassSignUp extends React.Component {
   constructor(props) {

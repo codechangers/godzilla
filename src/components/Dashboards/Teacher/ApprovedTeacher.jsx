@@ -6,10 +6,10 @@ import CurriculumInterface from '../../Interfaces/Curriculum';
 import PaymentInterface from '../../Interfaces/Payment';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
-import SideBar from '../../SideBar';
+import SideBar from '../../UI/SideBar';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
-import DeleteCard from '../../DeleteCard';
+import DeleteCard from '../../UI/DeleteCard';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Teacher.css';
 

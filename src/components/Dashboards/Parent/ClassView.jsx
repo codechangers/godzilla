@@ -5,7 +5,7 @@ import ClassPanel from '../../Classes/Panel';
 import TabPanel from '../../../TabPanel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
-import Spinner from '../../Spinner';
+import Spinner from '../../UI/Spinner';
 
 class ClassView extends React.Component {
   constructor(props) {

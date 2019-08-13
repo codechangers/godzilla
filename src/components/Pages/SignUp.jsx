@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
-import GenericSignUp from './SignUpForms/GenericSignUp';
-import ParentSignUp from './SignUpForms/ParentSignUp';
-import TeacherSignUp from './SignUpForms/TeacherSignUp';
-import OrganizationSignUp from './SignUpForms/OrganizationSignUp';
-import autoBind from '../autoBind';
-import { getUserData, validateFields, getErrorStatus } from '../helpers';
-import '../assets/css/Signup.css';
+import GenericSignUp from '../SignUpForms/GenericSignUp';
+import ParentSignUp from '../SignUpForms/ParentSignUp';
+import TeacherSignUp from '../SignUpForms/TeacherSignUp';
+import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
+import autoBind from '../../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import '../../assets/css/Signup.css';
 
 const errorCodeToMessage = {
   'auth/invalid-email': 'Invalid Email Address',

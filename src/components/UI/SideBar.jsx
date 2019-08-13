@@ -8,7 +8,7 @@ import {
   Settings
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
-import { Logo } from './Images';
+import { Logo } from '../Images';
 
 const nameToIcon = {
   Dashboard,

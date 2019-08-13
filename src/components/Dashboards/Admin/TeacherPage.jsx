@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import autoBind from '../../../autoBind';
 import TeacherRequest from '../../Requests/Teacher';
-import Spinner from '../../Spinner';
+import Spinner from '../../UI/Spinner';
 
 let cancelTeacherSub = () => {};
 

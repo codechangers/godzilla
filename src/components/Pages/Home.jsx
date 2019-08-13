@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Logo } from './Images';
-import '../assets/css/HomePage.css';
+import { Logo } from '../Images';
+import '../../assets/css/HomePage.css';
 
 const HomePage = () => (
   <div className="full-width">
