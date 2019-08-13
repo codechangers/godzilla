@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, LinearProgress } from '@material-ui/core';
+import { AccessTime, LocationOn } from '@material-ui/icons';
 import { Template2 } from '../Images';
 
 const SignUpsProgress = withStyles({
@@ -25,10 +26,16 @@ const ClassInfoCard = () => (
         </div>
         <div className="inliner">
           <p>6 Sessions</p>
-          <p>7:30PM</p>
+          <p>
+            <AccessTime fontSize="inherit" />
+            7:30PM
+          </p>
           <p>$100 per Student</p>
           <p>Hawkins Highschool</p>
-          <p>825 W 60th St, Los Angeles, CA 90044</p>
+          <p>
+            <LocationOn fontSize="inherit" />
+            825 W 60th St, Los Angeles, CA 90044
+          </p>
         </div>
         <div className="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt

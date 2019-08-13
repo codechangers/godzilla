@@ -159,6 +159,12 @@
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.infocard-header .inliner p > svg {
+  margin-right: 6px;
 }
 .infocard-header .inliner p:last-child {
   margin-right: 0;
