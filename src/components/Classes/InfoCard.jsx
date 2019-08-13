@@ -71,11 +71,11 @@ InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired
 };
 
-const ClassInfoCard = ({ cls }) => (
+const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
   <Paper className="infocard-wrapper">
     <InfoCardHeader cls={cls} />
     <div className="options">
-      <Button variant="contained">
+      <Button variant="contained" onClick={openUpdate}>
         <EditIcon />
         EDIT CLASS DETAILS
       </Button>
@@ -83,7 +83,7 @@ const ClassInfoCard = ({ cls }) => (
         <LinkIcon />
         STUDENT SIGN UP LINK
       </Button>
-      <Button variant="contained">
+      <Button variant="contained" onClick={openDelete}>
         <DeleteIcon />
         DELETE CLASS
       </Button>
@@ -92,7 +92,9 @@ const ClassInfoCard = ({ cls }) => (
 );
 
 ClassInfoCard.propTypes = {
-  cls: PropTypes.object.isRequired
+  cls: PropTypes.object.isRequired,
+  openUpdate: PropTypes.func.isRequired,
+  openDelete: PropTypes.func.isRequired
 };
 
 export default ClassInfoCard;
