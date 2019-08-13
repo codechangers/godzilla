@@ -17,15 +17,44 @@ const routeToInterface = {
   '/teacher/settings': SettingsInterface
 };
 
+let teacherSub = () => null;
+
 class ApprovedTeacher extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      classes: []
+    };
+  }
+
+  componentDidMount() {
+    teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
+      this.fetchClasses(teacher);
+    });
+  }
+
+  componentWillUnmount() {
+    teacherSub();
+    teacherSub = () => null;
   }
 
   getInterface() {
     const Interface = routeToInterface[this.props.location.pathname];
     return Interface === null ? null : <Interface />;
+  }
+
+  fetchClasses(teacher) {
+    const classRefs = teacher.data().classes || [];
+    const classes = [];
+    classRefs.forEach(classRef => {
+      classRef.get().then(classDoc => {
+        const classData = { ...classDoc.data(), id: classDoc.id };
+        classes.push(classData);
+        if (classes.length === classRefs.length) {
+          this.setState({ classes });
+        }
+      });
+    });
   }
 
   render() {
@@ -34,7 +63,9 @@ class ApprovedTeacher extends React.Component {
         <SideBar />
         {this.getInterface() || (
           <div className="page-content">
-            <ClassInfoCard />
+            {this.state.classes.map(cls => (
+              <ClassInfoCard cls={cls} key={cls.id} />
+            ))}
           </div>
         )}
       </div>
@@ -43,7 +74,8 @@ class ApprovedTeacher extends React.Component {
 }
 
 ApprovedTeacher.propTypes = {
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 export default withRouter(ApprovedTeacher);

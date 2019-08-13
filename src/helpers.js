@@ -1,4 +1,4 @@
-import { dataMemberToValidation } from './globals';
+import { dataMemberToValidation, months } from './globals';
 
 /*
  * For all functions that need to be binded to a component, ES5 functions must be used,
@@ -48,6 +48,9 @@ export const getDateFromTimestamp = timestamp => new Date(timestamp.seconds * 10
 
 export const getMMDDYYYY = date => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
+export const getMonthDDYYYY = date =>
+  `${months[date.getMonth() + 1]} ${date.getDate()}, ${date.getFullYear()}`;
+
 export const getHrMn = date => {
   const past12 = date.getHours() / 12 > 1;
   return `${getDoubleDigits(past12 ? date.getHours() - 12 : date.getHours())}:${getDoubleDigits(
@@ -65,5 +68,7 @@ export const getWeekDays = daysOfWeek => {
 };
 
 export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
+
+export const getDateString = timestamp => getMonthDDYYYY(getDateFromTimestamp(timestamp));
 
 export const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
