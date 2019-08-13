@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Card, Button } from '@material-ui/core';
+import { Modal } from '@material-ui/core';
 import CurriculumInterface from '../../Interfaces/Curriculum';
 import PaymentInterface from '../../Interfaces/Payment';
 import ProfileInterface from '../../Interfaces/Profile';
@@ -9,6 +9,7 @@ import SettingsInterface from '../../Interfaces/Settings';
 import SideBar from '../../SideBar';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
+import DeleteCard from '../../DeleteCard';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Teacher.css';
 
@@ -46,6 +47,39 @@ class ApprovedTeacher extends React.Component {
   getInterface() {
     const Interface = routeToInterface[this.props.location.pathname];
     return Interface === null ? null : <Interface />;
+  }
+
+  getCrudModal() {
+    return (
+      <Modal
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        open={this.state.selected !== null}
+        onClose={() => this.setState({ selected: null })}
+        disableAutoFocus
+      >
+        {this.state.selected.shouldEdit ? (
+          <ClassEditor
+            submit={classData => {
+              this.updateClass(this.state.selected.cls.id, classData);
+              this.setState({ selected: null });
+            }}
+            title="Edit Class Details"
+            submitText="Update Class"
+            cls={this.state.selected.cls}
+          />
+        ) : (
+          <DeleteCard
+            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
+            warning="This will remove the class and all signed up students permanently"
+            onCancel={() => this.setState({ selected: null })}
+            onDelete={() => {
+              this.deleteClass(this.state.selected.cls.id);
+              this.setState({ selected: null });
+            }}
+          />
+        )}
+      </Modal>
+    );
   }
 
   fetchClasses(teacher) {
@@ -99,50 +133,7 @@ class ApprovedTeacher extends React.Component {
                 openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
               />
             ))}
-            {this.state.selected !== null ? (
-              <Modal
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                open={this.state.selected !== null}
-                onClose={() => this.setState({ selected: null })}
-                disableAutoFocus
-              >
-                {this.state.selected.shouldEdit ? (
-                  <ClassEditor
-                    submit={classData => {
-                      this.updateClass(this.state.selected.id, classData);
-                      this.setState({ selected: null });
-                    }}
-                    title="Edit Class Details"
-                    submitText="Update Class"
-                    cls={this.state.selected.cls}
-                  />
-                ) : (
-                  <Card className="delete-card">
-                    <h1>{`Are you sure you want to delete ${this.state.selected.cls.name}?`}</h1>
-                    <h4>This will remove the class and all signed up students permanently</h4>
-                    <div className="options">
-                      <Button
-                        color="default"
-                        variant="outlined"
-                        onClick={() => this.setState({ selected: null })}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => {
-                          this.deleteClass(this.state.selected.cls.id);
-                          this.setState({ selected: null });
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </Card>
-                )}
-              </Modal>
-            ) : null}
+            {this.state.selected !== null ? this.getCrudModal() : null}
           </div>
         )}
       </div>
