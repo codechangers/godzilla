@@ -46,7 +46,7 @@ class ApprovedTeacher extends React.Component {
 
   getInterface() {
     const Interface = routeToInterface[this.props.location.pathname];
-    return Interface === null ? null : <Interface />;
+    return Interface === null ? null : <Interface firebase={this.props.firebase} />;
   }
 
   getCrudModal() {
@@ -144,6 +144,7 @@ class ApprovedTeacher extends React.Component {
 ApprovedTeacher.propTypes = {
   location: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired
 };
 
