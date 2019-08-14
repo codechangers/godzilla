@@ -68,3 +68,12 @@
 .request-info .modalButtonContainer span {
   margin: 0;
 }
+
+.birthdate-picker button {
+  width: 48px !important;
+  align-self: center !important;
+  justify-content: center;
+}
+.birthdate-picker button > span {
+  margin: 0;
+}
