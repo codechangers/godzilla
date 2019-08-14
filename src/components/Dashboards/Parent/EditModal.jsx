@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import Spinner from '../../UI/Spinner';
+import { getDateFromTimestamp } from '../../../helpers';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 
@@ -12,11 +14,16 @@ const propTypes = {
   data: PropTypes.object.isRequired
 };
 
+const today = new Date();
+const y = today.getFullYear();
+const m = today.getMonth();
+const d = today.getDate();
+
 class EditModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      textFieldValue: '',
+      textFieldValue: props.data.date ? getDateFromTimestamp(props.data.date) : '',
       errorMessage: ''
     };
     this.db = this.props.db;
@@ -59,12 +66,25 @@ class EditModal extends React.Component {
       <div className="modal-container">
         <div className="modal-box">
           <div className="modal-text">
-            <TextField
-              id="outlined-name"
-              label={this.props.data.heading}
-              name="textFieldValue"
-              onChange={this.handleChange}
-            />
+            {this.props.data.date ? (
+              <KeyboardDatePicker
+                clearable
+                className="birthdate-picker"
+                value={this.state.textFieldValue}
+                placeholder="01/01/2001"
+                onChange={date => this.setState({ textFieldValue: date })}
+                minDate={new Date(y - 100, m, d)}
+                label="Child's Birthdate"
+                format="MM/dd/yyyy"
+              />
+            ) : (
+              <TextField
+                id="outlined-name"
+                label={this.props.data.heading}
+                name="textFieldValue"
+                onChange={this.handleChange}
+              />
+            )}
           </div>
           {this.state.errorMessage === 'loading' ? (
             <Spinner color="primary" />
