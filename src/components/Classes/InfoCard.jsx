@@ -130,10 +130,12 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
         DELETE CLASS
       </Button>
     </div>
-    <StudentInfo showLabels />
-    {cls.children.map(childRef => (
-      <StudentInfo student={childRef} key={childRef.id} />
-    ))}
+    <div className="students-wrapper">
+      <StudentInfo showLabels />
+      {cls.children.map(childRef => (
+        <StudentInfo student={childRef} key={childRef.id} />
+      ))}
+    </div>
   </Paper>
 );
 

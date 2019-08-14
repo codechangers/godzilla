@@ -254,14 +254,43 @@
 .infocard-wrapper > .options > button svg {
   margin-right: 8px;
 }
+.infocard-wrapper > .students-wrapper {
+  padding: 0 24px;
+}
 
 .infocard-student {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
+  border-bottom: 1px solid #f2f2f2;
+  padding: 16px;
 }
-
+.infocard-student > p {
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+  margin: 0 32px 0 0;
+  text-align: left;
+}
 .infocard-student.bold > p {
   font-weight: bold;
+}
+.infocard-student > p:nth-child(1) {
+  width: 190px;
+}
+.infocard-student > p:nth-child(2) {
+  width: 65px;
+}
+.infocard-student > p:nth-child(3) {
+  width: 40px;
+}
+.infocard-student > p:nth-child(4) {
+  width: 100px;
+}
+.infocard-student > p:nth-child(5) {
+  width: 190px;
+}
+.infocard-student > p:nth-child(6) {
+  width: 150px;
 }
