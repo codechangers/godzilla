@@ -52,7 +52,11 @@ class ApprovedTeacher extends React.Component {
   getCrudModal() {
     return (
       <Modal
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
         open={this.state.selected !== null}
         onClose={() => this.setState({ selected: null })}
         disableAutoFocus
@@ -66,6 +70,7 @@ class ApprovedTeacher extends React.Component {
             title="Edit Class Details"
             submitText="Update Class"
             cls={this.state.selected.cls}
+            close={() => this.setState({ selected: null })}
           />
         ) : (
           <DeleteCard

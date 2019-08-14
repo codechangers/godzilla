@@ -35,7 +35,8 @@
 
 .days-of-week {
   width: 100%;
-  margin: 20px 0;
+  margin: 0;
+  margin-bottom: 21px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -293,4 +294,57 @@
 }
 .infocard-student > p:nth-child(6) {
   width: 150px;
+}
+
+/**** Editor ****/
+.class-editor {
+  width: 50%;
+  min-width: 500px;
+  padding: 24px;
+  padding-bottom: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: scroll;
+  max-height: 100%;
+}
+.class-editor h4 {
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+  margin: 0;
+  margin-bottom: 24px;
+}
+.class-editor .input {
+  margin-bottom: 21px;
+}
+.class-editor .input.most {
+  width: 70%;
+}
+.class-editor .input.wide {
+  width: 100%;
+}
+.class-editor .inliner {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.class-editor .inliner .input {
+  width: 45%;
+}
+.class-editor .options {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.class-editor .options button:last-child {
+  margin: 0 -16px 0 24px;
 }
