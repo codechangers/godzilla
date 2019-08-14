@@ -1,5 +1,9 @@
 import React from 'react';
 
-const CurriculumInterface = () => <h1>Curriculum Interface</h1>;
+const CurriculumInterface = () => (
+  <div className="page-content">
+    <h1 style={{ margin: 0 }}>Curriculum Interface</h1>
+  </div>
+);
 
 export default CurriculumInterface;

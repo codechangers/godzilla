@@ -20,6 +20,22 @@
   color: #fff;
 }
 
+.page-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--background-color);
+}
+
+.page-content {
+  width: 100%;
+  max-width: calc(1176px + 264px);
+  box-sizing: border-box;
+  padding: 40px 132px 0 132px;
+}
+
 /**** SideBar ****/
 .sidebar-wrapper {
   position: absolute;

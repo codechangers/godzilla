@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Fab, Button, Modal } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import NavBar from '../../NavBar';
+import NavBar from '../../UI/NavBar';
 import ClassEditor from '../../Classes/Editor';
 import ClassViewer from '../../Classes/Viewer';
 import ClassPanel from '../../Classes/Panel';

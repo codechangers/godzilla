@@ -24,7 +24,7 @@ import {
   ExpandMore
 } from '@material-ui/icons';
 import EditModal from './EditModal';
-import Spinner from '../../Spinner';
+import Spinner from '../../UI/Spinner';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 
