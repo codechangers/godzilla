@@ -80,21 +80,23 @@ class StudentInfo extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.student);
-    this.props.student.get().then(studentDoc => {
-      this.setState({ student: { ...studentDoc.data(), id: studentDoc.id } });
-    });
+    if (this.props.student !== null) {
+      this.props.student.get().then(studentDoc => {
+        this.setState({ student: { ...studentDoc.data(), id: studentDoc.id } });
+      });
+    }
   }
 
   render() {
+    const { showLabels } = this.props;
     const { student } = this.state;
-    return student !== null ? (
-      <div className="infocard-student">
-        <p>{`${student.fName} ${student.lName}`}</p>
-        <p>{student.gender}</p>
-        <p>{`${getAgeFromBirthday(student.birthDate)}`}</p>
-        <p>{`${student.currentGrade} Grade`}</p>
-        <p>{student.currentSchool}</p>
+    return student !== null || showLabels ? (
+      <div className={`infocard-student${showLabels ? ' bold' : ''}`}>
+        <p>{showLabels ? 'Name' : `${student.fName} ${student.lName}`}</p>
+        <p>{showLabels ? 'Gender' : `${student.gender}`}</p>
+        <p>{showLabels ? 'Age' : `${getAgeFromBirthday(student.birthDate)}`}</p>
+        <p>{showLabels ? 'Current Grade' : `${student.currentGrade} Grade`}</p>
+        <p>{showLabels ? 'Current School' : `${student.currentSchool}`}</p>
         <p>Status</p>
       </div>
     ) : null;
@@ -102,7 +104,13 @@ class StudentInfo extends React.Component {
 }
 
 StudentInfo.propTypes = {
-  student: PropTypes.object.isRequired
+  student: PropTypes.object,
+  showLabels: PropTypes.bool
+};
+
+StudentInfo.defaultProps = {
+  student: null,
+  showLabels: false
 };
 
 const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
@@ -122,6 +130,7 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
         DELETE CLASS
       </Button>
     </div>
+    <StudentInfo showLabels />
     {cls.children.map(childRef => (
       <StudentInfo student={childRef} key={childRef.id} />
     ))}
