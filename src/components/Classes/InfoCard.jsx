@@ -43,11 +43,7 @@ const InfoCardHeader = ({ cls }) => (
           {cls.locationAddress}
         </p>
       </div>
-      <div className="description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat.
-      </div>
+      <div className="description">{cls.description}</div>
       <div className="progress-label">
         <h6>Students Sign-up</h6>
         <p>{`${cls.children.length}/${cls.maxStudents} STUDENTS`}</p>

@@ -68,7 +68,7 @@ class ApprovedTeacher extends React.Component {
               this.setState({ selected: null });
             }}
             title="Edit Class Details"
-            submitText="Update Class"
+            submitText="Submit"
             cls={this.state.selected.cls}
             close={() => this.setState({ selected: null })}
           />
