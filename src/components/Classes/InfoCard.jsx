@@ -6,7 +6,7 @@ import { AccessTime, LocationOn } from '@material-ui/icons';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
-import { getDateString, getTime, calcSessions } from '../../helpers';
+import { getDateString, getTime, calcSessions, getAgeFromBirthday } from '../../helpers';
 import { Template2 } from '../Images';
 
 const SignUpsProgress = withStyles({
@@ -71,6 +71,40 @@ InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired
 };
 
+class StudentInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      student: null
+    };
+  }
+
+  componentDidMount() {
+    console.log(this.props.student);
+    this.props.student.get().then(studentDoc => {
+      this.setState({ student: { ...studentDoc.data(), id: studentDoc.id } });
+    });
+  }
+
+  render() {
+    const { student } = this.state;
+    return student !== null ? (
+      <div className="infocard-student">
+        <p>{`${student.fName} ${student.lName}`}</p>
+        <p>{student.gender}</p>
+        <p>{`${getAgeFromBirthday(student.birthDate)}`}</p>
+        <p>{`${student.currentGrade} Grade`}</p>
+        <p>{student.currentSchool}</p>
+        <p>Status</p>
+      </div>
+    ) : null;
+  }
+}
+
+StudentInfo.propTypes = {
+  student: PropTypes.object.isRequired
+};
+
 const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
   <Paper className="infocard-wrapper">
     <InfoCardHeader cls={cls} />
@@ -88,6 +122,9 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
         DELETE CLASS
       </Button>
     </div>
+    {cls.children.map(childRef => (
+      <StudentInfo student={childRef} key={childRef.id} />
+    ))}
   </Paper>
 );
 

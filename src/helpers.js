@@ -80,6 +80,12 @@ export const calcSessions = cls => {
   return count;
 };
 
+export const getAgeFromBirthday = bDay => {
+  const today = new Date().getTime() / 1000;
+  const yearSecs = 31557600;
+  return Math.floor((today - bDay.seconds) / yearSecs);
+};
+
 export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
 
 export const getDateString = timestamp => getMonthDDYYYY(getDateFromTimestamp(timestamp));
