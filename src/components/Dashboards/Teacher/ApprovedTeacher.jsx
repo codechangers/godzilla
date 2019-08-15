@@ -22,6 +22,8 @@ const routeToInterface = {
   '/teacher/settings': SettingsInterface
 };
 
+const getName = user => `${user.data().fName} ${user.data().lName}`;
+
 let teacherSub = () => null;
 
 class ApprovedTeacher extends React.Component {
@@ -29,7 +31,8 @@ class ApprovedTeacher extends React.Component {
     super(props);
     this.state = {
       classes: [],
-      selected: null
+      selected: null,
+      showCreate: false
     };
     autoBind(this);
   }
@@ -51,6 +54,26 @@ class ApprovedTeacher extends React.Component {
   }
 
   getCrudModal() {
+    if (this.state.showCreate) {
+      return (
+        <Modal
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+          open={this.state.showCreate}
+          onClose={() => this.setState({ showCreate: false })}
+          disableAutoFocus
+        >
+          <ClassEditor
+            submit={this.createClass}
+            submitText="Submit"
+            close={() => this.setState({ showCreate: false })}
+          />
+        </Modal>
+      );
+    }
     return (
       <Modal
         style={{
@@ -102,6 +125,19 @@ class ApprovedTeacher extends React.Component {
     });
   }
 
+  createClass(classData) {
+    const { teachers } = this.props.accounts;
+    this.props.db
+      .collection('classes')
+      .add({ ...classData, children: [] })
+      .then(classObj => {
+        const classes = teachers.data().classes || [];
+        classes.push(classObj);
+        teachers.ref.update({ classes });
+      });
+    this.setState({ showCreate: false });
+  }
+
   updateClass(classId, classData) {
     this.props.db
       .collection('classes')
@@ -132,9 +168,11 @@ class ApprovedTeacher extends React.Component {
         {this.getInterface() || (
           <div className="page-content">
             <Banner
-              name="Macuyler Dunn"
+              name={
+                this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
+              }
               buttonText="ADD A NEW CLASS"
-              onClick={() => console.log('click')}
+              onClick={() => this.setState({ showCreate: true })}
             />
             {this.state.classes.map(cls => (
               <ClassInfoCard
@@ -144,7 +182,7 @@ class ApprovedTeacher extends React.Component {
                 openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
               />
             ))}
-            {this.state.selected !== null ? this.getCrudModal() : null}
+            {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
           </div>
         )}
       </div>
