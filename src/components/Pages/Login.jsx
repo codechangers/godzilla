@@ -121,9 +121,12 @@ class Login extends React.Component {
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <Button onClick={this.handleSubmit} variant="contained" color="primary">
-              Login
-            </Button>
+            <div className="options">
+              <Button onClick={() => this.setState({ shouldRedirect: '/signup' })}>Signup</Button>
+              <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                Login
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

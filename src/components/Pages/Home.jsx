@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Logo } from '../Images';
+import { Logo, ParentIcon, TeacherIcon } from '../Images';
 import '../../assets/css/HomePage.css';
 
 const HomePage = () => (
@@ -23,11 +23,7 @@ const HomePage = () => (
     </div>
     <div className="signups">
       <div className="card">
-        <img
-          src="https://library.kissclipart.com/20180907/zgq/kissclipart-parents-icon-png-clipart-computer-icons-parent-9857b7fb5e07dd6f.png"
-          alt="Avatar"
-          className="card-img"
-        />
+        <ParentIcon className="card-img" />
         <div className="container">
           <h4>
             <b>Create your Parent account here</b>
@@ -42,11 +38,7 @@ const HomePage = () => (
         </div>
       </div>
       <div className="card">
-        <img
-          src="https://img.icons8.com/cotton/2x/school-director--v1.png"
-          alt="Avatar"
-          className="card-img"
-        />
+        <TeacherIcon className="card-img" />
         <div className="container">
           <h4>
             <b>Create your Teacher account here</b>

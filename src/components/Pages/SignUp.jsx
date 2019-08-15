@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
+import { Card, CardHeader, CardContent, Button, TextField, Modal } from '@material-ui/core';
 import GenericSignUp from '../SignUpForms/GenericSignUp';
 import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import { ParentIcon, TeacherIcon, OrganizationIcon } from '../Images';
 import '../../assets/css/Signup.css';
 
 const errorCodeToMessage = {
@@ -43,15 +44,7 @@ const propTypes = {
   updateAccounts: PropTypes.func.isRequired,
   location: PropTypes.shape({
     state: PropTypes.objectOf(PropTypes.string)
-  })
-};
-
-const defaultProps = {
-  location: {
-    state: {
-      accountType: 'parent'
-    }
-  }
+  }).isRequired
 };
 
 class SignUp extends React.Component {
@@ -68,6 +61,8 @@ class SignUp extends React.Component {
       confirmPassword: '',
       isLoggedIn: false,
       isRegistered: false,
+      accountType: 'parent',
+      showTypeModal: false,
       errors: {}
     };
     this.firebase = this.props.firebase;
@@ -75,6 +70,15 @@ class SignUp extends React.Component {
     this.getUserData = getUserData;
     this.validateFields = validateFields;
     autoBind(this);
+  }
+
+  componentDidMount() {
+    const { state } = this.props.location;
+    if (state && state.accountType) {
+      this.setState({ accountType: state.accountType });
+    } else {
+      this.setState({ showTypeModal: true });
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -87,7 +91,7 @@ class SignUp extends React.Component {
   }
 
   getForm() {
-    switch (this.props.location.state.accountType) {
+    switch (this.state.accountType) {
       case 'parent':
         return (
           <ParentSignUp
@@ -156,11 +160,46 @@ class SignUp extends React.Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
             />
-            <Button onClick={this.handleSubmit} variant="contained" color="primary">
-              Next
-            </Button>
+            <div className="options">
+              <Button onClick={() => this.setState({ isLoggedIn: true })}>Login</Button>
+              <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                Next
+              </Button>
+            </div>
           </CardContent>
         </Card>
+        <Modal
+          open={this.state.showTypeModal}
+          onClose={() => {}}
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Card className="account-selector">
+            <CardHeader title="What type of Account is best for you?" />
+            <CardContent className="content">
+              <Button
+                className="button"
+                onClick={() => this.setState({ accountType: 'parent', showTypeModal: false })}
+              >
+                <ParentIcon />
+                <p>Parent</p>
+              </Button>
+              <Button
+                className="button"
+                onClick={() => this.setState({ accountType: 'teacher', showTypeModal: false })}
+              >
+                <TeacherIcon />
+                <p>Teacher</p>
+              </Button>
+              <Button
+                className="button"
+                onClick={() => this.setState({ accountType: 'organization', showTypeModal: false })}
+              >
+                <OrganizationIcon />
+                <p>Organization</p>
+              </Button>
+            </CardContent>
+          </Card>
+        </Modal>
       </div>
     );
   }
@@ -217,6 +256,5 @@ class SignUp extends React.Component {
 }
 
 SignUp.propTypes = propTypes;
-SignUp.defaultProps = defaultProps;
 
 export default SignUp;

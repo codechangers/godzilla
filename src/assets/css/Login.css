@@ -37,6 +37,14 @@
   margin-bottom: 20px;
 }
 
-.login-form button {
+.login-form .options {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.login-form .options button {
   width: 40%;
 }

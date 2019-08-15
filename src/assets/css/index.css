@@ -34,3 +34,12 @@ code {
 #template2-img {
   background-image: url('../images/template2.jpeg');
 }
+#parent-icon-img {
+  background-image: url('../images/parent-icon.png');
+}
+#teacher-icon-img {
+  background-image: url('../images/teacher-icon.png');
+}
+#organization-icon-img {
+  background-image: url('../images/organization-icon.png');
+}
