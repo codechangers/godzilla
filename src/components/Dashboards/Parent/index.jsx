@@ -14,7 +14,7 @@ import {
 import ClassSignUp from './ClassSignUp';
 import ClassView from './ClassView';
 import Profile from './Profile';
-import NavBar from '../../NavBar';
+import NavBar from '../../UI/NavBar';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 

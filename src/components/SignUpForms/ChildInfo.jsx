@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, TextField } from '@material-ui/core';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
@@ -22,13 +23,18 @@ const propTypes = {
   addChildRef: PropTypes.func.isRequired
 };
 
+const today = new Date();
+const y = today.getFullYear();
+const m = today.getMonth();
+const d = today.getDate();
+
 class ChildInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fName: '',
       lName: '',
-      birthDate: '',
+      birthDate: new Date(),
       currentSchool: '',
       currentGrade: '',
       shirtSize: '',
@@ -41,12 +47,12 @@ class ChildInfo extends React.Component {
   }
 
   createChild() {
-    if (this.validateFields(allFields) === true) {
+    if (this.validateFields(allFields.filter(f => f !== 'birthDate')) === true) {
       const user = this.props.firebase.auth().currentUser;
       if (user) {
         this.props.db
           .collection('children')
-          .add(this.state)
+          .add(this.getUserData(allFields))
           .then(child => {
             this.props.addChildRef(this.props.db.collection('children').doc(child.id));
           });
@@ -86,15 +92,15 @@ class ChildInfo extends React.Component {
           value={this.state.lName}
           onChange={this.handleChange}
         />
-        <TextField
-          error={getErrorStatus(errors.birthDate)}
-          id="birthDate"
-          type="text"
-          label="Child's Birthdate"
-          variant="outlined"
-          helperText={errors.birthDate}
+        <KeyboardDatePicker
+          clearable
+          className="birthdate-picker"
           value={this.state.birthDate}
-          onChange={this.handleChange}
+          placeholder="01/01/2001"
+          onChange={date => this.setState({ birthDate: date })}
+          minDate={new Date(y - 100, m, d)}
+          label="Child's Birthdate"
+          format="MM/dd/yyyy"
         />
         <TextField
           error={getErrorStatus(errors.currentSchool)}

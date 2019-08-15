@@ -24,7 +24,8 @@ import {
   ExpandMore
 } from '@material-ui/icons';
 import EditModal from './EditModal';
-import Spinner from '../../Spinner';
+import Spinner from '../../UI/Spinner';
+import { getDate } from '../../../helpers';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Parent-Dash.css';
 
@@ -299,6 +300,7 @@ class Profile extends React.Component {
                             firebase: this.firebase,
                             heading: "Child's Birth Date",
                             attribute: 'birthDate',
+                            date: child.data.birthDate,
                             id: child.id,
                             collection: 'children'
                           })
@@ -307,7 +309,7 @@ class Profile extends React.Component {
                         <ListItemIcon>
                           <Cake />
                         </ListItemIcon>
-                        <ListItemText primary={child.data.birthDate} />
+                        <ListItemText primary={getDate(child.data.birthDate)} />
                       </ListItem>
                       <ListItem
                         button

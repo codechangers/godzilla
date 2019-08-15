@@ -57,7 +57,7 @@ svg.MuiSvgIcon-root.read-indicator {
 
 .teacher-request button.decline,
 .org-request button.decline {
-  background-color: var(--danger-color);
+  background-color: var(--error-color);
   color: #fff;
   border: none;
   outline: none;
@@ -73,8 +73,8 @@ svg.MuiSvgIcon-root.read-indicator {
   cursor: pointer;
 }
 
-.teacher-request button.select>p,
-.org-request button.select>p {
+.teacher-request button.select > p,
+.org-request button.select > p {
   font-size: 1rem;
 }
 
@@ -109,7 +109,7 @@ svg.MuiSvgIcon-root.read-indicator {
   animation: slideFromTop 400ms ease;
 }
 
-.request-info>div {
+.request-info > div {
   width: 100%;
   display: flex;
   flex-direction: row;

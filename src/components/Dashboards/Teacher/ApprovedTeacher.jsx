@@ -1,12 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Fab, Button, Modal } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import NavBar from '../../NavBar';
+import { withRouter } from 'react-router-dom';
+import { Modal } from '@material-ui/core';
+import CurriculumInterface from '../../Interfaces/Curriculum';
+import PaymentInterface from '../../Interfaces/Payment';
+import ProfileInterface from '../../Interfaces/Profile';
+import SettingsInterface from '../../Interfaces/Settings';
+import SideBar from '../../UI/SideBar';
+import Banner from '../../UI/Banner';
+import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
-import ClassViewer from '../../Classes/Viewer';
-import ClassPanel from '../../Classes/Panel';
+import DeleteCard from '../../UI/DeleteCard';
 import autoBind from '../../../autoBind';
+import '../../../assets/css/Teacher.css';
+
+const routeToInterface = {
+  '/teacher': null,
+  '/teacher/curriculum': CurriculumInterface,
+  '/teacher/payments': PaymentInterface,
+  '/teacher/profile': ProfileInterface,
+  '/teacher/settings': SettingsInterface
+};
+
+const getName = user => `${user.data().fName} ${user.data().lName}`;
 
 let teacherSub = () => null;
 
@@ -15,8 +31,8 @@ class ApprovedTeacher extends React.Component {
     super(props);
     this.state = {
       classes: [],
-      showCreate: false,
-      selected: null
+      selected: null,
+      showCreate: false
     };
     autoBind(this);
   }
@@ -32,20 +48,70 @@ class ApprovedTeacher extends React.Component {
     teacherSub = () => null;
   }
 
-  getMoreInfo(cls) {
+  getInterface() {
+    const Interface = routeToInterface[this.props.location.pathname];
+    return Interface === null ? null : <Interface firebase={this.props.firebase} />;
+  }
+
+  getCrudModal() {
+    if (this.state.showCreate) {
+      return (
+        <Modal
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+          open={this.state.showCreate}
+          onClose={() => this.setState({ showCreate: false })}
+          disableAutoFocus
+        >
+          <ClassEditor
+            submit={this.createClass}
+            submitText="Submit"
+            close={() => this.setState({ showCreate: false })}
+          />
+        </Modal>
+      );
+    }
     return (
-      <Button
-        onClick={() => {
-          this.setState({ selected: cls });
+      <Modal
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
-        color="primary"
+        open={this.state.selected !== null}
+        onClose={() => this.setState({ selected: null })}
+        disableAutoFocus
       >
-        More Info
-      </Button>
+        {this.state.selected.shouldEdit ? (
+          <ClassEditor
+            submit={classData => {
+              this.updateClass(this.state.selected.cls.id, classData);
+              this.setState({ selected: null });
+            }}
+            title="Edit Class Details"
+            submitText="Submit"
+            cls={this.state.selected.cls}
+            close={() => this.setState({ selected: null })}
+          />
+        ) : (
+          <DeleteCard
+            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
+            warning="This will remove the class and all signed up students permanently"
+            onCancel={() => this.setState({ selected: null })}
+            onDelete={() => {
+              this.deleteClass(this.state.selected.cls.id);
+              this.setState({ selected: null });
+            }}
+          />
+        )}
+      </Modal>
     );
   }
 
-  fetchClasses(teacher, selectedId) {
+  fetchClasses(teacher) {
     const classRefs = teacher.data().classes || [];
     const classes = [];
     classRefs.forEach(classRef => {
@@ -54,9 +120,6 @@ class ApprovedTeacher extends React.Component {
         classes.push(classData);
         if (classes.length === classRefs.length) {
           this.setState({ classes });
-        }
-        if (selectedId && classDoc.id === selectedId) {
-          this.setState({ selected: classData });
         }
       });
     });
@@ -99,51 +162,39 @@ class ApprovedTeacher extends React.Component {
   }
 
   render() {
-    const { accounts, firebase } = this.props;
     return (
-      <div className="list-view">
-        <NavBar accounts={accounts} firebase={firebase} />
-        <div className="top-right">
-          <Fab
-            variant="extended"
-            color="primary"
-            onClick={() => this.setState({ showCreate: true })}
-          >
-            <AddIcon />
-            Create a Class
-          </Fab>
-        </div>
-        <h1>Welcome to the Approved Teacher Dashboard</h1>
-        <div className="classes-wrapper">
-          {this.state.classes.map(cls => (
-            <ClassPanel cls={cls} getButton={this.getMoreInfo} />
-          ))}
-        </div>
-        <Modal
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-          open={this.state.showCreate}
-          onClose={() => this.setState({ showCreate: false })}
-          disableAutoFocus
-        >
-          <ClassEditor submit={this.createClass} />
-        </Modal>
-        {this.state.selected ? (
-          <ClassViewer
-            cls={this.state.selected}
-            update={(id, data) => this.updateClass(id, data)}
-            delete={id => this.deleteClass(id)}
-            close={() => this.setState({ selected: null })}
-          />
-        ) : null}
+      <div className="page-wrapper">
+        <SideBar />
+        {this.getInterface() || (
+          <div className="page-content">
+            <Banner
+              name={
+                this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
+              }
+              buttonText="ADD A NEW CLASS"
+              onClick={() => this.setState({ showCreate: true })}
+            />
+            {this.state.classes.map(cls => (
+              <ClassInfoCard
+                cls={cls}
+                key={cls.id}
+                openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
+                openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+              />
+            ))}
+            {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
+          </div>
+        )}
       </div>
     );
   }
 }
 
 ApprovedTeacher.propTypes = {
+  location: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired
 };
 
-export default ApprovedTeacher;
+export default withRouter(ApprovedTeacher);

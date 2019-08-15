@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
-import NavBar from '../../NavBar';
+import NavBar from '../../UI/NavBar';
 import TabPanel from '../../../TabPanel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Admin.css';

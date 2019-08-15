@@ -1,7 +1,8 @@
 :root {
   --primary-color: #05bce5;
   --secondary-color: #50769a;
-  --danger-color: #cd0b0b;
+  --error-color: #cd0b0b;
+  --background-color: #f4f4f4;
 }
 
 body {
@@ -18,4 +19,18 @@ code {
 
 .full-width {
   width: 100%;
+}
+
+/**** Background Images ****/
+#logo-img {
+  background-image: url('../images//logo.svg');
+}
+#background1-img {
+  background-image: url('../images/background1.png');
+}
+#template1-img {
+  background-image: url('../images/template1.png');
+}
+#template2-img {
+  background-image: url('../images/template2.jpeg');
 }

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
-import autoBind from '../autoBind';
-import { getUserData, validateFields, getErrorStatus } from '../helpers';
-import '../assets/css/Login.css';
+import autoBind from '../../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import '../../assets/css/Login.css';
 
 const errorCodeToMessage = {
   'auth/wrong-password': 'Incorrect Password',
