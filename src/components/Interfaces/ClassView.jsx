@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
 import ClassPanel from '../Classes/Panel';
 import TabPanel from '../../TabPanel';
+import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
 import Spinner from '../UI/Spinner';
@@ -13,15 +15,19 @@ class ClassViewInterface extends React.Component {
     this.state = {
       tabIndex: 0,
       children: [],
+      childrenRefs: [],
       selectedClass: null,
       isLoading: true,
-      showEmpty: false
+      showEmpty: false,
+      showKidCreator: false
     };
     autoBind(this);
   }
 
   componentDidMount() {
-    this.fetchChildData();
+    const childrenRefs = this.props.accounts.parents.data().children || [];
+    this.fetchChildData(childrenRefs);
+    this.setState({ childrenRefs });
   }
 
   getButton(cls) {
@@ -36,9 +42,9 @@ class ClassViewInterface extends React.Component {
     );
   }
 
-  fetchChildData() {
+  fetchChildData(childrenRefs) {
     const childrenData = [];
-    const children = this.props.accounts.parents.data().children || [];
+    const children = childrenRefs || this.state.childrenRefs;
     if (children.length > 0) {
       children.forEach(child => {
         child.get().then(childDoc => {
@@ -87,13 +93,39 @@ class ClassViewInterface extends React.Component {
     this.setState({ tabIndex: value });
   }
 
+  addChildRef(childRef) {
+    const user = this.props.firebase.auth().currentUser;
+    const { childrenRefs } = this.state;
+    childrenRefs.push(childRef);
+    this.setState({ childrenRefs });
+    this.props.db
+      .collection('parents')
+      .doc(user.uid)
+      .update({
+        children: childrenRefs
+      });
+    this.fetchChildData(childrenRefs);
+  }
+
   render() {
     return (
       <div className="classes-container">
         <h2>View your Classes</h2>
         {this.state.showEmpty ? (
-          <h4>Looks like you don&apos;t have any kids registered yet.</h4>
-        ) : null}
+          <div className="empty-warning">
+            <h3>Looks like you don&apos;t have any kids registered yet.</h3>
+            <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
+          </div>
+        ) : (
+          <Button
+            color="primary"
+            variant="contained"
+            style={{ alignSelf: 'flex-end', marginTop: '-40px' }}
+            onClick={() => this.setState({ showKidCreator: true })}
+          >
+            Add a Kid
+          </Button>
+        )}
         <Tabs
           className="view-classes-tabs"
           value={this.state.tabIndex}
@@ -113,22 +145,33 @@ class ClassViewInterface extends React.Component {
                 {child.classesData.map(cls => (
                   <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
                 ))}
+                {child.classesData.length > 0 ? null : (
+                  <div className="empty-warning">
+                    <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
+                    <Button>
+                      <Link className="action" to="/parent/signup">
+                        Find one now!
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </TabPanel>
             );
           })
         )}
         <Modal
           className="modal-wrapper"
-          open={this.state.selectedClass !== null}
-          onClose={() =>
-            this.setState({
-              selectedClass: null
-            })
-          }
+          open={this.state.selectedClass !== null || this.state.showKidCreator}
+          onClose={() => this.setState({ selectedClass: null, showKidCreator: false })}
           disableAutoFocus
         >
           {this.state.selectedClass === null ? (
-            <div />
+            <ChildInfo
+              firebase={this.props.firebase}
+              db={this.props.db}
+              handleClose={() => this.setState({ showKidCreator: false })}
+              addChildRef={this.addChildRef}
+            />
           ) : (
             <Card className="delete-card modal-content">
               <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
@@ -154,7 +197,9 @@ class ClassViewInterface extends React.Component {
 }
 
 ClassViewInterface.propTypes = {
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 export default ClassViewInterface;

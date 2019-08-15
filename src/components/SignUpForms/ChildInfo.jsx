@@ -78,6 +78,7 @@ class ChildInfo extends React.Component {
           type="text"
           label="Child's First Name"
           variant="outlined"
+          className="input"
           helperText={errors.fName}
           value={this.state.fName}
           onChange={this.handleChange}
@@ -88,13 +89,14 @@ class ChildInfo extends React.Component {
           type="text"
           label="Child's Last Name"
           variant="outlined"
+          className="input"
           helperText={errors.lName}
           value={this.state.lName}
           onChange={this.handleChange}
         />
         <KeyboardDatePicker
           clearable
-          className="birthdate-picker"
+          className="birthdate-picker input"
           value={this.state.birthDate}
           placeholder="01/01/2001"
           onChange={date => this.setState({ birthDate: date })}
@@ -106,6 +108,7 @@ class ChildInfo extends React.Component {
           error={getErrorStatus(errors.currentSchool)}
           id="currentSchool"
           type="text"
+          className="input"
           label="Child's Current School"
           variant="outlined"
           helperText={errors.currentSchool}
@@ -116,6 +119,7 @@ class ChildInfo extends React.Component {
           error={getErrorStatus(errors.currentGrade)}
           id="currentGrade"
           type="text"
+          className="input"
           label="Child's Current Grade"
           variant="outlined"
           helperText={errors.currentGrade}
@@ -126,6 +130,7 @@ class ChildInfo extends React.Component {
           error={getErrorStatus(errors.shirtSize)}
           id="shirtSize"
           type="text"
+          className="input"
           label="Child's Shirt Size"
           variant="outlined"
           helperText={errors.shirtSize}
@@ -136,9 +141,9 @@ class ChildInfo extends React.Component {
           error={getErrorStatus(errors.gender)}
           id="gender"
           type="text"
+          className="input"
           label="Child's Gender"
           variant="outlined"
-          helperText={errors.gender}
           value={this.state.gender}
           onChange={this.handleChange}
         />

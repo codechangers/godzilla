@@ -36,7 +36,11 @@ class ParentDashboard extends React.Component {
         <SideBar names={['My Classes', 'Sign up', 'Profile', 'Settings']} baseRoute="/parent" />
         {this.getInterface() || (
           <div className="page-content">
-            <ClassViewInterface accounts={this.props.accounts} />
+            <ClassViewInterface
+              firebase={this.props.firebase}
+              db={this.props.db}
+              accounts={this.props.accounts}
+            />
           </div>
         )}
       </div>

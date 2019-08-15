@@ -65,16 +65,24 @@
   width: 100%;
 }
 
-.request-info-wrapper .request-info {
+.request-info {
   padding: 40px;
 }
 
-.request-info-wrapper .request-info .modalButtonContainer {
+.request-info .modalButtonContainer {
   justify-content: space-evenly;
+}
+
+.request-info .modalButtonContainer button {
+  width: 200px;
 }
 
 .request-info .modalButtonContainer span {
   margin: 0;
+}
+
+.request-info .input {
+  margin-bottom: 20px;
 }
 
 .birthdate-picker button {
