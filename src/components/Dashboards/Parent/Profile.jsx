@@ -151,7 +151,7 @@ class Profile extends React.Component {
 
   render() {
     return this.state.isLoadingUser === false ? (
-      <div className="page-content horiz-center">
+      <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
         <h2>Edit your Profile</h2>
         <Paper className="paper-list-item">
           <List

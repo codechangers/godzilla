@@ -9,6 +9,7 @@ import {
   Edit
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
+import Logout from './Logout';
 import { Logo } from '../Images';
 
 const nameToIcon = {
@@ -21,7 +22,7 @@ const nameToIcon = {
   Settings
 };
 
-const SideBar = ({ names, baseRoute, location }) => {
+const SideBar = ({ names, baseRoute, location, firebase }) => {
   const nameToRoute = {
     Dashboard: baseRoute,
     'My Classes': baseRoute,
@@ -48,6 +49,7 @@ const SideBar = ({ names, baseRoute, location }) => {
           </Link>
         );
       })}
+      <Logout firebase={firebase} className="logout-btn" />
     </div>
   );
 };
@@ -55,7 +57,8 @@ const SideBar = ({ names, baseRoute, location }) => {
 SideBar.propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
-  baseRoute: PropTypes.string
+  baseRoute: PropTypes.string,
+  firebase: PropTypes.object.isRequired
 };
 
 SideBar.defaultProps = {

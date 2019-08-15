@@ -167,6 +167,7 @@ class ApprovedTeacher extends React.Component {
         <SideBar
           names={['Dashboard', 'Curriculum', 'Payments', 'Profile', 'Settings']}
           baseRoute="/teacher"
+          firebase={this.props.firebase}
         />
         {this.getInterface() || (
           <div className="page-content">
