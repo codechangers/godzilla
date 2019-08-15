@@ -46,7 +46,7 @@ class ClassSignUpInterface extends React.Component {
         this.setState({ classOptions: newClasses, isLoading: false });
       });
     const childrenData = [];
-    const { children } = this.props.accounts.parents.data();
+    const children = this.props.accounts.parents.data().children || [];
     children.forEach(child => {
       child.get().then(childDoc => {
         const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };

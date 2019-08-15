@@ -14,7 +14,8 @@ class ClassViewInterface extends React.Component {
       tabIndex: 0,
       children: [],
       selectedClass: null,
-      isLoading: true
+      isLoading: true,
+      showEmpty: false
     };
     autoBind(this);
   }
@@ -37,34 +38,38 @@ class ClassViewInterface extends React.Component {
 
   fetchChildData() {
     const childrenData = [];
-    const { children } = this.props.accounts.parents.data();
-    children.forEach(child => {
-      child.get().then(childDoc => {
-        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-        const childClasses = [];
-        if (childData.classes && childData.classes.length > 0) {
-          childData.classes.forEach(cls => {
-            cls.get().then(classDoc => {
-              const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
-              childClasses.push(classData);
-              if (childClasses.length === childData.classes.length) {
-                childData.classesData = childClasses;
-                childrenData.push(childData);
-                if (childrenData.length === children.length) {
-                  this.setState({ children: childrenData, isLoading: false });
+    const children = this.props.accounts.parents.data().children || [];
+    if (children.length > 0) {
+      children.forEach(child => {
+        child.get().then(childDoc => {
+          const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+          const childClasses = [];
+          if (childData.classes && childData.classes.length > 0) {
+            childData.classes.forEach(cls => {
+              cls.get().then(classDoc => {
+                const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
+                childClasses.push(classData);
+                if (childClasses.length === childData.classes.length) {
+                  childData.classesData = childClasses;
+                  childrenData.push(childData);
+                  if (childrenData.length === children.length) {
+                    this.setState({ children: childrenData, isLoading: false, showEmpty: false });
+                  }
                 }
-              }
+              });
             });
-          });
-        } else {
-          childData.classesData = [];
-          childrenData.push(childData);
-          if (childrenData.length === children.length) {
-            this.setState({ children: childrenData, isLoading: false });
+          } else {
+            childData.classesData = [];
+            childrenData.push(childData);
+            if (childrenData.length === children.length) {
+              this.setState({ children: childrenData, isLoading: false, showEmpty: false });
+            }
           }
-        }
+        });
       });
-    });
+    } else {
+      this.setState({ isLoading: false, showEmpty: true });
+    }
   }
 
   removeClass() {
@@ -86,6 +91,9 @@ class ClassViewInterface extends React.Component {
     return (
       <div className="classes-container">
         <h2>View your Classes</h2>
+        {this.state.showEmpty ? (
+          <h4>Looks like you don&apos;t have any kids registered yet.</h4>
+        ) : null}
         <Tabs
           className="view-classes-tabs"
           value={this.state.tabIndex}
