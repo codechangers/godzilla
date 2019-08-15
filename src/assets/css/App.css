@@ -12,6 +12,14 @@
   height: 40vmin;
   pointer-events: none;
 }
+
+.horiz-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .banner {
   display: flex;
   flex-direction: column;
@@ -38,7 +46,7 @@
 
 /**** SideBar ****/
 .sidebar-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 96px;

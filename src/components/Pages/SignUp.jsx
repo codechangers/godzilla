@@ -172,6 +172,7 @@ class SignUp extends React.Component {
           open={this.state.showTypeModal}
           onClose={() => {}}
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          disableAutoFocus
         >
           <Card className="account-selector">
             <CardHeader title="What type of Account is best for you?" />

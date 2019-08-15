@@ -151,7 +151,8 @@ class Profile extends React.Component {
 
   render() {
     return this.state.isLoadingUser === false ? (
-      <>
+      <div className="page-content horiz-center">
+        <h2>Edit your Profile</h2>
         <Paper className="paper-list-item">
           <List
             component="nav"
@@ -397,9 +398,12 @@ class Profile extends React.Component {
         ) : (
           <></>
         )}
-      </>
+      </div>
     ) : (
-      <Spinner color="primary" />
+      <div className="page-content horiz-center">
+        <h2>Edit your Profile</h2>
+        <Spinner color="primary" />
+      </div>
     );
   }
 }

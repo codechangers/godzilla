@@ -11,12 +11,12 @@ import {
   Checkbox
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
-import ClassPanel from '../../Classes/Panel';
-import autoBind from '../../../autoBind';
-import '../../../assets/css/Parent-Dash.css';
-import Spinner from '../../UI/Spinner';
+import ClassPanel from '../Classes/Panel';
+import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
+import Spinner from '../UI/Spinner';
 
-class ClassSignUp extends React.Component {
+class ClassSignUpInterface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -107,7 +107,7 @@ class ClassSignUp extends React.Component {
 
   render() {
     return (
-      <div className="classes-container">
+      <div className="classes-container page-content">
         <h2>Choose a Class</h2>
         {this.state.isLoading ? (
           <Spinner color="primary" />
@@ -165,9 +165,9 @@ class ClassSignUp extends React.Component {
   }
 }
 
-ClassSignUp.propTypes = {
+ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired
 };
 
-export default ClassSignUp;
+export default ClassSignUpInterface;

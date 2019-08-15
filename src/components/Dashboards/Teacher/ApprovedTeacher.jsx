@@ -164,7 +164,10 @@ class ApprovedTeacher extends React.Component {
   render() {
     return (
       <div className="page-wrapper">
-        <SideBar />
+        <SideBar
+          names={['Dashboard', 'Curriculum', 'Payments', 'Profile', 'Settings']}
+          baseRoute="/teacher"
+        />
         {this.getInterface() || (
           <div className="page-content">
             <Banner

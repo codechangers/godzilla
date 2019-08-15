@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
-import ClassPanel from '../../Classes/Panel';
-import TabPanel from '../../../TabPanel';
-import autoBind from '../../../autoBind';
-import '../../../assets/css/Parent-Dash.css';
-import Spinner from '../../UI/Spinner';
+import ClassPanel from '../Classes/Panel';
+import TabPanel from '../../TabPanel';
+import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
+import Spinner from '../UI/Spinner';
 
-class ClassView extends React.Component {
+class ClassViewInterface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,7 +85,7 @@ class ClassView extends React.Component {
   render() {
     return (
       <div className="classes-container">
-        <h2>View Classes</h2>
+        <h2>View your Classes</h2>
         <Tabs
           className="view-classes-tabs"
           value={this.state.tabIndex}
@@ -145,8 +145,8 @@ class ClassView extends React.Component {
   }
 }
 
-ClassView.propTypes = {
+ClassViewInterface.propTypes = {
   accounts: PropTypes.object.isRequired
 };
 
-export default ClassView;
+export default ClassViewInterface;

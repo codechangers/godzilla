@@ -5,7 +5,8 @@ import {
   ImportContacts,
   AttachMoney,
   AccountCircle,
-  Settings
+  Settings,
+  Edit
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
 import { Logo } from '../Images';
@@ -13,40 +14,53 @@ import { Logo } from '../Images';
 const nameToIcon = {
   Dashboard,
   Curriculum: ImportContacts,
+  'My Classes': ImportContacts,
   Payments: AttachMoney,
   Profile: AccountCircle,
+  'Sign up': Edit,
   Settings
 };
 
-const nameToRoute = {
-  Dashboard: '/teacher',
-  Curriculum: '/teacher/curriculum',
-  Payments: '/teacher/payments',
-  Profile: '/teacher/profile',
-  Settings: '/teacher/settings'
+const SideBar = ({ names, baseRoute, location }) => {
+  const nameToRoute = {
+    Dashboard: baseRoute,
+    'My Classes': baseRoute,
+    Curriculum: `${baseRoute}/curriculum`,
+    Payments: `${baseRoute}/payments`,
+    Profile: `${baseRoute}/profile`,
+    'Sign up': `${baseRoute}/signup`,
+    Settings: `${baseRoute}/settings`
+  };
+
+  const isSelected = (n, l) => nameToRoute[n] === l.pathname;
+
+  return (
+    <div className="sidebar-wrapper">
+      <Logo />
+      {names.map(name => {
+        const Icon = nameToIcon[name];
+        return (
+          <Link to={nameToRoute[name]} key={name}>
+            <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
+              <Icon />
+              {name}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
 };
 
-const isSelected = (name, location) => nameToRoute[name] === location.pathname;
-
-const SideBar = ({ location }) => (
-  <div className="sidebar-wrapper">
-    <Logo />
-    {Object.keys(nameToIcon).map(name => {
-      const Icon = nameToIcon[name];
-      return (
-        <Link to={nameToRoute[name]} key={name}>
-          <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
-            <Icon />
-            {name}
-          </div>
-        </Link>
-      );
-    })}
-  </div>
-);
-
 SideBar.propTypes = {
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  names: PropTypes.arrayOf(PropTypes.string),
+  baseRoute: PropTypes.string
+};
+
+SideBar.defaultProps = {
+  names: [],
+  baseRoute: '/'
 };
 
 export default withRouter(SideBar);

@@ -115,11 +115,16 @@
 
 .classes-container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .class-panel-container {
   width: 50%;
-  margin: 10px auto;
+  min-width: 700px;
+  margin: 10px 0;
 }
 
 .class-panel-summary .MuiExpansionPanelSummary-content,
@@ -158,4 +163,5 @@
 
 .view-classes-tabs {
   margin: 0 50px;
+  align-self: flex-start;
 }

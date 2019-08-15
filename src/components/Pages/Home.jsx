@@ -17,6 +17,7 @@ const HomePage = () => (
         </div>
         <h1>Hello New Platform</h1>
         <div className="buttons">
+          <Link to="/signup">Signup</Link>
           <Link to="/login">Login</Link>
         </div>
       </div>
