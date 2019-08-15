@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Profile from './Profile';
-import SideBar from '../../UI/SideBar';
-import ClassSignUpInterface from '../../Interfaces/ClassSignUp';
-import ClassViewInterface from '../../Interfaces/ClassView';
-import SettingsInterface from '../../Interfaces/Settings';
-import autoBind from '../../../autoBind';
-import '../../../assets/css/Parent-Dash.css';
+import Profile from '../Interfaces/Profile';
+import SideBar from '../UI/SideBar';
+import ClassSignUpInterface from '../Interfaces/ClassSignUp';
+import ClassViewInterface from '../Interfaces/ClassView';
+import SettingsInterface from '../Interfaces/Settings';
+import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
 
 const routeToInterface = {
   '/parent': null,
