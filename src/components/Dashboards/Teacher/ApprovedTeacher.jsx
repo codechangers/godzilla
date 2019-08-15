@@ -7,6 +7,7 @@ import PaymentInterface from '../../Interfaces/Payment';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
 import SideBar from '../../UI/SideBar';
+import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
@@ -130,6 +131,11 @@ class ApprovedTeacher extends React.Component {
         <SideBar />
         {this.getInterface() || (
           <div className="page-content">
+            <Banner
+              name="Macuyler Dunn"
+              buttonText="ADD A NEW CLASS"
+              onClick={() => console.log('click')}
+            />
             {this.state.classes.map(cls => (
               <ClassInfoCard
                 cls={cls}
