@@ -1,22 +1,77 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-import NavBar from '../NavBar';
+import { Redirect, withRouter } from 'react-router-dom';
+import Profile from '../Interfaces/Profile';
+import SideBar from '../UI/SideBar';
+import ClassSignUpInterface from '../Interfaces/ClassSignUp';
+import ClassViewInterface from '../Interfaces/ClassView';
+import SettingsInterface from '../Interfaces/Settings';
+import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
 
-const ParentDashboard = ({ firebase, user, accounts }) =>
-  user.isSignedIn ? (
-    <div>
-      <NavBar accounts={accounts} firebase={firebase} />
-      <h1>Welcome to the Parent Dashboard</h1>
-    </div>
-  ) : (
-    <Redirect to="/" />
-  );
+const routeToInterface = {
+  '/parent': null,
+  '/parent/signup': ClassSignUpInterface,
+  '/parent/profile': Profile,
+  '/parent/settings': SettingsInterface
+};
+
+class ParentDashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.firebase = this.props.firebase;
+    autoBind(this);
+  }
+
+  getID() {
+    const path = this.props.location.pathname;
+    if (path.includes('/parent/signup/') && path.length > 18) {
+      return path.replace('/parent/signup/', '');
+    }
+    return '';
+  }
+
+  getInterface() {
+    const { state, pathname } = this.props.location;
+    const Interface =
+      routeToInterface[
+        state && state.signupID ? pathname.replace(`/${state.signupID}`, '') : pathname
+      ];
+    const { firebase, accounts, db, user } = this.props;
+    return Interface === null ? null : <Interface {...{ firebase, accounts, db, user }} />;
+  }
+
+  render() {
+    return this.props.user.isSignedIn ? (
+      <div className="page-wrapper">
+        <SideBar
+          names={['My Classes', 'Sign up', 'Profile']}
+          baseRoute="/parent"
+          firebase={this.props.firebase}
+        />
+        {this.getInterface() || (
+          <div className="page-content">
+            <ClassViewInterface
+              firebase={this.props.firebase}
+              db={this.props.db}
+              accounts={this.props.accounts}
+            />
+          </div>
+        )}
+      </div>
+    ) : (
+      <Redirect to={{ pathname: '/login', state: { signupID: this.getID() } }} />
+    );
+  }
+}
 
 ParentDashboard.propTypes = {
   firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default ParentDashboard;
+export default withRouter(ParentDashboard);

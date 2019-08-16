@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/logo.svg';
-import '../assets/css/HomePage.css';
+import { Logo, ParentIcon, TeacherIcon } from '../Images';
+import '../../assets/css/HomePage.css';
 
 const HomePage = () => (
   <div className="full-width">
@@ -13,21 +13,18 @@ const HomePage = () => (
             alt="godzilla"
             className="godzilla"
           />
-          <img src={logo} className="App-logo" alt="logo" />
+          <Logo className="App-logo" />
         </div>
         <h1>Hello New Platform</h1>
         <div className="buttons">
+          <Link to="/signup">Signup</Link>
           <Link to="/login">Login</Link>
         </div>
       </div>
     </div>
     <div className="signups">
       <div className="card">
-        <img
-          src="https://library.kissclipart.com/20180907/zgq/kissclipart-parents-icon-png-clipart-computer-icons-parent-9857b7fb5e07dd6f.png"
-          alt="Avatar"
-          className="card-img"
-        />
+        <ParentIcon className="card-img" />
         <div className="container">
           <h4>
             <b>Create your Parent account here</b>
@@ -42,11 +39,7 @@ const HomePage = () => (
         </div>
       </div>
       <div className="card">
-        <img
-          src="https://img.icons8.com/cotton/2x/school-director--v1.png"
-          alt="Avatar"
-          className="card-img"
-        />
+        <TeacherIcon className="card-img" />
         <div className="container">
           <h4>
             <b>Create your Teacher account here</b>

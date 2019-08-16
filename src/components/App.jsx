@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route } from 'react-router';
-import HomePage from './HomePage';
-import Login from './Login';
-import SignUp from './SignUp';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import HomePage from './Pages/Home';
+import Login from './Pages/Login';
+import SignUp from './Pages/SignUp';
 import AdminDashboard from './Dashboards/Admin/index';
 import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
@@ -36,7 +38,7 @@ class App extends React.Component {
     this.db = this.firebase
       .firestore()
       .collection('env')
-      .doc('DEVELOPMENT');
+      .doc('PRODUCTION');
   }
 
   componentDidMount() {
@@ -75,30 +77,32 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <Router>
-          {Object.keys(pathToComponent).map((path, index) => (
-            <Route
-              exact={index === 0}
-              key={path}
-              path={path}
-              render={props => {
-                const Comp = pathToComponent[path];
-                return (
-                  <Comp
-                    {...props}
-                    user={this.state.user}
-                    accounts={this.state.accounts}
-                    updateAccounts={user => this.updateAccounts(user)}
-                    firebase={this.firebase}
-                    db={this.db}
-                  />
-                );
-              }}
-            />
-          ))}
-        </Router>
-      </div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <div className="App">
+          <Router>
+            {Object.keys(pathToComponent).map((path, index) => (
+              <Route
+                exact={index === 0}
+                key={path}
+                path={path}
+                render={props => {
+                  const Comp = pathToComponent[path];
+                  return (
+                    <Comp
+                      {...props}
+                      user={this.state.user}
+                      accounts={this.state.accounts}
+                      updateAccounts={user => this.updateAccounts(user)}
+                      firebase={this.firebase}
+                      db={this.db}
+                    />
+                  );
+                }}
+              />
+            ))}
+          </Router>
+        </div>
+      </MuiPickersUtilsProvider>
     );
   }
 }
