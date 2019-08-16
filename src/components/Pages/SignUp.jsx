@@ -63,6 +63,7 @@ class SignUp extends React.Component {
       isRegistered: false,
       accountType: 'parent',
       showTypeModal: false,
+      signupID: '',
       errors: {}
     };
     this.firebase = this.props.firebase;
@@ -73,12 +74,14 @@ class SignUp extends React.Component {
   }
 
   componentDidMount() {
+    let { accountType, signupID, showTypeModal } = this.state;
     const { state } = this.props.location;
-    if (state && state.accountType) {
-      this.setState({ accountType: state.accountType });
-    } else {
-      this.setState({ showTypeModal: true });
+    if (state) {
+      accountType = state.accountType || '';
+      signupID = state.signupID || '';
+      showTypeModal = !state.accountType;
     }
+    this.setState({ accountType, signupID, showTypeModal });
   }
 
   componentWillReceiveProps(props) {
@@ -252,7 +255,11 @@ class SignUp extends React.Component {
   }
 
   render() {
-    return this.state.isLoggedIn ? <Redirect to="/login" /> : this.getSignUp();
+    return this.state.isLoggedIn ? (
+      <Redirect to={{ pathname: '/login', state: { signupID: this.state.signupID } }} />
+    ) : (
+      this.getSignUp()
+    );
   }
 }
 

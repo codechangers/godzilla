@@ -33,7 +33,11 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     Settings: `${baseRoute}/settings`
   };
 
-  const isSelected = (n, l) => nameToRoute[n] === l.pathname;
+  const isSelected = (n, l) => {
+    const path =
+      l.state && l.state.signupID ? l.pathname.replace(`/${l.state.signupID}`, '') : l.pathname;
+    return nameToRoute[n] === path;
+  };
 
   return (
     <div className="sidebar-wrapper">

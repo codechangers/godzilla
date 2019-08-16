@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 import ClassSignUpInterface from '../Interfaces/ClassSignUp';
@@ -24,8 +24,20 @@ class ParentDashboard extends React.Component {
     autoBind(this);
   }
 
+  getID() {
+    const path = this.props.location.pathname;
+    if (path.includes('/parent/signup/') && path.length > 18) {
+      return path.replace('/parent/signup/', '');
+    }
+    return '';
+  }
+
   getInterface() {
-    const Interface = routeToInterface[this.props.location.pathname];
+    const { state, pathname } = this.props.location;
+    const Interface =
+      routeToInterface[
+        state && state.signupID ? pathname.replace(`/${state.signupID}`, '') : pathname
+      ];
     const { firebase, accounts, db, user } = this.props;
     return Interface === null ? null : <Interface {...{ firebase, accounts, db, user }} />;
   }
@@ -49,7 +61,7 @@ class ParentDashboard extends React.Component {
         )}
       </div>
     ) : (
-      <Redirect to="/login" />
+      <Redirect to={{ pathname: '/login', state: { signupID: this.getID() } }} />
     );
   }
 }
@@ -62,4 +74,4 @@ ParentDashboard.propTypes = {
   location: PropTypes.object.isRequired
 };
 
-export default ParentDashboard;
+export default withRouter(ParentDashboard);

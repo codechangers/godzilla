@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
   Button,
   Modal,
@@ -12,6 +13,7 @@ import {
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import ClassPanel from '../Classes/Panel';
+import { InfoCardHeader } from '../Classes/InfoCard';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
 import Spinner from '../UI/Spinner';
@@ -24,12 +26,24 @@ class ClassSignUpInterface extends React.Component {
       selectedClass: null,
       children: [],
       selectedChildren: [],
+      spotlight: null,
       isLoading: true
     };
     autoBind(this);
   }
 
   componentDidMount() {
+    const { pathname } = this.props.location;
+    if (pathname.length > '/parent/signup/'.length) {
+      this.props.db
+        .collection('classes')
+        .doc(pathname.replace('/parent/signup/', ''))
+        .get()
+        .then(classDoc => {
+          const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
+          this.setState({ spotlight: classData, isLoading: false });
+        });
+    }
     this.props.db
       .collection('classes')
       .get()
@@ -58,10 +72,44 @@ class ClassSignUpInterface extends React.Component {
     });
   }
 
-  getButton(cls) {
+  getClasses() {
+    if (this.state.spotlight !== null) {
+      console.log(this.state.spotlight);
+      return (
+        <div className="class-container page-content">
+          <h1>{`Signup for ${this.state.spotlight.name}`}</h1>
+          <Paper className="infocard-wrapper">
+            <InfoCardHeader cls={this.state.spotlight} />
+            <Button
+              style={{ width: '20%', marginRight: '30px' }}
+              onClick={() => this.setState({ spotlight: null, selectedClass: null })}
+            >
+              More options
+            </Button>
+            {this.getButton(this.state.spotlight, { width: '20%' })}
+          </Paper>
+        </div>
+      );
+    }
+    return (
+      <div className="classes-container page-content">
+        <h2>Choose a Class</h2>
+        {this.state.isLoading ? (
+          <Spinner color="primary" />
+        ) : (
+          this.state.classOptions.map(cls => (
+            <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
+          ))
+        )}
+      </div>
+    );
+  }
+
+  getButton(cls, style) {
     return (
       <Button
         onClick={() => this.setState({ selectedClass: cls })}
+        style={style || {}}
         variant="contained"
         color="primary"
       >
@@ -107,15 +155,8 @@ class ClassSignUpInterface extends React.Component {
 
   render() {
     return (
-      <div className="classes-container page-content">
-        <h2>Choose a Class</h2>
-        {this.state.isLoading ? (
-          <Spinner color="primary" />
-        ) : (
-          this.state.classOptions.map(cls => (
-            <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
-          ))
-        )}
+      <div>
+        {this.getClasses()}
         <Modal
           className="modal-wrapper"
           open={this.state.selectedClass !== null}
@@ -125,7 +166,7 @@ class ClassSignUpInterface extends React.Component {
           disableAutoFocus
         >
           <Paper className="modal-content">
-            <h2>Select Your Children</h2>
+            <h2>Select Children to Register</h2>
             <List>
               {this.state.children.map(child => {
                 return (
@@ -167,7 +208,8 @@ class ClassSignUpInterface extends React.Component {
 
 ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default ClassSignUpInterface;
+export default withRouter(ClassSignUpInterface);

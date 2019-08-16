@@ -22,7 +22,7 @@ const SignUpsProgress = withStyles({
   }
 })(LinearProgress);
 
-const InfoCardHeader = ({ cls }) => (
+export const InfoCardHeader = ({ cls }) => (
   <div className="infocard-header">
     <div>
       <h5>{cls.name}</h5>

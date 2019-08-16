@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
@@ -22,7 +22,8 @@ const accountTypeToRoute = {
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -32,6 +33,7 @@ class Login extends React.Component {
       email: '',
       password: '',
       shouldRedirect: '',
+      signupID: '',
       errors: {}
     };
     this.firebase = props.firebase;
@@ -43,6 +45,10 @@ class Login extends React.Component {
 
   componentDidMount() {
     this.checkAccounts();
+    const { state } = this.props.location;
+    if (state && state.signupID) {
+      this.setState({ signupID: state.signupID });
+    }
   }
 
   componentWillReceiveProps() {
@@ -59,6 +65,9 @@ class Login extends React.Component {
         shouldRedirect = accountTypeToRoute[key];
         break;
       }
+    }
+    if (shouldRedirect === accountTypeToRoute.parents && this.state.signupID.length > 0) {
+      shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
     }
     this.setState({ shouldRedirect });
   }
@@ -93,9 +102,9 @@ class Login extends React.Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, signupID } = this.state;
     return this.state.shouldRedirect.length > 0 ? (
-      <Redirect to={this.state.shouldRedirect} />
+      <Redirect to={{ pathname: this.state.shouldRedirect, state: { signupID } }} />
     ) : (
       <div className="login-wrapper">
         <Card className="login-form">
@@ -136,4 +145,4 @@ class Login extends React.Component {
 
 Login.propTypes = propTypes;
 
-export default Login;
+export default withRouter(Login);
