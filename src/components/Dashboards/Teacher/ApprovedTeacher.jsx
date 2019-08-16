@@ -2,25 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
-import CurriculumInterface from '../../Interfaces/Curriculum';
-import PaymentInterface from '../../Interfaces/Payment';
-import ProfileInterface from '../../Interfaces/Profile';
-import SettingsInterface from '../../Interfaces/Settings';
-import SideBar from '../../UI/SideBar';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Teacher.css';
-
-const routeToInterface = {
-  '/teacher': null,
-  '/teacher/curriculum': CurriculumInterface,
-  '/teacher/payments': PaymentInterface,
-  '/teacher/profile': ProfileInterface,
-  '/teacher/settings': SettingsInterface
-};
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 
@@ -46,12 +33,6 @@ class ApprovedTeacher extends React.Component {
   componentWillUnmount() {
     teacherSub();
     teacherSub = () => null;
-  }
-
-  getInterface() {
-    const Interface = routeToInterface[this.props.location.pathname];
-    const { firebase, db, user, accounts } = this.props;
-    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
   }
 
   getCrudModal() {
@@ -164,42 +145,30 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     return (
-      <div className="page-wrapper">
-        <SideBar
-          names={['Dashboard', 'Profile']}
-          baseRoute="/teacher"
-          firebase={this.props.firebase}
+      <div className="page-content">
+        <Banner
+          name={
+            this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
+          }
+          buttonText="ADD A NEW CLASS"
+          onClick={() => this.setState({ showCreate: true })}
         />
-        {this.getInterface() || (
-          <div className="page-content">
-            <Banner
-              name={
-                this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
-              }
-              buttonText="ADD A NEW CLASS"
-              onClick={() => this.setState({ showCreate: true })}
-            />
-            {this.state.classes.map(cls => (
-              <ClassInfoCard
-                cls={cls}
-                key={cls.id}
-                openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
-                openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
-              />
-            ))}
-            {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
-          </div>
-        )}
+        {this.state.classes.map(cls => (
+          <ClassInfoCard
+            cls={cls}
+            key={cls.id}
+            openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
+            openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+          />
+        ))}
+        {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
       </div>
     );
   }
 }
 
 ApprovedTeacher.propTypes = {
-  location: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired
 };
 
