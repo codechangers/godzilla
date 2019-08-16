@@ -214,23 +214,25 @@ class Profile extends React.Component {
               </ListItemIcon>
               <ListItemText primary={this.state.currentUser.phone} />
             </ListItem>
-            <ListItem
-              button
-              onClick={() =>
-                this.showModal({
-                  firebase: this.firebase,
-                  heading: 'Address',
-                  attribute: 'address',
-                  id: this.user.uid,
-                  collection: 'parents'
-                })
-              }
-            >
-              <ListItemIcon>
-                <Home />
-              </ListItemIcon>
-              <ListItemText primary={this.state.currentUser.address} />
-            </ListItem>
+            {this.props.accounts.teachers ? null : (
+              <ListItem
+                button
+                onClick={() =>
+                  this.showModal({
+                    firebase: this.firebase,
+                    heading: 'Address',
+                    attribute: 'address',
+                    id: this.user.uid,
+                    collection: 'parents'
+                  })
+                }
+              >
+                <ListItemIcon>
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary={this.state.currentUser.address} />
+              </ListItem>
+            )}
           </List>
         </Paper>
         {this.state.childrenArray.length > 0 ? (
