@@ -9,12 +9,28 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
-  InputBase
+  InputBase,
+  Collapse
 } from '@material-ui/core';
-import { AccountCircle, Smartphone, Home, LocationOn } from '@material-ui/icons';
+import { KeyboardDatePicker } from '@material-ui/pickers';
+import {
+  AccountCircle,
+  Smartphone,
+  Home,
+  LocationOn,
+  StarBorder,
+  ExpandLess,
+  ExpandMore,
+  Cake,
+  School,
+  FormatSize,
+  Wc
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { dataMemberToValidation } from '../../globals';
+import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -24,7 +40,8 @@ const propTypes = {
 
 const accountToNames = {
   parents: ['fName', 'lName', 'phone', 'address'],
-  teachers: ['fName', 'lName', 'phone']
+  teachers: ['fName', 'lName', 'phone'],
+  child: ['fName', 'lName', 'birthDate', 'currentSchool', 'currentGrade', 'shirtSize', 'gender']
 };
 
 const nameToIcon = {
@@ -32,7 +49,12 @@ const nameToIcon = {
   lName: AccountCircle,
   phone: Smartphone,
   address: Home,
-  location: LocationOn
+  location: LocationOn,
+  birthDate: Cake,
+  currentSchool: School,
+  currentGrade: StarBorder,
+  shirtSize: FormatSize,
+  gender: Wc
 };
 
 const useStyles = () => {
@@ -62,6 +84,8 @@ class ProfileInterface extends React.Component {
     super(props);
     this.state = {
       accountData: {},
+      children: [],
+      openChildren: [],
       errors: {}
     };
     autoBind(this);
@@ -84,6 +108,43 @@ class ProfileInterface extends React.Component {
     ) : null;
   }
 
+  getChildEditField(field, childId) {
+    const child = this.state.children.filter(c => c.id === childId)[0];
+    return child !== undefined ? (
+      <InputBase
+        value={child[field]}
+        onChange={e => {
+          const { children } = this.state;
+          const childIndex = children.indexOf(child);
+          if (childIndex !== -1) {
+            child[field] = e.target.value;
+            children[childIndex] = child;
+            this.setState({ children });
+          }
+        }}
+      />
+    ) : null;
+  }
+
+  getChildDateField(field, childId) {
+    const child = this.state.children.filter(c => c.id === childId)[0];
+    return child !== undefined ? (
+      <KeyboardDatePicker
+        value={getDateFromTimestamp(child[field])}
+        format="MM/dd/yyyy"
+        onChange={date => {
+          const { children } = this.state;
+          const childIndex = children.indexOf(child);
+          if (childIndex !== -1) {
+            child[field] = { seconds: date.getTime() / 1000 };
+            children[childIndex] = child;
+            this.setState({ children });
+          }
+        }}
+      />
+    ) : null;
+  }
+
   getFields() {
     const fields = this.props.accounts.teachers ? accountToNames.teachers : accountToNames.parents;
     return fields.map(field => {
@@ -95,6 +156,29 @@ class ProfileInterface extends React.Component {
             <Icon />
           </ListItemIcon>
           <ListItemText primary={this.getEditField(field)} />
+          <p style={{ fontSize: '14px', color: 'red', margin: 0 }}>{error}</p>
+        </ListItem>
+      );
+    });
+  }
+
+  getChildFields(childId) {
+    const fields = accountToNames.child;
+    return fields.map(field => {
+      const Icon = nameToIcon[field];
+      const error = this.state.errors[field];
+      return (
+        <ListItem key={`${field}${childId}`}>
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              field !== 'birthDate'
+                ? this.getChildEditField(field, childId)
+                : this.getChildDateField(field, childId)
+            }
+          />
           <p style={{ fontSize: '14px', color: 'red', margin: 0 }}>{error}</p>
         </ListItem>
       );
@@ -125,7 +209,22 @@ class ProfileInterface extends React.Component {
         } else {
           this.setState({ accountData });
         }
+        this.fetchChildrenData();
       });
+  }
+
+  fetchChildrenData() {
+    const childrenRefs = this.state.accountData.children || [];
+    const children = [];
+    childrenRefs.forEach(childRef => {
+      childRef.get().then(childDoc => {
+        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+        children.push(childData);
+        if (children.length === childrenRefs.length) {
+          this.setState({ children });
+        }
+      });
+    });
   }
 
   validateFields(fields) {
@@ -191,6 +290,47 @@ class ProfileInterface extends React.Component {
             </ListItem>
           </List>
         </Paper>
+        {this.state.children.length > 0 ? (
+          <div className="paper-list-item">
+            {this.state.children.map(child => (
+              <Paper key={child.id}>
+                <List
+                  component="nav"
+                  aria-labelledby="nested-list-subheader"
+                  subheader={getSubHeader("Child's Information")}
+                  className={useStyles.root}
+                >
+                  <ListItem
+                    button
+                    className="child-list-item"
+                    onClick={() => {
+                      let { openChildren } = this.state;
+                      if (openChildren.includes(child.id)) {
+                        openChildren = openChildren.filter(e => e !== child.id);
+                      } else {
+                        openChildren.push(child.id);
+                      }
+                      this.setState({ openChildren });
+                    }}
+                  >
+                    <ListItemIcon>
+                      <StarBorder />
+                    </ListItemIcon>
+                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                    {this.state.openChildren.includes(child.id) ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse
+                    in={this.state.openChildren.includes(child.id)}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    {this.getChildFields(child.id)}
+                  </Collapse>
+                </List>
+              </Paper>
+            ))}
+          </div>
+        ) : null}
       </div>
     );
   }
