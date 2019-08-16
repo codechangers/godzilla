@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { AccountCircle, Smartphone, Home, LocationOn } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import { dataMemberToValidation } from '../../globals';
 import autoBind from '../../autoBind';
 
 const propTypes = {
@@ -23,7 +24,7 @@ const propTypes = {
 
 const accountToNames = {
   parents: ['fName', 'lName', 'phone', 'address'],
-  teachers: ['fName', 'lName', 'phone', 'location', 'address']
+  teachers: ['fName', 'lName', 'phone']
 };
 
 const nameToIcon = {
@@ -60,7 +61,8 @@ class ProfileInterface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountData: {}
+      accountData: {},
+      errors: {}
     };
     autoBind(this);
   }
@@ -70,7 +72,7 @@ class ProfileInterface extends React.Component {
   }
 
   getEditField(field) {
-    return this.state.accountData[field] ? (
+    return this.state.accountData[field] !== undefined ? (
       <InputBase
         value={this.state.accountData[field]}
         onChange={e => {
@@ -86,12 +88,14 @@ class ProfileInterface extends React.Component {
     const fields = this.props.accounts.teachers ? accountToNames.teachers : accountToNames.parents;
     return fields.map(field => {
       const Icon = nameToIcon[field];
+      const error = this.state.errors[field];
       return (
         <ListItem key={field}>
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
           <ListItemText primary={this.getEditField(field)} />
+          <p style={{ fontSize: '14px', color: 'red', margin: 0 }}>{error}</p>
         </ListItem>
       );
     });
@@ -124,20 +128,39 @@ class ProfileInterface extends React.Component {
       });
   }
 
+  validateFields(fields) {
+    const { errors } = this.state;
+    let formValid = true;
+    Object.keys(fields).forEach(field => {
+      if (fields[field] === '') {
+        errors[field] = 'This field may not be empty';
+        formValid = false;
+      } else {
+        const valid = dataMemberToValidation[field](fields);
+        errors[field] = valid;
+        if (valid !== '') formValid = false;
+      }
+    });
+    this.setState({ errors });
+    return formValid;
+  }
+
   updateAccountData() {
     const { fName, lName, phone, address, location } = this.state.accountData;
     const isTeacher = this.props.accounts.teachers;
     const parentData = isTeacher ? { fName, lName, phone } : { fName, lName, phone, address };
     const teacherData = { address, location };
-    this.props.db
-      .collection('parents')
-      .doc(this.props.user.uid)
-      .update(parentData);
-    if (isTeacher) {
+    if (this.validateFields(parentData)) {
       this.props.db
-        .collection('teachers')
+        .collection('parents')
         .doc(this.props.user.uid)
-        .update(teacherData);
+        .update(parentData);
+      if (isTeacher) {
+        this.props.db
+          .collection('teachers')
+          .doc(this.props.user.uid)
+          .update(teacherData);
+      }
     }
   }
 
