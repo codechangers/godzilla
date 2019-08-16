@@ -44,10 +44,12 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.checkAccounts();
     const { state } = this.props.location;
     if (state && state.signupID) {
+      this.checkAccounts(state.signupID);
       this.setState({ signupID: state.signupID });
+    } else {
+      this.checkAccounts();
     }
   }
 
@@ -55,7 +57,7 @@ class Login extends React.Component {
     this.checkAccounts();
   }
 
-  checkAccounts() {
+  checkAccounts(signupID) {
     const { accounts } = this.props;
     const order = ['admins', 'teachers', 'organizations', 'parents'];
     let shouldRedirect = '';
@@ -68,6 +70,8 @@ class Login extends React.Component {
     }
     if (shouldRedirect === accountTypeToRoute.parents && this.state.signupID.length > 0) {
       shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
+    } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
+      shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
     }
     this.setState({ shouldRedirect });
   }

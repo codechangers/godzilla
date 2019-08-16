@@ -60,21 +60,26 @@ class ClassSignUpInterface extends React.Component {
         this.setState({ classOptions: newClasses, isLoading: false });
       });
     const childrenData = [];
-    const children = this.props.accounts.parents.data().children || [];
-    children.forEach(child => {
-      child.get().then(childDoc => {
-        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-        childrenData.push(childData);
-        if (childrenData.length === children.length) {
-          this.setState({ children: childrenData });
-        }
+    this.props.db
+      .collection('parents')
+      .doc(this.props.user.uid)
+      .get()
+      .then(parentDoc => {
+        const children = parentDoc.data().children || [];
+        children.forEach(child => {
+          child.get().then(childDoc => {
+            const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+            childrenData.push(childData);
+            if (childrenData.length === children.length) {
+              this.setState({ children: childrenData });
+            }
+          });
+        });
       });
-    });
   }
 
   getClasses() {
     if (this.state.spotlight !== null) {
-      console.log(this.state.spotlight);
       return (
         <div className="class-container page-content">
           <h1>{`Signup for ${this.state.spotlight.name}`}</h1>
@@ -108,7 +113,9 @@ class ClassSignUpInterface extends React.Component {
   getButton(cls, style) {
     return (
       <Button
-        onClick={() => this.setState({ selectedClass: cls })}
+        onClick={() => {
+          this.setState({ selectedClass: cls });
+        }}
         style={style || {}}
         variant="contained"
         color="primary"
@@ -208,8 +215,8 @@ class ClassSignUpInterface extends React.Component {
 
 ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default withRouter(ClassSignUpInterface);
