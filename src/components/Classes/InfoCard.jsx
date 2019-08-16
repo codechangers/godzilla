@@ -6,7 +6,9 @@ import { AccessTime, LocationOn } from '@material-ui/icons';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getDateString, getTime, calcSessions, getAgeFromBirthday } from '../../helpers';
+import { URL } from '../../globals';
 import { Template2 } from '../Images';
 
 const SignUpsProgress = withStyles({
@@ -117,10 +119,12 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
         <EditIcon />
         EDIT CLASS DETAILS
       </Button>
-      <Button variant="contained">
-        <LinkIcon />
-        STUDENT SIGN UP LINK
-      </Button>
+      <CopyToClipboard text={`${URL}/parent/signup/${cls.id}`}>
+        <Button variant="contained">
+          <LinkIcon />
+          STUDENT SIGN UP LINK
+        </Button>
+      </CopyToClipboard>
       <Button variant="contained" onClick={openDelete}>
         <DeleteIcon />
         DELETE CLASS
