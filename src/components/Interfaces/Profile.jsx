@@ -32,7 +32,8 @@ import '../../assets/css/Parent-Dash.css';
 const propTypes = {
   user: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 let parentListener = () => null;
@@ -73,10 +74,7 @@ class Profile extends React.Component {
     };
     this.user = this.props.user;
     this.firebase = this.props.firebase;
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc('DEVELOPMENT');
+    this.db = this.props.db;
     autoBind(this);
   }
 
