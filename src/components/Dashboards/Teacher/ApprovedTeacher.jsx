@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal } from '@material-ui/core';
+import { Modal, Button } from '@material-ui/core';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
@@ -153,6 +153,12 @@ class ApprovedTeacher extends React.Component {
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
         />
+        {this.state.classes.length <= 0 ? (
+          <div className="empty-warning">
+            <h2>Looks like you don&apos;t have any classes yet</h2>
+            <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
+          </div>
+        ) : null}
         {this.state.classes.map(cls => (
           <ClassInfoCard
             cls={cls}
