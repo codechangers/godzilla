@@ -31,9 +31,7 @@ export const dataMemberToValidation = {
   phone: state => (phoneValidation.test(state.phone) ? '' : 'Invalid Phone Number'),
   canText: () => '',
   birthDate: state =>
-    birthDateValidation.test(String(state.birthDate))
-      ? ''
-      : 'Invalid Birthdate, use format MM/DD/YYYY',
+    state.birthDate instanceof Date ? '' : 'Invalid Birthdate, use format MM/DD/YYYY',
   currentSchool: () => '',
   currentGrade: () => '',
   shirtSize: () => '',
