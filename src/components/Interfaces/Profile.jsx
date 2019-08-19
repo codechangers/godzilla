@@ -250,15 +250,28 @@ class ProfileInterface extends React.Component {
     const parentData = isTeacher ? { fName, lName, phone } : { fName, lName, phone, address };
     const teacherData = { address, location };
     if (this.validateFields(parentData)) {
-      this.props.db
-        .collection('parents')
-        .doc(this.props.user.uid)
-        .update(parentData);
+      this.state.accountData.ref.update(parentData);
       if (isTeacher) {
-        this.props.db
-          .collection('teachers')
-          .doc(this.props.user.uid)
-          .update(teacherData);
+        this.state.accountData.teacherRef.update(teacherData);
+      }
+    }
+  }
+
+  updateChildData(childID) {
+    const child = this.state.children.filter(c => c.id === childID)[0];
+    if (child) {
+      const { fName, lName, birthDate, currentSchool, currentGrade, shirtSize, gender } = child;
+      const childFields = {
+        fName,
+        lName,
+        birthDate: getDateFromTimestamp(birthDate),
+        currentSchool,
+        currentGrade,
+        shirtSize,
+        gender
+      };
+      if (this.validateFields(childFields)) {
+        child.ref.update(childFields);
       }
     }
   }
@@ -325,6 +338,21 @@ class ProfileInterface extends React.Component {
                     unmountOnExit
                   >
                     {this.getChildFields(child.id)}
+                    <ListItem>
+                      <ListItemText primary="" />
+                      <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
+                        <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+                          Revert Changes
+                        </Button>
+                        <Button
+                          onClick={() => this.updateChildData(child.id)}
+                          variant="contained"
+                          color="primary"
+                        >
+                          Save Changes
+                        </Button>
+                      </ListItemSecondaryAction>
+                    </ListItem>
                   </Collapse>
                 </List>
               </Paper>

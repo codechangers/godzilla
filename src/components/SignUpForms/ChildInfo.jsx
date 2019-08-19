@@ -47,7 +47,7 @@ class ChildInfo extends React.Component {
   }
 
   createChild() {
-    if (this.validateFields(allFields.filter(f => f !== 'birthDate')) === true) {
+    if (this.validateFields(allFields) === true) {
       const user = this.props.firebase.auth().currentUser;
       if (user) {
         this.props.db
