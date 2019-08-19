@@ -304,9 +304,9 @@ class ProfileInterface extends React.Component {
           </List>
         </Paper>
         {this.state.children.length > 0 ? (
-          <div className="paper-list-item">
+          <div className="paper-list-item" style={{ marginTop: 0 }}>
             {this.state.children.map(child => (
-              <Paper key={child.id}>
+              <Paper style={{ marginTop: '30px' }} key={child.id}>
                 <List
                   component="nav"
                   aria-labelledby="nested-list-subheader"

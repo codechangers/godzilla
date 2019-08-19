@@ -9,6 +9,8 @@ import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
 import Spinner from '../UI/Spinner';
 
+let parentListener = () => {};
+
 class ClassViewInterface extends React.Component {
   constructor(props) {
     super(props);
@@ -25,9 +27,16 @@ class ClassViewInterface extends React.Component {
   }
 
   componentDidMount() {
-    const childrenRefs = this.props.accounts.parents.data().children || [];
-    this.fetchChildData(childrenRefs);
-    this.setState({ childrenRefs });
+    parentListener = this.props.accounts.parents.ref.onSnapshot(parentDoc => {
+      const childrenRefs = parentDoc.data().children || [];
+      this.fetchChildData(childrenRefs);
+      this.setState({ childrenRefs });
+    });
+  }
+
+  componentWillUnmount() {
+    parentListener();
+    parentListener = () => {};
   }
 
   getButton(cls) {
