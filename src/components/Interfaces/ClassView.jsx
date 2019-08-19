@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
 import ClassPanel from '../Classes/Panel';
-import TabPanel from '../../TabPanel';
+import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
 import Spinner from '../UI/Spinner';
+
+let parentListener = () => {};
 
 class ClassViewInterface extends React.Component {
   constructor(props) {
@@ -25,9 +27,16 @@ class ClassViewInterface extends React.Component {
   }
 
   componentDidMount() {
-    const childrenRefs = this.props.accounts.parents.data().children || [];
-    this.fetchChildData(childrenRefs);
-    this.setState({ childrenRefs });
+    parentListener = this.props.accounts.parents.ref.onSnapshot(parentDoc => {
+      const childrenRefs = parentDoc.data().children || [];
+      this.fetchChildData(childrenRefs);
+      this.setState({ childrenRefs });
+    });
+  }
+
+  componentWillUnmount() {
+    parentListener();
+    parentListener = () => {};
   }
 
   getButton(cls) {
