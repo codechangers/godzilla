@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
 import ClassPanel from '../Classes/Panel';
-import TabPanel from '../../TabPanel';
+import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
