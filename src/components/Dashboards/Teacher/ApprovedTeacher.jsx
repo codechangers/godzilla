@@ -158,6 +158,7 @@ class ApprovedTeacher extends React.Component {
           }
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
+          user={this.props.user}
         />
         {this.state.classes.length <= 0 ? (
           <div className="empty-warning">
@@ -181,7 +182,8 @@ class ApprovedTeacher extends React.Component {
 
 ApprovedTeacher.propTypes = {
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default withRouter(ApprovedTeacher);

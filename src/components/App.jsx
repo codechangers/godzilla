@@ -10,6 +10,7 @@ import AdminDashboard from './Dashboards/Admin/index';
 import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
+import StripeHandler from './Handlers/Stripe';
 import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
@@ -24,7 +25,8 @@ const pathToComponent = {
   '/parent': ParentDashboard,
   '/teacher': TeacherDashboard,
   '/organization': OrganizationDashboard,
-  '/admin': AdminDashboard
+  '/admin': AdminDashboard,
+  '/stripe': StripeHandler
 };
 
 class App extends React.Component {

@@ -104,6 +104,14 @@
   margin-left: 20px;
 }
 
+.stripe-connect {
+  background-color: #a4a4a4;
+  color: #0e0e0e;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 32px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
