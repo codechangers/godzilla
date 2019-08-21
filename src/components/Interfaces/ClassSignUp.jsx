@@ -15,9 +15,10 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import { InfoCardHeader } from '../Classes/InfoCard';
+import Spinner from '../UI/Spinner';
+import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
-import Spinner from '../UI/Spinner';
 
 class ClassSignUpInterface extends React.Component {
   constructor(props) {
@@ -149,18 +150,41 @@ class ClassSignUpInterface extends React.Component {
   }
 
   async handleSubmit() {
+    const { selectedClass, selectedChildren } = this.state;
     const { token } = await this.props.stripe.createToken({ name: 'Name' });
     console.log(token);
     if (token) {
-      const children = this.state.selectedClass.children || [];
-      this.state.selectedChildren.forEach(child => {
-        const classes = child.classes || [];
-        classes.push(this.state.selectedClass.ref);
-        child.ref.update({ classes });
-        children.push(child.ref);
-      });
-      this.state.selectedClass.ref.update({ children });
-      this.setState({ selectedClass: null, selectedChildren: [] });
+      // eslint-disable-next-line
+      fetch(`${API_URL}/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          token: token.id,
+          classID: selectedClass.id,
+          teacherID: selectedClass.teacher.id,
+          parentID: this.props.user.uid,
+          numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 200) {
+            const children = selectedClass.children || [];
+            selectedChildren.forEach(child => {
+              const classes = child.classes || [];
+              classes.push(selectedClass.ref);
+              child.ref.update({ classes });
+              children.push(child.ref);
+            });
+            selectedClass.ref.update({ children });
+            this.setState({ selectedClass: null, selectedChildren: [] });
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 
