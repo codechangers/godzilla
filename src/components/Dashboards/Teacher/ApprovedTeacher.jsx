@@ -111,7 +111,7 @@ class ApprovedTeacher extends React.Component {
     const { teachers } = this.props.accounts;
     this.props.db
       .collection('classes')
-      .add({ ...classData, children: [] })
+      .add({ ...classData, children: [], teacher: teachers.ref })
       .then(classObj => {
         const classes = teachers.data().classes || [];
         classes.push(classObj);
