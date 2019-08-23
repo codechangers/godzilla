@@ -9,10 +9,14 @@ const Banner = ({ name, onClick, buttonText, user }) => (
     <div className="name-box">
       <h3>{name}</h3>
     </div>
-    <StripeConnect user={user} />
-    <Button variant="contained" onClick={onClick} color="primary">
-      {buttonText}
-    </Button>
+    <StripeConnect
+      user={user}
+      instead={() => (
+        <Button variant="contained" onClick={onClick} color="primary">
+          {buttonText}
+        </Button>
+      )}
+    />
   </div>
 );
 

@@ -29,7 +29,9 @@ class StripeConnect extends React.Component {
 
   render() {
     const { stripeIsLinked, isLoading } = this.state;
-    return stripeIsLinked || isLoading ? null : (
+    return stripeIsLinked || isLoading ? (
+      this.props.instead()
+    ) : (
       <a className="stripe-connect" href={this.state.stripeURL}>
         Connect with Stripe
       </a>
@@ -38,7 +40,12 @@ class StripeConnect extends React.Component {
 }
 
 StripeConnect.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  instead: PropTypes.func
+};
+
+StripeConnect.defaultProps = {
+  instead: () => null
 };
 
 export default StripeConnect;
