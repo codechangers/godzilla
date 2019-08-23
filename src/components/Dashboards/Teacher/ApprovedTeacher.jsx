@@ -6,7 +6,9 @@ import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
+import StripeConnect from '../../UI/StripeConnect';
 import autoBind from '../../../autoBind';
+import { API_URL } from '../../../globals';
 import '../../../assets/css/Teacher.css';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
@@ -19,7 +21,8 @@ class ApprovedTeacher extends React.Component {
     this.state = {
       classes: [],
       selected: null,
-      showCreate: false
+      showCreate: false,
+      stripeIsLinked: true
     };
     autoBind(this);
   }
@@ -28,11 +31,37 @@ class ApprovedTeacher extends React.Component {
     teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
       this.fetchClasses(teacher);
     });
+    // eslint-disable-next-line
+    fetch(`${API_URL}/teacher_account/${this.props.user.uid}`, { method: 'GET' })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ stripeIsLinked: res.stripe_is_linked });
+      });
   }
 
   componentWillUnmount() {
     teacherSub();
     teacherSub = () => null;
+  }
+
+  getEmptyPrompt() {
+    if (this.state.stripeIsLinked) {
+      return this.state.classes.length <= 0 ? (
+        <div className="empty-warning">
+          <h2>Looks like you don&apos;t have any classes yet</h2>
+          <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
+        </div>
+      ) : null;
+    }
+    if (!this.state.stripeIsLinked) {
+      return (
+        <div className="empty-warning">
+          <h2>Looks like you haven&apos;t linked your stripe account yet</h2>
+          <StripeConnect />
+        </div>
+      );
+    }
+    return null;
   }
 
   getCrudModal() {
@@ -156,16 +185,11 @@ class ApprovedTeacher extends React.Component {
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
           }
+          stripeIsLinked={this.state.stripeIsLinked}
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
-          user={this.props.user}
         />
-        {this.state.classes.length <= 0 ? (
-          <div className="empty-warning">
-            <h2>Looks like you don&apos;t have any classes yet</h2>
-            <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
-          </div>
-        ) : null}
+        {this.getEmptyPrompt()}
         {this.state.classes.map(cls => (
           <ClassInfoCard
             cls={cls}

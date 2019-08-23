@@ -99,6 +99,7 @@
 .empty-warning a {
   text-decoration: none;
   color: inherit;
+  margin-left: 20px;
 }
 .empty-warning button {
   margin-left: 20px;
