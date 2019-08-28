@@ -53,9 +53,30 @@
   margin: 0;
 }
 
-.banner-wrapper button {
+.banner-wrapper button,
+.alert-card button {
   background-color: #8dc63f;
 }
-.banner-wrapper button:hover {
+.banner-wrapper button:hover,
+.alert-card button:hover {
   background-color: #7bb42c;
+}
+
+.alert-card {
+  width: 600px;
+  padding: 24px 32px;
+  align-self: center;
+}
+.alert-card h3 {
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 24px;
+  font-weight: normal;
+}
+.alert-card button {
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #fff;
 }

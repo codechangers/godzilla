@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Button } from '@material-ui/core';
+import { Modal, Button, Card } from '@material-ui/core';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
@@ -45,23 +45,20 @@ class ApprovedTeacher extends React.Component {
   }
 
   getEmptyPrompt() {
-    if (this.state.stripeIsLinked) {
-      return this.state.classes.length <= 0 ? (
-        <div className="empty-warning">
-          <h2>Looks like you don&apos;t have any classes yet</h2>
-          <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
-        </div>
-      ) : null;
-    }
-    if (!this.state.stripeIsLinked) {
-      return (
-        <div className="empty-warning">
-          <h2>Looks like you haven&apos;t linked your stripe account yet</h2>
-          <StripeConnect />
-        </div>
-      );
-    }
-    return null;
+    return this.state.classes.length <= 0 ? (
+      <Card className="alert-card">
+        <h3>
+          Looks like you don&apos;t have any classes yet.
+          <br />
+          Add a new class to use the Educator Dashboard.
+        </h3>
+        {this.state.stripeIsLinked ? (
+          <Button variant="contained" onClick={() => this.setState({ showCreate: true })}>
+            Add a New Class
+          </Button>
+        ) : null}
+      </Card>
+    ) : null;
   }
 
   getCrudModal() {
@@ -180,7 +177,7 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     return (
-      <div className="page-content">
+      <div className="page-content horiz-center">
         <Banner
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
