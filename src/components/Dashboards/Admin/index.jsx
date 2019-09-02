@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
 import NavBar from '../../UI/NavBar';
-import TabPanel from '../../../TabPanel';
+import TabPanel from '../../UI/TabPanel';
 import autoBind from '../../../autoBind';
 import '../../../assets/css/Admin.css';
 

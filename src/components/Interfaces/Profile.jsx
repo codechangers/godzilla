@@ -1,43 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import {
+  Paper,
   List,
-  ListSubheader,
   ListItem,
+  ListSubheader,
   ListItemIcon,
   ListItemText,
-  Collapse,
-  Paper
+  ListItemSecondaryAction,
+  Button,
+  InputBase,
+  Collapse
 } from '@material-ui/core';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import {
-  StarBorder,
   AccountCircle,
-  Home,
   Smartphone,
-  School,
-  Wc,
-  FormatSize,
-  Cake,
-  Person,
+  Home,
+  LocationOn,
+  StarBorder,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
+  Cake,
+  School,
+  FormatSize,
+  Wc
 } from '@material-ui/icons';
-import EditModal from '../UI/EditModal';
-import Spinner from '../UI/Spinner';
-import { getDate } from '../../helpers';
+import { makeStyles } from '@material-ui/core/styles';
+import { dataMemberToValidation } from '../../globals';
+import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
 
 const propTypes = {
-  user: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
-let parentListener = () => null;
-let childListeners = [];
+const accountToNames = {
+  parents: ['fName', 'lName', 'phone', 'address'],
+  teachers: ['fName', 'lName', 'phone'],
+  child: ['fName', 'lName', 'birthDate', 'currentSchool', 'currentGrade', 'shirtSize', 'gender']
+};
+
+const nameToIcon = {
+  fName: AccountCircle,
+  lName: AccountCircle,
+  phone: Smartphone,
+  address: Home,
+  location: LocationOn,
+  birthDate: Cake,
+  currentSchool: School,
+  currentGrade: StarBorder,
+  shirtSize: FormatSize,
+  gender: Wc
+};
 
 const useStyles = () => {
   makeStyles(theme => ({
@@ -55,101 +73,211 @@ const useStyles = () => {
   }));
 };
 
-const getSubHeader = header => (
+const getSubHeader = text => (
   <ListSubheader component="div" id="nested-list-subheader">
-    {header}
+    {text}
   </ListSubheader>
 );
 
-class Profile extends React.Component {
+class ProfileInterface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoadingUser: true,
-      currentUser: null,
-      childrenArray: undefined,
-      showChildData: [],
-      showEditAttribute: false,
-      editableData: null
+      accountData: {},
+      children: [],
+      openChildren: [],
+      errors: {}
     };
-    this.user = this.props.user;
-    this.firebase = this.props.firebase;
-    this.db = this.props.db;
     autoBind(this);
   }
 
   componentDidMount() {
-    parentListener = this.db
+    this.fetchAccountData();
+  }
+
+  getEditField(field) {
+    return this.state.accountData[field] !== undefined ? (
+      <InputBase
+        value={this.state.accountData[field]}
+        onChange={e => {
+          const { accountData } = this.state;
+          accountData[field] = e.target.value;
+          this.setState({ accountData });
+        }}
+      />
+    ) : null;
+  }
+
+  getChildEditField(field, childId) {
+    const child = this.state.children.filter(c => c.id === childId)[0];
+    return child !== undefined ? (
+      <InputBase
+        value={child[field]}
+        onChange={e => {
+          const { children } = this.state;
+          const childIndex = children.indexOf(child);
+          if (childIndex !== -1) {
+            child[field] = e.target.value;
+            children[childIndex] = child;
+            this.setState({ children });
+          }
+        }}
+      />
+    ) : null;
+  }
+
+  getChildDateField(field, childId) {
+    const child = this.state.children.filter(c => c.id === childId)[0];
+    return child !== undefined ? (
+      <KeyboardDatePicker
+        value={getDateFromTimestamp(child[field])}
+        format="MM/dd/yyyy"
+        onChange={date => {
+          const { children } = this.state;
+          const childIndex = children.indexOf(child);
+          if (childIndex !== -1) {
+            child[field] = { seconds: date.getTime() / 1000 };
+            children[childIndex] = child;
+            this.setState({ children });
+          }
+        }}
+      />
+    ) : null;
+  }
+
+  getFields() {
+    const fields = this.props.accounts.teachers ? accountToNames.teachers : accountToNames.parents;
+    return fields.map(field => {
+      const Icon = nameToIcon[field];
+      const error = this.state.errors[field];
+      return (
+        <ListItem key={field}>
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+          <ListItemText primary={this.getEditField(field)} />
+          <p style={{ fontSize: '14px', color: 'red', margin: 0 }}>{error}</p>
+        </ListItem>
+      );
+    });
+  }
+
+  getChildFields(childId) {
+    const fields = accountToNames.child;
+    return fields.map(field => {
+      const Icon = nameToIcon[field];
+      const error = this.state.errors[field];
+      return (
+        <ListItem key={`${field}${childId}`}>
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              field !== 'birthDate'
+                ? this.getChildEditField(field, childId)
+                : this.getChildDateField(field, childId)
+            }
+          />
+          <p style={{ fontSize: '14px', color: 'red', margin: 0 }}>{error}</p>
+        </ListItem>
+      );
+    });
+  }
+
+  fetchAccountData() {
+    this.props.db
       .collection('parents')
-      .doc(this.user.uid)
-      .onSnapshot(doc => {
-        const newState = {
-          childrenArray: [],
-          showChildData: []
-        };
-        newState.currentUser = doc.data();
-        if (doc.data().children !== undefined) {
-          doc.data().children.forEach(childRef => {
-            const listener = childRef.onSnapshot(child => {
-              const childExists = newState.childrenArray.findIndex(existingChild => {
-                return existingChild.id === child.id;
-              });
-              if (childExists === -1) {
-                const newChild = {};
-                newChild.id = child.id;
-                newChild.data = child.data();
-                const showData = {};
-                showData.id = child.id;
-                showData.open = false;
-                newState.childrenArray.push({ ...newChild });
-                newState.showChildData.push({ ...showData });
-              } else {
-                newState.childrenArray[childExists].data = child.data();
-              }
-              newState.isLoadingUser = false;
-              this.setState({ ...newState });
+      .doc(this.props.user.uid)
+      .get()
+      .then(doc => {
+        let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
+        if (this.props.accounts.teachers) {
+          this.props.db
+            .collection('teachers')
+            .doc(this.props.user.uid)
+            .get()
+            .then(tDoc => {
+              accountData = {
+                ...accountData,
+                teacherRef: tDoc.ref,
+                address: tDoc.data().address,
+                location: tDoc.data().location
+              };
+              this.setState({ accountData });
             });
-            childListeners.push(listener);
-          });
         } else {
-          newState.isLoadingUser = false;
-          this.setState({ ...newState });
+          this.setState({ accountData });
         }
+        this.fetchChildrenData();
       });
   }
 
-  componentWillUnmount() {
-    parentListener();
-    parentListener = () => null;
-    childListeners.forEach(listener => listener());
-    childListeners = [];
+  fetchChildrenData() {
+    const childrenRefs = this.state.accountData.children || [];
+    const children = [];
+    childrenRefs.forEach(childRef => {
+      childRef.get().then(childDoc => {
+        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+        children.push(childData);
+        if (children.length === childrenRefs.length) {
+          this.setState({ children });
+        }
+      });
+    });
   }
 
-  getChildArrayObj(id) {
-    const index = this.state.showChildData.map(x => x.id).indexOf(id);
-    const status = this.state.showChildData[index].open;
-    return status;
+  validateFields(fields) {
+    const { errors } = this.state;
+    let formValid = true;
+    Object.keys(fields).forEach(field => {
+      if (fields[field] === '') {
+        errors[field] = 'This field may not be empty';
+        formValid = false;
+      } else {
+        const valid = dataMemberToValidation[field](fields);
+        errors[field] = valid;
+        if (valid !== '') formValid = false;
+      }
+    });
+    this.setState({ errors });
+    return formValid;
   }
 
-  showChildList(id) {
-    const { showChildData } = this.state;
-    const index = showChildData.map(x => x.id).indexOf(id);
-    const status = showChildData[index].open;
-    showChildData[index].open = !status;
-    this.setState({ showChildData });
-  }
-
-  showModal(data) {
-    const newState = {};
-    newState.showEditAttribute = !this.state.showEditAttribute;
-    if (data !== null) {
-      newState.editableData = data;
+  updateAccountData() {
+    const { fName, lName, phone, address, location } = this.state.accountData;
+    const isTeacher = this.props.accounts.teachers;
+    const parentData = isTeacher ? { fName, lName, phone } : { fName, lName, phone, address };
+    const teacherData = { address, location };
+    if (this.validateFields(parentData)) {
+      this.state.accountData.ref.update(parentData);
+      if (isTeacher) {
+        this.state.accountData.teacherRef.update(teacherData);
+      }
     }
-    this.setState({ ...newState });
+  }
+
+  updateChildData(childID) {
+    const child = this.state.children.filter(c => c.id === childID)[0];
+    if (child) {
+      const { fName, lName, birthDate, currentSchool, currentGrade, shirtSize, gender } = child;
+      const childFields = {
+        fName,
+        lName,
+        birthDate: getDateFromTimestamp(birthDate),
+        currentSchool,
+        currentGrade,
+        shirtSize,
+        gender
+      };
+      if (this.validateFields(childFields)) {
+        child.ref.update(childFields);
+      }
+    }
   }
 
   render() {
-    return this.state.isLoadingUser === false ? (
+    return (
       <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
         <h2>Edit your Profile</h2>
         <Paper className="paper-list-item">
@@ -161,82 +289,24 @@ class Profile extends React.Component {
             )}
             className={useStyles.root}
           >
-            <ListItem
-              button
-              onClick={() =>
-                this.showModal({
-                  firebase: this.firebase,
-                  heading: 'First Name',
-                  attribute: 'fName',
-                  id: this.user.uid,
-                  collection: 'parents'
-                })
-              }
-            >
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary={this.state.currentUser.fName} />
+            {this.getFields()}
+            <ListItem>
+              <ListItemText primary="" />
+              <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
+                <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+                  Revert Changes
+                </Button>
+                <Button onClick={this.updateAccountData} variant="contained" color="primary">
+                  Save Changes
+                </Button>
+              </ListItemSecondaryAction>
             </ListItem>
-            <ListItem
-              button
-              onClick={() =>
-                this.showModal({
-                  firebase: this.firebase,
-                  heading: 'Last Name',
-                  attribute: 'lName',
-                  id: this.user.uid,
-                  collection: 'parents'
-                })
-              }
-            >
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary={this.state.currentUser.lName} />
-            </ListItem>
-            <ListItem
-              button
-              onClick={() =>
-                this.showModal({
-                  firebase: this.firebase,
-                  heading: 'Phone',
-                  attribute: 'phone',
-                  id: this.user.uid,
-                  collection: 'parents'
-                })
-              }
-            >
-              <ListItemIcon>
-                <Smartphone />
-              </ListItemIcon>
-              <ListItemText primary={this.state.currentUser.phone} />
-            </ListItem>
-            {this.props.accounts.teachers ? null : (
-              <ListItem
-                button
-                onClick={() =>
-                  this.showModal({
-                    firebase: this.firebase,
-                    heading: 'Address',
-                    attribute: 'address',
-                    id: this.user.uid,
-                    collection: 'parents'
-                  })
-                }
-              >
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary={this.state.currentUser.address} />
-              </ListItem>
-            )}
           </List>
         </Paper>
-        {this.state.childrenArray.length > 0 ? (
-          <>
-            {this.state.childrenArray.map(child => (
-              <Paper className="paper-list-item" key={child.id}>
+        {this.state.children.length > 0 ? (
+          <div className="paper-list-item" style={{ marginTop: 0 }}>
+            {this.state.children.map(child => (
+              <Paper style={{ marginTop: '30px' }} key={child.id}>
                 <List
                   component="nav"
                   aria-labelledby="nested-list-subheader"
@@ -246,171 +316,54 @@ class Profile extends React.Component {
                   <ListItem
                     button
                     className="child-list-item"
-                    onClick={() => this.showChildList(child.id)}
+                    onClick={() => {
+                      let { openChildren } = this.state;
+                      if (openChildren.includes(child.id)) {
+                        openChildren = openChildren.filter(e => e !== child.id);
+                      } else {
+                        openChildren.push(child.id);
+                      }
+                      this.setState({ openChildren });
+                    }}
                   >
                     <ListItemIcon>
                       <StarBorder />
                     </ListItemIcon>
-                    <ListItemText primary={`${child.data.fName} ${child.data.lName}`} />
-                    {this.getChildArrayObj(child.id) ? <ExpandLess /> : <ExpandMore />}
+                    <ListItemText primary={`${child.fName} ${child.lName}`} />
+                    {this.state.openChildren.includes(child.id) ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
                   <Collapse
-                    in={this.state.showChildData.find(obj => obj.id === child.id).open}
+                    in={this.state.openChildren.includes(child.id)}
                     timeout="auto"
                     unmountOnExit
                   >
-                    <List component="div" disablePadding>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's First Name",
-                            attribute: 'fName',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <Person />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.fName} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Last Name",
-                            attribute: 'lName',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <Person />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.lName} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Birth Date",
-                            attribute: 'birthDate',
-                            date: child.data.birthDate,
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <Cake />
-                        </ListItemIcon>
-                        <ListItemText primary={getDate(child.data.birthDate)} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Current School",
-                            attribute: 'currentSchool',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <School />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.currentSchool} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Current Grade",
-                            attribute: 'currentGrade',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <StarBorder />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.currentGrade} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Shirt Size",
-                            attribute: 'shirtSize',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <FormatSize />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.shirtSize} />
-                      </ListItem>
-                      <ListItem
-                        button
-                        className="sub-child-list-item"
-                        onClick={() =>
-                          this.showModal({
-                            firebase: this.firebase,
-                            heading: "Child's Gender",
-                            attribute: 'gender',
-                            id: child.id,
-                            collection: 'children'
-                          })
-                        }
-                      >
-                        <ListItemIcon>
-                          <Wc />
-                        </ListItemIcon>
-                        <ListItemText primary={child.data.gender} />
-                      </ListItem>
-                    </List>
+                    {this.getChildFields(child.id)}
+                    <ListItem>
+                      <ListItemText primary="" />
+                      <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
+                        <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+                          Revert Changes
+                        </Button>
+                        <Button
+                          onClick={() => this.updateChildData(child.id)}
+                          variant="contained"
+                          color="primary"
+                        >
+                          Save Changes
+                        </Button>
+                      </ListItemSecondaryAction>
+                    </ListItem>
                   </Collapse>
                 </List>
               </Paper>
             ))}
-          </>
-        ) : (
-          <></>
-        )}
-        {this.state.showEditAttribute === true ? (
-          <EditModal data={this.state.editableData} cancel={this.showModal} db={this.db} />
-        ) : (
-          <></>
-        )}
-      </div>
-    ) : (
-      <div className="page-content horiz-center">
-        <h2>Edit your Profile</h2>
-        <Spinner color="primary" />
+          </div>
+        ) : null}
       </div>
     );
   }
 }
 
-Profile.propTypes = propTypes;
+ProfileInterface.propTypes = propTypes;
 
-export default Profile;
+export default ProfileInterface;

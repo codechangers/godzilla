@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal } from '@material-ui/core';
+import { Modal, Button } from '@material-ui/core';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
@@ -98,7 +98,7 @@ class ApprovedTeacher extends React.Component {
     const classes = [];
     classRefs.forEach(classRef => {
       classRef.get().then(classDoc => {
-        const classData = { ...classDoc.data(), id: classDoc.id };
+        const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
         classes.push(classData);
         if (classes.length === classRefs.length) {
           this.setState({ classes });
@@ -126,21 +126,27 @@ class ApprovedTeacher extends React.Component {
       .doc(classId)
       .update(classData)
       .then(() => {
-        this.fetchClasses(this.props.accounts.teachers, classId);
+        this.fetchClasses(this.props.accounts.teachers);
       });
   }
 
   deleteClass(classId) {
     const { teachers } = this.props.accounts;
-    this.props.db
-      .collection('classes')
-      .doc(classId)
-      .delete()
-      .then(() => {
+    const cls = this.state.classes.filter(c => c.id === classId)[0];
+    if (cls) {
+      cls.children.forEach(childRef => {
+        childRef.get().then(childDoc => {
+          let childClasses = childDoc.data().classes || [];
+          childClasses = childClasses.filter(c => c.id !== classId);
+          childRef.update({ classes: childClasses });
+        });
+      });
+      cls.ref.delete().then(() => {
         let classes = teachers.data().classes || [];
-        classes = classes.filter(cls => cls.id !== classId);
+        classes = classes.filter(c => c.id !== classId);
         teachers.ref.update({ classes });
       });
+    }
   }
 
   render() {
@@ -153,6 +159,12 @@ class ApprovedTeacher extends React.Component {
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
         />
+        {this.state.classes.length <= 0 ? (
+          <div className="empty-warning">
+            <h2>Looks like you don&apos;t have any classes yet</h2>
+            <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
+          </div>
+        ) : null}
         {this.state.classes.map(cls => (
           <ClassInfoCard
             cls={cls}

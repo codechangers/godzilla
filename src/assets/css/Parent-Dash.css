@@ -165,18 +165,3 @@
   margin: 0 50px;
   align-self: flex-start;
 }
-
-.empty-warning {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: space-between;
-}
-
-.empty-warning a {
-  text-decoration: none;
-  color: inherit;
-}
-.empty-warning button {
-  margin-left: 20px;
-}

@@ -87,6 +87,23 @@
   right: 5;
 }
 
+.empty-warning {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+.empty-warning > h2 {
+  margin: 0;
+}
+.empty-warning a {
+  text-decoration: none;
+  color: inherit;
+}
+.empty-warning button {
+  margin-left: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
