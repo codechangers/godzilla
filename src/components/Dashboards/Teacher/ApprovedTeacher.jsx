@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Button, Card } from '@material-ui/core';
+import { Modal, Button, Card, Snackbar, SnackbarContent } from '@material-ui/core';
+import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
@@ -12,6 +13,13 @@ import { API_URL } from '../../../globals';
 import '../../../assets/css/Teacher.css';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
+
+const getMessage = () => (
+  <span id="client-snackbar" style={{ display: 'flex', alignItems: 'center' }}>
+    <WarningIcon style={{ marginRight: '9px', width: '19px' }} />
+    <p>Connect Stripe to use Educator Features</p>
+  </span>
+);
 
 let teacherSub = () => null;
 
@@ -196,6 +204,23 @@ class ApprovedTeacher extends React.Component {
           />
         ))}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
+        <Snackbar
+          className="stripe-wrapper"
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          open={!this.state.stripeIsLinked}
+          autoHideDuration={6000}
+          onClose={() => {}}
+        >
+          <SnackbarContent
+            className="stripe-warning"
+            aria-describedby="client-snackbar"
+            message={getMessage()}
+            action={[<StripeConnect key="stripe_oauth" />]}
+          />
+        </Snackbar>
       </div>
     );
   }
