@@ -9,6 +9,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import '../../assets/css/Teacher.css';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
 import { weekDays } from '../../globals';
@@ -32,21 +33,22 @@ const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
 class ClassEditor extends React.Component {
   constructor(props) {
     super(props);
+    const isNew = props.cls !== null;
     this.state = {
       name: '',
       description: '',
       locationName: '',
       locationAddress: '',
-      startDate: new Date(),
-      endDate: new Date(),
-      startTime: new Date(),
-      endTime: new Date(),
+      startDate: null,
+      endDate: null,
+      startTime: null,
+      endTime: null,
       daysOfWeek: [],
-      startAge: 0,
-      endAge: 0,
+      startAge: isNew ? '' : 0,
+      endAge: isNew ? '' : 0,
       price: 0,
-      minStudents: 0,
-      maxStudents: 0,
+      minStudents: isNew ? '' : 0,
+      maxStudents: isNew ? '' : 0,
       errors: {}
     };
     this.getUserData = getUserData;
@@ -139,6 +141,22 @@ class ClassEditor extends React.Component {
           error={getErrorStatus(this.state.errors.description)}
           helperText={this.state.errors.description}
         />
+        <TextField
+          id="price"
+          className="input most"
+          type="text"
+          label="Price Per Student"
+          variant="outlined"
+          value={this.state.price}
+          onChange={this.handleInput}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment className="bold-icon" position="start">
+                $
+              </InputAdornment>
+            )
+          }}
+        />
         {this.state.errors.daysOfWeek ? (
           <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
         ) : null}
@@ -160,7 +178,6 @@ class ClassEditor extends React.Component {
             value={this.state.startDate}
             placeholder="10/10/2010"
             onChange={date => this.setDate(date, 'startDate')}
-            minDate={new Date()}
             label="Start Date"
             format="MM/dd/yyyy"
           />
@@ -170,7 +187,6 @@ class ClassEditor extends React.Component {
             value={this.state.endDate}
             placeholder="11/11/2011"
             onChange={date => this.setDate(date, 'endDate')}
-            minDate={new Date()}
             label="End Date"
             format="MM/dd/yyyy"
           />
@@ -181,6 +197,7 @@ class ClassEditor extends React.Component {
             className="input"
             placeholder="8:00 AM"
             mask="__:__ _M"
+            keyboardIcon={<QueryBuilderIcon />}
             value={this.state.startTime}
             onChange={time => this.setDate(time, 'startTime')}
           />
@@ -189,6 +206,7 @@ class ClassEditor extends React.Component {
             className="input"
             placeholder="2:00 PM"
             mask="__:__ _M"
+            keyboardIcon={<QueryBuilderIcon />}
             value={this.state.endTime}
             onChange={time => this.setDate(time, 'endTime')}
           />
@@ -219,7 +237,7 @@ class ClassEditor extends React.Component {
           <TextField
             id="startAge"
             className="input"
-            type="number"
+            type="text"
             label="Minimum Age"
             variant="outlined"
             value={this.state.startAge}
@@ -227,13 +245,17 @@ class ClassEditor extends React.Component {
             error={getErrorStatus(this.state.errors.startAge)}
             helperText={this.state.errors.startAge}
             InputProps={{
-              endAdornment: <InputAdornment position="end">years</InputAdornment>
+              endAdornment: (
+                <InputAdornment className="bold" position="end">
+                  years
+                </InputAdornment>
+              )
             }}
           />
           <TextField
             id="endAge"
             className="input"
-            type="number"
+            type="text"
             label="Maximum Age"
             variant="outlined"
             value={this.state.endAge}
@@ -241,7 +263,11 @@ class ClassEditor extends React.Component {
             error={getErrorStatus(this.state.errors.endAge)}
             helperText={this.state.errors.endAge}
             InputProps={{
-              endAdornment: <InputAdornment position="end">years</InputAdornment>
+              endAdornment: (
+                <InputAdornment className="bold" position="end">
+                  years
+                </InputAdornment>
+              )
             }}
           />
         </div>
@@ -249,7 +275,7 @@ class ClassEditor extends React.Component {
           <TextField
             id="minStudents"
             className="input"
-            type="number"
+            type="text"
             label="Min Students"
             variant="outlined"
             value={this.state.minStudents}
@@ -257,13 +283,17 @@ class ClassEditor extends React.Component {
             error={getErrorStatus(this.state.errors.minStudents)}
             helperText={this.state.errors.minStudents}
             InputProps={{
-              endAdornment: <InputAdornment position="end">students</InputAdornment>
+              endAdornment: (
+                <InputAdornment className="bold" position="end">
+                  students
+                </InputAdornment>
+              )
             }}
           />
           <TextField
             id="maxStudents"
             className="input"
-            type="number"
+            type="text"
             label="Max Students"
             variant="outlined"
             value={this.state.maxStudents}
@@ -271,22 +301,14 @@ class ClassEditor extends React.Component {
             error={getErrorStatus(this.state.errors.maxStudents)}
             helperText={this.state.errors.maxStudents}
             InputProps={{
-              endAdornment: <InputAdornment position="end">students</InputAdornment>
+              endAdornment: (
+                <InputAdornment className="bold" position="end">
+                  students
+                </InputAdornment>
+              )
             }}
           />
         </div>
-        <TextField
-          id="price"
-          className="input most"
-          type="number"
-          label="Class Price"
-          variant="outlined"
-          value={this.state.price}
-          onChange={this.handleInput}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">$</InputAdornment>
-          }}
-        />
         <div className="options">
           <Button onClick={this.props.close}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={this.handleSubmit}>
