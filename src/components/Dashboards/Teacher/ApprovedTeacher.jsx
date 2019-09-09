@@ -127,8 +127,9 @@ class ApprovedTeacher extends React.Component {
     );
   }
 
-  fetchClasses(teacher) {
-    const classRefs = teacher.data().classes || [];
+  async fetchClasses(t) {
+    const teacherDoc = t || (await this.props.accounts.teachers.ref.get());
+    const classRefs = teacherDoc.data().classes || [];
     const classes = [];
     classRefs.forEach(classRef => {
       classRef.get().then(classDoc => {
@@ -160,7 +161,7 @@ class ApprovedTeacher extends React.Component {
       .doc(classId)
       .update(classData)
       .then(() => {
-        this.fetchClasses(this.props.accounts.teachers);
+        this.fetchClasses();
       });
   }
 
