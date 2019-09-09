@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@material-ui/core';
 import { API_URL } from '../../globals';
 
 const getStripeURL = clientId =>
@@ -22,8 +23,8 @@ class StripeConnect extends React.Component {
 
   render() {
     return (
-      <a className="stripe-connect" href={this.state.stripeURL}>
-        Connect with Stripe
+      <a href={this.state.stripeURL}>
+        <Button style={{ color: 'white', fontSize: '14px' }}>Connect to Stripe</Button>
       </a>
     );
   }
