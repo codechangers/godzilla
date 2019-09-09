@@ -21,6 +21,10 @@ const allFields = [
   'locationName',
   'locationAddress',
   'daysOfWeek',
+  'startDate',
+  'endDate',
+  'startTime',
+  'endTime',
   'startAge',
   'endAge',
   'minStudents',
@@ -33,7 +37,6 @@ const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
 class ClassEditor extends React.Component {
   constructor(props) {
     super(props);
-    const isNew = props.cls !== null;
     this.state = {
       name: '',
       description: '',
@@ -44,11 +47,11 @@ class ClassEditor extends React.Component {
       startTime: null,
       endTime: null,
       daysOfWeek: [],
-      startAge: isNew ? '' : 0,
-      endAge: isNew ? '' : 0,
+      startAge: '',
+      endAge: '',
       price: 0,
-      minStudents: isNew ? '' : 0,
-      maxStudents: isNew ? '' : 0,
+      minStudents: '',
+      maxStudents: '',
       errors: {}
     };
     this.getUserData = getUserData;
@@ -178,7 +181,8 @@ class ClassEditor extends React.Component {
             value={this.state.startDate}
             placeholder="10/10/2010"
             onChange={date => this.setDate(date, 'startDate')}
-            label="Start Date"
+            label={this.state.errors.startDate ? this.state.errors.startDate : 'Start Date'}
+            error={getErrorStatus(this.state.errors.startDate)}
             format="MM/dd/yyyy"
           />
           <KeyboardDatePicker
@@ -187,13 +191,15 @@ class ClassEditor extends React.Component {
             value={this.state.endDate}
             placeholder="11/11/2011"
             onChange={date => this.setDate(date, 'endDate')}
-            label="End Date"
+            label={this.state.errors.endDate ? this.state.errors.endDate : 'End Date'}
+            error={getErrorStatus(this.state.errors.endDate)}
             format="MM/dd/yyyy"
           />
         </div>
         <div className="inliner">
           <KeyboardTimePicker
-            label="Start Time"
+            label={this.state.errors.startTime ? this.state.errors.startTime : 'Start Time'}
+            error={getErrorStatus(this.state.errors.startTime)}
             className="input"
             placeholder="8:00 AM"
             mask="__:__ _M"
@@ -202,7 +208,8 @@ class ClassEditor extends React.Component {
             onChange={time => this.setDate(time, 'startTime')}
           />
           <KeyboardTimePicker
-            label="End Time"
+            label={this.state.errors.endTime ? this.state.errors.endTime : 'End Time'}
+            error={getErrorStatus(this.state.errors.endTime)}
             className="input"
             placeholder="2:00 PM"
             mask="__:__ _M"
