@@ -165,3 +165,8 @@
   margin: 0 50px;
   align-self: flex-start;
 }
+
+.card-wrapper {
+  padding: 20px 16px;
+  padding-top: 0;
+}

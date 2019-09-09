@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Button } from '@material-ui/core';
+import { Modal, Button, Card, Snackbar, SnackbarContent } from '@material-ui/core';
+import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
+import StripeConnect from '../../UI/StripeConnect';
 import autoBind from '../../../autoBind';
+import { API_URL } from '../../../globals';
 import '../../../assets/css/Teacher.css';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
+
+const getMessage = () => (
+  <span id="client-snackbar" style={{ display: 'flex', alignItems: 'center' }}>
+    <WarningIcon style={{ marginRight: '9px', width: '19px' }} />
+    <p>Connect Stripe to use Educator Features</p>
+  </span>
+);
 
 let teacherSub = () => null;
 
@@ -19,7 +29,8 @@ class ApprovedTeacher extends React.Component {
     this.state = {
       classes: [],
       selected: null,
-      showCreate: false
+      showCreate: false,
+      stripeIsLinked: true
     };
     autoBind(this);
   }
@@ -28,11 +39,34 @@ class ApprovedTeacher extends React.Component {
     teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
       this.fetchClasses(teacher);
     });
+    // eslint-disable-next-line
+    fetch(`${API_URL}/teacher_account/${this.props.user.uid}`, { method: 'GET' })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ stripeIsLinked: res.stripe_is_linked });
+      });
   }
 
   componentWillUnmount() {
     teacherSub();
     teacherSub = () => null;
+  }
+
+  getEmptyPrompt() {
+    return this.state.classes.length <= 0 ? (
+      <Card className="alert-card">
+        <h3>
+          Looks like you don&apos;t have any classes yet.
+          <br />
+          Add a new class to use the Educator Dashboard.
+        </h3>
+        {this.state.stripeIsLinked ? (
+          <Button variant="contained" onClick={() => this.setState({ showCreate: true })}>
+            Add a New Class
+          </Button>
+        ) : null}
+      </Card>
+    ) : null;
   }
 
   getCrudModal() {
@@ -93,8 +127,9 @@ class ApprovedTeacher extends React.Component {
     );
   }
 
-  fetchClasses(teacher) {
-    const classRefs = teacher.data().classes || [];
+  async fetchClasses(t) {
+    const teacherDoc = t || (await this.props.accounts.teachers.ref.get());
+    const classRefs = teacherDoc.data().classes || [];
     const classes = [];
     classRefs.forEach(classRef => {
       classRef.get().then(classDoc => {
@@ -111,7 +146,7 @@ class ApprovedTeacher extends React.Component {
     const { teachers } = this.props.accounts;
     this.props.db
       .collection('classes')
-      .add({ ...classData, children: [] })
+      .add({ ...classData, children: [], teacher: teachers.ref })
       .then(classObj => {
         const classes = teachers.data().classes || [];
         classes.push(classObj);
@@ -126,7 +161,7 @@ class ApprovedTeacher extends React.Component {
       .doc(classId)
       .update(classData)
       .then(() => {
-        this.fetchClasses(this.props.accounts.teachers);
+        this.fetchClasses();
       });
   }
 
@@ -151,20 +186,16 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     return (
-      <div className="page-content">
+      <div className="page-content horiz-center">
         <Banner
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
           }
+          stripeIsLinked={this.state.stripeIsLinked}
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
         />
-        {this.state.classes.length <= 0 ? (
-          <div className="empty-warning">
-            <h2>Looks like you don&apos;t have any classes yet</h2>
-            <Button onClick={() => this.setState({ showCreate: true })}>Create one Now!</Button>
-          </div>
-        ) : null}
+        {this.getEmptyPrompt()}
         {this.state.classes.map(cls => (
           <ClassInfoCard
             cls={cls}
@@ -174,6 +205,23 @@ class ApprovedTeacher extends React.Component {
           />
         ))}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
+        <Snackbar
+          className="stripe-wrapper"
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          open={!this.state.stripeIsLinked}
+          autoHideDuration={6000}
+          onClose={() => {}}
+        >
+          <SnackbarContent
+            className="stripe-warning"
+            aria-describedby="client-snackbar"
+            message={getMessage()}
+            action={[<StripeConnect key="stripe_oauth" />]}
+          />
+        </Snackbar>
       </div>
     );
   }
@@ -181,7 +229,8 @@ class ApprovedTeacher extends React.Component {
 
 ApprovedTeacher.propTypes = {
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default withRouter(ApprovedTeacher);

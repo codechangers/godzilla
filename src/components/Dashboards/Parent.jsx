@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
+import { StripeProvider, Elements } from 'react-stripe-elements';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 import ClassSignUpInterface from '../Interfaces/ClassSignUp';
@@ -50,15 +51,19 @@ class ParentDashboard extends React.Component {
           baseRoute="/parent"
           firebase={this.props.firebase}
         />
-        {this.getInterface() || (
-          <div className="page-content">
-            <ClassViewInterface
-              firebase={this.props.firebase}
-              db={this.props.db}
-              accounts={this.props.accounts}
-            />
-          </div>
-        )}
+        <StripeProvider apiKey={this.props.apiKey}>
+          <Elements>
+            {this.getInterface() || (
+              <div className="page-content">
+                <ClassViewInterface
+                  firebase={this.props.firebase}
+                  db={this.props.db}
+                  accounts={this.props.accounts}
+                />
+              </div>
+            )}
+          </Elements>
+        </StripeProvider>
       </div>
     ) : (
       <Redirect to={{ pathname: '/login', state: { signupID: this.getID() } }} />
@@ -71,7 +76,12 @@ ParentDashboard.propTypes = {
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  apiKey: PropTypes.string
+};
+
+ParentDashboard.defaultProps = {
+  apiKey: null
 };
 
 export default withRouter(ParentDashboard);

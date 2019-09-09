@@ -3,6 +3,7 @@ export const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"
 export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/; // eslint-disable-line
 
 export const URL = 'http://localhost:3000';
+export const API_URL = 'https://stripe.codechangers.com';
 
 export const months = [
   'January',
@@ -48,6 +49,22 @@ export const dataMemberToValidation = {
     state.password === state.confirmPassword ? '' : 'Password fields do not match',
   locationName: () => '',
   locationAddress: () => '',
+  startDate: state =>
+    state.startDate !== null && state.startDate instanceof Date ? '' : 'Invalid Start Date',
+  endDate: state => {
+    if (state.endDate !== null && state.endDate instanceof Date) {
+      return state.endDate >= state.startDate ? '' : "End Date can't be before the Start Date";
+    }
+    return 'Invalid End Date';
+  },
+  startTime: state =>
+    state.startTime !== null && state.startTime instanceof Date ? '' : 'Invalid Start Time',
+  endTime: state => {
+    if (state.endTime !== null && state.endTime instanceof Date) {
+      return state.endTime >= state.startTime ? '' : "End Time can't be before the Start Time";
+    }
+    return 'Invalid End Time';
+  },
   daysOfWeek: state => (state.daysOfWeek.length > 0 ? '' : 'Must select at least one week day'),
   startAge: state => (state.startAge > 0 ? '' : 'This field may not be empty'),
   endAge: state => {

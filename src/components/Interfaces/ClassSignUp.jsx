@@ -12,11 +12,13 @@ import {
   Checkbox
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import { InfoCardHeader } from '../Classes/InfoCard';
+import Spinner from '../UI/Spinner';
+import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
-import Spinner from '../UI/Spinner';
 
 class ClassSignUpInterface extends React.Component {
   constructor(props) {
@@ -125,6 +127,13 @@ class ClassSignUpInterface extends React.Component {
     );
   }
 
+  getTotal() {
+    const { selectedChildren, selectedClass } = this.state;
+    if (selectedClass !== null)
+      return selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
+    return 0;
+  }
+
   checkToggle(child) {
     return this.state.selectedChildren.includes(child) || this.checkDisabled(child);
   }
@@ -140,16 +149,43 @@ class ClassSignUpInterface extends React.Component {
     this.setState({ selectedChildren });
   }
 
-  handleSubmit() {
-    const children = this.state.selectedClass.children || [];
-    this.state.selectedChildren.forEach(child => {
-      const classes = child.classes || [];
-      classes.push(this.state.selectedClass.ref);
-      child.ref.update({ classes });
-      children.push(child.ref);
-    });
-    this.state.selectedClass.ref.update({ children });
-    this.setState({ selectedClass: null, selectedChildren: [] });
+  async handleSubmit() {
+    const { selectedClass, selectedChildren } = this.state;
+    const { token } = await this.props.stripe.createToken({ name: 'Name' });
+    console.log(token);
+    if (token) {
+      // eslint-disable-next-line
+      fetch(`${API_URL}/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          token: token.id,
+          classID: selectedClass.id,
+          teacherID: selectedClass.teacher.id,
+          parentID: this.props.user.uid,
+          numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 200) {
+            const children = selectedClass.children || [];
+            selectedChildren.forEach(child => {
+              const classes = child.classes || [];
+              classes.push(selectedClass.ref);
+              child.ref.update({ classes });
+              children.push(child.ref);
+            });
+            selectedClass.ref.update({ children });
+            this.setState({ selectedClass: null, selectedChildren: [] });
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   checkDisabled(child) {
@@ -192,6 +228,15 @@ class ClassSignUpInterface extends React.Component {
                 );
               })}
             </List>
+            <p style={{ paddingLeft: '32px', margin: '10px 0 20px 0' }}>
+              <strong style={{ marginRight: '15px' }}>Total:</strong>
+              {`$${this.getTotal()}`}
+            </p>
+            {this.getTotal() > 0 ? (
+              <div className="card-wrapper">
+                <CardElement />
+              </div>
+            ) : null}
             <div className="modal-buttons">
               <Button onClick={this.handleSubmit} variant="contained" color="primary">
                 Submit
@@ -216,7 +261,8 @@ class ClassSignUpInterface extends React.Component {
 ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  stripe: PropTypes.object.isRequired
 };
 
-export default withRouter(ClassSignUpInterface);
+export default withRouter(injectStripe(ClassSignUpInterface));
