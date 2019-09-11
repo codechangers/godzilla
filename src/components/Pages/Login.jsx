@@ -112,7 +112,7 @@ class Login extends React.Component {
     ) : (
       <div className="login-wrapper">
         <Card className="login-form">
-          <CardHeader title="Login to Godzilla" />
+          <CardHeader title="Login to CodeChangers" />
           <CardContent className="column">
             <TextField
               error={getErrorStatus(errors.email)}
