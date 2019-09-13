@@ -159,6 +159,7 @@ class TeacherSignUp extends React.Component {
               </MenuItem>
             </TextField>
             <TextField
+              className="white-label"
               error={getErrorStatus(errors.region)}
               id="address"
               type="text"

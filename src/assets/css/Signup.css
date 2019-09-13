@@ -125,3 +125,7 @@
   max-width: 140px;
   max-height: 100px;
 }
+
+.white-label label {
+  background-color: white;
+}
