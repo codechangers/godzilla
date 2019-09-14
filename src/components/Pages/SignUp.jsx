@@ -80,6 +80,10 @@ class SignUp extends React.Component {
       accountType = state.accountType || '';
       signupID = state.signupID || '';
       showTypeModal = !state.accountType;
+    } else {
+      accountType = '';
+      signupID = '';
+      showTypeModal = true;
     }
     this.setState({ accountType, signupID, showTypeModal });
   }
