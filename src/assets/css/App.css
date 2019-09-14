@@ -101,6 +101,9 @@
   color: inherit;
   margin-left: 20px;
 }
+.empty-warning a.action {
+  margin-left: 0;
+}
 .empty-warning button {
   margin-left: 20px;
 }

@@ -49,6 +49,10 @@ export const dataMemberToValidation = {
     state.password === state.confirmPassword ? '' : 'Password fields do not match',
   locationName: () => '',
   locationAddress: () => '',
+  price: state =>
+    !Number.isNaN(Number(state.price)) && Number(state.price) >= 10
+      ? ''
+      : 'Invalid price, must be at least $10',
   startDate: state =>
     state.startDate !== null && state.startDate instanceof Date ? '' : 'Invalid Start Date',
   endDate: state => {
@@ -66,17 +70,27 @@ export const dataMemberToValidation = {
     return 'Invalid End Time';
   },
   daysOfWeek: state => (state.daysOfWeek.length > 0 ? '' : 'Must select at least one week day'),
-  startAge: state => (state.startAge > 0 ? '' : 'This field may not be empty'),
+  startAge: state =>
+    !Number.isNaN(Number(state.startAge)) && Number(state.startAge) > 0
+      ? ''
+      : 'Invalid Minimum Age',
   endAge: state => {
     if (Number(state.endAge) >= Number(state.startAge)) {
-      return state.endAge > 0 ? '' : 'This field may not be empty';
+      return !Number.isNaN(Number(state.endAge)) && Number(state.endAge) > 0
+        ? ''
+        : 'Invalid Maximum Age';
     }
     return "Max Age can't be less than Min";
   },
-  minStudents: state => (state.minStudents > 0 ? '' : 'This field may not be empty'),
+  minStudents: state =>
+    !Number.isNaN(Number(state.minStudents)) && Number(state.minStudents) > 0
+      ? ''
+      : 'Invalid Minimum number of Students',
   maxStudents: state => {
     if (Number(state.maxStudents) >= Number(state.minStudents)) {
-      return state.maxStudents > 0 ? '' : 'This field may not be empty';
+      return !Number.isNaN(Number(state.maxStudents)) && Number(state.maxStudents) > 0
+        ? ''
+        : 'Invalid Maximum number of Students';
     }
     return "Max Students can't be less than Min";
   }

@@ -17,6 +17,7 @@ import autoBind from '../../autoBind';
 
 const allFields = [
   'name',
+  'price',
   'description',
   'locationName',
   'locationAddress',
@@ -49,7 +50,7 @@ class ClassEditor extends React.Component {
       daysOfWeek: [],
       startAge: '',
       endAge: '',
-      price: 0,
+      price: '',
       minStudents: '',
       maxStudents: '',
       errors: {}
@@ -152,6 +153,8 @@ class ClassEditor extends React.Component {
           variant="outlined"
           value={this.state.price}
           onChange={this.handleInput}
+          error={getErrorStatus(this.state.errors.price)}
+          helperText={this.state.errors.price}
           InputProps={{
             startAdornment: (
               <InputAdornment className="bold-icon" position="start">
