@@ -99,9 +99,33 @@
 .empty-warning a {
   text-decoration: none;
   color: inherit;
+  margin-left: 20px;
+}
+.empty-warning a.action {
+  margin-left: 0;
 }
 .empty-warning button {
   margin-left: 20px;
+}
+
+.stripe-wrapper {
+  width: calc(100% - 264px);
+}
+.stripe-warning {
+  width: 100%;
+  background-color: #ffa000 !important;
+}
+.stripe-warning a {
+  text-decoration: none;
+}
+.stripe-warning p {
+  margin: 0;
+}
+.stripe-connect {
+  background-color: #a4a4a4;
+  color: #0e0e0e;
+  text-decoration: none;
+  padding: 10px;
 }
 
 @keyframes App-logo-spin {

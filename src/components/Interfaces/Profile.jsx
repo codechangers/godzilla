@@ -112,6 +112,7 @@ class ProfileInterface extends React.Component {
     const child = this.state.children.filter(c => c.id === childId)[0];
     return child !== undefined ? (
       <InputBase
+        className="full-width"
         value={child[field]}
         onChange={e => {
           const { children } = this.state;

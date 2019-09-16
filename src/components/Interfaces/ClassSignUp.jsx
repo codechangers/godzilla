@@ -9,14 +9,19 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Checkbox
+  Checkbox,
+  CircularProgress,
+  Fab
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import CheckIcon from '@material-ui/icons/Check';
+import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import { InfoCardHeader } from '../Classes/InfoCard';
+import Spinner from '../UI/Spinner';
+import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
-import Spinner from '../UI/Spinner';
 
 class ClassSignUpInterface extends React.Component {
   constructor(props) {
@@ -27,7 +32,9 @@ class ClassSignUpInterface extends React.Component {
       children: [],
       selectedChildren: [],
       spotlight: null,
-      isLoading: true
+      isLoading: true,
+      isProcessing: false,
+      paymentSucceeded: false
     };
     autoBind(this);
   }
@@ -125,6 +132,13 @@ class ClassSignUpInterface extends React.Component {
     );
   }
 
+  getTotal() {
+    const { selectedChildren, selectedClass } = this.state;
+    if (selectedClass !== null)
+      return selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
+    return 0;
+  }
+
   checkToggle(child) {
     return this.state.selectedChildren.includes(child) || this.checkDisabled(child);
   }
@@ -140,16 +154,44 @@ class ClassSignUpInterface extends React.Component {
     this.setState({ selectedChildren });
   }
 
-  handleSubmit() {
-    const children = this.state.selectedClass.children || [];
-    this.state.selectedChildren.forEach(child => {
-      const classes = child.classes || [];
-      classes.push(this.state.selectedClass.ref);
-      child.ref.update({ classes });
-      children.push(child.ref);
-    });
-    this.state.selectedClass.ref.update({ children });
-    this.setState({ selectedClass: null, selectedChildren: [] });
+  async handleSubmit() {
+    const { selectedClass, selectedChildren } = this.state;
+    const { token } = await this.props.stripe.createToken({ name: 'Name' });
+    this.setState({ isProcessing: true });
+    console.log(token);
+    if (token) {
+      // eslint-disable-next-line
+      fetch(`${API_URL}/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          token: token.id,
+          classID: selectedClass.id,
+          teacherID: selectedClass.teacher.id,
+          parentID: this.props.user.uid,
+          numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 200) {
+            const children = selectedClass.children || [];
+            selectedChildren.forEach(child => {
+              const classes = child.classes || [];
+              classes.push(selectedClass.ref);
+              child.ref.update({ classes });
+              children.push(child.ref);
+            });
+            selectedClass.ref.update({ children });
+            this.setState({ paymentSucceeded: true });
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   checkDisabled(child) {
@@ -172,41 +214,106 @@ class ClassSignUpInterface extends React.Component {
           }}
           disableAutoFocus
         >
-          <Paper className="modal-content">
-            <h2>Select Children to Register</h2>
-            <List>
-              {this.state.children.map(child => {
-                return (
-                  <ListItem
-                    key={child.id}
-                    button
-                    onClick={() => this.toggleChild(child)}
-                    disabled={this.checkDisabled(child)}
-                  >
-                    <ListItemAvatar>
-                      <AccountIcon />
-                    </ListItemAvatar>
-                    <ListItemText primary={`${child.fName} ${child.lName}`} />
-                    <Checkbox edge="end" checked={this.checkToggle(child)} />
-                  </ListItem>
-                );
-              })}
-            </List>
-            <div className="modal-buttons">
-              <Button onClick={this.handleSubmit} variant="contained" color="primary">
-                Submit
-              </Button>
-              <Button
-                onClick={() => {
-                  this.setState({ selectedClass: null });
+          {this.state.isProcessing ? (
+            <Paper
+              className="modal-content"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <h2>
+                {this.state.paymentSucceeded
+                  ? 'Successfully Processed Payment!'
+                  : 'Processing Payment with Stripe...'}
+              </h2>
+              {this.state.paymentSucceeded ? (
+                <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
+                  You can find more information regarding this class in the &quot;My Classes&quot;
+                  Section of your dashboard.
+                </h4>
+              ) : null}
+              <div
+                style={{
+                  marginTop: '28px',
+                  position: 'relative'
                 }}
-                variant="contained"
-                color="default"
               >
-                Cancel
-              </Button>
-            </div>
-          </Paper>
+                <Fab
+                  color={this.state.paymentSucceeded ? 'primary' : 'default'}
+                  onClick={() =>
+                    this.setState({
+                      selectedClass: null,
+                      selectedChildren: [],
+                      isProcessing: false,
+                      paymentSucceeded: false
+                    })
+                  }
+                >
+                  {this.state.paymentSucceeded ? <CheckIcon /> : <div />}
+                </Fab>
+                {!this.state.paymentSucceeded && (
+                  <CircularProgress
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 1
+                    }}
+                  />
+                )}
+              </div>
+            </Paper>
+          ) : (
+            <Paper className="modal-content">
+              <h2>Select Children to Register</h2>
+              <List>
+                {this.state.children.map(child => {
+                  return (
+                    <ListItem
+                      key={child.id}
+                      button
+                      onClick={() => this.toggleChild(child)}
+                      disabled={this.checkDisabled(child)}
+                    >
+                      <ListItemAvatar>
+                        <AccountIcon />
+                      </ListItemAvatar>
+                      <ListItemText primary={`${child.fName} ${child.lName}`} />
+                      <Checkbox edge="end" checked={this.checkToggle(child)} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+              <p style={{ paddingLeft: '32px', margin: '10px 0 20px 0' }}>
+                <strong style={{ marginRight: '15px' }}>Total:</strong>
+                {`$${this.getTotal()}`}
+              </p>
+              {this.getTotal() > 0 ? (
+                <div className="card-wrapper">
+                  <CardElement />
+                </div>
+              ) : null}
+              <div className="modal-buttons">
+                <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                  Submit
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ selectedClass: null });
+                  }}
+                  variant="contained"
+                  color="default"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Paper>
+          )}
         </Modal>
       </div>
     );
@@ -216,7 +323,8 @@ class ClassSignUpInterface extends React.Component {
 ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  stripe: PropTypes.object.isRequired
 };
 
-export default withRouter(ClassSignUpInterface);
+export default withRouter(injectStripe(ClassSignUpInterface));

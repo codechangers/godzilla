@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Logo, ParentIcon, TeacherIcon } from '../Images';
 import '../../assets/css/HomePage.css';
 
@@ -62,6 +62,11 @@ const HomePage = () => (
         Create an Organization
       </Link>
     </footer>
+    {/*
+      This is a temporary forced redirect to the login page.
+      This will prevent anyone from seeing the HomePage.
+     */}
+    <Redirect to="/login" />
   </div>
 );
 

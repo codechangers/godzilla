@@ -344,7 +344,24 @@
   align-items: center;
   margin-top: 40px;
 }
+.class-editor .input .bold-icon p {
+  font-weight: 700;
+  color: #757575;
+}
+.class-editor .input .bold p {
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
 
+.class-editor .options button {
+  padding-left: 24px;
+  padding-right: 24px;
+}
 .class-editor .options button:last-child {
   margin: 0 -16px 0 14px;
+  background-color: #8dc63f;
+}
+
+.class-editor .options button:last-child:hover {
+  background-color: #7bb42c;
 }

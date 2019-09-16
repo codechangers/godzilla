@@ -10,6 +10,8 @@ import AdminDashboard from './Dashboards/Admin/index';
 import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
+import StripeHandler from './Handlers/Stripe';
+import { API_URL } from '../globals';
 import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
@@ -24,7 +26,8 @@ const pathToComponent = {
   '/parent': ParentDashboard,
   '/teacher': TeacherDashboard,
   '/organization': OrganizationDashboard,
-  '/admin': AdminDashboard
+  '/admin': AdminDashboard,
+  '/stripe': StripeHandler
 };
 
 class App extends React.Component {
@@ -32,7 +35,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: { isSignedIn: false },
-      accounts: {}
+      accounts: {},
+      apiKey: null
     };
     this.firebase = firebase();
     this.db = this.firebase
@@ -47,6 +51,10 @@ class App extends React.Component {
       this.updateAccounts(user);
       this.setState({ user });
     });
+    // eslint-disable-next-line
+    fetch(`${API_URL}/stripe_key`, { method: 'GET' })
+      .then(res => res.json())
+      .then(res => this.setState({ apiKey: res.stripe_key }));
   }
 
   componentWillUnmount() {
@@ -95,6 +103,7 @@ class App extends React.Component {
                       updateAccounts={user => this.updateAccounts(user)}
                       firebase={this.firebase}
                       db={this.db}
+                      apiKey={this.state.apiKey}
                     />
                   );
                 }}
