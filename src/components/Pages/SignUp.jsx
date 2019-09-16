@@ -235,6 +235,17 @@ class SignUp extends React.Component {
           this.setState({ emailError: '' });
           this.setState({ passwordError: '' });
           if (res.user) {
+            res.user
+              .updateProfile({
+                displayName: `${this.state.fName}`
+              })
+              .then(() => {
+                console.log('Sending email verification');
+                res.user.sendEmailVerification();
+              })
+              .catch(err => {
+                console.log(err);
+              });
             this.db
               .collection(accountTypeToCollection.parent)
               .doc(res.user.uid)
@@ -254,6 +265,7 @@ class SignUp extends React.Component {
               : '';
           errors.password = err.code === 'auth/weak-password' ? err.message : '';
           this.setState({ errors });
+          console.log(err);
         });
     }
   }
