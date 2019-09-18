@@ -105,7 +105,7 @@ class ClassSignUpInterface extends React.Component {
     }
     return (
       <div className="classes-container page-content">
-        <h2>Choose a Class</h2>
+        <h2>Choose A Class</h2>
         {this.state.isLoading ? (
           <Spinner color="primary" />
         ) : (
