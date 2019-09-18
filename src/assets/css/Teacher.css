@@ -144,24 +144,28 @@
   line-height: 28px;
   text-align: left;
   color: rgba(0, 0, 0, 0.87);
-  margin: 0;
-  font-weight: 400;
+  margin: 0 0 16px 0;
+  font-weight: normal;
 }
 .infocard-header p {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   text-align: left;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.87);
   margin-top: 0;
+  font-weight: 500;
 }
 .infocard-header .inliner {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+}
+.infocard-header .inliner.col {
+  flex-direction: column;
 }
 .infocard-header .inliner p {
-  margin-right: 24px;
+  margin-right: 20px;
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 0;
@@ -182,6 +186,9 @@
 .infocard-header .inliner.close {
   margin-bottom: 0;
 }
+.infocard-header .inliner.far {
+  margin-bottom: 13px;
+}
 .infocard-header .description {
   text-align: left;
   width: 100%;
@@ -190,7 +197,7 @@
   font-size: 14px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.87);
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 .infocard-header .bottom-line {
   width: 100%;

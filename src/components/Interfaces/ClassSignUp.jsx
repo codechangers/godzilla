@@ -17,7 +17,7 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
-import { InfoCardHeader } from '../Classes/InfoCard';
+import InfoCardHeader from '../Classes/InfoCardHeader';
 import Spinner from '../UI/Spinner';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
