@@ -47,7 +47,7 @@ class ParentDashboard extends React.Component {
     return this.props.user.isSignedIn ? (
       <div className="page-wrapper">
         <SideBar
-          names={['My Classes', 'Sign up', 'Profile']}
+          names={['My Classes', 'Profile']}
           baseRoute="/parent"
           firebase={this.props.firebase}
         />
