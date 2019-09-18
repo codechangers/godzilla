@@ -280,7 +280,7 @@ class ProfileInterface extends React.Component {
   render() {
     return (
       <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
-        <h2>Edit your Profile</h2>
+        <h2>Edit Your Profile</h2>
         <Paper className="paper-list-item">
           <List
             component="nav"

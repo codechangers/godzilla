@@ -119,7 +119,7 @@ class ClassViewInterface extends React.Component {
   render() {
     return (
       <div className="classes-container">
-        <h2>View your Classes</h2>
+        <h2>View Your Classes</h2>
         {this.state.showEmpty ? (
           <div className="empty-warning">
             <h3>Looks like you don&apos;t have any kids registered yet.</h3>
