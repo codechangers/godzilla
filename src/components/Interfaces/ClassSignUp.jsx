@@ -89,16 +89,10 @@ class ClassSignUpInterface extends React.Component {
     if (this.state.spotlight !== null) {
       return (
         <div className="class-container page-content">
-          <h1>{`Signup for ${this.state.spotlight.name}`}</h1>
+          <h1>{`Signup For ${this.state.spotlight.name}`}</h1>
           <Paper className="infocard-wrapper">
             <InfoCardHeader cls={this.state.spotlight} />
-            <Button
-              style={{ width: '20%', marginRight: '30px' }}
-              onClick={() => this.setState({ spotlight: null, selectedClass: null })}
-            >
-              More options
-            </Button>
-            {this.getButton(this.state.spotlight, { width: '20%' })}
+            {this.getButton(this.state.spotlight, { width: '40%' })}
           </Paper>
         </div>
       );
@@ -270,7 +264,7 @@ class ClassSignUpInterface extends React.Component {
             </Paper>
           ) : (
             <Paper className="modal-content">
-              <h2>Select Children to Register</h2>
+              <h2>Select Children To Register</h2>
               <List>
                 {this.state.children.map(child => {
                   return (
