@@ -293,7 +293,12 @@ class ClassSignUpInterface extends React.Component {
                 </div>
               ) : null}
               <div className="modal-buttons">
-                <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                <Button
+                  disabled={this.getTotal() <= 0}
+                  onClick={this.handleSubmit}
+                  variant="contained"
+                  color="primary"
+                >
                   Submit
                 </Button>
                 <Button
