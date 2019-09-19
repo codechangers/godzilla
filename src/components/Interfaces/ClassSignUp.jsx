@@ -90,9 +90,10 @@ class ClassSignUpInterface extends React.Component {
       return (
         <div className="class-container page-content">
           <h1>{`Signup For ${this.state.spotlight.name}`}</h1>
-          <Paper className="infocard-wrapper">
-            <InfoCardHeader cls={this.state.spotlight} />
-            {this.getButton(this.state.spotlight, { width: '40%' })}
+          <Paper className="infocard-wrapper only">
+            <InfoCardHeader cls={this.state.spotlight} db={this.props.db}>
+              {this.getButton(this.state.spotlight)}
+            </InfoCardHeader>
           </Paper>
         </div>
       );
@@ -121,7 +122,7 @@ class ClassSignUpInterface extends React.Component {
         variant="contained"
         color="primary"
       >
-        Sign Up
+        Sign Up!
       </Button>
     );
   }

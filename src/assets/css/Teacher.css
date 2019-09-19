@@ -119,6 +119,9 @@
   margin-bottom: 40px;
   padding-bottom: 36px;
 }
+.infocard-wrapper.only {
+  padding-bottom: 0px;
+}
 .infocard-header {
   width: 100%;
   display: flex;
@@ -131,6 +134,12 @@
   max-width: 58%;
   max-height: 370px;
   border-radius: 4px;
+  object-fit: cover;
+}
+.infocard-header.parent > img {
+  max-width: 50%;
+  max-height: 471px;
+  height: 100%;
 }
 .infocard-header > div {
   width: 42%;
@@ -139,6 +148,17 @@
   padding: 24px;
   padding-bottom: 0;
 }
+.infocard-header.parent > div {
+  width: 50%;
+}
+.infocard-header.parent > div > button {
+  width: 100%;
+  margin-bottom: 24px;
+  background-color: #8dc63f;
+}
+.infocard-header.parent > div > button:hover {
+  background-color: #7bb42c;
+}
 .infocard-header h5 {
   font-size: 24px;
   line-height: 28px;
@@ -146,6 +166,11 @@
   color: rgba(0, 0, 0, 0.87);
   margin: 0 0 16px 0;
   font-weight: normal;
+}
+.infocard-header.parent h5 {
+  font-size: 34px;
+  line-height: 40px;
+  letter-spacing: 0.25px;
 }
 .infocard-header p {
   font-size: 14px;
@@ -163,6 +188,11 @@
 }
 .infocard-header .inliner.col {
   flex-direction: column;
+}
+.infocard-header.parent .inliner.col p {
+  font-size: 20px;
+  line-height: 23px;
+  margin-bottom: 4px;
 }
 .infocard-header .inliner p {
   margin-right: 20px;
@@ -188,6 +218,9 @@
 }
 .infocard-header .inliner.far {
   margin-bottom: 13px;
+}
+.infocard-header.parent .inliner.far {
+  margin-bottom: 7px;
 }
 .infocard-header .description {
   text-align: left;
