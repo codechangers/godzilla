@@ -140,7 +140,7 @@ class SignUp extends React.Component {
     ) : (
       <div className="signup-wrapper">
         <Card className="signup-form">
-          <CardHeader title="Create an Account" />
+          <CardHeader className="signup-form-title" title={`${this.state.accountType} Application`} />
           <CardContent className="column">
             <GenericSignUp
               handleChange={this.handleChange}

@@ -18,6 +18,11 @@
   margin: 50px 0;
 }
 
+.MuiCardHeader-title:first-letter {
+  text-transform:capitalize;
+  text-align: left !important;
+}
+
 .signup-form .options {
   width: 50%;
   display: flex;
