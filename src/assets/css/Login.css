@@ -78,3 +78,12 @@
 .link-button:hover {
   text-decoration: underline
 }
+
+.sign-up-link{
+  color: #000;
+  text-decoration: none
+}
+
+.sign-up-link:hover {
+  text-decoration: underline
+}
