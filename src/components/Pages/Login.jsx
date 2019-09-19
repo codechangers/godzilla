@@ -145,7 +145,9 @@ class Login extends React.Component {
         <Box className="left-content">
           <LogoText className="logo-text" />
           <div className="login-form">
-            <h1 className="login-form-title">{ this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In' }</h1>
+            <h1 className="login-form-title">
+              {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
+            </h1>
             {this.state.forgotPassword ? (
               <div>
                 <TextField
@@ -159,7 +161,12 @@ class Login extends React.Component {
                   value={this.state.email}
                   onChange={this.handleChange}
                 />
-                <Button variant="contained" className="full-width" color="primary" onClick={this.resetPassword}>
+                <Button
+                  variant="contained"
+                  className="full-width"
+                  color="primary"
+                  onClick={this.resetPassword}
+                >
                   Reset Password
                 </Button>
                 <Dialog
@@ -168,7 +175,9 @@ class Login extends React.Component {
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                 >
-                  <DialogTitle id="alert-dialog-title">Password Reset sent to your Email</DialogTitle>
+                  <DialogTitle id="alert-dialog-title">
+                    Password Reset sent to your Email
+                  </DialogTitle>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                       {`We have sent an email to ${this.state.email} containing a link that will allow you to reset your password. After clicking the link you will be taken to a page that will prompt you to enter a password. Once submitted the password entered will allow you to login to your account on CodeChangers!`}
@@ -176,7 +185,9 @@ class Login extends React.Component {
                   </DialogContent>
                   <DialogActions>
                     <Button
-                      onClick={() => this.setState({ showResetPrompt: false, forgotPassword: false })}
+                      onClick={() =>
+                        this.setState({ showResetPrompt: false, forgotPassword: false })
+                      }
                       color="primary"
                       autoFocus
                     >
@@ -216,13 +227,20 @@ class Login extends React.Component {
                 >
                   Forgot Your Password?
                 </button>
-                <Button onClick={this.handleSubmit} className="full-width" variant="contained" color="primary">
+                <Button
+                  onClick={this.handleSubmit}
+                  className="full-width"
+                  variant="contained"
+                  color="primary"
+                >
                   Sign In
                 </Button>
               </form>
             )}
           </div>
-          <a href="/signup" style={{ textAlign: 'left' }}>Don't have an account? Sign up today</a>
+          <a href="/signup" className="sign-up-link">
+            Don't have an account? Sign up today
+          </a>
         </Box>
         <div className="right-content" id="students-img" />
       </div>
