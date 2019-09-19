@@ -99,38 +99,6 @@
   margin: 0;
 }
 
-.account-selector {
-  width: 800px;
-  height: 400px;
-}
-
-.account-selector .content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 60px;
-}
-
-.account-selector .content .button {
-  width: 150px;
-  height: 150px;
-}
-
-.account-selector .content .button > span {
-  width: 100%;
-  height: 100%;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.account-selector .content .button img {
-  max-width: 140px;
-  max-height: 100px;
-}
-
 .white-label label {
   background-color: white;
 }

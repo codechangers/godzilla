@@ -1,15 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Card, CardHeader, CardContent, Button, TextField, Modal } from '@material-ui/core';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  Button,
+  TextField,
+  Modal
+} from '@material-ui/core';
 import GenericSignUp from '../SignUpForms/GenericSignUp';
 import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
-import { ParentIcon, TeacherIcon, OrganizationIcon } from '../Images';
 import '../../assets/css/Signup.css';
+
+import * as Styled from './PageStyles/StyledSignUp';
 
 const errorCodeToMessage = {
   'auth/invalid-email': 'Invalid Email Address',
@@ -140,7 +149,10 @@ class SignUp extends React.Component {
     ) : (
       <div className="signup-wrapper">
         <Card className="signup-form">
-          <CardHeader className="signup-form-title" title={`${this.state.accountType} Application`} />
+          <CardHeader
+            className="signup-form-title"
+            title={`${this.state.accountType} Application`}
+          />
           <CardContent className="column">
             <GenericSignUp
               handleChange={this.handleChange}
@@ -181,32 +193,53 @@ class SignUp extends React.Component {
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           disableAutoFocus
         >
-          <Card className="account-selector">
-            <CardHeader title="What type of Account is best for you?" />
-            <CardContent className="content">
-              <Button
-                className="button"
-                onClick={() => this.setState({ accountType: 'parent', showTypeModal: false })}
-              >
-                <ParentIcon />
-                <p>Parent</p>
-              </Button>
-              <Button
-                className="button"
-                onClick={() => this.setState({ accountType: 'teacher', showTypeModal: false })}
-              >
-                <TeacherIcon />
-                <p>Teacher</p>
-              </Button>
-              <Button
-                className="button"
-                onClick={() => this.setState({ accountType: 'organization', showTypeModal: false })}
-              >
-                <OrganizationIcon />
-                <p>Organization</p>
-              </Button>
-            </CardContent>
-          </Card>
+          <Styled.ModalContent>
+            <div>Logo Goes Here</div>
+            <Styled.AccountSelectionSection>
+              <Styled.Title>Select the type of Account you need</Styled.Title>
+              <Styled.AccountSelectionCards>
+                <Card>
+                  <CardHeader title="Parent Account" />
+                  <CardContent>
+                    <Typography variant="body2" component="p" style={{ marginBottom: 20 }}>
+                      Register your children and get them learning STEM today!
+                    </Typography>
+                    <Button
+                      onClick={() => this.setState({ accountType: 'parent', showTypeModal: false })}
+                      className="full-width"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Sign Up as a Parent
+                    </Button>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader title="Educator Account" />
+                  <CardContent>
+                    <Typography variant="body2" component="p" style={{ marginBottom: 20 }}>
+                      Start teaching technology to our world's future today!
+                    </Typography>
+                    <Button
+                      onClick={() =>
+                        this.setState({ accountType: 'teacher', showTypeModal: false })
+                      }
+                      className="full-width"
+                      color="primary"
+                      variant="contained"
+                    >
+                      Sign Up as a Teacher
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Styled.AccountSelectionCards>
+            </Styled.AccountSelectionSection>
+            <Styled.OrganizationLink
+              onClick={() => this.setState({ accountType: 'organization', showTypeModal: false })}
+            >
+              Need an Organization Account? Register Here
+            </Styled.OrganizationLink>
+          </Styled.ModalContent>
         </Modal>
       </div>
     );
