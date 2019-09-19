@@ -1,27 +1,44 @@
-.login-wrapper {
+.auth-page-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--secondary-color);
 }
 
-.login-form {
-  width: 50%;
-  min-width: 600px;
-  max-width: 1200px;
-  background-color: #dadada;
+.right-content {
+  width: 100%;
 }
 
-.column {
+.left-content {
+  box-sizing: border-box;
+  padding: 30px 64px;
+  min-width: 45%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  background-color: var(--background-color);
+}
+
+.logo-text {
+  max-width: 240px;
+}
+
+.login-form {
+  width: 100%;
+  box-shadow: none !important;
+  background-color: var(--background-color) !important;
+}
+
+.login-form-title {
+  font-family: 'Roboto';
+  font-weight: 300;
+  font-size: 60px;
+  line-height: 70px;
+  text-align: left;
 }
 
 .login-form label {
@@ -33,18 +50,31 @@
 }
 
 .login-form .MuiTextField-root {
-  width: 70%;
+  width: 100%;
   margin-bottom: 20px;
-}
-
-.login-form .options {
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .login-form .options button {
   width: 40%;
+}
+
+.link-button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.link-button:hover {
+  text-decoration: underline
 }
