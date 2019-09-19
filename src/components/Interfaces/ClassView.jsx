@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Tabs, Tab, Modal, Card } from '@material-ui/core';
-import ClassPanel from '../Classes/Panel';
+import { Button, Tabs, Tab, Modal, Card, Paper } from '@material-ui/core';
+import InfoCardHeader from '../Classes/InfoCardHeader';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
@@ -152,7 +152,11 @@ class ClassViewInterface extends React.Component {
             return (
               <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
                 {child.classesData.map(cls => (
-                  <ClassPanel key={cls.id} cls={cls} getButton={this.getButton} />
+                  <Paper className="infocard-wrapper only" key={cls.id}>
+                    <InfoCardHeader cls={cls} db={this.props.db}>
+                      {this.getButton(cls)}
+                    </InfoCardHeader>
+                  </Paper>
                 ))}
                 {child.classesData.length > 0 ? null : (
                   <div className="empty-warning">
