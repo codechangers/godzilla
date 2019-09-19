@@ -118,6 +118,7 @@ class ClassSignUpInterface extends React.Component {
         onClick={() => {
           this.setState({ selectedClass: cls });
         }}
+        disabled={cls.children.length >= cls.maxStudents}
         style={style || {}}
         variant="contained"
         color="primary"
