@@ -6,8 +6,11 @@ import template2 from '../assets/images/template2.jpeg';
 import parentIcon from '../assets/images/parent-icon.png';
 import teacherIcon from '../assets/images/teacher-icon.png';
 import organizationIcon from '../assets/images/organization-icon.png';
+import students from '../assets/images/students.jpg';
+import logoText from '../assets/images/logoText.svg';
 
 export const Logo = props => <img src={logoImage} alt="logo" {...props} />;
+export const LogoText = props => <img src={logoText} alt="logoText" {...props} />;
 export const Background1 = props => <img src={background1} alt="background1" {...props} />;
 export const Template1 = props => <img src={template1} alt="template1" {...props} />;
 export const Template2 = props => <img src={template2} alt="template2" {...props} />;
@@ -16,3 +19,4 @@ export const TeacherIcon = props => <img src={teacherIcon} alt="teacherIcon" {..
 export const OrganizationIcon = props => (
   <img src={organizationIcon} alt="organizationIcon" {...props} />
 );
+export const StudentsImage = props => <img src={students} alt="students" {...props} />;
