@@ -17,7 +17,7 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
-import { InfoCardHeader } from '../Classes/InfoCard';
+import InfoCardHeader from '../Classes/InfoCardHeader';
 import Spinner from '../UI/Spinner';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
@@ -89,23 +89,18 @@ class ClassSignUpInterface extends React.Component {
     if (this.state.spotlight !== null) {
       return (
         <div className="class-container page-content">
-          <h1>{`Signup for ${this.state.spotlight.name}`}</h1>
-          <Paper className="infocard-wrapper">
-            <InfoCardHeader cls={this.state.spotlight} />
-            <Button
-              style={{ width: '20%', marginRight: '30px' }}
-              onClick={() => this.setState({ spotlight: null, selectedClass: null })}
-            >
-              More options
-            </Button>
-            {this.getButton(this.state.spotlight, { width: '20%' })}
+          <h1>{`Signup For ${this.state.spotlight.name}`}</h1>
+          <Paper className="infocard-wrapper only">
+            <InfoCardHeader cls={this.state.spotlight} db={this.props.db}>
+              {this.getButton(this.state.spotlight)}
+            </InfoCardHeader>
           </Paper>
         </div>
       );
     }
     return (
       <div className="classes-container page-content">
-        <h2>Choose a Class</h2>
+        <h2>Choose A Class</h2>
         {this.state.isLoading ? (
           <Spinner color="primary" />
         ) : (
@@ -123,11 +118,12 @@ class ClassSignUpInterface extends React.Component {
         onClick={() => {
           this.setState({ selectedClass: cls });
         }}
+        disabled={cls.children.length >= cls.maxStudents}
         style={style || {}}
         variant="contained"
         color="primary"
       >
-        Sign Up
+        Sign Up!
       </Button>
     );
   }
@@ -270,7 +266,7 @@ class ClassSignUpInterface extends React.Component {
             </Paper>
           ) : (
             <Paper className="modal-content">
-              <h2>Select Children to Register</h2>
+              <h2>Select Children To Register</h2>
               <List>
                 {this.state.children.map(child => {
                   return (
@@ -299,7 +295,12 @@ class ClassSignUpInterface extends React.Component {
                 </div>
               ) : null}
               <div className="modal-buttons">
-                <Button onClick={this.handleSubmit} variant="contained" color="primary">
+                <Button
+                  disabled={this.getTotal() <= 0}
+                  onClick={this.handleSubmit}
+                  variant="contained"
+                  color="primary"
+                >
                   Submit
                 </Button>
                 <Button
