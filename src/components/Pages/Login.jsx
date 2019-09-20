@@ -4,9 +4,6 @@ import { Redirect, withRouter } from 'react-router-dom';
 
 import {
   Box,
-  Card,
-  CardHeader,
-  CardContent,
   Button,
   TextField,
   Dialog,
@@ -239,7 +236,7 @@ class Login extends React.Component {
             )}
           </div>
           <a href="/signup" className="sign-up-link">
-            Don't have an account? Sign up today
+            Don&apos;t have an account? Sign up today
           </a>
         </Box>
         <div className="right-content" id="students-img" />
