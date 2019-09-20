@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Tabs, Tab, Modal, Card, Paper } from '@material-ui/core';
+import { Button, Tabs, Tab, Modal, Card, Paper, Switch } from '@material-ui/core';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
@@ -21,7 +21,8 @@ class ClassViewInterface extends React.Component {
       selectedClass: null,
       isLoading: true,
       showEmpty: false,
-      showKidCreator: false
+      showKidCreator: false,
+      showOldClasses: false
     };
     autoBind(this);
   }
@@ -117,6 +118,7 @@ class ClassViewInterface extends React.Component {
   }
 
   render() {
+    const { showOldClasses } = this.state;
     return (
       <div className="classes-container">
         <h2>View Your Classes</h2>
@@ -129,7 +131,7 @@ class ClassViewInterface extends React.Component {
           <Button
             color="primary"
             variant="contained"
-            style={{ alignSelf: 'flex-end', marginTop: '-40px' }}
+            style={{ alignSelf: 'flex-end', marginTop: '-48px', marginBottom: '12px' }}
             onClick={() => this.setState({ showKidCreator: true })}
           >
             Add a Kid
@@ -145,19 +147,41 @@ class ClassViewInterface extends React.Component {
             return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
           })}
         </Tabs>
+        <div
+          style={{
+            alignSelf: 'flex-end',
+            marginTop: '-48px',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '0.75rem'
+          }}
+        >
+          <p>Show Expired Classes</p>
+          <Switch
+            checked={showOldClasses}
+            onChange={() => this.setState({ showOldClasses: !showOldClasses })}
+            value="Show Expired Classes"
+            color="primary"
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        </div>
         {this.state.isLoading ? (
           <Spinner color="primary" />
         ) : (
           this.state.children.map((child, i) => {
             return (
               <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
-                {child.classesData.map(cls => (
-                  <Paper className="infocard-wrapper only" key={cls.id}>
-                    <InfoCardHeader cls={cls} db={this.props.db}>
-                      {this.getButton(cls)}
-                    </InfoCardHeader>
-                  </Paper>
-                ))}
+                {child.classesData.map(cls =>
+                  cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
+                    <Paper className="infocard-wrapper only" key={cls.id}>
+                      <InfoCardHeader cls={cls} db={this.props.db}>
+                        {this.getButton(cls)}
+                      </InfoCardHeader>
+                    </Paper>
+                  ) : null
+                )}
                 {child.classesData.length > 0 ? null : (
                   <div className="empty-warning">
                     <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>

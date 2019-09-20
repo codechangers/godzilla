@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Button, Card, Snackbar, SnackbarContent } from '@material-ui/core';
+import { Modal, Button, Card, Snackbar, SnackbarContent, Switch } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
@@ -30,7 +30,8 @@ class ApprovedTeacher extends React.Component {
       classes: [],
       selected: null,
       showCreate: false,
-      stripeIsLinked: true
+      stripeIsLinked: true,
+      showOldClasses: false
     };
     autoBind(this);
   }
@@ -185,6 +186,7 @@ class ApprovedTeacher extends React.Component {
   }
 
   render() {
+    const { showOldClasses } = this.state;
     return (
       <div className="page-content horiz-center">
         <Banner
@@ -195,15 +197,37 @@ class ApprovedTeacher extends React.Component {
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
         />
-        {this.getEmptyPrompt()}
-        {this.state.classes.map(cls => (
-          <ClassInfoCard
-            cls={cls}
-            key={cls.id}
-            openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
-            openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+        <div
+          style={{
+            alignSelf: 'flex-end',
+            marginTop: '-40px',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '0.75rem'
+          }}
+        >
+          <p>Show Expired Classes</p>
+          <Switch
+            checked={showOldClasses}
+            onChange={() => this.setState({ showOldClasses: !showOldClasses })}
+            value="Show Expired Classes"
+            color="primary"
+            inputProps={{ 'aria-label': 'primary checkbox' }}
           />
-        ))}
+        </div>
+        {this.getEmptyPrompt()}
+        {this.state.classes.map(cls =>
+          cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
+            <ClassInfoCard
+              cls={cls}
+              key={cls.id}
+              openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
+              openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+            />
+          ) : null
+        )}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
         <Snackbar
           className="stripe-wrapper"
