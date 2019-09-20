@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { FormControlLabel, Checkbox, TextField } from '@material-ui/core';
 import { getErrorStatus } from '../../helpers';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const propTypes = {
   handleChange: PropTypes.func.isRequired,
   toggleCanText: PropTypes.func.isRequired,
@@ -17,55 +19,60 @@ const propTypes = {
 };
 
 const GenericSignUp = ({ handleChange, state, toggleCanText }) => (
-  <div className="generic-signup-wrapper">
-    <TextField
-      error={getErrorStatus(state.errors.fName)}
-      id="firstName"
-      type="text"
-      label="First Name"
-      variant="outlined"
-      helperText={state.errors.fName}
-      value={state.fName}
-      onChange={handleChange}
-    />
-    <TextField
-      error={getErrorStatus(state.errors.lName)}
-      id="lastName"
-      type="text"
-      label="Last Name"
-      variant="outlined"
-      helperText={state.errors.lName}
-      value={state.lName}
-      onChange={handleChange}
-    />
-    <TextField
-      error={getErrorStatus(state.errors.email)}
-      id="Email"
-      type="text"
-      label="Email Address"
-      variant="outlined"
-      helperText={state.errors.email}
-      value={state.email}
-      onChange={handleChange}
-    />
-    <TextField
-      error={getErrorStatus(state.errors.phone)}
-      id="phone"
-      type="text"
-      label="Phone"
-      variant="outlined"
-      helperText={state.errors.phone}
-      value={state.phone}
-      onChange={handleChange}
-    />
-    <FormControlLabel
-      control={
-        <Checkbox id="canText" checked={state.canText} onChange={toggleCanText} color="primary" />
-      }
-      label="Phone can Text"
-      id="phone-can-text"
-    />
-  </div>
+  <Styled.FormFieldsContainer>
+    <Styled.FormFeildsRow firstRow>
+      <TextField
+        error={getErrorStatus(state.errors.fName)}
+        id="firstName"
+        type="text"
+        label="First Name"
+        variant="outlined"
+        helperText={state.errors.fName}
+        value={state.fName}
+        onChange={handleChange}
+      />
+      <TextField
+        error={getErrorStatus(state.errors.lName)}
+        id="lastName"
+        type="text"
+        label="Last Name"
+        variant="outlined"
+        helperText={state.errors.lName}
+        value={state.lName}
+        onChange={handleChange}
+      />
+    </Styled.FormFeildsRow>
+    <Styled.FormFeildsRow>
+      <TextField
+        error={getErrorStatus(state.errors.phone)}
+        id="phone"
+        type="text"
+        label="Phone"
+        variant="outlined"
+        helperText={state.errors.phone}
+        value={state.phone}
+        onChange={handleChange}
+      />
+      <TextField
+        error={getErrorStatus(state.errors.email)}
+        id="Email"
+        type="text"
+        label="Email Address"
+        variant="outlined"
+        helperText={state.errors.email}
+        value={state.email}
+        onChange={handleChange}
+      />
+    </Styled.FormFeildsRow>
+    <Styled.CheckboxRow>
+      <FormControlLabel
+        control={
+          <Checkbox id="canText" checked={state.canText} onChange={toggleCanText} color="primary" />
+        }
+        label="Phone can Text"
+      />
+    </Styled.CheckboxRow>
+  </Styled.FormFieldsContainer>
 );
 
 GenericSignUp.propTypes = propTypes;

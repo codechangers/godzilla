@@ -21,6 +21,8 @@ import { getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
@@ -94,10 +96,10 @@ class ParentSignUp extends React.Component {
 
   render() {
     return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
+      <Styled.SignupFormWrapper>
+        <Card>
           <CardHeader title="Parent Account Information" />
-          <CardContent className="column">
+          <CardContent>
             <TextField
               error={getErrorStatus(this.state.errors.address)}
               id="address"
@@ -146,7 +148,7 @@ class ParentSignUp extends React.Component {
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </Styled.SignupFormWrapper>
     );
   }
 }

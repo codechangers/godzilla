@@ -10,6 +10,7 @@ import {
   TextField,
   Modal
 } from '@material-ui/core';
+
 import GenericSignUp from '../SignUpForms/GenericSignUp';
 import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
@@ -147,44 +148,55 @@ class SignUp extends React.Component {
     return this.state.isRegistered ? (
       this.getForm()
     ) : (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
-          <CardHeader
-            className="signup-form-title"
-            title={`${this.state.accountType} Application`}
-          />
-          <CardContent className="column">
-            <GenericSignUp
-              handleChange={this.handleChange}
-              toggleCanText={this.toggleCanText}
-              state={{ ...this.state }}
-            />
-            <TextField
-              error={getErrorStatus(this.state.errors.password)}
-              id="password"
-              type="password"
-              label="Password"
-              variant="outlined"
-              helperText={this.state.errors.password}
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-            <TextField
-              error={getErrorStatus(this.state.errors.confirmPassword)}
-              id="confirmPassword"
-              type="password"
-              label="Confirm Password"
-              variant="outlined"
-              helperText={this.state.errors.confirmPassword}
-              value={this.state.confirmPassword}
-              onChange={this.handleChange}
-            />
-            <div className="options">
-              <Button onClick={() => this.setState({ isLoggedIn: true })}>Login</Button>
-              <Button onClick={this.handleSubmit} variant="contained" color="primary">
+      <Styled.SignupFormWrapper>
+        <Card>
+          <CardHeader title={`${this.state.accountType} Application`} style={{ marginLeft: 5 }} />
+          <CardContent>
+            <Styled.FormFieldsContainer>
+              <GenericSignUp
+                handleChange={this.handleChange}
+                toggleCanText={this.toggleCanText}
+                state={{ ...this.state }}
+              />
+              <Styled.FormFeildsRow>
+                <TextField
+                  error={getErrorStatus(this.state.errors.password)}
+                  id="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  helperText={this.state.errors.password}
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  error={getErrorStatus(this.state.errors.confirmPassword)}
+                  id="confirmPassword"
+                  type="password"
+                  label="Confirm Password"
+                  variant="outlined"
+                  helperText={this.state.errors.confirmPassword}
+                  value={this.state.confirmPassword}
+                  onChange={this.handleChange}
+                />
+              </Styled.FormFeildsRow>
+            </Styled.FormFieldsContainer>
+            <Styled.FormFeildsOptions>
+              <Button
+                onClick={this.handleSubmit}
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{ marginBottom: 15 }}
+              >
                 Next
               </Button>
-            </div>
+              <Styled.LinkButtonWrapper>
+                <Styled.LinkButton onClick={() => this.setState({ showTypeModal: true })}>
+                  Go Back
+                </Styled.LinkButton>
+              </Styled.LinkButtonWrapper>
+            </Styled.FormFeildsOptions>
           </CardContent>
         </Card>
         <Modal
@@ -206,7 +218,7 @@ class SignUp extends React.Component {
                     </Typography>
                     <Button
                       onClick={() => this.setState({ accountType: 'parent', showTypeModal: false })}
-                      className="full-width"
+                      fullWidth
                       variant="contained"
                       color="primary"
                     >
@@ -224,7 +236,7 @@ class SignUp extends React.Component {
                       onClick={() =>
                         this.setState({ accountType: 'teacher', showTypeModal: false })
                       }
-                      className="full-width"
+                      fullWidth
                       color="primary"
                       variant="contained"
                     >
@@ -234,14 +246,16 @@ class SignUp extends React.Component {
                 </Card>
               </Styled.AccountSelectionCards>
             </Styled.AccountSelectionSection>
-            <Styled.OrganizationLink
-              onClick={() => this.setState({ accountType: 'organization', showTypeModal: false })}
-            >
-              Need an Organization Account? Register Here
-            </Styled.OrganizationLink>
+            <Styled.LinkButtonWrapper>
+              <Styled.LinkButton
+                onClick={() => this.setState({ accountType: 'organization', showTypeModal: false })}
+              >
+                Need an Organization Account? Register Here
+              </Styled.LinkButton>
+            </Styled.LinkButtonWrapper>
           </Styled.ModalContent>
         </Modal>
-      </div>
+      </Styled.SignupFormWrapper>
     );
   }
 

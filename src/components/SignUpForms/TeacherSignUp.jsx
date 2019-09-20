@@ -5,6 +5,8 @@ import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import '../../assets/css/Signup.css';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const locationToPrompt = {
   '': 'Location Name',
   school: 'What is the name of the school?',
@@ -98,8 +100,8 @@ class TeacherSignUp extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
+      <Styled.SignupFormWrapper>
+        <Card>
           <CardHeader title="Teacher Account Information" />
           <CardContent className="column">
             <TextField
@@ -174,7 +176,7 @@ class TeacherSignUp extends React.Component {
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </Styled.SignupFormWrapper>
     );
   }
 }

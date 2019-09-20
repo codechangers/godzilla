@@ -1,5 +1,21 @@
 import styled from '@emotion/styled';
 
+export const SignupFormWrapper = styled.div({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  minHeight: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#50769a',
+  '& .MuiPaper-root': {
+    width: '100%',
+    maxWidth: 600
+  }
+});
+
 export const ModalContent = styled.div({
   width: '100%',
   minHeight: '100vh',
@@ -58,8 +74,17 @@ export const SignUpButton = styled.button({
   }
 });
 
-export const OrganizationLink = styled.button({
+export const LinkButtonWrapper = styled.div({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
+});
+
+export const LinkButton = styled.button({
+  maxWidth: 'fit-content',
   border: 'none',
+  outline: 'none',
   margin: 0,
   padding: 0,
   width: 'auto',
@@ -73,4 +98,43 @@ export const OrganizationLink = styled.button({
   ':hover': {
     textDecoration: 'underline'
   }
+});
+
+export const FormFieldsContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%'
+});
+
+export const FormFeildsRow = styled.div(
+  {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    '@media (min-width: 600px)': {
+      flexDirection: 'row'
+    }
+  },
+  ({ firstRow }) => ({
+    '& .MuiFormControl-root': {
+      width: '100%',
+      margin: '6px 0',
+      '@media (min-width: 600px)': {
+        margin: firstRow ? '0 5px 12px' : '0 5px'
+      }
+    }
+  })
+);
+
+export const CheckboxRow = styled.div({
+  margin: 0,
+  '@media (min-width: 600px)': {
+    margin: 5
+  }
+});
+
+export const FormFeildsOptions = styled.div({
+  marginTop: 20,
+  display: 'flex',
+  flexDirection: 'column'
 });
