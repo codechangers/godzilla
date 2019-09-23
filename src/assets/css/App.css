@@ -127,6 +127,13 @@
   padding: 10px;
 }
 
+.temp-primary-button {
+  background-color: #8dc63f !important;
+}
+.temp-primary-button:hover {
+  background-color: #7bb42c !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
