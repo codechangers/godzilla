@@ -226,7 +226,7 @@ class Login extends React.Component {
                 </button>
                 <Button
                   onClick={this.handleSubmit}
-                  className="full-width"
+                  className="full-width temp-primary-button"
                   variant="contained"
                   color="primary"
                 >
