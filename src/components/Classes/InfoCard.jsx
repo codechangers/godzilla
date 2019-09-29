@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { CSVLink } from 'react-csv';
+import CSVDownload from '../UI/CSVDownload';
 import { URL } from '../../globals';
 import autoBind from '../../autoBind';
 import InfoCardHeader from './InfoCardHeader';
@@ -64,16 +64,12 @@ class ClassInfoCard extends React.Component {
             <DeleteIcon />
             DELETE CLASS
           </Button>
-          <CSVLink
-            style={{ textDecoration: 'none' }}
-            filename={`${cls.name}-students.csv`}
-            data={this.getStudentData()}
-          >
+          <CSVDownload filename={`${cls.name}-students.csv`} data={this.getStudentData()}>
             <Button>
               <DownloadIcon />
               Download Logins
             </Button>
-          </CSVLink>
+          </CSVDownload>
         </div>
         <div className="students-wrapper">
           <StudentInfo showLabels />
