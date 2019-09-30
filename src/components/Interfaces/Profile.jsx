@@ -24,10 +24,12 @@ import {
   Cake,
   School,
   FormatSize,
-  Wc
+  Wc,
+  Fingerprint
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { dataMemberToValidation } from '../../globals';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { dataMemberToValidation, API_URL } from '../../globals';
 import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
@@ -186,6 +188,18 @@ class ProfileInterface extends React.Component {
     });
   }
 
+  getStudentID(child) {
+    // eslint-disable-next-line
+    fetch(`${API_URL}/get_uid`)
+      .then(res => res.json())
+      .then(res => {
+        const learnID = res.uid;
+        child.ref.update({ learnID }).then(() => {
+          this.fetchChildrenData();
+        });
+      });
+  }
+
   fetchAccountData() {
     this.props.db
       .collection('parents')
@@ -338,6 +352,33 @@ class ProfileInterface extends React.Component {
                     timeout="auto"
                     unmountOnExit
                   >
+                    <ListItem>
+                      <ListItemIcon>
+                        <Fingerprint />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          child.learnID
+                            ? `Student ID: ${child.learnID}`
+                            : 'Get your Personal Student ID!'
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        {child.learnID ? (
+                          <CopyToClipboard text={child.learnID}>
+                            <Button>Copy ID</Button>
+                          </CopyToClipboard>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => this.getStudentID(child)}
+                          >
+                            Get your ID
+                          </Button>
+                        )}
+                      </ListItemSecondaryAction>
+                    </ListItem>
                     {this.getChildFields(child.id)}
                     <ListItem>
                       <ListItemText primary="" />
