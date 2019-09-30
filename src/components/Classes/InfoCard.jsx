@@ -36,10 +36,10 @@ class ClassInfoCard extends React.Component {
   }
 
   getStudentData() {
-    return this.state.students.map((s, i) => ({
+    return this.state.students.map(s => ({
       first_name: s.fName,
       last_name: s.lName,
-      username: `testing${i}`,
+      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
       password: '12345678'
     }));
   }
