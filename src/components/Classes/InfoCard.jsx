@@ -4,80 +4,83 @@ import { Paper, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getAgeFromBirthday } from '../../helpers';
+import CSVDownload from '../UI/CSVDownload';
 import { URL } from '../../globals';
+import autoBind from '../../autoBind';
 import InfoCardHeader from './InfoCardHeader';
+import StudentInfo from './StudentInfo';
 
-class StudentInfo extends React.Component {
+class ClassInfoCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      student: null
+      students: []
     };
+    autoBind(this);
   }
 
   componentDidMount() {
-    if (this.props.student !== null) {
-      this.props.student.get().then(studentDoc => {
-        this.setState({ student: { ...studentDoc.data(), id: studentDoc.id } });
+    const { children } = this.props.cls;
+    const students = [];
+    children.forEach(childRef => {
+      childRef.get().then(childDoc => {
+        const student = { ...childDoc.data(), id: childDoc.id };
+        students.push(student);
+        if (students.length === children.length) {
+          this.setState({ students });
+        }
       });
-    }
+    });
+  }
+
+  getStudentData() {
+    return this.state.students.map(s => ({
+      first_name: s.fName,
+      last_name: s.lName,
+      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
+      password: '12345678'
+    }));
   }
 
   render() {
-    const { showLabels } = this.props;
-    const { student } = this.state;
-    return student !== null || showLabels ? (
-      <div className={`infocard-student${showLabels ? ' bold' : ''}`}>
-        <p>{showLabels ? 'Name' : `${student.fName} ${student.lName}`}</p>
-        <p>{showLabels ? 'Gender' : `${student.gender}`}</p>
-        <p>{showLabels ? 'Age' : `${getAgeFromBirthday(student.birthDate)}`}</p>
-        <p>{showLabels ? 'Current Grade' : `${student.currentGrade} Grade`}</p>
-        <p>{showLabels ? 'Current School' : `${student.currentSchool}`}</p>
-        <p>Status</p>
-      </div>
-    ) : null;
+    const { cls, openUpdate, openDelete } = this.props;
+    return (
+      <Paper className="infocard-wrapper">
+        <InfoCardHeader cls={cls} />
+        <div className="options">
+          <Button variant="contained" onClick={openUpdate}>
+            <EditIcon />
+            EDIT CLASS DETAILS
+          </Button>
+          <CopyToClipboard text={`${URL}/parent/signup/${cls.id}`}>
+            <Button variant="contained">
+              <LinkIcon />
+              STUDENT SIGN UP LINK
+            </Button>
+          </CopyToClipboard>
+          <Button variant="contained" onClick={openDelete}>
+            <DeleteIcon />
+            DELETE CLASS
+          </Button>
+          <CSVDownload filename={`${cls.name}-students.csv`} data={this.getStudentData()}>
+            <Button>
+              <DownloadIcon />
+              Download Logins
+            </Button>
+          </CSVDownload>
+        </div>
+        <div className="students-wrapper">
+          <StudentInfo showLabels />
+          {this.state.students.map(student => (
+            <StudentInfo student={student} key={student.id} />
+          ))}
+        </div>
+      </Paper>
+    );
   }
 }
-
-StudentInfo.propTypes = {
-  student: PropTypes.object,
-  showLabels: PropTypes.bool
-};
-
-StudentInfo.defaultProps = {
-  student: null,
-  showLabels: false
-};
-
-const ClassInfoCard = ({ cls, openUpdate, openDelete }) => (
-  <Paper className="infocard-wrapper">
-    <InfoCardHeader cls={cls} />
-    <div className="options">
-      <Button variant="contained" onClick={openUpdate}>
-        <EditIcon />
-        EDIT CLASS DETAILS
-      </Button>
-      <CopyToClipboard text={`${URL}/parent/signup/${cls.id}`}>
-        <Button variant="contained">
-          <LinkIcon />
-          STUDENT SIGN UP LINK
-        </Button>
-      </CopyToClipboard>
-      <Button variant="contained" onClick={openDelete}>
-        <DeleteIcon />
-        DELETE CLASS
-      </Button>
-    </div>
-    <div className="students-wrapper">
-      <StudentInfo showLabels />
-      {cls.children.map(childRef => (
-        <StudentInfo student={childRef} key={childRef.id} />
-      ))}
-    </div>
-  </Paper>
-);
 
 ClassInfoCard.propTypes = {
   cls: PropTypes.object.isRequired,

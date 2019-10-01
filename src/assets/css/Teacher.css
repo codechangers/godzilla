@@ -294,11 +294,11 @@
   padding: 0 24px;
   margin-bottom: 40px;
 }
-.infocard-wrapper > .options > button {
+.infocard-wrapper > .options button {
   color: rgba(0, 0, 0, 0.6);
   margin: 0 16px 0 0;
 }
-.infocard-wrapper > .options > button svg {
+.infocard-wrapper > .options button svg {
   margin-right: 8px;
 }
 .infocard-wrapper > .students-wrapper {

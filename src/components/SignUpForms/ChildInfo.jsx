@@ -4,6 +4,7 @@ import { Button, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import { API_URL } from '../../globals';
 import '../../assets/css/Signup.css';
 
 const allFields = [
@@ -50,11 +51,20 @@ class ChildInfo extends React.Component {
     if (this.validateFields(allFields) === true) {
       const user = this.props.firebase.auth().currentUser;
       if (user) {
-        this.props.db
-          .collection('children')
-          .add(this.getUserData(allFields))
-          .then(child => {
-            this.props.addChildRef(this.props.db.collection('children').doc(child.id));
+        // eslint-disable-next-line
+        fetch(`${API_URL}/get_uid`)
+          .then(res => res.json())
+          .then(res => {
+            const learnID = res.uid;
+            this.props.db
+              .collection('children')
+              .add({
+                learnID,
+                ...this.getUserData(allFields)
+              })
+              .then(child => {
+                this.props.addChildRef(this.props.db.collection('children').doc(child.id));
+              });
           });
         this.props.handleClose();
       }
