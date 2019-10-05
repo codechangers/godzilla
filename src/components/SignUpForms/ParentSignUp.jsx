@@ -26,7 +26,8 @@ import * as Styled from '../Pages/PageStyles/StyledSignUp';
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired
+  next: PropTypes.func.isRequired
+  // login: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -87,7 +88,7 @@ class ParentSignUp extends React.Component {
           .update({
             address: this.state.address
           })
-          .then(this.props.login);
+          .then(this.props.next);
       }
     } else {
       this.setState({ errors: { address: 'This field may not be empty' } });

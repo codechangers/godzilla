@@ -15,7 +15,7 @@ const allFields = ['name', 'address', 'aboutMe'];
 const propTypes = {
   db: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired
+  updateAccounts: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -62,11 +62,12 @@ class ParentSignUp extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields)) {
+      const user = this.props.firebase.auth().currentUser;
       this.props.db
         .collection('organizations')
-        .doc(this.props.firebase.auth().currentUser.uid)
+        .doc(user.uid)
         .set(this.getOrgData())
-        .then(this.props.login);
+        .then(() => this.props.updateAccounts(user));
     }
   }
 
