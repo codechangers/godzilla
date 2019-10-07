@@ -17,7 +17,9 @@ import * as Styled from '../Pages/PageStyles/StyledSignUp';
 const propTypes = {
   accountType: PropTypes.string.isRequired,
   next: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired
+  prev: PropTypes.func.isRequired,
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 const allFields = ['fName', 'lName', 'email', 'phone', 'canText', 'password', 'confirmPassword'];
@@ -41,12 +43,15 @@ class GenericSignUp extends React.Component {
       email: '',
       phone: '',
       canText: false,
+      address: '',
       password: '',
       confirmPassword: '',
       errors: {}
     };
     this.getUserData = getUserData;
     this.validateFields = validateFields;
+    this.firebase = props.firebase;
+    this.db = props.db;
     autoBind(this);
   }
 
@@ -75,7 +80,7 @@ class GenericSignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password } = this.state;
+    const { email, password, accountType } = this.state;
     if (this.validateFields(allFields) === true) {
       this.firebase
         .auth()
@@ -96,7 +101,10 @@ class GenericSignUp extends React.Component {
               .collection(accountTypeToCollection.parent)
               .doc(res.user.uid)
               .set(
-                this.getUserData(allFields.filter(e => e !== 'password' && e !== 'confirmPassword'))
+                this.getUserData([
+                  ...allFields.filter(e => e !== 'password' && e !== 'confirmPassword'),
+                  accountType === 'parent' ? 'address' : ''
+                ])
               )
               .then(this.props.next);
           }
@@ -115,7 +123,7 @@ class GenericSignUp extends React.Component {
   }
 
   render() {
-    const { fName, lName, email, phone, password, confirmPassword, errors } = this.state;
+    const { fName, lName, email, phone, address, password, confirmPassword, errors } = this.state;
     const { accountType, prev } = this.props;
     return (
       <Card>
@@ -125,7 +133,7 @@ class GenericSignUp extends React.Component {
             <Styled.FormFeildsRow firstRow>
               <TextField
                 error={getErrorStatus(errors.fName)}
-                id="firstName"
+                id="fName"
                 type="text"
                 label="First Name"
                 variant="outlined"
@@ -135,7 +143,7 @@ class GenericSignUp extends React.Component {
               />
               <TextField
                 error={getErrorStatus(errors.lName)}
-                id="lastName"
+                id="lName"
                 type="text"
                 label="Last Name"
                 variant="outlined"
@@ -169,6 +177,20 @@ class GenericSignUp extends React.Component {
             <Styled.CheckboxRow>
               <FormControlLabel control={this.getCheckBox()} label="Phone can Text" />
             </Styled.CheckboxRow>
+            {accountType === 'parent' ? (
+              <Styled.FormFeildsRow firstRow>
+                <TextField
+                  error={getErrorStatus(errors.address)}
+                  id="address"
+                  type="text"
+                  label="Address"
+                  variant="outlined"
+                  helperText={errors.address}
+                  value={address}
+                  onChange={this.handleChange}
+                />
+              </Styled.FormFeildsRow>
+            ) : null}
             <Styled.FormFeildsRow>
               <TextField
                 error={getErrorStatus(errors.password)}

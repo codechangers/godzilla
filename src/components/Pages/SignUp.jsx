@@ -43,11 +43,11 @@ class SignUp extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.accounts.teachers) {
-      this.setState({ isLoggedIn: true });
+    if (props.accounts.teachers && this.state.accountType === 'teacher') {
+      this.setState({ formIndex: accountTypeToForms.teacher.length - 1 });
     }
-    if (props.accounts.organizations) {
-      this.setState({ isLoggedIn: true });
+    if (props.accounts.organizations && this.state.accountType === 'organization') {
+      this.setState({ formIndex: accountTypeToForms.organization.length - 1 });
     }
   }
 
