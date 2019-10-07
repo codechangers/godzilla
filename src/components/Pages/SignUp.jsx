@@ -14,8 +14,8 @@ import '../../assets/css/Signup.css';
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
   updateAccounts: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
   location: PropTypes.shape({
     state: PropTypes.objectOf(PropTypes.string)
   }).isRequired
@@ -42,15 +42,6 @@ class SignUp extends React.Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(props) {
-    if (props.accounts.teachers && this.state.accountType === 'teacher') {
-      this.setState({ formIndex: accountTypeToForms.teacher.length - 1 });
-    }
-    if (props.accounts.organizations && this.state.accountType === 'organization') {
-      this.setState({ formIndex: accountTypeToForms.organization.length - 1 });
-    }
-  }
-
   setFormIndex(i) {
     const { formIndex, accountType } = this.state;
     const forms = accountTypeToForms[accountType];
@@ -64,7 +55,7 @@ class SignUp extends React.Component {
 
   render() {
     const { formIndex, accountType } = this.state;
-    const { updateAccounts } = this.props;
+    const { updateAccounts, user } = this.props;
     const forms = accountTypeToForms[accountType];
     const Form = forms[formIndex];
     return this.state.isLoggedIn ? (
@@ -78,6 +69,7 @@ class SignUp extends React.Component {
         prev={() => this.setFormIndex(-1)}
         setAccountType={a => this.setState({ accountType: a })}
         updateAccounts={updateAccounts}
+        user={user}
       />
     );
   }

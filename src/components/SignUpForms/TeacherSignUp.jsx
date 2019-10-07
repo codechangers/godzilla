@@ -25,9 +25,10 @@ const allFields = ['whyTeach', 'prevExp', 'region', 'location', 'address'];
 
 const propTypes = {
   db: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
   updateAccounts: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired
+  prev: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 class TeacherSignUp extends React.Component {
@@ -62,12 +63,13 @@ class TeacherSignUp extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields) === true) {
-      const user = this.props.firebase.auth().currentUser;
+      const { user } = this.props;
       this.props.db
         .collection('teachers')
         .doc(user.uid)
         .set(this.getUserData(allFields))
-        .then(() => this.props.updateAccounts(user));
+        .then(() => this.props.updateAccounts(user))
+        .then(this.props.next);
     }
   }
 
