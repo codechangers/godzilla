@@ -64,10 +64,18 @@ class TeacherSignUp extends React.Component {
   handleSubmit() {
     if (this.validateFields(allFields) === true) {
       const { user } = this.props;
+      const date = new Date();
       this.props.db
         .collection('teachers')
         .doc(user.uid)
-        .set(this.getUserData(allFields))
+        .set({
+          ...this.getUserData(allFields),
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        })
         .then(() => this.props.updateAccounts(user))
         .then(this.props.next);
     }

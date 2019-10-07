@@ -15,7 +15,9 @@ const allFields = ['name', 'address', 'aboutMe'];
 const propTypes = {
   db: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  updateAccounts: PropTypes.func.isRequired
+  updateAccounts: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -32,27 +34,6 @@ class ParentSignUp extends React.Component {
     autoBind(this);
   }
 
-  getOrgData() {
-    const date = new Date();
-    // Filter out any fields for local state that shouldn't be saved to the organization document.
-    return Object.keys(this.state)
-      .filter(key => Object.keys(idToDataMember).includes(key))
-      .reduce(
-        (obj, key) => {
-          const newObj = { ...obj };
-          newObj[key] = this.state[key];
-          return newObj;
-        },
-        {
-          isVerrified: false,
-          isDeclined: false,
-          isTraining: true,
-          dateApplied: date,
-          isRead: false
-        }
-      );
-  }
-
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
@@ -63,11 +44,20 @@ class ParentSignUp extends React.Component {
   handleSubmit() {
     if (this.validateFields(allFields)) {
       const user = this.props.firebase.auth().currentUser;
+      const date = new Date();
       this.props.db
         .collection('organizations')
         .doc(user.uid)
-        .set(this.getOrgData())
-        .then(() => this.props.updateAccounts(user));
+        .set({
+          ...this.getUserData(allFields),
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        })
+        .then(() => this.props.updateAccounts(user))
+        .then(this.props.next);
     }
   }
 
@@ -109,6 +99,9 @@ class ParentSignUp extends React.Component {
               value={this.state.aboutMe}
               onChange={this.handleChange}
             />
+            <Button onClick={this.props.prev} variant="contained">
+              Back
+            </Button>
             <Button onClick={this.handleSubmit} variant="contained" color="primary">
               Submit Organization Application
             </Button>
