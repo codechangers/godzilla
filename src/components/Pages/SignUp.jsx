@@ -7,6 +7,7 @@ import GenericSignUp from '../SignUpForms/GenericSignUp';
 import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
+import ThankYou from '../SignUpForms/ThankYou';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 
@@ -22,9 +23,9 @@ const propTypes = {
 
 const accountTypeToForms = {
   '': [AccountType],
-  parent: [AccountType, GenericSignUp, ParentSignUp],
-  teacher: [AccountType, GenericSignUp, TeacherSignUp],
-  organization: [AccountType, GenericSignUp, OrganizationSignUp]
+  parent: [AccountType, GenericSignUp, ParentSignUp, ThankYou],
+  teacher: [AccountType, GenericSignUp, TeacherSignUp, ThankYou],
+  organization: [AccountType, GenericSignUp, OrganizationSignUp, ThankYou]
 };
 
 class SignUp extends React.Component {

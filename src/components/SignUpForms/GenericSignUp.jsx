@@ -116,7 +116,7 @@ class GenericSignUp extends React.Component {
 
   render() {
     const { fName, lName, email, phone, password, confirmPassword, errors } = this.state;
-    const { accountType, next, prev } = this.props;
+    const { accountType, prev } = this.props;
     return (
       <Card>
         <CardHeader title={`${accountType} Application`} style={{ marginLeft: 5 }} />
@@ -194,7 +194,7 @@ class GenericSignUp extends React.Component {
           </Styled.FormFieldsContainer>
           <Styled.FormFeildsOptions>
             <Button
-              onClick={next}
+              onClick={this.handleSubmit}
               fullWidth
               variant="contained"
               color="primary"
