@@ -10,7 +10,10 @@ import {
   ListItemSecondaryAction,
   Button,
   InputBase,
-  Collapse
+  Collapse,
+  Snackbar,
+  SnackbarContent,
+  IconButton
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import {
@@ -25,7 +28,8 @@ import {
   School,
   FormatSize,
   Wc,
-  Fingerprint
+  Fingerprint,
+  Close
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -36,6 +40,7 @@ import '../../assets/css/Parent-Dash.css';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 };
@@ -88,6 +93,7 @@ class ProfileInterface extends React.Component {
       accountData: {},
       children: [],
       openChildren: [],
+      passwordReset: '',
       errors: {}
     };
     autoBind(this);
@@ -291,6 +297,22 @@ class ProfileInterface extends React.Component {
     }
   }
 
+  changePassword() {
+    this.props.firebase
+      .auth()
+      .sendPasswordResetEmail(this.props.user.email)
+      .then(() => {
+        console.log('Email Sent...');
+        this.setState({
+          passwordReset: `Password Reset email has been sent to ${this.props.user.email}!`
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ passwordReset: 'Failed to send password reset email...' });
+      });
+  }
+
   render() {
     return (
       <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
@@ -306,7 +328,10 @@ class ProfileInterface extends React.Component {
           >
             {this.getFields()}
             <ListItem>
-              <ListItemText primary="" />
+              <ListItemText
+                style={{ paddingBottom: '10px' }}
+                primary={<Button onClick={this.changePassword}>Change Password</Button>}
+              />
               <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
                 <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
                   Revert Changes
@@ -401,6 +426,34 @@ class ProfileInterface extends React.Component {
             ))}
           </div>
         ) : null}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          open={this.state.passwordReset !== ''}
+          autoHideDuration={4000}
+          onClose={() => this.setState({ passwordReset: '' })}
+        >
+          <SnackbarContent
+            style={{
+              color: '#fff',
+              backgroundColor: this.state.passwordReset.includes('Failed') ? '#B7300F' : '#0EA90B'
+            }}
+            aria-describedby="client-snackbar"
+            message={this.state.passwordReset}
+            action={[
+              <IconButton
+                key="close"
+                aria-label="close"
+                color="inherit"
+                onClick={() => this.setState({ passwordReset: '' })}
+              >
+                <Close />
+              </IconButton>
+            ]}
+          />
+        </Snackbar>
       </div>
     );
   }
