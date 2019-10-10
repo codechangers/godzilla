@@ -175,7 +175,17 @@ class GenericSignUp extends React.Component {
               />
             </Styled.FormFeildsRow>
             <Styled.CheckboxRow>
-              <FormControlLabel control={this.getCheckBox()} label="Phone can Text" />
+              <FormControlLabel control={this.getCheckBox()} label="Okay to receive texts" />
+              <p
+                style={{
+                  margin: '-8px 0 0 32px',
+                  paddingBottom: '8px',
+                  fontSize: '0.75rem',
+                  color: 'rgba(0, 0, 0, 0.5)'
+                }}
+              >
+                Subscribe to stay up to updated new programs and offers!
+              </p>
             </Styled.CheckboxRow>
             {accountType === 'parent' ? (
               <Styled.FormFeildsRow firstRow>
