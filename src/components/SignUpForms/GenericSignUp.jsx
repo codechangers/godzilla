@@ -184,7 +184,7 @@ class GenericSignUp extends React.Component {
                   color: 'rgba(0, 0, 0, 0.5)'
                 }}
               >
-                Subscribe to stay up to updated new programs and offers!
+                Subscribe to stay updated with new programs and offers
               </p>
             </Styled.CheckboxRow>
             {accountType === 'parent' ? (
