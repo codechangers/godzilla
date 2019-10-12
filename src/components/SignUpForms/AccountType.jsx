@@ -5,8 +5,7 @@ import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
 const AccountType = ({ setAccountType, next }) => (
-  <Styled.ModalContent>
-    <div>Logo Goes Here</div>
+  <Styled.AccountType>
     <Styled.AccountSelectionSection>
       <Styled.Title>Select the type of Account you need</Styled.Title>
       <Styled.AccountSelectionCards>
@@ -60,7 +59,7 @@ const AccountType = ({ setAccountType, next }) => (
         Need an Organization Account? Register Here
       </Styled.LinkButton>
     </Styled.LinkButtonWrapper>
-  </Styled.ModalContent>
+  </Styled.AccountType>
 );
 
 AccountType.propTypes = {

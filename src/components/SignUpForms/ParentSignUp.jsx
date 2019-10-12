@@ -19,6 +19,8 @@ import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
@@ -130,17 +132,20 @@ class ParentSignUp extends React.Component {
             variant="contained"
             color="default"
             id="add-child"
+            fullWidth
           >
             <AddIcon />
             Add Child
           </Button>
 
-          <Button onClick={this.props.prev} variant="contained">
-            Back
-          </Button>
-          <Button onClick={this.props.next} variant="contained" color="primary">
-            Next
-          </Button>
+          <Styled.NavigationButtons>
+            <Button onClick={this.props.prev} variant="contained">
+              Back
+            </Button>
+            <Button onClick={this.props.next} variant="contained" color="primary">
+              Next
+            </Button>
+          </Styled.NavigationButtons>
         </CardContent>
       </Card>
     );

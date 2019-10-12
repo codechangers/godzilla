@@ -8,8 +8,11 @@ import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import ThankYou from '../SignUpForms/ThankYou';
+import logoText from '../../assets/images/logoText.svg';
 import autoBind from '../../autoBind';
 import '../../assets/css/Signup.css';
+
+import * as Styled from './PageStyles/StyledSignUp';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -58,19 +61,25 @@ class SignUp extends React.Component {
     const { updateAccounts, user } = this.props;
     const forms = accountTypeToForms[accountType];
     const Form = forms[formIndex];
+
     return this.state.isLoggedIn ? (
       <Redirect to={{ pathname: '/login', state: { signupID: this.state.signupID } }} />
     ) : (
-      <Form
-        db={this.db}
-        firebase={this.firebase}
-        accountType={accountType}
-        next={() => this.setFormIndex(1)}
-        prev={() => this.setFormIndex(-1)}
-        setAccountType={a => this.setState({ accountType: a })}
-        updateAccounts={updateAccounts}
-        user={user}
-      />
+      <Styled.SignupWrapper>
+        <Styled.LogoText src={logoText} />
+        <Styled.Form full={formIndex === 0}>
+          <Form
+            db={this.db}
+            firebase={this.firebase}
+            accountType={accountType}
+            next={() => this.setFormIndex(1)}
+            prev={() => this.setFormIndex(-1)}
+            setAccountType={a => this.setState({ accountType: a })}
+            updateAccounts={updateAccounts}
+            user={user}
+          />
+        </Styled.Form>
+      </Styled.SignupWrapper>
     );
   }
 }
