@@ -4,6 +4,8 @@ import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/c
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const idToDataMember = {
   name: 'name',
   address: 'address',
@@ -64,10 +66,11 @@ class ParentSignUp extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
-          <CardHeader title="Organization Account Information" />
-          <CardContent className="column">
+      <Card>
+        <CardHeader title="Organization Account Information" />
+        <CardContent>
+          <Styled.Subtitle>Account Information</Styled.Subtitle>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.name)}
               id="name"
@@ -88,6 +91,8 @@ class ParentSignUp extends React.Component {
               value={this.state.address}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.aboutMe)}
               id="aboutMe"
@@ -99,15 +104,17 @@ class ParentSignUp extends React.Component {
               value={this.state.aboutMe}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
             <Button onClick={this.props.prev} variant="contained">
               Back
             </Button>
             <Button onClick={this.handleSubmit} variant="contained" color="primary">
               Submit Organization Application
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </Styled.NavigationButtons>
+        </CardContent>
+      </Card>
     );
   }
 }

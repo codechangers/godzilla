@@ -129,8 +129,11 @@ class GenericSignUp extends React.Component {
       <Card>
         <CardHeader title={`${accountType} Application`} style={{ marginLeft: 5 }} />
         <CardContent>
+          <Styled.Subtitle>
+            {accountType === 'parent' ? 'Parent or Guardian Information' : 'Account Information'}
+          </Styled.Subtitle>
           <Styled.FormFieldsContainer>
-            <Styled.FormFeildsRow firstRow>
+            <Styled.FormFieldsRow firstRow>
               <TextField
                 error={getErrorStatus(errors.fName)}
                 id="fName"
@@ -151,8 +154,8 @@ class GenericSignUp extends React.Component {
                 value={lName}
                 onChange={this.handleChange}
               />
-            </Styled.FormFeildsRow>
-            <Styled.FormFeildsRow>
+            </Styled.FormFieldsRow>
+            <Styled.FormFieldsRow>
               <TextField
                 error={getErrorStatus(errors.phone)}
                 id="phone"
@@ -173,7 +176,7 @@ class GenericSignUp extends React.Component {
                 value={email}
                 onChange={this.handleChange}
               />
-            </Styled.FormFeildsRow>
+            </Styled.FormFieldsRow>
             <Styled.CheckboxRow>
               <FormControlLabel control={this.getCheckBox()} label="Okay to receive texts" />
               <p
@@ -188,7 +191,7 @@ class GenericSignUp extends React.Component {
               </p>
             </Styled.CheckboxRow>
             {accountType === 'parent' ? (
-              <Styled.FormFeildsRow firstRow>
+              <Styled.FormFieldsRow firstRow>
                 <TextField
                   error={getErrorStatus(errors.address)}
                   id="address"
@@ -199,9 +202,9 @@ class GenericSignUp extends React.Component {
                   value={address}
                   onChange={this.handleChange}
                 />
-              </Styled.FormFeildsRow>
+              </Styled.FormFieldsRow>
             ) : null}
-            <Styled.FormFeildsRow>
+            <Styled.FormFieldsRow>
               <TextField
                 error={getErrorStatus(errors.password)}
                 id="password"
@@ -222,9 +225,9 @@ class GenericSignUp extends React.Component {
                 value={confirmPassword}
                 onChange={this.handleChange}
               />
-            </Styled.FormFeildsRow>
+            </Styled.FormFieldsRow>
           </Styled.FormFieldsContainer>
-          <Styled.FormFeildsOptions>
+          <Styled.FormFieldsOptions>
             <Button
               onClick={this.handleSubmit}
               fullWidth
@@ -237,7 +240,7 @@ class GenericSignUp extends React.Component {
             <Styled.LinkButtonWrapper>
               <Styled.LinkButton onClick={prev}>Go Back</Styled.LinkButton>
             </Styled.LinkButtonWrapper>
-          </Styled.FormFeildsOptions>
+          </Styled.FormFieldsOptions>
         </CardContent>
       </Card>
     );

@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { styles } from 'ansi-colors';
-import ParentSignUp from '../../SignUpForms/OrganizationSignUp';
 
 // SignUp Layout Styles
 export const SignupWrapper = styled.div({
@@ -26,7 +24,16 @@ export const Form = styled.div(
     width: '100%'
   },
   ({ full }) => ({
-    maxWidth: full ? '100%' : '60%'
+    maxWidth: full ? '100%' : '60%',
+    '& .MuiCardHeader-title': {
+      fontFamily: 'Roboto',
+      fontWeight: 300,
+      fontSize: full ? 30 : 36,
+      letterSpacing: -0.5
+    },
+    '& .MuiCardHeader-root': {
+      padding: full ? 16 : '16px 16px 0'
+    }
   })
 );
 
@@ -38,6 +45,13 @@ export const Title = styled.h2({
   letterSpacing: -0.5
 });
 
+export const Subtitle = styled.h3({
+  fontFamily: 'Roboto',
+  fontWeight: 400,
+  fontSize: 22,
+  margin: '0 5px 10px'
+});
+
 export const LinkButtonWrapper = styled.div({
   display: 'flex',
   width: '100%',
@@ -45,24 +59,29 @@ export const LinkButtonWrapper = styled.div({
   alignItems: 'center'
 });
 
-export const LinkButton = styled.button({
-  maxWidth: 'fit-content',
-  border: 'none',
-  outline: 'none',
-  margin: 0,
-  padding: 0,
-  width: 'auto',
-  overflow: 'visible',
-  background: 'transparent',
-  color: 'inherit',
-  font: 'inherit',
-  fontSize: 14,
-  textTransform: 'uppercase',
-  cursor: 'pointer',
-  ':hover': {
-    textDecoration: 'underline'
-  }
-});
+export const LinkButton = styled.button(
+  {
+    maxWidth: 'fit-content',
+    border: 'none',
+    outline: 'none',
+    margin: 0,
+    padding: 0,
+    width: 'auto',
+    overflow: 'visible',
+    background: 'transparent',
+    font: 'inherit',
+    fontSize: 14,
+    lineHeight: '36px',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    ':hover': {
+      textDecoration: 'underline'
+    }
+  },
+  ({ error }) => ({
+    color: error ? '#FF0C3E' : 'inherit'
+  })
+);
 
 export const FormFieldsContainer = styled.div({
   display: 'flex',
@@ -70,25 +89,21 @@ export const FormFieldsContainer = styled.div({
   width: '100%'
 });
 
-export const FormFeildsRow = styled.div(
-  {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'column',
-    '@media (min-width: 600px)': {
-      flexDirection: 'row'
-    }
+export const FormFieldsRow = styled.div({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  '@media (min-width: 600px)': {
+    flexDirection: 'row'
   },
-  ({ firstRow }) => ({
-    '& .MuiFormControl-root': {
-      width: '100%',
-      margin: '6px 0',
-      '@media (min-width: 600px)': {
-        margin: firstRow ? '0 5px 12px' : '0 5px'
-      }
+  '& .MuiFormControl-root': {
+    width: '100%',
+    margin: '6px 0',
+    '@media (min-width: 600px)': {
+      margin: 5
     }
-  })
-);
+  }
+});
 
 export const CheckboxRow = styled.div({
   margin: 0,
@@ -97,7 +112,7 @@ export const CheckboxRow = styled.div({
   }
 });
 
-export const FormFeildsOptions = styled.div({
+export const FormFieldsOptions = styled.div({
   marginTop: 20,
   display: 'flex',
   flexDirection: 'column'
@@ -145,4 +160,19 @@ export const NavigationButtons = styled.div({
   alignItems: 'center',
   width: '100%',
   height: '100%'
+});
+
+export const ListItem = styled.div({
+  backgroundColor: 'white',
+  borderRadius: 0,
+  '&:nth-child(odd)': {
+    backgroundColor: '#F4F4F4',
+    borderRadius: 4
+  }
+});
+
+export const SignUpSuccess = styled.div({
+  backgroundColor: 'white',
+  borderRadius: 4,
+  padding: 20
 });

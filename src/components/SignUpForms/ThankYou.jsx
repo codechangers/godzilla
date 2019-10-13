@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const ThankYou = ({ next }) => (
-  <div>
-    <h1>Thank You!</h1>
+  <Styled.SignUpSuccess>
+    <Styled.Title style={{ marginTop: 0 }}>Thank You!</Styled.Title>
     <p>
       Commodo in dolore in officia laborum et. Magna laboris aute aliqua eiusmod ullamco incididunt
       anim pariatur. Occaecat qui enim duis dolore cillum sint nostrud sint est eu veniam aute.
@@ -12,10 +14,10 @@ const ThankYou = ({ next }) => (
       tempor. Sint id amet excepteur non Lorem ut. Non amet aute voluptate exercitation dolore
       tempor officia culpa.
     </p>
-    <Button variant="contained" color="primary" onClick={next}>
+    <Button fullWidth variant="contained" color="primary" onClick={next}>
       GO to login page
     </Button>
-  </div>
+  </Styled.SignUpSuccess>
 );
 
 ThankYou.propTypes = {

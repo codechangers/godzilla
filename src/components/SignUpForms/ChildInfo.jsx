@@ -4,7 +4,8 @@ import { Button, TextField, Card, CardHeader, CardContent } from '@material-ui/c
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
-import '../../assets/css/Signup.css';
+
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
 const allFields = [
   'fName',
@@ -107,93 +108,102 @@ class ChildInfo extends React.Component {
       <Card>
         <CardHeader title="Parent Application" />
         <CardContent>
-          <h2>Child Information:</h2>
-          <TextField
-            error={getErrorStatus(errors.fName)}
-            id="fName"
-            type="text"
-            label="Child's First Name"
-            variant="outlined"
-            className="input"
-            helperText={errors.fName}
-            value={this.state.fName}
-            onChange={this.handleChange}
-          />
-          <TextField
-            error={getErrorStatus(errors.lName)}
-            id="lName"
-            type="text"
-            label="Child's Last Name"
-            variant="outlined"
-            className="input"
-            helperText={errors.lName}
-            value={this.state.lName}
-            onChange={this.handleChange}
-          />
-          <KeyboardDatePicker
-            clearable
-            className="birthdate-picker input"
-            value={this.state.birthDate}
-            placeholder="01/01/2001"
-            onChange={date => this.setState({ birthDate: date })}
-            minDate={new Date(y - 100, m, d)}
-            label="Child's Birthdate"
-            format="MM/dd/yyyy"
-          />
-          <TextField
-            error={getErrorStatus(errors.currentSchool)}
-            id="currentSchool"
-            type="text"
-            className="input"
-            label="Child's Current School"
-            variant="outlined"
-            helperText={errors.currentSchool}
-            value={this.state.currentSchool}
-            onChange={this.handleChange}
-          />
-          <TextField
-            error={getErrorStatus(errors.currentGrade)}
-            id="currentGrade"
-            type="text"
-            className="input"
-            label="Child's Current Grade"
-            variant="outlined"
-            helperText={errors.currentGrade}
-            value={this.state.currentGrade}
-            onChange={this.handleChange}
-          />
-          <TextField
-            error={getErrorStatus(errors.shirtSize)}
-            id="shirtSize"
-            type="text"
-            className="input"
-            label="Child's Shirt Size"
-            variant="outlined"
-            helperText={errors.shirtSize}
-            value={this.state.shirtSize}
-            onChange={this.handleChange}
-          />
-          <TextField
-            error={getErrorStatus(errors.gender)}
-            id="gender"
-            type="text"
-            className="input"
-            label="Child's Gender"
-            variant="outlined"
-            value={this.state.gender}
-            onChange={this.handleChange}
-          />
-          <Button onClick={this.props.handleClose} variant="contained" className="modalButton">
-            Cancel
-          </Button>
-          <Button
-            onClick={this.props.prevData ? this.updateChild : this.createChild}
-            variant="contained"
-            color="primary"
-            className="modalButton"
-          >
-            {this.props.prevData ? 'Update Child' : 'Add Child'}
-          </Button>
+          <Styled.Subtitle>Child Information</Styled.Subtitle>
+          <Styled.FormFieldsRow firstRow>
+            <TextField
+              error={getErrorStatus(errors.fName)}
+              id="fName"
+              type="text"
+              label="Child's First Name"
+              variant="outlined"
+              className="input"
+              helperText={errors.fName}
+              value={this.state.fName}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.lName)}
+              id="lName"
+              type="text"
+              label="Child's Last Name"
+              variant="outlined"
+              className="input"
+              helperText={errors.lName}
+              value={this.state.lName}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow>
+            <TextField
+              error={getErrorStatus(errors.gender)}
+              id="gender"
+              type="text"
+              className="input"
+              label="Child's Gender"
+              variant="outlined"
+              value={this.state.gender}
+              onChange={this.handleChange}
+            />
+            <KeyboardDatePicker
+              clearable
+              className="birthdate-picker input"
+              value={this.state.birthDate}
+              placeholder="01/01/2001"
+              onChange={date => this.setState({ birthDate: date })}
+              minDate={new Date(y - 100, m, d)}
+              label="Child's Birthdate"
+              format="MM/dd/yyyy"
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
+            <TextField
+              error={getErrorStatus(errors.currentSchool)}
+              id="currentSchool"
+              type="text"
+              className="input"
+              label="Child's Current School"
+              variant="outlined"
+              helperText={errors.currentSchool}
+              value={this.state.currentSchool}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow>
+            <TextField
+              error={getErrorStatus(errors.currentGrade)}
+              id="currentGrade"
+              type="text"
+              className="input"
+              label="Child's Current Grade"
+              variant="outlined"
+              helperText={errors.currentGrade}
+              value={this.state.currentGrade}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.shirtSize)}
+              id="shirtSize"
+              type="text"
+              className="input"
+              label="Child's Shirt Size"
+              variant="outlined"
+              helperText={errors.shirtSize}
+              value={this.state.shirtSize}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
+            <Button onClick={this.props.handleClose} variant="contained">
+              Cancel
+            </Button>
+            <Button
+              onClick={this.props.prevData ? this.updateChild : this.createChild}
+              variant="contained"
+              color="primary"
+            >
+              {this.props.prevData ? 'Update Child' : 'Add Child'}
+            </Button>
+          </Styled.NavigationButtons>
         </CardContent>
       </Card>
     );

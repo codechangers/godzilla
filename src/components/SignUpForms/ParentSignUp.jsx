@@ -105,10 +105,10 @@ class ParentSignUp extends React.Component {
       <Card>
         <CardHeader title="Parent Application" />
         <CardContent>
-          <h2>Registered Children:</h2>
+          <Styled.Subtitle>Registered Children</Styled.Subtitle>
           <List>
             {this.state.childrenData.map(child => (
-              <div className="child" key={`${child.fName}${child.lName}`}>
+              <Styled.ListItem key={`${child.fName}${child.lName}`}>
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar>
@@ -118,12 +118,12 @@ class ParentSignUp extends React.Component {
                   <ListItemText primary={`${child.fName} ${child.lName}`} />
                   <ListItemSecondaryAction>
                     <Button onClick={() => this.editChild(child)}>Edit</Button>
-                    <Button onClick={() => this.removeChild(child)} color="secondary">
+                    <Styled.LinkButton error onClick={() => this.removeChild(child)}>
                       Delete
-                    </Button>
+                    </Styled.LinkButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-              </div>
+              </Styled.ListItem>
             ))}
           </List>
 
@@ -132,7 +132,6 @@ class ParentSignUp extends React.Component {
             variant="contained"
             color="default"
             id="add-child"
-            fullWidth
           >
             <AddIcon />
             Add Child
