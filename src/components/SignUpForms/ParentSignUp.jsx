@@ -117,7 +117,9 @@ class ParentSignUp extends React.Component {
                   </ListItemAvatar>
                   <ListItemText primary={`${child.fName} ${child.lName}`} />
                   <ListItemSecondaryAction>
-                    <Button onClick={() => this.editChild(child)}>Edit</Button>
+                    <Button style={{ marginRight: 8 }} onClick={() => this.editChild(child)}>
+                      Edit
+                    </Button>
                     <Styled.LinkButton error onClick={() => this.removeChild(child)}>
                       Delete
                     </Styled.LinkButton>
