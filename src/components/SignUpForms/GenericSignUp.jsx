@@ -80,8 +80,9 @@ class GenericSignUp extends React.Component {
   }
 
   handleSubmit() {
-    const { email, password, accountType } = this.state;
-    if (this.validateFields(allFields) === true) {
+    const { email, password } = this.state;
+    const { accountType } = this.props;
+    if (this.validateFields([...allFields, accountType === 'parent' ? 'address' : '']) === true) {
       this.firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
