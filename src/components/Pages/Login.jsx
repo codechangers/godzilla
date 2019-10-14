@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import {
   Box,
@@ -15,6 +17,7 @@ import {
 import autoBind from '../../autoBind';
 import { LogoText } from '../Images';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import GoogleIcon from '../../assets/images/googleIcon.svg';
 import '../../assets/css/Login.css';
 
 const errorCodeToMessage = {
@@ -133,6 +136,20 @@ class Login extends React.Component {
     }
   }
 
+  googleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('email');
+    this.firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     const { errors, signupID } = this.state;
     return this.state.shouldRedirect.length > 0 ? (
@@ -231,6 +248,26 @@ class Login extends React.Component {
                   color="primary"
                 >
                   Sign In
+                </Button>
+                <h4
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    lineHeight: '16px',
+                    margin: '15px 0',
+                    color: 'rgba(0, 0, 0, 0.6)'
+                  }}
+                >
+                  OR
+                </h4>
+                <Button
+                  onClick={this.googleSignIn}
+                  className="full-width"
+                  style={{ backgroundColor: '#fff', color: 'rgba(0, 0, 0, 0.6)' }}
+                  variant="contained"
+                >
+                  <img src={GoogleIcon} alt="G" style={{ marginRight: '11px' }} />
+                  Sign In With Google
                 </Button>
               </form>
             )}
