@@ -134,6 +134,12 @@
   background-color: #7bb42c !important;
 }
 
+.small-icon .MuiCardHeader-action {
+  margin-top: 0;
+  margin-right: 0;
+  align-self: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

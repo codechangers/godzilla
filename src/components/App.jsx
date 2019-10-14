@@ -4,7 +4,6 @@ import { Route } from 'react-router';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import DateFnsUtils from '@date-io/date-fns';
-import HomePage from './Pages/Home';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import AdminDashboard from './Dashboards/Admin/index';
@@ -22,7 +21,7 @@ import theme from './theme';
 let authSubscription = () => {};
 
 const pathToComponent = {
-  '/': HomePage,
+  '/': Login,
   '/login': Login,
   '/signup': SignUp,
   '/parent': ParentDashboard,

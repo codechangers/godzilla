@@ -11,6 +11,9 @@ import {
 } from '@material-ui/core';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import autoBind from '../../autoBind';
+import ParentIcon from '../../assets/images/parentIcon.svg';
+import TeacherIcon from '../../assets/images/teacherIcon.svg';
+import BlankIcon from '../../assets/images/blank.svg';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
@@ -32,6 +35,12 @@ const accountTypeToCollection = {
   parent: 'parents',
   teacher: 'teachers',
   organization: 'organizations'
+};
+const accountTypeToIcon = {
+  '': null,
+  parent: ParentIcon,
+  teacher: TeacherIcon,
+  organization: BlankIcon
 };
 
 class GenericSignUp extends React.Component {
@@ -128,7 +137,11 @@ class GenericSignUp extends React.Component {
     const { accountType, prev } = this.props;
     return (
       <Card>
-        <CardHeader title={`${accountType} Application`} style={{ marginLeft: 5 }} />
+        <CardHeader
+          title={`${accountType} Application`}
+          action={<img src={accountTypeToIcon[accountType]} alt="Icon" style={{ width: 60 }} />}
+          style={{ marginLeft: 5 }}
+        />
         <CardContent>
           <Styled.Subtitle>
             {accountType === 'parent' ? 'Parent or Guardian Information' : 'Account Information'}

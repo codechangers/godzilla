@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/core';
+import ParentIcon from '../../assets/images/parentIcon.svg';
+import TeacherIcon from '../../assets/images/teacherIcon.svg';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
@@ -10,9 +12,17 @@ const AccountType = ({ setAccountType, next }) => (
       <Styled.Title>Select the type of Account you need</Styled.Title>
       <Styled.AccountSelectionCards>
         <Card>
-          <CardHeader title="Parent Account" />
+          <CardHeader
+            title="Parent Account"
+            className="small-icon"
+            action={<img src={ParentIcon} alt="ParentIcon" style={{ width: '38px' }} />}
+          />
           <CardContent>
-            <Typography variant="body2" component="p" style={{ marginBottom: 20 }}>
+            <Typography
+              variant="body2"
+              component="p"
+              style={{ fontSize: '18px', marginBottom: 20 }}
+            >
               Register your children and get them learning STEM today!
             </Typography>
             <Button
@@ -29,9 +39,16 @@ const AccountType = ({ setAccountType, next }) => (
           </CardContent>
         </Card>
         <Card>
-          <CardHeader title="Educator Account" />
+          <CardHeader
+            title="Educator Account"
+            action={<img src={TeacherIcon} alt="TeacherIcon" style={{ width: '38px' }} />}
+          />
           <CardContent>
-            <Typography variant="body2" component="p" style={{ marginBottom: 20 }}>
+            <Typography
+              variant="body2"
+              component="p"
+              style={{ fontSize: '18px', marginBottom: 20 }}
+            >
               Start teaching technology to our world&apos;s future today!
             </Typography>
             <Button

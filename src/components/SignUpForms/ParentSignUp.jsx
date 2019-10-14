@@ -16,6 +16,7 @@ import UserIcon from '@material-ui/icons/PermIdentityOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
+import ParentIcon from '../../assets/images/parentIcon.svg';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
 
@@ -103,7 +104,10 @@ class ParentSignUp extends React.Component {
       />
     ) : (
       <Card>
-        <CardHeader title="Parent Application" />
+        <CardHeader
+          title="Parent Application"
+          action={<img src={ParentIcon} style={{ width: 60 }} alt="ParentIcon" />}
+        />
         <CardContent>
           <Styled.Subtitle>Registered Children</Styled.Subtitle>
           <List>

@@ -144,7 +144,7 @@ export const AccountSelectionCards = styled.div({
   display: 'flex',
   justifyContent: 'space-around',
   width: '100%',
-  maxWidth: 650,
+  maxWidth: 750,
   '& .MuiCard-root': {
     margin: 15
   },

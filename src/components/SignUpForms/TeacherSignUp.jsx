@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import TeacherIcon from '../../assets/images/teacherIcon.svg';
 import '../../assets/css/Signup.css';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
@@ -87,7 +88,10 @@ class TeacherSignUp extends React.Component {
     const { errors } = this.state;
     return (
       <Card>
-        <CardHeader title="Teacher Account Information" />
+        <CardHeader
+          title="Teacher Account Information"
+          action={<img src={TeacherIcon} style={{ width: 60 }} alt="TeacherIcon" />}
+        />
         <CardContent>
           <Styled.Subtitle>Account Information</Styled.Subtitle>
           <Styled.FormFieldsRow firstRow>
