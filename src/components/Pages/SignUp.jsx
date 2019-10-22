@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import AccountType from '../SignUpForms/AccountType';
 import GenericSignUp from '../SignUpForms/GenericSignUp';
@@ -66,7 +66,9 @@ class SignUp extends React.Component {
       <Redirect to={{ pathname: '/login', state: { signupID: this.state.signupID } }} />
     ) : (
       <Styled.SignupWrapper>
-        <Styled.LogoText src={logoText} />
+        <Link to={{ pathname: '/login', state: { signupID: this.state.signupID } }}>
+          <Styled.LogoText src={logoText} />
+        </Link>
         <Styled.Form full={formIndex === 0}>
           <Form
             db={this.db}
