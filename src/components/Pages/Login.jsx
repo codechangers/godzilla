@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 
 import {
   Box,
@@ -235,9 +235,12 @@ class Login extends React.Component {
               </form>
             )}
           </div>
-          <a href="/signup" className="sign-up-link">
+          <Link
+            to={{ pathname: '/signup', state: { signupID: this.state.signupID } }}
+            className="sign-up-link"
+          >
             Don&apos;t have an account? Sign up today
-          </a>
+          </Link>
         </Box>
         <div className="right-content" id="students-img" />
       </div>

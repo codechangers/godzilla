@@ -45,6 +45,15 @@ class SignUp extends React.Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    let { signupID } = this.state;
+    const { state } = this.props.location;
+    if (state) {
+      signupID = state.signupID || '';
+    }
+    this.setState({ signupID });
+  }
+
   setFormIndex(i) {
     const { formIndex, accountType } = this.state;
     const forms = accountTypeToForms[accountType];
