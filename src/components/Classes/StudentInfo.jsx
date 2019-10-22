@@ -10,7 +10,7 @@ const StudentInfo = ({ showLabels, student }) =>
       <p>{showLabels ? 'Age' : `${getAgeFromBirthday(student.birthDate)}`}</p>
       <p>{showLabels ? 'Current Grade' : `${student.currentGrade} Grade`}</p>
       <p>{showLabels ? 'Current School' : `${student.currentSchool}`}</p>
-      <p>Status</p>
+      <p>{showLabels ? 'Student ID' : `${student.learnID || 'No Student ID'}`}</p>
     </div>
   ) : null;
 
