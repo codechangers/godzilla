@@ -41,3 +41,10 @@ code {
   background-attachment: fixed;
   background-position: left;
 }
+#students-img {
+  background-image: url('../images/students.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: left;
+}

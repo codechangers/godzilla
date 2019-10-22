@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route } from 'react-router';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
@@ -87,7 +87,7 @@ class App extends React.Component {
   render() {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
           <div className="App">
             <Router>
               {Object.keys(pathToComponent).map((path, index) => (
@@ -113,7 +113,7 @@ class App extends React.Component {
               ))}
             </Router>
           </div>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
     );
   }
