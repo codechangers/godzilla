@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Card, CardHeader, CardContent } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
+import ParentIcon from '../../assets/images/parentIcon.svg';
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
 import { API_URL } from '../../globals';
 import '../../assets/css/Signup.css';
 
@@ -21,7 +23,14 @@ const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   handleClose: PropTypes.func.isRequired,
-  addChildRef: PropTypes.func.isRequired
+  addChildRef: PropTypes.func.isRequired,
+  updateChildData: PropTypes.func,
+  prevData: PropTypes.object
+};
+
+const defaultProps = {
+  updateChildData: () => {},
+  prevData: undefined
 };
 
 const today = new Date();
@@ -45,6 +54,32 @@ class ChildInfo extends React.Component {
     this.getUserData = getUserData;
     this.validateFields = validateFields;
     autoBind(this);
+  }
+
+  componentDidMount() {
+    const { prevData } = this.props;
+    if (prevData) {
+      const newState = {
+        ...prevData,
+        birthDate: getDateFromTimestamp(prevData.birthDate),
+        errors: {}
+      };
+      delete newState.ref;
+      this.setState(newState);
+    }
+  }
+
+  updateChild() {
+    const childDoc = this.props.prevData;
+    if (this.validateFields(allFields) === true) {
+      childDoc.ref.update(this.getUserData(allFields));
+      this.props.updateChildData({
+        ...this.getUserData(allFields),
+        birthDate: { seconds: this.state.birthDate.getTime() / 1000 },
+        ref: childDoc.ref
+      });
+      this.props.handleClose();
+    }
   }
 
   createChild() {
@@ -81,105 +116,115 @@ class ChildInfo extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="request-info">
-        <TextField
-          error={getErrorStatus(errors.fName)}
-          id="fName"
-          type="text"
-          label="Child's First Name"
-          variant="outlined"
-          className="input"
-          helperText={errors.fName}
-          value={this.state.fName}
-          onChange={this.handleChange}
+      <Card>
+        <CardHeader
+          title="Parent Application"
+          action={<img src={ParentIcon} style={{ width: 60 }} alt="ParentIcon" />}
         />
-        <TextField
-          error={getErrorStatus(errors.lName)}
-          id="lName"
-          type="text"
-          label="Child's Last Name"
-          variant="outlined"
-          className="input"
-          helperText={errors.lName}
-          value={this.state.lName}
-          onChange={this.handleChange}
-        />
-        <KeyboardDatePicker
-          clearable
-          className="birthdate-picker input"
-          value={this.state.birthDate}
-          placeholder="01/01/2001"
-          onChange={date => this.setState({ birthDate: date })}
-          minDate={new Date(y - 100, m, d)}
-          label="Child's Birthdate"
-          format="MM/dd/yyyy"
-        />
-        <TextField
-          error={getErrorStatus(errors.currentSchool)}
-          id="currentSchool"
-          type="text"
-          className="input"
-          label="Child's Current School"
-          variant="outlined"
-          helperText={errors.currentSchool}
-          value={this.state.currentSchool}
-          onChange={this.handleChange}
-        />
-        <TextField
-          error={getErrorStatus(errors.currentGrade)}
-          id="currentGrade"
-          type="text"
-          className="input"
-          label="Child's Current Grade"
-          variant="outlined"
-          helperText={errors.currentGrade}
-          value={this.state.currentGrade}
-          onChange={this.handleChange}
-        />
-        <TextField
-          error={getErrorStatus(errors.shirtSize)}
-          id="shirtSize"
-          type="text"
-          className="input"
-          label="Child's Shirt Size"
-          variant="outlined"
-          helperText={errors.shirtSize}
-          value={this.state.shirtSize}
-          onChange={this.handleChange}
-        />
-        <TextField
-          error={getErrorStatus(errors.gender)}
-          id="gender"
-          type="text"
-          className="input"
-          label="Child's Gender"
-          variant="outlined"
-          value={this.state.gender}
-          onChange={this.handleChange}
-        />
-        <div className="modalButtonContainer">
-          <Button
-            onClick={this.createChild}
-            variant="contained"
-            color="primary"
-            className="modalButton"
-          >
-            Add Child
-          </Button>
-          <Button
-            onClick={this.props.handleClose}
-            variant="contained"
-            color="secondary"
-            className="modalButton"
-          >
-            Cancel
-          </Button>
-        </div>
-      </div>
+        <CardContent>
+          <Styled.Subtitle>Child Information</Styled.Subtitle>
+          <Styled.FormFieldsRow firstRow>
+            <TextField
+              error={getErrorStatus(errors.fName)}
+              id="fName"
+              type="text"
+              label="Child's First Name"
+              variant="outlined"
+              className="input"
+              helperText={errors.fName}
+              value={this.state.fName}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.lName)}
+              id="lName"
+              type="text"
+              label="Child's Last Name"
+              variant="outlined"
+              className="input"
+              helperText={errors.lName}
+              value={this.state.lName}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow>
+            <TextField
+              error={getErrorStatus(errors.gender)}
+              id="gender"
+              type="text"
+              className="input"
+              label="Child's Gender"
+              variant="outlined"
+              value={this.state.gender}
+              onChange={this.handleChange}
+            />
+            <KeyboardDatePicker
+              clearable
+              className="birthdate-picker input"
+              value={this.state.birthDate}
+              placeholder="01/01/2001"
+              onChange={date => this.setState({ birthDate: date })}
+              minDate={new Date(y - 100, m, d)}
+              label="Child's Birthdate"
+              format="MM/dd/yyyy"
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
+            <TextField
+              error={getErrorStatus(errors.currentSchool)}
+              id="currentSchool"
+              type="text"
+              className="input"
+              label="Child's Current School"
+              variant="outlined"
+              helperText={errors.currentSchool}
+              value={this.state.currentSchool}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow>
+            <TextField
+              error={getErrorStatus(errors.currentGrade)}
+              id="currentGrade"
+              type="text"
+              className="input"
+              label="Child's Current Grade"
+              variant="outlined"
+              helperText={errors.currentGrade}
+              value={this.state.currentGrade}
+              onChange={this.handleChange}
+            />
+            <TextField
+              error={getErrorStatus(errors.shirtSize)}
+              id="shirtSize"
+              type="text"
+              className="input"
+              label="Child's Shirt Size"
+              variant="outlined"
+              helperText={errors.shirtSize}
+              value={this.state.shirtSize}
+              onChange={this.handleChange}
+            />
+          </Styled.FormFieldsRow>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
+            <Button onClick={this.props.handleClose} variant="contained">
+              Cancel
+            </Button>
+            <Button
+              onClick={this.props.prevData ? this.updateChild : this.createChild}
+              variant="contained"
+              color="primary"
+            >
+              {this.props.prevData ? 'Update Child' : 'Add Child'}
+            </Button>
+          </Styled.NavigationButtons>
+        </CardContent>
+      </Card>
     );
   }
 }
 
 ChildInfo.propTypes = propTypes;
+ChildInfo.defaultProps = defaultProps;
 
 export default ChildInfo;

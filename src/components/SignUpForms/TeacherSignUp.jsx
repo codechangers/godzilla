@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import TeacherIcon from '../../assets/images/teacherIcon.svg';
 import '../../assets/css/Signup.css';
+
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
 const locationToPrompt = {
   '': 'Location Name',
@@ -25,8 +28,10 @@ const allFields = ['whyTeach', 'prevExp', 'region', 'location', 'address'];
 
 const propTypes = {
   db: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired
+  updateAccounts: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 class TeacherSignUp extends React.Component {
@@ -38,37 +43,11 @@ class TeacherSignUp extends React.Component {
       region: '',
       location: '',
       address: '',
-      whyTeachError: '',
-      prevExpError: '',
-      regionError: '',
-      locationError: '',
-      addressError: '',
       errors: {}
     };
     this.getUserData = getUserData;
     this.validateFields = validateFields;
     autoBind(this);
-  }
-
-  getTeacherData() {
-    const date = new Date();
-    // Filter out any fields for local state that shouldn't be saved to the teacher document.
-    return Object.keys(this.state)
-      .filter(key => Object.keys(idToDataMember).includes(key))
-      .reduce(
-        (obj, key) => {
-          const newObj = { ...obj };
-          newObj[key] = this.state[key];
-          return newObj;
-        },
-        {
-          isVerrified: false,
-          isDeclined: false,
-          isTraining: true,
-          dateApplied: date,
-          isRead: false
-        }
-      );
   }
 
   handleChange(e) {
@@ -87,21 +66,35 @@ class TeacherSignUp extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields) === true) {
+      const { user } = this.props;
+      const date = new Date();
       this.props.db
         .collection('teachers')
-        .doc(this.props.firebase.auth().currentUser.uid)
-        .set(this.getTeacherData())
-        .then(this.props.login);
+        .doc(user.uid)
+        .set({
+          ...this.getUserData(allFields),
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        })
+        .then(() => this.props.updateAccounts(user))
+        .then(this.props.next);
     }
   }
 
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
-          <CardHeader title="Teacher Account Information" />
-          <CardContent className="column">
+      <Card>
+        <CardHeader
+          title="Teacher Account Information"
+          action={<img src={TeacherIcon} style={{ width: 60 }} alt="TeacherIcon" />}
+        />
+        <CardContent>
+          <Styled.Subtitle>Account Information</Styled.Subtitle>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.region)}
               id="whyTeach"
@@ -113,6 +106,8 @@ class TeacherSignUp extends React.Component {
               value={this.state.whyTeach}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.region)}
               id="prevExp"
@@ -124,6 +119,8 @@ class TeacherSignUp extends React.Component {
               value={this.state.prevExp}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.region)}
               id="region"
@@ -158,6 +155,8 @@ class TeacherSignUp extends React.Component {
                 Other
               </MenuItem>
             </TextField>
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               className="white-label"
               error={getErrorStatus(errors.region)}
@@ -169,12 +168,17 @@ class TeacherSignUp extends React.Component {
               value={this.state.address}
               onChange={this.handleChange}
             />
-            <Button onClick={this.handleSubmit} variant="contained" color="primary">
-              Submit Teacher Application
+          </Styled.FormFieldsRow>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
+            <Button onClick={this.props.prev} variant="contained">
+              Back
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+            <Button onClick={this.handleSubmit} variant="contained" color="primary">
+              Next
+            </Button>
+          </Styled.NavigationButtons>
+        </CardContent>
+      </Card>
     );
   }
 }

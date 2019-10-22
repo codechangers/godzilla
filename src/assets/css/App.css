@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -133,6 +132,12 @@
 }
 .temp-primary-button:hover {
   background-color: #7bb42c !important;
+}
+
+.small-icon .MuiCardHeader-action {
+  margin-top: 0;
+  margin-right: 0;
+  align-self: center;
 }
 
 @keyframes App-logo-spin {

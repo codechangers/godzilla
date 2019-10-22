@@ -5,37 +5,38 @@ import {
   CardHeader,
   CardContent,
   Button,
-  TextField,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Avatar,
-  Typography
+  ListItemSecondaryAction,
+  Avatar
 } from '@material-ui/core';
 import UserIcon from '@material-ui/icons/PermIdentityOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
-import { getErrorStatus } from '../../helpers';
+import ParentIcon from '../../assets/images/parentIcon.svg';
 import '../../assets/css/Signup.css';
 import '../../assets/css/Admin.css';
+
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: '',
-      errors: {},
       childrenRefs: [],
       childrenData: [],
-      show: false
+      currentStudent: null,
+      showChildEditor: false
     };
     autoBind(this);
   }
@@ -45,6 +46,30 @@ class ParentSignUp extends React.Component {
     const newState = {};
     newState[id] = value;
     this.setState(newState);
+  }
+
+  editChild(childDoc) {
+    this.setState({ currentStudent: childDoc, showChildEditor: true });
+  }
+
+  removeChild(childDoc) {
+    const user = this.props.firebase.auth().currentUser;
+    let { childrenRefs, childrenData } = this.state;
+    childrenRefs = childrenRefs.filter(c => c.id !== childDoc.ref.id);
+    childrenData = childrenData.filter(c => c.ref.id !== childDoc.ref.id);
+    this.setState({ childrenRefs, childrenData });
+    childDoc.ref.delete().then(() => {
+      this.props.db
+        .collection('parents')
+        .doc(user.uid)
+        .update({ children: childrenRefs });
+    });
+  }
+
+  updateChildData(childDoc) {
+    let { childrenData } = this.state;
+    childrenData = childrenData.map(c => (c.ref.id === childDoc.ref.id ? childDoc : c));
+    this.setState({ childrenData });
   }
 
   addChildRef(childRef) {
@@ -60,93 +85,74 @@ class ParentSignUp extends React.Component {
       });
 
     childRef.get().then(newChildDoc => {
-      const newChildData = newChildDoc.data();
+      const newChildData = { ...newChildDoc.data(), ref: newChildDoc.ref };
       const { childrenData } = this.state;
       childrenData.push(newChildData);
       this.setState({ childrenData });
     });
   }
 
-  handleClose() {
-    this.setState({ show: false });
-  }
-
-  handleShow() {
-    this.setState({ show: true });
-  }
-
-  updateParent() {
-    const user = this.props.firebase.auth().currentUser;
-    if (this.state.address !== '') {
-      if (user) {
-        this.props.db
-          .collection('parents')
-          .doc(user.uid)
-          .update({
-            address: this.state.address
-          })
-          .then(this.props.login);
-      }
-    } else {
-      this.setState({ errors: { address: 'This field may not be empty' } });
-    }
-  }
-
   render() {
-    return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
-          <CardHeader title="Parent Account Information" />
-          <CardContent className="column">
-            <TextField
-              error={getErrorStatus(this.state.errors.address)}
-              id="address"
-              type="text"
-              label="Address"
-              variant="outlined"
-              helperText={this.state.errors.address}
-              value={this.state.address}
-              onChange={this.handleChange}
-            />
+    return this.state.showChildEditor ? (
+      <ChildInfo
+        db={this.props.db}
+        firebase={this.props.firebase}
+        addChildRef={this.addChildRef}
+        handleClose={() => this.setState({ showChildEditor: false, currentStudent: null })}
+        prevData={this.state.currentStudent}
+        updateChildData={this.updateChildData}
+      />
+    ) : (
+      <Card>
+        <CardHeader
+          title="Parent Application"
+          action={<img src={ParentIcon} style={{ width: 60 }} alt="ParentIcon" />}
+        />
+        <CardContent>
+          <Styled.Subtitle>Registered Children</Styled.Subtitle>
+          <List>
+            {this.state.childrenData.map(child => (
+              <Styled.ListItem key={`${child.fName}${child.lName}`}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <UserIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={`${child.fName} ${child.lName}`} />
+                  <ListItemSecondaryAction>
+                    <Button style={{ marginRight: 8 }} onClick={() => this.editChild(child)}>
+                      Edit
+                    </Button>
+                    <Styled.LinkButton error onClick={() => this.removeChild(child)}>
+                      Delete
+                    </Styled.LinkButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </Styled.ListItem>
+            ))}
+          </List>
 
-            <Typography variant="h5">Registered Children</Typography>
-            <List>
-              {this.state.childrenData.map(child => (
-                <div className="child" key={`${child.fName}${child.lName}`}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <UserIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={`${child.fName} ${child.lName}`} />
-                  </ListItem>
-                </div>
-              ))}
-            </List>
+          <Button
+            onClick={() => this.setState({ showChildEditor: true })}
+            variant="contained"
+            color="default"
+            id="add-child"
+          >
+            <AddIcon />
+            Add Child
+          </Button>
 
-            {this.state.show ? (
-              <div className="request-info-wrapper">
-                <ChildInfo
-                  db={this.props.db}
-                  firebase={this.props.firebase}
-                  addChildRef={this.addChildRef}
-                  handleClose={this.handleClose}
-                />
-              </div>
-            ) : null}
-
-            <Button onClick={this.handleShow} variant="contained" color="default" id="add-child">
-              <AddIcon />
-              Add Child
+          <Styled.NavigationButtons>
+            <Button onClick={this.props.prev} variant="contained">
+              Back
             </Button>
-
-            <Button onClick={this.updateParent} variant="contained" color="primary">
-              Sign Up
+            <Button onClick={this.props.next} variant="contained" color="primary">
+              Next
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </Styled.NavigationButtons>
+        </CardContent>
+      </Card>
     );
   }
 }

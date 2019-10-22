@@ -4,6 +4,8 @@ import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/c
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
+import * as Styled from '../Pages/PageStyles/StyledSignUp';
+
 const idToDataMember = {
   name: 'name',
   address: 'address',
@@ -15,7 +17,9 @@ const allFields = ['name', 'address', 'aboutMe'];
 const propTypes = {
   db: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired
+  updateAccounts: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired
 };
 
 class ParentSignUp extends React.Component {
@@ -32,27 +36,6 @@ class ParentSignUp extends React.Component {
     autoBind(this);
   }
 
-  getOrgData() {
-    const date = new Date();
-    // Filter out any fields for local state that shouldn't be saved to the organization document.
-    return Object.keys(this.state)
-      .filter(key => Object.keys(idToDataMember).includes(key))
-      .reduce(
-        (obj, key) => {
-          const newObj = { ...obj };
-          newObj[key] = this.state[key];
-          return newObj;
-        },
-        {
-          isVerrified: false,
-          isDeclined: false,
-          isTraining: true,
-          dateApplied: date,
-          isRead: false
-        }
-      );
-  }
-
   handleChange(e) {
     const { id, value } = e.target;
     const newState = {};
@@ -62,21 +45,32 @@ class ParentSignUp extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields)) {
+      const user = this.props.firebase.auth().currentUser;
+      const date = new Date();
       this.props.db
         .collection('organizations')
-        .doc(this.props.firebase.auth().currentUser.uid)
-        .set(this.getOrgData())
-        .then(this.props.login);
+        .doc(user.uid)
+        .set({
+          ...this.getUserData(allFields),
+          isVerrified: false,
+          isDeclined: false,
+          isTraining: true,
+          dateApplied: date,
+          isRead: false
+        })
+        .then(() => this.props.updateAccounts(user))
+        .then(this.props.next);
     }
   }
 
   render() {
     const { errors } = this.state;
     return (
-      <div className="signup-wrapper">
-        <Card className="signup-form">
-          <CardHeader title="Organization Account Information" />
-          <CardContent className="column">
+      <Card>
+        <CardHeader title="Organization Account Information" />
+        <CardContent>
+          <Styled.Subtitle>Account Information</Styled.Subtitle>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.name)}
               id="name"
@@ -97,6 +91,8 @@ class ParentSignUp extends React.Component {
               value={this.state.address}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.FormFieldsRow firstRow>
             <TextField
               error={getErrorStatus(errors.aboutMe)}
               id="aboutMe"
@@ -108,12 +104,17 @@ class ParentSignUp extends React.Component {
               value={this.state.aboutMe}
               onChange={this.handleChange}
             />
+          </Styled.FormFieldsRow>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
+            <Button onClick={this.props.prev} variant="contained">
+              Back
+            </Button>
             <Button onClick={this.handleSubmit} variant="contained" color="primary">
               Submit Organization Application
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </Styled.NavigationButtons>
+        </CardContent>
+      </Card>
     );
   }
 }

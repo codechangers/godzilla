@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route } from 'react-router';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
-import HomePage from './Pages/Home';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import AdminDashboard from './Dashboards/Admin/index';
@@ -16,11 +16,12 @@ import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
+import theme from './theme';
 
 let authSubscription = () => {};
 
 const pathToComponent = {
-  '/': HomePage,
+  '/': Login,
   '/login': Login,
   '/signup': SignUp,
   '/parent': ParentDashboard,
@@ -86,31 +87,33 @@ class App extends React.Component {
   render() {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <div className="App">
-          <Router>
-            {Object.keys(pathToComponent).map((path, index) => (
-              <Route
-                exact={index === 0}
-                key={path}
-                path={path}
-                render={props => {
-                  const Comp = pathToComponent[path];
-                  return (
-                    <Comp
-                      {...props}
-                      user={this.state.user}
-                      accounts={this.state.accounts}
-                      updateAccounts={user => this.updateAccounts(user)}
-                      firebase={this.firebase}
-                      db={this.db}
-                      apiKey={this.state.apiKey}
-                    />
-                  );
-                }}
-              />
-            ))}
-          </Router>
-        </div>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <Router>
+              {Object.keys(pathToComponent).map((path, index) => (
+                <Route
+                  exact={index === 0}
+                  key={path}
+                  path={path}
+                  render={props => {
+                    const Comp = pathToComponent[path];
+                    return (
+                      <Comp
+                        {...props}
+                        user={this.state.user}
+                        accounts={this.state.accounts}
+                        updateAccounts={user => this.updateAccounts(user)}
+                        firebase={this.firebase}
+                        db={this.db}
+                        apiKey={this.state.apiKey}
+                      />
+                    );
+                  }}
+                />
+              ))}
+            </Router>
+          </div>
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
     );
   }

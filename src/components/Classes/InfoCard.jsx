@@ -6,10 +6,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import CSVDownload from '../UI/CSVDownload';
 import { URL } from '../../globals';
-import autoBind from '../../autoBind';
 import InfoCardHeader from './InfoCardHeader';
+import CSVDownload from '../UI/CSVDownload';
+import autoBind from '../../autoBind';
 import StudentInfo from './StudentInfo';
 
 class ClassInfoCard extends React.Component {
