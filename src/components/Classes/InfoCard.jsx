@@ -50,26 +50,26 @@ class ClassInfoCard extends React.Component {
       <Paper className="infocard-wrapper">
         <InfoCardHeader cls={cls} />
         <div className="options">
-          <Button variant="contained" onClick={openUpdate}>
-            <EditIcon />
-            EDIT CLASS DETAILS
-          </Button>
           <CopyToClipboard text={`${URL}/parent/signup/${cls.id}`}>
             <Button variant="contained">
               <LinkIcon />
               STUDENT SIGN UP LINK
             </Button>
           </CopyToClipboard>
-          <Button variant="contained" onClick={openDelete}>
-            <DeleteIcon />
-            DELETE CLASS
-          </Button>
           <CSVDownload filename={`${cls.name}-students.csv`} data={this.getStudentData()}>
-            <Button>
+            <Button variant="contained">
               <DownloadIcon />
               Download Logins
             </Button>
           </CSVDownload>
+          <Button variant="contained" onClick={openUpdate}>
+            <EditIcon />
+            EDIT CLASS DETAILS
+          </Button>
+          <Button variant="contained" onClick={openDelete}>
+            <DeleteIcon />
+            DELETE CLASS
+          </Button>
         </div>
         <div className="students-wrapper">
           <StudentInfo showLabels />
