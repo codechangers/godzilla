@@ -252,24 +252,13 @@ class Login extends React.Component {
                 </button>
                 <Button
                   onClick={this.handleSubmit}
-                  className="full-width temp-primary-button"
+                  className="full-width"
+                  style={{ marginBottom: 15 }}
                   variant="contained"
                   color="primary"
                 >
                   Sign In
                 </Button>
-                <h4
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    lineHeight: '16px',
-                    margin: '15px 0',
-                    color: 'rgba(0, 0, 0, 0.6)',
-                    textAlign: 'center'
-                  }}
-                >
-                  OR
-                </h4>
                 <Button
                   onClick={this.googleSignIn}
                   className="full-width"
