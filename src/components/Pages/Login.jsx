@@ -37,7 +37,8 @@ const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -88,7 +89,15 @@ class Login extends React.Component {
       shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
     } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
       shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
+    } else if (
+      shouldRedirect === '' &&
+      this.props.user.providerData &&
+      this.props.user.providerData[0].providerId === 'google.com'
+    ) {
+      // This case is for new google auth users
+      shouldRedirect = '/signup';
     }
+    console.log(this.props.user);
     this.setState({ shouldRedirect });
   }
 
@@ -255,7 +264,8 @@ class Login extends React.Component {
                     fontWeight: 500,
                     lineHeight: '16px',
                     margin: '15px 0',
-                    color: 'rgba(0, 0, 0, 0.6)'
+                    color: 'rgba(0, 0, 0, 0.6)',
+                    textAlign: 'center'
                   }}
                 >
                   OR
