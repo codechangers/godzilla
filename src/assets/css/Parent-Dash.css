@@ -121,25 +121,6 @@
   align-items: center;
 }
 
-.class-panel-container {
-  width: 50%;
-  min-width: 700px;
-  margin: 10px 0;
-}
-
-.class-panel-summary .MuiExpansionPanelSummary-content,
-.class-panel-details {
-  justify-content: space-between;
-}
-
-.class-panel .column {
-  justify-content: center;
-}
-
-.class-panel .class-panel-name {
-  margin: 10px 0;
-}
-
 .modal-wrapper {
   display: flex;
   justify-content: center;
