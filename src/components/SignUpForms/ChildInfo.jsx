@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Button, MenuItem, TextField, Card, CardHeader, CardContent } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
@@ -107,9 +107,9 @@ class ChildInfo extends React.Component {
   }
 
   handleChange(e) {
-    const { id, value } = e.target;
+    const { id, name, value } = e.target;
     const newState = {};
-    newState[id] = value;
+    newState[id || name] = value;
     this.setState(newState);
   }
 
@@ -151,13 +151,18 @@ class ChildInfo extends React.Component {
             <TextField
               error={getErrorStatus(errors.gender)}
               id="gender"
-              type="text"
+              name="gender"
+              select
               className="input"
               label="Child's Gender"
               variant="outlined"
               value={this.state.gender}
               onChange={this.handleChange}
-            />
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
+            </TextField>
             <KeyboardDatePicker
               clearable
               className="birthdate-picker input"
@@ -186,25 +191,54 @@ class ChildInfo extends React.Component {
             <TextField
               error={getErrorStatus(errors.currentGrade)}
               id="currentGrade"
-              type="text"
+              name="currentGrade"
+              select
               className="input"
               label="Child's Current Grade"
               variant="outlined"
               helperText={errors.currentGrade}
               value={this.state.currentGrade}
               onChange={this.handleChange}
-            />
+            >
+              <MenuItem value="ps">Pre-School</MenuItem>
+              <MenuItem value="pk">Pre-K</MenuItem>
+              <MenuItem value="1st">1st Grade</MenuItem>
+              <MenuItem value="2nd">2nd Grade</MenuItem>
+              <MenuItem value="3rd">3rd Grade</MenuItem>
+              <MenuItem value="4th">4th Grade</MenuItem>
+              <MenuItem value="5th">5th Grade</MenuItem>
+              <MenuItem value="6th">6th Grade</MenuItem>
+              <MenuItem value="7th">7th Grade</MenuItem>
+              <MenuItem value="8th">8th Grade</MenuItem>
+              <MenuItem value="9th">9th Grade</MenuItem>
+              <MenuItem value="10th">10th Grade</MenuItem>
+              <MenuItem value="11th">11th Grade</MenuItem>
+              <MenuItem value="12th">12th Grade</MenuItem>
+            </TextField>
             <TextField
               error={getErrorStatus(errors.shirtSize)}
               id="shirtSize"
-              type="text"
+              name="shirtSize"
+              select
               className="input"
               label="Child's Shirt Size"
               variant="outlined"
               helperText={errors.shirtSize}
               value={this.state.shirtSize}
               onChange={this.handleChange}
-            />
+            >
+              <MenuItem value="ysm">Youth Small</MenuItem>
+              <MenuItem value="ymd">Youth Medium</MenuItem>
+              <MenuItem value="ylr">Youth Large</MenuItem>
+              <MenuItem value="yxl">Youth XL</MenuItem>
+              <MenuItem value="axs">Adult XS</MenuItem>
+              <MenuItem value="asm">Adult Small</MenuItem>
+              <MenuItem value="amd">Adult Medium</MenuItem>
+              <MenuItem value="alr">Adult Large</MenuItem>
+              <MenuItem value="axl">Adult XL</MenuItem>
+              <MenuItem value="axxl">Adult XXL</MenuItem>
+              <MenuItem value="axxxl">Adult XXXL</MenuItem>
+            </TextField>
           </Styled.FormFieldsRow>
           <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
             <Button onClick={this.props.handleClose} variant="contained">
