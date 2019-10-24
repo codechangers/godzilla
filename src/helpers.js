@@ -52,10 +52,10 @@ export const getMonthDDYYYY = date =>
   `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
 export const getHrMn = date => {
-  const past12 = date.getHours() / 12 > 1;
-  return `${getDoubleDigits(past12 ? date.getHours() - 12 : date.getHours())}:${getDoubleDigits(
-    date.getMinutes()
-  )} ${past12 ? 'PM' : 'AM'}`;
+  const past12 = date.getHours() / 12 >= 1;
+  let hours = getDoubleDigits(past12 ? date.getHours() - 12 : date.getHours());
+  if (date.getHours() % 12 === 0) hours = '12';
+  return `${hours}:${getDoubleDigits(date.getMinutes())} ${past12 ? 'PM' : 'AM'}`;
 };
 
 export const getWeekDays = daysOfWeek => {
