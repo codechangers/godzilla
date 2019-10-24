@@ -1,52 +1,81 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
+import {
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import { getDate, getTime, getWeekDays } from '../../helpers';
+import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
 import '../../assets/css/Parent-Dash.css';
+
+import * as Styled from './styles/StyledPanel';
+
+const StyledTableCell = withStyles({
+  head: {
+    backgroundColor: 'rgba(224, 224, 224, 1)'
+  }
+})(TableCell);
 
 const ClassPanel = ({ cls, getButton }) => {
   return (
-    <div className="class-panel-container">
-      <ExpansionPanel className="class-panel">
+    <Styled.PanelContainer>
+      <ExpansionPanel>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
-          className="class-panel-summary"
         >
-          <div className="column">
-            <h3 className="class-panel-name">{cls.name}</h3>
-            <div>{`${getDate(cls.startDate)} - ${getDate(cls.endDate)}`}</div>
-          </div>
-          <div className="column">
-            <div>
-              <strong>Price: </strong>
-              {`$${cls.price}`}
-            </div>
-            <div>
-              <strong>Ages: </strong>
-              {`${cls.startAge} - ${cls.endAge}`}
-            </div>
-          </div>
+          <Styled.ClassInfo>
+            <Styled.ClassTitle>{cls.name}</Styled.ClassTitle>
+            <Styled.ClassLocation>
+              <LocationIcon />
+              <Styled.LocationDetails>
+                <div>{cls.locationName}</div>
+                <div>{cls.locationAddress}</div>
+              </Styled.LocationDetails>
+            </Styled.ClassLocation>
+          </Styled.ClassInfo>
+          <div>{`${getDate(cls.startDate)} - ${getDate(cls.endDate)}`}</div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className="class-panel-details">
-          <div className="column">
-            <LocationIcon />
-            <div>{cls.locationName}</div>
-            <div>{cls.locationAddress}</div>
-          </div>
-          <div className="column">
-            <CalendarIcon />
-            <div>{getWeekDays(cls.daysOfWeek)}</div>
-            <div>{`${getTime(cls.startTime)} - ${getTime(cls.endTime)}`}</div>
-          </div>
-          <div className="column">{getButton(cls)}</div>
+        <ExpansionPanelDetails>
+          <Styled.TableWrapper>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>AGE</StyledTableCell>
+                  <StyledTableCell>START DATE</StyledTableCell>
+                  <StyledTableCell>{cls.daysOfWeek.length > 1 ? 'DAYS' : 'DAY'}</StyledTableCell>
+                  <StyledTableCell>TIME</StyledTableCell>
+                  <StyledTableCell>SESSIONS</StyledTableCell>
+                  <StyledTableCell align="right">COST</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    {`${cls.startAge} - ${cls.endAge}`}
+                  </TableCell>
+                  <TableCell>{`${getDate(cls.startDate)}`}</TableCell>
+                  <TableCell>{getWeekDays(cls.daysOfWeek)}</TableCell>
+                  <TableCell>{getTime(cls.startTime)}</TableCell>
+                  <TableCell>{calcSessions(cls)}</TableCell>
+                  <TableCell align="right">{`$${cls.price}`}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Styled.TableWrapper>
+          <Styled.ButtonWrapper>{getButton(cls)}</Styled.ButtonWrapper>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-    </div>
+    </Styled.PanelContainer>
   );
 };
 
