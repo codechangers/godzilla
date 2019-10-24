@@ -11,8 +11,14 @@ import {
   ListItemText,
   Checkbox,
   CircularProgress,
-  Fab
+  Fab,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import { CardElement, injectStripe } from 'react-stripe-elements';
@@ -21,7 +27,16 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import Spinner from '../UI/Spinner';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
+import { getDate, getTime, getWeekDays } from '../../helpers';
 import '../../assets/css/Parent-Dash.css';
+
+import * as Styled from './styles/StyledClassSignUp';
+
+const StyledTableCell = withStyles({
+  head: {
+    backgroundColor: 'rgba(224, 224, 224, 1)'
+  }
+})(TableCell);
 
 class ClassSignUpInterface extends React.Component {
   constructor(props) {
@@ -199,18 +214,20 @@ class ClassSignUpInterface extends React.Component {
   }
 
   render() {
+    const { selectedClass, isProcessing, paymentSucceeded, children } = this.state;
+
     return (
       <div>
         {this.getClasses()}
         <Modal
           className="modal-wrapper"
-          open={this.state.selectedClass !== null}
+          open={selectedClass !== null}
           onClose={() => {
             this.setState({ selectedClass: null });
           }}
           disableAutoFocus
         >
-          {this.state.isProcessing ? (
+          {isProcessing ? (
             <Paper
               className="modal-content"
               style={{
@@ -221,11 +238,11 @@ class ClassSignUpInterface extends React.Component {
               }}
             >
               <h2>
-                {this.state.paymentSucceeded
+                {paymentSucceeded
                   ? 'Successfully Processed Payment!'
                   : 'Processing Payment with Stripe...'}
               </h2>
-              {this.state.paymentSucceeded ? (
+              {paymentSucceeded ? (
                 <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
                   You can find more information regarding this class in the &quot;My Classes&quot;
                   Section of your dashboard.
@@ -238,7 +255,7 @@ class ClassSignUpInterface extends React.Component {
                 }}
               >
                 <Fab
-                  color={this.state.paymentSucceeded ? 'primary' : 'default'}
+                  color={paymentSucceeded ? 'primary' : 'default'}
                   onClick={() =>
                     this.setState({
                       selectedClass: null,
@@ -248,9 +265,9 @@ class ClassSignUpInterface extends React.Component {
                     })
                   }
                 >
-                  {this.state.paymentSucceeded ? <CheckIcon /> : <div />}
+                  {paymentSucceeded ? <CheckIcon /> : <div />}
                 </Fab>
-                {!this.state.paymentSucceeded && (
+                {!paymentSucceeded && (
                   <CircularProgress
                     style={{
                       position: 'absolute',
@@ -266,53 +283,88 @@ class ClassSignUpInterface extends React.Component {
             </Paper>
           ) : (
             <Paper className="modal-content">
-              <h2>Select Children To Register</h2>
-              <List>
-                {this.state.children.map(child => {
-                  return (
-                    <ListItem
-                      key={child.id}
-                      button
-                      onClick={() => this.toggleChild(child)}
-                      disabled={this.checkDisabled(child)}
+              {selectedClass && (
+                <div>
+                  <h2>
+                    Register for&nbsp;
+                    {selectedClass.name}
+                  </h2>
+                  <Styled.TableWrapper>
+                    <Table aria-label="customized table">
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell>AGE</StyledTableCell>
+                          <StyledTableCell>START DATE</StyledTableCell>
+                          <StyledTableCell>DAY</StyledTableCell>
+                          <StyledTableCell>TIME</StyledTableCell>
+                          <StyledTableCell align="right">COST</StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            {`${selectedClass.startAge} - ${selectedClass.endAge}`}
+                          </TableCell>
+                          <TableCell>{`${getDate(selectedClass.startDate)}`}</TableCell>
+                          <TableCell>{getWeekDays(selectedClass.daysOfWeek)}</TableCell>
+                          <TableCell>
+                            {`${getTime(selectedClass.startTime)} - ${getTime(
+                              selectedClass.endTime
+                            )}`}
+                          </TableCell>
+                          <TableCell align="right">{`$${selectedClass.price}`}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Styled.TableWrapper>
+                  <p style={{ marginBottom: 0, color: 'grey' }}>Select Children to Register</p>
+                  <List>
+                    {children.map(child => {
+                      return (
+                        <ListItem
+                          key={child.id}
+                          button
+                          onClick={() => this.toggleChild(child)}
+                          disabled={this.checkDisabled(child)}
+                        >
+                          <ListItemAvatar>
+                            <AccountIcon />
+                          </ListItemAvatar>
+                          <ListItemText primary={`${child.fName} ${child.lName}`} />
+                          <Checkbox edge="end" checked={this.checkToggle(child)} />
+                          <p style={{ marginLeft: 10 }}>{`$${selectedClass.price}`}</p>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                  <p style={{ textAlign: 'right', margin: '10px 16px 20px 0' }}>
+                    <strong style={{ marginRight: '15px' }}>Total:</strong>
+                    {`$${this.getTotal()}`}
+                  </p>
+                  {this.getTotal() > 0 ? (
+                    <Styled.CardInfo>
+                      <CardElement />
+                    </Styled.CardInfo>
+                  ) : null}
+                  <Styled.ActionButtons>
+                    <Button
+                      onClick={() => {
+                        this.setState({ selectedClass: null });
+                      }}
                     >
-                      <ListItemAvatar>
-                        <AccountIcon />
-                      </ListItemAvatar>
-                      <ListItemText primary={`${child.fName} ${child.lName}`} />
-                      <Checkbox edge="end" checked={this.checkToggle(child)} />
-                    </ListItem>
-                  );
-                })}
-              </List>
-              <p style={{ paddingLeft: '32px', margin: '10px 0 20px 0' }}>
-                <strong style={{ marginRight: '15px' }}>Total:</strong>
-                {`$${this.getTotal()}`}
-              </p>
-              {this.getTotal() > 0 ? (
-                <div className="card-wrapper">
-                  <CardElement />
+                      Cancel
+                    </Button>
+                    <Button
+                      disabled={this.getTotal() <= 0}
+                      onClick={this.handleSubmit}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Sign Up!
+                    </Button>
+                  </Styled.ActionButtons>
                 </div>
-              ) : null}
-              <div className="modal-buttons">
-                <Button
-                  disabled={this.getTotal() <= 0}
-                  onClick={this.handleSubmit}
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.setState({ selectedClass: null });
-                  }}
-                  variant="contained"
-                  color="default"
-                >
-                  Cancel
-                </Button>
-              </div>
+              )}
             </Paper>
           )}
         </Modal>

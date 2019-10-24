@@ -25,7 +25,6 @@ const StyledTableCell = withStyles({
 })(TableCell);
 
 const ClassPanel = ({ cls, getButton }) => {
-  console.log('class', cls);
   return (
     <Styled.PanelContainer>
       <ExpansionPanel>

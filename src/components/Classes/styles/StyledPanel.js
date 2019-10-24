@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-// SignUp Layout Styles
 export const PanelContainer = styled.div({
   width: '50%',
   minWidth: 700,

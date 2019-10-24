@@ -130,6 +130,7 @@
 .modal-content {
   padding: 40px;
   min-width: 400px;
+  outline: none;
 }
 
 .modal-wrapper .modal-content.delete-card .options {
