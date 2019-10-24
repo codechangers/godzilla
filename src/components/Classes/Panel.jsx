@@ -13,7 +13,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
-import { getDate, getTime, getWeekDays } from '../../helpers';
+import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
 import '../../assets/css/Parent-Dash.css';
 
 import * as Styled from './styles/StyledPanel';
@@ -52,8 +52,9 @@ const ClassPanel = ({ cls, getButton }) => {
                 <TableRow>
                   <StyledTableCell>AGE</StyledTableCell>
                   <StyledTableCell>START DATE</StyledTableCell>
-                  <StyledTableCell>DAY</StyledTableCell>
+                  <StyledTableCell>{cls.daysOfWeek.length > 1 ? 'DAYS' : 'DAY'}</StyledTableCell>
                   <StyledTableCell>TIME</StyledTableCell>
+                  <StyledTableCell>SESSIONS</StyledTableCell>
                   <StyledTableCell align="right">COST</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -64,7 +65,8 @@ const ClassPanel = ({ cls, getButton }) => {
                   </TableCell>
                   <TableCell>{`${getDate(cls.startDate)}`}</TableCell>
                   <TableCell>{getWeekDays(cls.daysOfWeek)}</TableCell>
-                  <TableCell>{`${getTime(cls.startTime)} - ${getTime(cls.endTime)}`}</TableCell>
+                  <TableCell>{getTime(cls.startTime)}</TableCell>
+                  <TableCell>{calcSessions(cls)}</TableCell>
                   <TableCell align="right">{`$${cls.price}`}</TableCell>
                 </TableRow>
               </TableBody>

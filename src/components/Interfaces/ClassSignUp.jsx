@@ -27,7 +27,7 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import Spinner from '../UI/Spinner';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
-import { getDate, getTime, getWeekDays } from '../../helpers';
+import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
 import '../../assets/css/Parent-Dash.css';
 
 import * as Styled from './styles/StyledClassSignUp';
@@ -295,8 +295,11 @@ class ClassSignUpInterface extends React.Component {
                         <TableRow>
                           <StyledTableCell>AGE</StyledTableCell>
                           <StyledTableCell>START DATE</StyledTableCell>
-                          <StyledTableCell>DAY</StyledTableCell>
+                          <StyledTableCell>
+                            {selectedClass.daysOfWeek.length > 1 ? 'DAYS' : 'DAY'}
+                          </StyledTableCell>
                           <StyledTableCell>TIME</StyledTableCell>
+                          <StyledTableCell>SESSIONS</StyledTableCell>
                           <StyledTableCell align="right">COST</StyledTableCell>
                         </TableRow>
                       </TableHead>
@@ -307,11 +310,8 @@ class ClassSignUpInterface extends React.Component {
                           </TableCell>
                           <TableCell>{`${getDate(selectedClass.startDate)}`}</TableCell>
                           <TableCell>{getWeekDays(selectedClass.daysOfWeek)}</TableCell>
-                          <TableCell>
-                            {`${getTime(selectedClass.startTime)} - ${getTime(
-                              selectedClass.endTime
-                            )}`}
-                          </TableCell>
+                          <TableCell>{getTime(selectedClass.startTime)}</TableCell>
+                          <TableCell>{calcSessions(selectedClass)}</TableCell>
                           <TableCell align="right">{`$${selectedClass.price}`}</TableCell>
                         </TableRow>
                       </TableBody>
