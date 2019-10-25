@@ -9,9 +9,9 @@ const PendingTeacher = ({ accounts }) => (
       }`}
     </h1>
     <h3 style={{ width: '60%', textAlign: 'left' }}>
-      Thank you for applying to be an official CodeChangers teacher. Your application is currently
-      in the processing of being reviewed by CodeChangers. You should hear back from us within a
-      week from the date you submitted your application.
+      Welcome to the CodeChangers Go Platform! You will be able to oversee scheduling, payments, and
+      administrative information from this website. We are currently reviewing your application, and
+      once approved you will have full access to all this platform has to offer!
     </h3>
   </div>
 );
