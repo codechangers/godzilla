@@ -11,7 +11,7 @@ const PendingTeacher = ({ accounts }) => (
     <h3 style={{ width: '60%', textAlign: 'left' }}>
       Welcome to the CodeChangers Go Platform! You will be able to oversee scheduling, payments, and
       administrative information from this website. We are currently reviewing your application, and
-      once approved you will have full access to all this platform has to offer!
+      once approved, you will have full access to all this platform has to offer!
     </h3>
   </div>
 );

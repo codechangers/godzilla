@@ -97,7 +97,6 @@ class Login extends React.Component {
       // This case is for new google auth users
       shouldRedirect = '/signup';
     }
-    console.log(this.props.user);
     this.setState({ shouldRedirect });
   }
 
@@ -151,9 +150,6 @@ class Login extends React.Component {
     this.firebase
       .auth()
       .signInWithPopup(provider)
-      .then(res => {
-        console.log(res);
-      })
       .catch(err => {
         console.log(err);
       });
