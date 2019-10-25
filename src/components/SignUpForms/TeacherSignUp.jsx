@@ -99,9 +99,11 @@ class TeacherSignUp extends React.Component {
               error={getErrorStatus(errors.region)}
               id="whyTeach"
               type="text"
-              label="Why do you want to teach STEM topics to kids?"
+              label="Why does running a CodeChangers After-School Program interest you?"
               variant="outlined"
               multiline
+              rows="2"
+              rowsMax="4"
               helperText={errors.whyTeach}
               value={this.state.whyTeach}
               onChange={this.handleChange}
@@ -112,7 +114,7 @@ class TeacherSignUp extends React.Component {
               error={getErrorStatus(errors.region)}
               id="prevExp"
               type="text"
-              label="Do you have any previous teaching experience?"
+              label="How many years of teaching experience do you have?"
               variant="outlined"
               multiline
               helperText={errors.prevExp}
