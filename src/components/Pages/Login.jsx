@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter, Link } from 'react-router-dom';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import {
   Box,
@@ -15,6 +17,7 @@ import {
 import autoBind from '../../autoBind';
 import { LogoText } from '../Images';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import GoogleIcon from '../../assets/images/googleIcon.svg';
 import '../../assets/css/Login.css';
 
 const errorCodeToMessage = {
@@ -34,7 +37,8 @@ const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -85,6 +89,13 @@ class Login extends React.Component {
       shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
     } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
       shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
+    } else if (
+      shouldRedirect === '' &&
+      this.props.user.providerData &&
+      this.props.user.providerData[0].providerId === 'google.com'
+    ) {
+      // This case is for new google auth users
+      shouldRedirect = '/signup';
     }
     this.setState({ shouldRedirect });
   }
@@ -131,6 +142,17 @@ class Login extends React.Component {
     } else {
       this.setState({ errors });
     }
+  }
+
+  googleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('email');
+    this.firebase
+      .auth()
+      .signInWithPopup(provider)
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -226,11 +248,21 @@ class Login extends React.Component {
                 </button>
                 <Button
                   onClick={this.handleSubmit}
-                  className="full-width temp-primary-button"
+                  className="full-width"
+                  style={{ marginBottom: 15 }}
                   variant="contained"
                   color="primary"
                 >
                   Sign In
+                </Button>
+                <Button
+                  onClick={this.googleSignIn}
+                  className="full-width"
+                  style={{ backgroundColor: '#fff', color: 'rgba(0, 0, 0, 0.6)' }}
+                  variant="contained"
+                >
+                  <img src={GoogleIcon} alt="G" style={{ marginRight: '11px' }} />
+                  Sign In With Google
                 </Button>
               </form>
             )}

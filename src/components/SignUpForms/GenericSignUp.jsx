@@ -22,7 +22,8 @@ const propTypes = {
   next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const allFields = ['fName', 'lName', 'email', 'phone', 'canText', 'password', 'confirmPassword'];
@@ -55,6 +56,7 @@ class GenericSignUp extends React.Component {
       address: '',
       password: '',
       confirmPassword: '',
+      useOAuth: false,
       errors: {}
     };
     this.getUserData = getUserData;
@@ -62,6 +64,20 @@ class GenericSignUp extends React.Component {
     this.firebase = props.firebase;
     this.db = props.db;
     autoBind(this);
+  }
+
+  componentDidMount() {
+    const u = this.props.user;
+    if (u.isSignedIn && u.providerData && u.providerData[0].providerId === 'google.com') {
+      const fName = u.displayName.split(' ')[0];
+      const lName = u.displayName.replace(`${fName} `, '');
+      this.setState({
+        fName,
+        lName,
+        email: u.email,
+        useOAuth: true
+      });
+    }
   }
 
   getCheckBox() {
@@ -88,6 +104,32 @@ class GenericSignUp extends React.Component {
     this.setState({ canText });
   }
 
+  createParentDoc(user, accountType) {
+    this.db
+      .collection(accountTypeToCollection.parent)
+      .doc(user.uid)
+      .set(
+        this.getUserData([
+          ...allFields.filter(e => e !== 'password' && e !== 'confirmPassword'),
+          accountType === 'parent' ? 'address' : ''
+        ])
+      )
+      .then(this.props.next);
+  }
+
+  handleOAuthSubmit() {
+    if (
+      this.validateFields([
+        ...allFields.filter(e => e !== 'password' && e !== 'confirmPassword'),
+        this.props.accountType === 'parent' ? 'address' : ''
+      ])
+    ) {
+      this.createParentDoc(this.props.user, this.props.accountType);
+    } else {
+      console.log('Invalid inputs from OAuth token');
+    }
+  }
+
   handleSubmit() {
     const { email, password } = this.state;
     const { accountType } = this.props;
@@ -99,7 +141,7 @@ class GenericSignUp extends React.Component {
           if (res.user) {
             res.user
               .updateProfile({
-                displayName: `${this.state.fName}`
+                displayName: `${this.state.fName} ${this.state.lName}`
               })
               .then(() => {
                 res.user.sendEmailVerification();
@@ -107,16 +149,7 @@ class GenericSignUp extends React.Component {
               .catch(err => {
                 console.log(err);
               });
-            this.db
-              .collection(accountTypeToCollection.parent)
-              .doc(res.user.uid)
-              .set(
-                this.getUserData([
-                  ...allFields.filter(e => e !== 'password' && e !== 'confirmPassword'),
-                  accountType === 'parent' ? 'address' : ''
-                ])
-              )
-              .then(this.props.next);
+            this.createParentDoc(res.user, accountType);
           }
         })
         .catch(err => {
@@ -133,7 +166,17 @@ class GenericSignUp extends React.Component {
   }
 
   render() {
-    const { fName, lName, email, phone, address, password, confirmPassword, errors } = this.state;
+    const {
+      fName,
+      lName,
+      email,
+      phone,
+      address,
+      password,
+      confirmPassword,
+      useOAuth,
+      errors
+    } = this.state;
     const { accountType, prev } = this.props;
     return (
       <Card>
@@ -147,29 +190,31 @@ class GenericSignUp extends React.Component {
             {accountType === 'parent' ? 'Parent or Guardian Information' : 'Account Information'}
           </Styled.Subtitle>
           <Styled.FormFieldsContainer>
-            <Styled.FormFieldsRow firstRow>
-              <TextField
-                error={getErrorStatus(errors.fName)}
-                id="fName"
-                type="text"
-                label="First Name"
-                variant="outlined"
-                helperText={errors.fName}
-                value={fName}
-                onChange={this.handleChange}
-              />
-              <TextField
-                error={getErrorStatus(errors.lName)}
-                id="lName"
-                type="text"
-                label="Last Name"
-                variant="outlined"
-                helperText={errors.lName}
-                value={lName}
-                onChange={this.handleChange}
-              />
-            </Styled.FormFieldsRow>
-            <Styled.FormFieldsRow>
+            {useOAuth ? null : (
+              <Styled.FormFieldsRow firstRow>
+                <TextField
+                  error={getErrorStatus(errors.fName)}
+                  id="fName"
+                  type="text"
+                  label="First Name"
+                  variant="outlined"
+                  helperText={errors.fName}
+                  value={fName}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  error={getErrorStatus(errors.lName)}
+                  id="lName"
+                  type="text"
+                  label="Last Name"
+                  variant="outlined"
+                  helperText={errors.lName}
+                  value={lName}
+                  onChange={this.handleChange}
+                />
+              </Styled.FormFieldsRow>
+            )}
+            <Styled.FormFieldsRow firstRow={useOAuth}>
               <TextField
                 error={getErrorStatus(errors.phone)}
                 id="phone"
@@ -180,16 +225,18 @@ class GenericSignUp extends React.Component {
                 value={phone}
                 onChange={this.handleChange}
               />
-              <TextField
-                error={getErrorStatus(errors.email)}
-                id="email"
-                type="text"
-                label="Email Address"
-                variant="outlined"
-                helperText={errors.email}
-                value={email}
-                onChange={this.handleChange}
-              />
+              {useOAuth ? null : (
+                <TextField
+                  error={getErrorStatus(errors.email)}
+                  id="email"
+                  type="text"
+                  label="Email Address"
+                  variant="outlined"
+                  helperText={errors.email}
+                  value={email}
+                  onChange={this.handleChange}
+                />
+              )}
             </Styled.FormFieldsRow>
             <Styled.CheckboxRow>
               <FormControlLabel control={this.getCheckBox()} label="Okay to receive texts" />
@@ -218,32 +265,34 @@ class GenericSignUp extends React.Component {
                 />
               </Styled.FormFieldsRow>
             ) : null}
-            <Styled.FormFieldsRow>
-              <TextField
-                error={getErrorStatus(errors.password)}
-                id="password"
-                type="password"
-                label="Password"
-                variant="outlined"
-                helperText={errors.password}
-                value={password}
-                onChange={this.handleChange}
-              />
-              <TextField
-                error={getErrorStatus(errors.confirmPassword)}
-                id="confirmPassword"
-                type="password"
-                label="Confirm Password"
-                variant="outlined"
-                helperText={errors.confirmPassword}
-                value={confirmPassword}
-                onChange={this.handleChange}
-              />
-            </Styled.FormFieldsRow>
+            {useOAuth ? null : (
+              <Styled.FormFieldsRow>
+                <TextField
+                  error={getErrorStatus(errors.password)}
+                  id="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  helperText={errors.password}
+                  value={password}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  error={getErrorStatus(errors.confirmPassword)}
+                  id="confirmPassword"
+                  type="password"
+                  label="Confirm Password"
+                  variant="outlined"
+                  helperText={errors.confirmPassword}
+                  value={confirmPassword}
+                  onChange={this.handleChange}
+                />
+              </Styled.FormFieldsRow>
+            )}
           </Styled.FormFieldsContainer>
           <Styled.FormFieldsOptions>
             <Button
-              onClick={this.handleSubmit}
+              onClick={useOAuth ? this.handleOAuthSubmit : this.handleSubmit}
               fullWidth
               variant="contained"
               color="primary"
