@@ -23,7 +23,7 @@ class StripeConnect extends React.Component {
 
   render() {
     return (
-      <a href={this.state.stripeURL}>
+      <a style={{ textDecoration: 'none' }} href={this.state.stripeURL}>
         <Button style={{ color: 'white', fontSize: '14px' }}>Connect to Stripe</Button>
       </a>
     );

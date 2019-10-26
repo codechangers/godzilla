@@ -3,7 +3,7 @@ export const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"
 export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/; // eslint-disable-line
 
 export const URL = 'http://localhost:3000';
-export const API_URL = 'https://stripe.codechangers.com';
+export const API_URL = 'https://stripe-release.codechangers.com';
 
 export const months = [
   'January',

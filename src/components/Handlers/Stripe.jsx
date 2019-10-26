@@ -43,7 +43,13 @@ class StripeHandler extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.status === 200) {
-          this.setState({ gotAuthToken: true, isLoading: false });
+          this.props.db
+            .collection('teachers')
+            .doc(this.props.user.uid)
+            .update({ isTraining: false })
+            .then(() => {
+              this.setState({ gotAuthToken: true, isLoading: false });
+            });
         }
       })
       .catch(err => {
@@ -63,7 +69,8 @@ class StripeHandler extends React.Component {
 
 StripeHandler.propTypes = {
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired
 };
 
 export default withRouter(StripeHandler);

@@ -30,7 +30,7 @@ class ApprovedTeacher extends React.Component {
       classes: [],
       selected: null,
       showCreate: false,
-      stripeIsLinked: true,
+      stripeIsLinked: false,
       showOldClasses: false
     };
     autoBind(this);
