@@ -21,6 +21,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -49,7 +50,8 @@ class ClassSignUpInterface extends React.Component {
       spotlight: null,
       isLoading: true,
       isProcessing: false,
-      paymentSucceeded: false
+      paymentSucceeded: false,
+      paymentFailed: false
     };
     autoBind(this);
   }
@@ -169,7 +171,6 @@ class ClassSignUpInterface extends React.Component {
     const { selectedClass, selectedChildren } = this.state;
     const { token } = await this.props.stripe.createToken({ name: 'Name' });
     this.setState({ isProcessing: true });
-    console.log(token);
     if (token) {
       // eslint-disable-next-line
       fetch(`${API_URL}/charge`, {
@@ -199,9 +200,13 @@ class ClassSignUpInterface extends React.Component {
             this.setState({ paymentSucceeded: true });
           } else {
             console.log(res);
+            this.setState({ paymentFailed: true });
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          this.setState({ paymentFailed: true });
+        });
     }
   }
 
@@ -214,8 +219,7 @@ class ClassSignUpInterface extends React.Component {
   }
 
   render() {
-    const { selectedClass, isProcessing, paymentSucceeded, children } = this.state;
-
+    const { selectedClass, isProcessing, paymentSucceeded, paymentFailed, children } = this.state;
     return (
       <div>
         {this.getClasses()}
@@ -240,12 +244,19 @@ class ClassSignUpInterface extends React.Component {
               <h2>
                 {paymentSucceeded
                   ? 'Successfully Processed Payment!'
+                  : paymentFailed
+                  ? 'Payment process failed!'
                   : 'Processing Payment with Stripe...'}
               </h2>
               {paymentSucceeded ? (
                 <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
                   You can find more information regarding this class in the &quot;My Classes&quot;
                   Section of your dashboard.
+                </h4>
+              ) : paymentFailed ? (
+                <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
+                  An error occured while attempting to process your payment. Please try again at a
+                  later time.
                 </h4>
               ) : null}
               <div
@@ -265,9 +276,9 @@ class ClassSignUpInterface extends React.Component {
                     })
                   }
                 >
-                  {paymentSucceeded ? <CheckIcon /> : <div />}
+                  {paymentSucceeded ? <CheckIcon /> : paymentFailed ? <CloseIcon /> : <div />}
                 </Fab>
-                {!paymentSucceeded && (
+                {!paymentSucceeded && !paymentFailed && (
                   <CircularProgress
                     style={{
                       position: 'absolute',
