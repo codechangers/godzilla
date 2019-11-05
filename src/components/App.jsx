@@ -62,8 +62,10 @@ class App extends React.Component {
     authSubscription();
   }
 
-  updateAccounts(user) {
+  updateAccounts(u) {
+    const user = u || this.state.user;
     if (user.isSignedIn) {
+      let total = 0;
       ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
         this.db
           .collection(collection)
@@ -76,12 +78,22 @@ class App extends React.Component {
             } else {
               delete accounts[collection];
             }
+            total += 1;
             this.setState({ accounts });
+            if (total >= 4) {
+              if (
+                Object.keys(accounts).length === 0 &&
+                user.providerData &&
+                user.providerData[0].providerId === 'google.com'
+              ) {
+                user.newOAuth = true;
+                this.setState({ user });
+              }
+            }
           });
       });
-    } else {
-      this.setState({ accounts: {} });
     }
+    this.setState({ accounts: {} });
   }
 
   render() {

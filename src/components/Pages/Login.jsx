@@ -70,12 +70,13 @@ class Login extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
+  // eslint-disable-next-line
+  UNSAFE_componentWillReceiveProps() {
     this.checkAccounts();
   }
 
   checkAccounts(signupID) {
-    const { accounts } = this.props;
+    const { accounts, user } = this.props;
     const order = ['admins', 'teachers', 'organizations', 'parents'];
     let shouldRedirect = '';
     for (let i = 0; i < order.length; i++) {
@@ -89,12 +90,7 @@ class Login extends React.Component {
       shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
     } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
       shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
-    } else if (
-      shouldRedirect === '' &&
-      this.props.user.providerData &&
-      this.props.user.providerData[0].providerId === 'google.com'
-    ) {
-      // This case is for new google auth users
+    } else if (user.newOAuth) {
       shouldRedirect = '/signup';
     }
     this.setState({ shouldRedirect });

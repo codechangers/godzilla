@@ -17,7 +17,8 @@ class StripeHandler extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
+  // eslint-disable-next-line
+  UNSAFE_componentWillReceiveProps() {
     if (this.props.user.isSignedIn && !this.state.gotAuthToken && !this.state.isLoading) {
       this.linkStripeAccount();
     }
