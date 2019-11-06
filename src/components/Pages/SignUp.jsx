@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import AccountType from '../SignUpForms/AccountType';
 import GenericSignUp from '../SignUpForms/GenericSignUp';
@@ -38,7 +38,8 @@ class SignUp extends React.Component {
       formIndex: 0,
       isLoggedIn: false,
       accountType: 'parent',
-      signupID: ''
+      signupID: '',
+      redirectOnUpdate: false
     };
     this.firebase = this.props.firebase;
     this.db = this.props.db;
@@ -54,6 +55,13 @@ class SignUp extends React.Component {
     this.setState({ signupID });
   }
 
+  // eslint-disable-next-line
+  UNSAFE_componentWillReceiveProps(props) {
+    if (!props.user.isSignedIn && this.state.redirectOnUpdate) {
+      this.setState({ isLoggedIn: true, redirectOnUpdate: false });
+    }
+  }
+
   setFormIndex(i) {
     const { formIndex, accountType } = this.state;
     const forms = accountTypeToForms[accountType];
@@ -63,6 +71,11 @@ class SignUp extends React.Component {
     } else if (dfi >= forms.length) {
       this.setState({ isLoggedIn: true });
     }
+  }
+
+  logout() {
+    this.setState({ redirectOnUpdate: true });
+    this.props.firebase.auth().signOut();
   }
 
   render() {
@@ -75,9 +88,11 @@ class SignUp extends React.Component {
       <Redirect to={{ pathname: '/login', state: { signupID: this.state.signupID } }} />
     ) : (
       <Styled.SignupWrapper>
-        <Link to={{ pathname: '/login', state: { signupID: this.state.signupID } }}>
+        <Styled.LogoButton
+          onClick={user.newOAuth ? this.logout : () => this.setState({ isLoggedIn: true })}
+        >
           <Styled.LogoText src={logoText} />
-        </Link>
+        </Styled.LogoButton>
         <Styled.Form full={formIndex === 0}>
           <Form
             db={this.db}

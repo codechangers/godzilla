@@ -12,6 +12,13 @@ export const SignupWrapper = styled.div({
   backgroundColor: '#f4f4f4'
 });
 
+export const LogoButton = styled.button({
+  background: 'none',
+  outline: 'none',
+  cursor: 'pointer',
+  padding: 0
+});
+
 export const LogoText = styled.img({
   maxWidth: 240,
   position: 'absolute',
