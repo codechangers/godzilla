@@ -201,7 +201,7 @@ class ChildInfo extends React.Component {
               onChange={this.handleChange}
             >
               <MenuItem value="ps">Pre-School</MenuItem>
-              <MenuItem value="pk">Pre-K</MenuItem>
+              <MenuItem value="pk">Kindergarten</MenuItem>
               <MenuItem value="1st">1st Grade</MenuItem>
               <MenuItem value="2nd">2nd Grade</MenuItem>
               <MenuItem value="3rd">3rd Grade</MenuItem>

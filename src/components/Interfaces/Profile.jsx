@@ -13,7 +13,9 @@ import {
   Collapse,
   Snackbar,
   SnackbarContent,
-  IconButton
+  IconButton,
+  TextField,
+  MenuItem
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import {
@@ -62,6 +64,43 @@ const nameToIcon = {
   currentGrade: StarBorder,
   shirtSize: FormatSize,
   gender: Wc
+};
+
+const childDropDowns = {
+  gender: {
+    male: 'Male',
+    female: 'Female',
+    other: 'Other'
+  },
+  currentGrade: {
+    ps: 'Pre-School',
+    pk: 'Kindergarten',
+    '1st': '1st Grade',
+    '2nd': '2nd Grade',
+    '3rd': '3rd Grade',
+    '4th': '4th Grade',
+    '5th': '5th Grade',
+    '6th': '6th Grade',
+    '7th': '7th Grade',
+    '8th': '8th Grade',
+    '9th': '9th Grade',
+    '10th': '10th Grade',
+    '11th': '11th Grade',
+    '12th': '12th Grade'
+  },
+  shirtSize: {
+    ysm: 'Youth Small',
+    ymd: 'Youth Medium',
+    ylr: 'Youth Large',
+    yxl: 'Youth XL',
+    axs: 'Adult XS',
+    asm: 'Adult Small',
+    amd: 'Adult Medium',
+    alr: 'Adult Large',
+    axl: 'Adult XL',
+    axxl: 'Adult XXL',
+    axxxl: 'Adult XXXL'
+  }
 };
 
 const useStyles = () => {
@@ -118,6 +157,30 @@ class ProfileInterface extends React.Component {
 
   getChildEditField(field, childId) {
     const child = this.state.children.filter(c => c.id === childId)[0];
+    if (Object.keys(childDropDowns).includes(field)) {
+      return child !== undefined ? (
+        <TextField
+          select
+          className="input"
+          value={child[field]}
+          onChange={e => {
+            const { children } = this.state;
+            const childIndex = children.indexOf(child);
+            if (childIndex !== -1) {
+              child[field] = e.target.value;
+              children[childIndex] = child;
+              this.setState({ children });
+            }
+          }}
+        >
+          {Object.keys(childDropDowns[field]).map(f => (
+            <MenuItem key={f} value={f}>
+              {childDropDowns[field][f]}
+            </MenuItem>
+          ))}
+        </TextField>
+      ) : null;
+    }
     return child !== undefined ? (
       <InputBase
         className="full-width"
