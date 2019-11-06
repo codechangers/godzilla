@@ -1,16 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, CardHeader, CardContent } from '@material-ui/core';
-import ParentIcon from '../../assets/images/parentIcon.svg';
-import TeacherIcon from '../../assets/images/teacherIcon.svg';
-import BlankIcon from '../../assets/images/blank.svg';
-
-const accountTypeToIcon = {
-  '': null,
-  parent: ParentIcon,
-  teacher: TeacherIcon,
-  organization: BlankIcon
-};
 
 const accountTypeToMessage = {
   '': 'Thank you for creating an account!',
@@ -23,10 +13,7 @@ const accountTypeToMessage = {
 
 const ThankYou = ({ next, accountType }) => (
   <Card>
-    <CardHeader
-      title="Thank You!"
-      action={<img src={accountTypeToIcon[accountType]} alt="Icon" style={{ width: 60 }} />}
-    />
+    <CardHeader title="Thank You!" />
     <CardContent>
       <p style={{ fontSize: 18, lineHeight: '28px', margin: '20px 0 32px 0' }}>
         {accountTypeToMessage[accountType]}

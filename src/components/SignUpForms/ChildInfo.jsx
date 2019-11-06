@@ -4,7 +4,6 @@ import { Button, MenuItem, TextField, Card, CardHeader, CardContent } from '@mat
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
-import ParentIcon from '../../assets/images/parentIcon.svg';
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 import { API_URL } from '../../globals';
 import '../../assets/css/Signup.css';
@@ -117,10 +116,7 @@ class ChildInfo extends React.Component {
     const { errors } = this.state;
     return (
       <Card>
-        <CardHeader
-          title="Parent Application"
-          action={<img src={ParentIcon} style={{ width: 60 }} alt="ParentIcon" />}
-        />
+        <CardHeader title="Parent Application" />
         <CardContent>
           <Styled.Subtitle>Child Information</Styled.Subtitle>
           <Styled.FormFieldsRow firstRow>

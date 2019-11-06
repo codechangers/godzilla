@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/core';
-import ParentIcon from '../../assets/images/parentIcon.svg';
-import TeacherIcon from '../../assets/images/teacherIcon.svg';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
@@ -12,11 +10,7 @@ const AccountType = ({ setAccountType, next }) => (
       <Styled.Title>Select the type of Account you need</Styled.Title>
       <Styled.AccountSelectionCards>
         <Card>
-          <CardHeader
-            title="Parent Account"
-            className="small-icon"
-            action={<img src={ParentIcon} alt="ParentIcon" style={{ width: '38px' }} />}
-          />
+          <CardHeader title="Parent Account" className="small-icon" />
           <CardContent>
             <Typography
               variant="body2"
@@ -39,10 +33,7 @@ const AccountType = ({ setAccountType, next }) => (
           </CardContent>
         </Card>
         <Card>
-          <CardHeader
-            title="Educator Account"
-            action={<img src={TeacherIcon} alt="TeacherIcon" style={{ width: '38px' }} />}
-          />
+          <CardHeader title="Educator Account" />
           <CardContent>
             <Typography
               variant="body2"
