@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import Logout from './Logout';
-import '../../assets/css/NavBar.css';
 
 const accountTypeToRoute = {
   '': '/',

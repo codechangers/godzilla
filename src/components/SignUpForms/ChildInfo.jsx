@@ -6,7 +6,6 @@ import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 import { API_URL } from '../../globals';
-import '../../assets/css/Signup.css';
 
 const allFields = [
   'fName',

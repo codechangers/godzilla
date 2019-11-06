@@ -10,7 +10,6 @@ import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import ThankYou from '../SignUpForms/ThankYou';
 import logoText from '../../assets/images/logoText.svg';
 import autoBind from '../../autoBind';
-import '../../assets/css/Signup.css';
 
 import * as Styled from './PageStyles/StyledSignUp';
 

@@ -18,7 +18,6 @@ import autoBind from '../../autoBind';
 import { LogoText } from '../Images';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import GoogleIcon from '../../assets/images/googleIcon.svg';
-import '../../assets/css/Login.css';
 
 const errorCodeToMessage = {
   'auth/wrong-password': 'Incorrect Password',

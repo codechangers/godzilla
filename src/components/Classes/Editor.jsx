@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
-import '../../assets/css/Teacher.css';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
 import { weekDays } from '../../globals';
 import autoBind from '../../autoBind';

@@ -10,7 +10,6 @@ import DeleteCard from '../../UI/DeleteCard';
 import StripeConnect from '../../UI/StripeConnect';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
-import '../../../assets/css/Teacher.css';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 

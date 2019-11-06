@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
-import '../../assets/css/Signup.css';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 

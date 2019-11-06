@@ -8,7 +8,6 @@ import AdminOrganizationPage from './OrganizationPage';
 import NavBar from '../../UI/NavBar';
 import TabPanel from '../../UI/TabPanel';
 import autoBind from '../../../autoBind';
-import '../../../assets/css/Admin.css';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,

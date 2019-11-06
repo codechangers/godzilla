@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../assets/css/Spinner.css';
 
 const Spinner = ({ color }) => (
   <div className={`lds-ring ${color}`}>

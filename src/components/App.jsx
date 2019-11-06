@@ -12,7 +12,6 @@ import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
 import StripeHandler from './Handlers/Stripe';
 import { API_URL } from '../globals';
-import '../assets/css/App.css';
 import firebase from '../firebase';
 import 'firebase/auth';
 import 'firebase/firestore';

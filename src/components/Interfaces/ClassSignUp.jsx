@@ -29,7 +29,6 @@ import Spinner from '../UI/Spinner';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
 import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
-import '../../assets/css/Parent-Dash.css';
 
 import * as Styled from './styles/StyledClassSignUp';
 

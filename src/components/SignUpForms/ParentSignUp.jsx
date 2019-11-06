@@ -16,8 +16,6 @@ import UserIcon from '@material-ui/icons/PermIdentityOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
-import '../../assets/css/Signup.css';
-import '../../assets/css/Admin.css';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 

@@ -6,7 +6,6 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
-import '../../assets/css/Parent-Dash.css';
 import Spinner from '../UI/Spinner';
 
 let parentListener = () => {};
