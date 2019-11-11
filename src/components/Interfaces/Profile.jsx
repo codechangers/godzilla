@@ -49,7 +49,7 @@ const propTypes = {
 
 const accountToNames = {
   parents: ['fName', 'lName', 'phone', 'address'],
-  teachers: ['fName', 'lName', 'phone'],
+  teachers: ['fName', 'lName', 'phone', 'location', 'address'],
   child: ['fName', 'lName', 'birthDate', 'currentSchool', 'currentGrade', 'shirtSize', 'gender']
 };
 
@@ -64,6 +64,15 @@ const nameToIcon = {
   currentGrade: StarBorder,
   shirtSize: FormatSize,
   gender: Wc
+};
+
+const accountDropDowns = {
+  location: {
+    school: 'School',
+    office: 'Office',
+    house: 'House',
+    other: 'Other'
+  }
 };
 
 const childDropDowns = {
@@ -143,6 +152,25 @@ class ProfileInterface extends React.Component {
   }
 
   getEditField(field) {
+    if (Object.keys(accountDropDowns).includes(field)) {
+      return this.state.accountData[field] !== undefined ? (
+        <TextField
+          select
+          value={this.state.accountData[field]}
+          onChange={e => {
+            const { accountData } = this.state;
+            accountData[field] = e.target.value;
+            this.setState({ accountData });
+          }}
+        >
+          {Object.keys(accountDropDowns[field]).map(f => (
+            <MenuItem key={f} value={f}>
+              {accountDropDowns[field][f]}
+            </MenuItem>
+          ))}
+        </TextField>
+      ) : null;
+    }
     return this.state.accountData[field] !== undefined ? (
       <InputBase
         value={this.state.accountData[field]}
