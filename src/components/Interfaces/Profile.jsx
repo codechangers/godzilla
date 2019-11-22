@@ -129,7 +129,11 @@ const useStyles = () => {
 };
 
 const getSubHeader = text => (
-  <ListSubheader component="div" id="nested-list-subheader">
+  <ListSubheader
+    component="div"
+    style={{ backgroundColor: '#fff', borderRadius: '4px 4px 0 0' }}
+    id="nested-list-subheader"
+  >
     {text}
   </ListSubheader>
 );
