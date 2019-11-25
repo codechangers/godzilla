@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import * as Styled from '../Pages/PageStyles/StyledSignUp';
 
-const AccountType = ({ setAccountType, next }) => (
+const getHeaderStyle = width =>
+  isWidthDown('md', width)
+    ? isWidthDown('sm', width)
+      ? { fontSize: 22 }
+      : { fontSize: 45 }
+    : { fontSize: 60, marginBottom: 32 };
+
+const AccountType = ({ setAccountType, next, width }) => (
   <Styled.AccountType>
     <Styled.AccountSelectionSection>
-      <Styled.Title>Select the type of Account you need</Styled.Title>
+      <Typography variant="h2" style={getHeaderStyle(width)}>
+        Select the type of Account you need
+      </Typography>
       <Styled.AccountSelectionCards>
-        <Card>
+        <Card style={{ width: '40%', minWidth: '300px' }}>
           <CardHeader title="Parent Account" className="small-icon" />
           <CardContent>
             <Typography
@@ -32,7 +42,7 @@ const AccountType = ({ setAccountType, next }) => (
             </Button>
           </CardContent>
         </Card>
-        <Card>
+        <Card style={{ width: '40%', minWidth: '300px' }}>
           <CardHeader title="Educator Account" />
           <CardContent>
             <Typography
@@ -72,7 +82,8 @@ const AccountType = ({ setAccountType, next }) => (
 
 AccountType.propTypes = {
   setAccountType: PropTypes.func.isRequired,
-  next: PropTypes.func.isRequired
+  next: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired
 };
 
-export default AccountType;
+export default withWidth()(AccountType);

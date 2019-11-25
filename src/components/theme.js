@@ -93,7 +93,7 @@ export default createMuiTheme({
     // Button, Caption, Overline
     button: {
       fontSize: 14,
-      lineHeight: '16px',
+      lineHeight: '24px',
       fontWeight: 500,
       letterSpacing: 0.75,
       textTransform: 'uppercase'

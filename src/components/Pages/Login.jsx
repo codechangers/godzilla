@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect, withRouter, Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
 import {
   Box,
   Button,
@@ -14,6 +13,7 @@ import {
   DialogContentText,
   DialogTitle
 } from '@material-ui/core';
+
 import autoBind from '../../autoBind';
 import { LogoText } from '../Images';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';

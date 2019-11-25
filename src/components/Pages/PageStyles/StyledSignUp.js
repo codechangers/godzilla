@@ -61,9 +61,13 @@ export const Subtitle = styled.h3({
 
 export const LinkButtonWrapper = styled.div({
   display: 'flex',
-  width: '100%',
+  width: 'calc(100% - 66px)', // -66 because of wrapper padding
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  position: 'absolute',
+  paddingRight: 64,
+  boxSizing: 'border-box',
+  bottom: 30
 });
 
 export const LinkButton = styled.button(
@@ -128,13 +132,14 @@ export const FormFieldsOptions = styled.div({
 // AccountType styles
 export const AccountType = styled.div({
   width: '100%',
-  height: '100vh',
+  minHeight: '100vh',
   boxSizing: 'border-box',
   backgroundColor: '#f4f4f4',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  padding: '30px 64px'
+  justifyContent: 'center',
+  padding: '30px 64px',
+  overflow: 'scroll'
 });
 
 export const AccountSelectionSection = styled.div({
@@ -143,7 +148,8 @@ export const AccountSelectionSection = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  height: '100%',
+  marginTop: 34,
+  marginBottom: 55,
   backgroundColor: '#f4f4f4'
 });
 
@@ -152,6 +158,7 @@ export const AccountSelectionCards = styled.div({
   justifyContent: 'space-around',
   width: '100%',
   maxWidth: 750,
+  flexWrap: 'wrap',
   '& .MuiCard-root': {
     margin: 15
   },
