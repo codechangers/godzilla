@@ -5,6 +5,7 @@ import { StripeProvider, Elements } from 'react-stripe-elements';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 import ClassSignUpInterface from '../Interfaces/ClassSignUp';
+import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import autoBind from '../../autoBind';
@@ -13,6 +14,7 @@ import '../../assets/css/Parent-Dash.css';
 const routeToInterface = {
   '/parent': null,
   '/parent/signup': ClassSignUpInterface,
+  '/parent/search': ClassSearchInterface,
   '/parent/profile': Profile,
   '/parent/settings': SettingsInterface
 };
@@ -47,7 +49,7 @@ class ParentDashboard extends React.Component {
     return this.props.user.isSignedIn ? (
       <div className="page-wrapper">
         <SideBar
-          names={['My Classes', 'Profile']}
+          names={['My Classes', 'Class Search', 'Profile']}
           baseRoute="/parent"
           firebase={this.props.firebase}
         />

@@ -38,11 +38,11 @@ class InfoCardHeader extends React.Component {
   }
 
   render() {
-    const { cls, children } = this.props;
+    const { cls, children, hideImage } = this.props;
     const { teacher } = this.state;
     return (
       <div className={`infocard-header${children !== null ? ' parent' : ''}`}>
-        <div>
+        <div style={{ width: hideImage ? '100%' : 'auto' }}>
           <h5>{cls.name}</h5>
           {children === null ? null : (
             <div className="inliner col">
@@ -96,7 +96,7 @@ class InfoCardHeader extends React.Component {
           </div>
           {children || <div className="bottom-line" />}
         </div>
-        <Template2 />
+        {hideImage || <Template2 />}
       </div>
     );
   }
@@ -105,12 +105,14 @@ class InfoCardHeader extends React.Component {
 InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired,
   children: PropTypes.node,
-  db: PropTypes.object
+  db: PropTypes.object,
+  hideImage: PropTypes.bool
 };
 
 InfoCardHeader.defaultProps = {
   children: null,
-  db: null
+  db: null,
+  hideImage: false
 };
 
 export default InfoCardHeader;
