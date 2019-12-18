@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Paper } from '@material-ui/core';
+import { withStyles, Paper, Button } from '@material-ui/core';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
+import { URL } from '../../globals';
 
 const styles = {
   pageHeader: {
@@ -19,6 +20,15 @@ const styles = {
     maxWidth: '800px',
     alignSelf: 'center',
     marginBottom: 12
+  },
+  buttonWrapper: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  button: {
+    textDecoration: 'none',
+    color: '#fff',
+    width: '40%'
   }
 };
 
@@ -49,9 +59,24 @@ const ClassSearchInterface = ({ classes, db }) => {
       {classList.map(cls =>
         cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
           <Paper key={cls.id} className={classes.cardWrapper}>
-            <InfoCardHeader cls={cls} hideImage />
+            <InfoCardHeader cls={cls} hideImage>
+              <div className={classes.buttonWrapper}>
+                <a className={classes.button} href={`${URL}/parent/signup/${cls.id}`}>
+                  <Button style={{ width: '100%' }} variant="contained">
+                    More Info
+                  </Button>
+                </a>
+              </div>
+            </InfoCardHeader>
           </Paper>
         ) : null
+      )}
+      {classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <=
+        0 && (
+        <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+          No Classes Available right now.... <br /> Check back later, new classes are added all the
+          time!
+        </h1>
       )}
     </div>
   );

@@ -44,7 +44,7 @@ class InfoCardHeader extends React.Component {
       <div className={`infocard-header${children !== null ? ' parent' : ''}`}>
         <div style={{ width: hideImage ? '100%' : 'auto' }}>
           <h5>{cls.name}</h5>
-          {children === null ? null : (
+          {children === null || hideImage ? null : (
             <div className="inliner col">
               <p>{cls.locationName}</p>
               <p>
@@ -65,7 +65,7 @@ class InfoCardHeader extends React.Component {
             </p>
             <p>{`$${cls.price} per Student`}</p>
           </div>
-          {children !== null ? (
+          {children !== null && !hideImage ? (
             <div className="inliner">
               <p>{`Instructor: ${teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''}`}</p>
               <p>{`Phone: ${teacher !== null ? teacher.phone : ''}`}</p>
