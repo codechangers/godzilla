@@ -19,6 +19,13 @@ const routeToInterface = {
   '/parent/settings': SettingsInterface
 };
 
+const Fail = () => (
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <h1 style={{ marginTop: 36 }}>Unable to connect to our payment servers...</h1>
+    <h2 style={{ textAlign: 'center' }}>Please try again later</h2>
+  </div>
+);
+
 class ParentDashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +53,7 @@ class ParentDashboard extends React.Component {
   }
 
   render() {
+    const SP = this.props.apiKey ? StripeProvider : Fail;
     return this.props.user.isSignedIn ? (
       <div className="page-wrapper">
         <SideBar
@@ -53,7 +61,7 @@ class ParentDashboard extends React.Component {
           baseRoute="/parent"
           firebase={this.props.firebase}
         />
-        <StripeProvider apiKey={this.props.apiKey}>
+        <SP apiKey={this.props.apiKey}>
           <Elements>
             {this.getInterface() || (
               <div className="page-content">
@@ -65,7 +73,7 @@ class ParentDashboard extends React.Component {
               </div>
             )}
           </Elements>
-        </StripeProvider>
+        </SP>
       </div>
     ) : (
       <Redirect to={{ pathname: '/login', state: { signupID: this.getID() } }} />

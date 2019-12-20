@@ -57,7 +57,11 @@ class App extends React.Component {
     // eslint-disable-next-line
     fetch(`${API_URL}/stripe_key`, { method: 'GET' })
       .then(res => res.json())
-      .then(res => this.setState({ apiKey: res.stripe_key }));
+      .then(res => this.setState({ apiKey: res.stripe_key }))
+      .catch(err => {
+        console.error(err);
+        this.setState({ apiKey: null });
+      });
   }
 
   componentWillUnmount() {
