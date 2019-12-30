@@ -38,13 +38,13 @@ class InfoCardHeader extends React.Component {
   }
 
   render() {
-    const { cls, children } = this.props;
+    const { cls, children, hideImage } = this.props;
     const { teacher } = this.state;
     return (
       <div className={`infocard-header${children !== null ? ' parent' : ''}`}>
-        <div>
+        <div style={{ width: hideImage ? '100%' : 'auto' }}>
           <h5>{cls.name}</h5>
-          {children === null ? null : (
+          {children === null || hideImage ? null : (
             <div className="inliner col">
               <p>{cls.locationName}</p>
               <p>
@@ -65,7 +65,7 @@ class InfoCardHeader extends React.Component {
             </p>
             <p>{`$${cls.price} per Student`}</p>
           </div>
-          {children !== null ? (
+          {children !== null && !hideImage ? (
             <div className="inliner">
               <p>{`Instructor: ${teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''}`}</p>
               <p>{`Phone: ${teacher !== null ? teacher.phone : ''}`}</p>
@@ -96,7 +96,7 @@ class InfoCardHeader extends React.Component {
           </div>
           {children || <div className="bottom-line" />}
         </div>
-        <Template2 />
+        {hideImage || <Template2 />}
       </div>
     );
   }
@@ -105,12 +105,14 @@ class InfoCardHeader extends React.Component {
 InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired,
   children: PropTypes.node,
-  db: PropTypes.object
+  db: PropTypes.object,
+  hideImage: PropTypes.bool
 };
 
 InfoCardHeader.defaultProps = {
   children: null,
-  db: null
+  db: null,
+  hideImage: false
 };
 
 export default InfoCardHeader;

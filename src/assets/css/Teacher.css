@@ -159,7 +159,7 @@
 .infocard-header.parent > div > button.Mui-disabled {
   background-color: rgba(0, 0, 0, 0.12);
 }
-.infocard-header.parent div button:hover {
+.infocard-header.parent > div > button:hover {
   background-color: #7bb42c;
 }
 .infocard-header.parent > div > button.Mui-disabled:hover {

@@ -6,6 +6,7 @@ import {
   AttachMoney,
   AccountCircle,
   Settings,
+  Search,
   Edit
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
@@ -19,6 +20,7 @@ const nameToIcon = {
   Payments: AttachMoney,
   Profile: AccountCircle,
   'Sign up': Edit,
+  'Class Search': Search,
   Settings
 };
 
@@ -30,6 +32,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     Payments: `${baseRoute}/payments`,
     Profile: `${baseRoute}/profile`,
     'Sign up': `${baseRoute}/signup`,
+    'Class Search': `${baseRoute}/search`,
     Settings: `${baseRoute}/settings`
   };
 
