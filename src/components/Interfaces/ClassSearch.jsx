@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Button } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import { URL } from '../../globals';
@@ -34,14 +35,35 @@ const styles = {
 
 const propTypes = {
   classes: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-const ClassSearchInterface = ({ classes, db }) => {
+const ClassSearchInterface = ({ classes, db, location }) => {
   const [classList, setClassList] = useState([]);
   const [showOldClasses] = useState(false);
+  const [searchId, setSearchId] = useState(null);
 
   useEffect(() => {
+    let { pathname } = location;
+    let id = '';
+    if (pathname.includes('/parent')) {
+      pathname = pathname.replace('/parent', '');
+    }
+    if (pathname.length > '/search/'.length) {
+      id = pathname.replace('/search/', '');
+      setSearchId(id);
+      db.collection('classes')
+        .doc(id)
+        .get()
+        .then(classDoc => {
+          if (classDoc.exists) {
+            const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
+            setClassList([classData]);
+          }
+        });
+      return;
+    }
     return db.collection('classes').onSnapshot(classDocs => {
       const classesData = [];
       classDocs.forEach(classDoc => {
@@ -71,17 +93,22 @@ const ClassSearchInterface = ({ classes, db }) => {
           </Paper>
         ) : null
       )}
-      {classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <=
-        0 && (
-        <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
-          No Classes Available right now.... <br /> Check back later, new classes are added all the
-          time!
-        </h1>
-      )}
+      {classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <= 0 &&
+        (searchId ? (
+          <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+            There is no class available with the id: {searchId} <br /> Make sure you typed the id in
+            correctly, and that the class is still active.
+          </h1>
+        ) : (
+          <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+            No Classes Available right now.... <br /> Check back later, new classes are added all
+            the time!
+          </h1>
+        ))}
     </div>
   );
 };
 
 ClassSearchInterface.propTypes = propTypes;
 
-export default withStyles(styles)(ClassSearchInterface);
+export default withStyles(styles)(withRouter(ClassSearchInterface));
