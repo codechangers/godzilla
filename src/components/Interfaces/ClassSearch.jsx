@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Button } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import { URL } from '../../globals';
@@ -36,19 +36,29 @@ const styles = {
 const propTypes = {
   classes: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  accounts: PropTypes.object
 };
 
-const ClassSearchInterface = ({ classes, db, location }) => {
+const defaultProps = {
+  user: { isSignedIn: false },
+  accounts: { helper: true }
+};
+
+const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   const [classList, setClassList] = useState([]);
   const [showOldClasses] = useState(false);
-  const [searchId, setSearchId] = useState(null);
+  const [searchId, setSearchId] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
     let { pathname } = location;
     let id = '';
     if (pathname.includes('/parent')) {
       pathname = pathname.replace('/parent', '');
+    } else {
+      setIsPublic(true);
     }
     if (pathname.length > '/search/'.length) {
       id = pathname.replace('/search/', '');
@@ -73,7 +83,7 @@ const ClassSearchInterface = ({ classes, db, location }) => {
       classesData.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
       setClassList(classesData);
     });
-  }, [db, setClassList]);
+  }, [db, setClassList, location]);
 
   return (
     <div className="page-content" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -105,10 +115,17 @@ const ClassSearchInterface = ({ classes, db, location }) => {
             the time!
           </h1>
         ))}
+      {isPublic &&
+      user.isSignedIn &&
+      Object.keys(accounts).includes('parents') &&
+      Object.keys(accounts).length === 1 ? (
+        <Redirect to={{ pathname: `/parent/search/${searchId}`, state: { searchId } }} />
+      ) : null}
     </div>
   );
 };
 
 ClassSearchInterface.propTypes = propTypes;
+ClassSearchInterface.defaultProps = defaultProps;
 
 export default withStyles(styles)(withRouter(ClassSearchInterface));

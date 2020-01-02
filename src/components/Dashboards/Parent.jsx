@@ -44,10 +44,8 @@ class ParentDashboard extends React.Component {
 
   getInterface() {
     const { state, pathname } = this.props.location;
-    const Interface =
-      routeToInterface[
-        state && state.signupID ? pathname.replace(`/${state.signupID}`, '') : pathname
-      ];
+    const id = (state && state.signupID) || (state && state.searchId);
+    const Interface = routeToInterface[id ? pathname.replace(`/${id}`, '') : pathname];
     const { firebase, accounts, db, user } = this.props;
     return Interface === null ? null : <Interface {...{ firebase, accounts, db, user }} />;
   }
