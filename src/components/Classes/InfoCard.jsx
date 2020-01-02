@@ -50,7 +50,7 @@ class ClassInfoCard extends React.Component {
       <Paper className="infocard-wrapper">
         <InfoCardHeader cls={cls} />
         <div className="options">
-          <CopyToClipboard text={`${URL}/parent/signup/${cls.id}`}>
+          <CopyToClipboard text={`${URL}/search/${cls.id}`}>
             <Button variant="contained">
               <LinkIcon />
               STUDENT SIGN UP LINK

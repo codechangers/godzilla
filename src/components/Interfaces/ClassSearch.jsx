@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Button } from '@material-ui/core';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter, Redirect, Link } from 'react-router-dom';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
-import { URL } from '../../globals';
 
 const styles = {
   pageHeader: {
@@ -93,11 +92,14 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           <Paper key={cls.id} className={classes.cardWrapper}>
             <InfoCardHeader cls={cls} hideImage>
               <div className={classes.buttonWrapper}>
-                <a className={classes.button} href={`${URL}/parent/signup/${cls.id}`}>
+                <Link
+                  className={classes.button}
+                  to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
+                >
                   <Button style={{ width: '100%' }} variant="contained">
                     More Info
                   </Button>
-                </a>
+                </Link>
               </div>
             </InfoCardHeader>
           </Paper>
