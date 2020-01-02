@@ -37,8 +37,9 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
   };
 
   const isSelected = (n, l) => {
-    const path =
-      l.state && l.state.signupID ? l.pathname.replace(`/${l.state.signupID}`, '') : l.pathname;
+    const { state, pathname } = l;
+    const id = (state && state.signupID) || (state && state.searchId);
+    const path = id ? pathname.replace(`/${id}`, '') : pathname;
     return nameToRoute[n] === path;
   };
 
