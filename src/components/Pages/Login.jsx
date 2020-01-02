@@ -123,7 +123,8 @@ class Login extends React.Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    if (e) e.preventDefault();
     const { email, password, errors } = this.state;
 
     if (this.validateFields(['email', 'password']) === true) {
@@ -212,7 +213,7 @@ class Login extends React.Component {
                 </Dialog>
               </div>
             ) : (
-              <form className="login-form">
+              <form className="login-form" onSubmit={this.handleSubmit}>
                 <TextField
                   className="full-width"
                   error={getErrorStatus(errors.email)}
@@ -243,11 +244,11 @@ class Login extends React.Component {
                   Forgot Your Password?
                 </button>
                 <Button
-                  onClick={this.handleSubmit}
                   className="full-width"
                   style={{ marginBottom: 15 }}
                   variant="contained"
                   color="primary"
+                  type="submit"
                 >
                   Sign In
                 </Button>
