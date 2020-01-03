@@ -6,6 +6,7 @@ import {
   AttachMoney,
   AccountCircle,
   Settings,
+  Search,
   Edit
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
@@ -19,6 +20,7 @@ const nameToIcon = {
   Payments: AttachMoney,
   Profile: AccountCircle,
   'Sign up': Edit,
+  'Class Search': Search,
   Settings
 };
 
@@ -30,12 +32,14 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     Payments: `${baseRoute}/payments`,
     Profile: `${baseRoute}/profile`,
     'Sign up': `${baseRoute}/signup`,
+    'Class Search': `${baseRoute}/search`,
     Settings: `${baseRoute}/settings`
   };
 
   const isSelected = (n, l) => {
-    const path =
-      l.state && l.state.signupID ? l.pathname.replace(`/${l.state.signupID}`, '') : l.pathname;
+    const { state, pathname } = l;
+    const id = (state && state.signupID) || (state && state.searchId);
+    const path = id ? pathname.replace(`/${id}`, '') : pathname;
     return nameToRoute[n] === path;
   };
 

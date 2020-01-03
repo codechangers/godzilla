@@ -181,11 +181,12 @@ class ClassViewInterface extends React.Component {
                     </Paper>
                   ) : null
                 )}
-                {child.classesData.length > 0 ? null : (
+                {child.classesData.filter(a => a.endDate.seconds * 1000 > Date.now()).length > 0 ||
+                (this.state.showOldClasses && child.classesData.length > 0) ? null : (
                   <div className="empty-warning">
                     <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
                     <Button>
-                      <Link className="action" to="/parent/signup">
+                      <Link className="action" to="/parent/search">
                         Find one now!
                       </Link>
                     </Button>
