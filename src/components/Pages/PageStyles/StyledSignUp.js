@@ -23,7 +23,12 @@ export const LogoText = styled.img({
   maxWidth: 240,
   position: 'absolute',
   top: 30,
-  left: 64
+  left: 64,
+  '@media (max-width: 789px)': {
+    width: '60%',
+    maxWidth: '789px',
+    left: 'calc(20% + 8px)'
+  }
 });
 
 export const Form = styled.div(
@@ -67,7 +72,11 @@ export const LinkButtonWrapper = styled.div({
   position: 'absolute',
   paddingRight: 64,
   boxSizing: 'border-box',
-  bottom: 30
+  bottom: 30,
+  '@media (max-width: 600px)': {
+    width: 'calc(100% - 40px)',
+    paddingRight: 0
+  }
 });
 
 export const LinkButton = styled.button(
@@ -87,6 +96,12 @@ export const LinkButton = styled.button(
     cursor: 'pointer',
     ':hover': {
       textDecoration: 'underline'
+    },
+    '@media (max-width: 600px)': {
+      lineHeight: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     }
   },
   ({ error }) => ({
@@ -139,7 +154,10 @@ export const AccountType = styled.div({
   flexDirection: 'column',
   justifyContent: 'center',
   padding: '30px 64px',
-  overflow: 'scroll'
+  overflow: 'scroll',
+  '@media (max-width: 600px)': {
+    padding: '30px 20px'
+  }
 });
 
 export const AccountSelectionSection = styled.div({
@@ -148,8 +166,8 @@ export const AccountSelectionSection = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  marginTop: 34,
-  marginBottom: 55,
+  marginTop: 54,
+  marginBottom: 75,
   backgroundColor: '#f4f4f4'
 });
 

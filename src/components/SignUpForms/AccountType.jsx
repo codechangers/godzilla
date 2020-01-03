@@ -8,7 +8,16 @@ import * as Styled from '../Pages/PageStyles/StyledSignUp';
 const getHeaderStyle = width =>
   isWidthDown('md', width)
     ? isWidthDown('sm', width)
-      ? { fontSize: 22 }
+      ? isWidthDown('xs', width)
+        ? {
+            fontSize: 30,
+            lineHeight: '36px',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }
+        : { fontSize: 22 }
       : { fontSize: 45 }
     : { fontSize: 60, marginBottom: 32 };
 
@@ -16,7 +25,7 @@ const AccountType = ({ setAccountType, next, width }) => (
   <Styled.AccountType>
     <Styled.AccountSelectionSection>
       <Typography variant="h2" style={getHeaderStyle(width)}>
-        Select the type of Account you need
+        <span>Select the type of</span> <span>Account you need</span>
       </Typography>
       <Styled.AccountSelectionCards>
         <Card style={{ width: '40%', minWidth: '300px' }}>
@@ -74,7 +83,7 @@ const AccountType = ({ setAccountType, next, width }) => (
           next();
         }}
       >
-        Need an Organization Account? Register Here
+        <span>Need an Organization Account?</span> <span>Register Here</span>
       </Styled.LinkButton>
     </Styled.LinkButtonWrapper>
   </Styled.AccountType>
