@@ -33,7 +33,11 @@ export const LogoText = styled.img({
 
 export const Form = styled.div(
   {
-    width: '100%'
+    width: '100%',
+    '@media (max-width: 750px)': {
+      maxWidth: '98% !important',
+      marginTop: 80
+    }
   },
   ({ full }) => ({
     maxWidth: full ? '100%' : '60%',
@@ -66,6 +70,37 @@ export const Subtitle = styled.h3({
 
 export const LinkButtonWrapper = styled.div({
   display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
+});
+
+export const LinkButton = styled.button(
+  {
+    maxWidth: 'fit-content',
+    border: 'none',
+    outline: 'none',
+    margin: 0,
+    padding: 0,
+    width: 'auto',
+    overflow: 'visible',
+    background: 'transparent',
+    font: 'inherit',
+    fontSize: 14,
+    lineHeight: '36px',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    ':hover': {
+      textDecoration: 'underline'
+    }
+  },
+  ({ error }) => ({
+    color: error ? '#FF0C3E' : 'inherit'
+  })
+);
+
+export const AccountLinkButtonWrapper = styled.div({
+  display: 'flex',
   width: 'calc(100% - 66px)', // -66 because of wrapper padding
   justifyContent: 'center',
   alignItems: 'center',
@@ -79,7 +114,7 @@ export const LinkButtonWrapper = styled.div({
   }
 });
 
-export const LinkButton = styled.button(
+export const AccountLinkButton = styled.button(
   {
     maxWidth: 'fit-content',
     border: 'none',
@@ -194,12 +229,27 @@ export const NavigationButtons = styled.div({
   height: '100%'
 });
 
+export const ActionInner = styled.div({
+  width: '100%',
+  hight: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  '@media (max-width: 420px)': {
+    marginTop: '100%'
+  }
+});
+
 export const ListItem = styled.div({
   backgroundColor: 'white',
   borderRadius: 0,
   '&:nth-child(odd)': {
     backgroundColor: '#F4F4F4',
     borderRadius: 4
+  },
+  '@media (max-width: 420px)': {
+    paddingBottom: '56px'
   }
 });
 

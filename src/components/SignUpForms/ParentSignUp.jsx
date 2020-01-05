@@ -101,7 +101,15 @@ class ParentSignUp extends React.Component {
       />
     ) : (
       <Card>
-        <CardHeader title="Parent Application" />
+        <CardHeader
+          title="Parent Application"
+          style={{
+            marginLeft: 5,
+            textTransform: 'capitalize',
+            marginBottom: 18,
+            textAlign: 'center'
+          }}
+        />
         <CardContent>
           <Styled.Subtitle>Registered Children</Styled.Subtitle>
           <List>
@@ -115,27 +123,43 @@ class ParentSignUp extends React.Component {
                   </ListItemAvatar>
                   <ListItemText primary={`${child.fName} ${child.lName}`} />
                   <ListItemSecondaryAction>
-                    <Button style={{ marginRight: 8 }} onClick={() => this.editChild(child)}>
-                      Edit
-                    </Button>
-                    <Styled.LinkButton error onClick={() => this.removeChild(child)}>
-                      Delete
-                    </Styled.LinkButton>
+                    <Styled.ActionInner>
+                      <Button style={{ marginRight: 8 }} onClick={() => this.editChild(child)}>
+                        Edit
+                      </Button>
+                      <Styled.LinkButton error onClick={() => this.removeChild(child)}>
+                        Delete
+                      </Styled.LinkButton>
+                    </Styled.ActionInner>
                   </ListItemSecondaryAction>
                 </ListItem>
               </Styled.ListItem>
             ))}
           </List>
 
-          <Button
-            onClick={() => this.setState({ showChildEditor: true })}
-            variant="contained"
-            color="default"
-            id="add-child"
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
-            <AddIcon />
-            Add Child
-          </Button>
+            {this.state.childrenData.length <= 0 && (
+              <h4 style={{}}>No children registered yet...</h4>
+            )}
+            <Button
+              onClick={() => this.setState({ showChildEditor: true })}
+              variant="contained"
+              color="default"
+              id="add-child"
+              style={{ marginBottom: 30, alignSelf: 'center' }}
+            >
+              <AddIcon />
+              Add Child
+            </Button>
+          </div>
 
           <Styled.NavigationButtons>
             <Button onClick={this.props.prev} variant="contained">

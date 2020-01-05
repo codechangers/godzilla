@@ -171,7 +171,15 @@ class GenericSignUp extends React.Component {
     const { accountType, prev } = this.props;
     return (
       <Card>
-        <CardHeader title={`${accountType} Application`} style={{ marginLeft: 5 }} />
+        <CardHeader
+          title={`${accountType} Application`}
+          style={{
+            marginLeft: 5,
+            textTransform: 'capitalize',
+            marginBottom: 18,
+            textAlign: 'center'
+          }}
+        />
         <CardContent>
           <Styled.Subtitle>
             {accountType === 'parent' ? 'Parent or Guardian Information' : 'Account Information'}

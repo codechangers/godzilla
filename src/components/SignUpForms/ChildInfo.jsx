@@ -115,7 +115,15 @@ class ChildInfo extends React.Component {
     const { errors } = this.state;
     return (
       <Card>
-        <CardHeader title="Parent Application" />
+        <CardHeader
+          title="Parent Application"
+          style={{
+            marginLeft: 5,
+            textTransform: 'capitalize',
+            marginBottom: 18,
+            textAlign: 'center'
+          }}
+        />
         <CardContent>
           <Styled.Subtitle>Child Information</Styled.Subtitle>
           <Styled.FormFieldsRow firstRow>

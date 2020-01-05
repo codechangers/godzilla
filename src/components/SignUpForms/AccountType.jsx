@@ -76,16 +76,16 @@ const AccountType = ({ setAccountType, next, width }) => (
         </Card>
       </Styled.AccountSelectionCards>
     </Styled.AccountSelectionSection>
-    <Styled.LinkButtonWrapper>
-      <Styled.LinkButton
+    <Styled.AccountLinkButtonWrapper>
+      <Styled.AccountLinkButton
         onClick={() => {
           setAccountType('organization');
           next();
         }}
       >
         <span>Need an Organization Account?</span> <span>Register Here</span>
-      </Styled.LinkButton>
-    </Styled.LinkButtonWrapper>
+      </Styled.AccountLinkButton>
+    </Styled.AccountLinkButtonWrapper>
   </Styled.AccountType>
 );
 
