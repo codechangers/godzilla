@@ -7,7 +7,8 @@ import {
   AccountCircle,
   Settings,
   Search,
-  Edit
+  Edit,
+  CardGiftcard
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
 import Logout from './Logout';
@@ -21,6 +22,7 @@ const nameToIcon = {
   Profile: AccountCircle,
   'Sign up': Edit,
   'Class Search': Search,
+  'Promo Codes': CardGiftcard,
   Settings
 };
 
@@ -33,6 +35,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     Profile: `${baseRoute}/profile`,
     'Sign up': `${baseRoute}/signup`,
     'Class Search': `${baseRoute}/search`,
+    'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`
   };
 
