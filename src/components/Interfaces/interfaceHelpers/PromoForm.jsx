@@ -24,7 +24,8 @@ const dataMemberToValidation = {
     data.discountType === '$' || data.discountType === '%' ? '' : 'Invalid Discount Type',
   discountAmount: data => (data.discountAmount > 0 ? '' : 'Discount must be more than 0'),
   uses: data => (data.limited && data.uses <= 0 ? 'Must have at least 1 use' : ''),
-  limited: data => (data.limited === true || data.limited === false ? '' : 'Invalid limited value')
+  limited: data => (data.limited === true || data.limited === false ? '' : 'Invalid limited value'),
+  startUses: () => ''
 };
 
 const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
