@@ -22,8 +22,8 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
   const initialState = {
     code: '',
     discountType: '$',
-    discountAmount: 0,
-    uses: 0,
+    discountAmount: '',
+    uses: '',
     limited: false
   };
   const [promoCode, setPromoCode] = useState(initialState);
@@ -44,12 +44,17 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     } else {
       setState(initialState);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editPromo]);
 
   const handleSubmit = e => {
     e.preventDefault();
+    promoCode.discountAmount = Number(promoCode.discountAmount);
+    promoCode.uses = Number(promoCode.uses);
     onSubmit(promoCode);
-    closeForm();
+    if (!editPromo.isSet) {
+      closeForm();
+    }
   };
 
   const classes = useStyles();

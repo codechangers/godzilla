@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
@@ -23,22 +23,29 @@ const PromoCodesInterface = ({ user, db }) => {
       .onSnapshot(doc => {
         const teacherData = { ...doc.data(), id: doc.id, ref: doc.ref };
         setTeacher(teacherData);
-        const promos = [];
         if (teacherData.promos) {
-          teacherData.promos.forEach(promoRef => {
-            promoRef
-              .get()
-              .then(promoDoc => {
-                promos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
-                if (promos.length === teacherData.promos.length) {
-                  setPromos(promos);
-                }
-              })
-              .catch(err => console.log(err));
-          });
+          getPromos(teacherData);
         }
       });
-  }, [db, user, setTeacher, setPromos]);
+  }, [db, user, setTeacher]);
+
+  const getPromos = useCallback(
+    teacher => {
+      const promos = [];
+      teacher.promos.forEach(promoRef => {
+        promoRef
+          .get()
+          .then(promoDoc => {
+            promos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
+            if (promos.length === teacher.promos.length) {
+              setPromos(promos.reverse());
+            }
+          })
+          .catch(err => console.log(err));
+      });
+    },
+    [setPromos]
+  );
 
   const createPromo = promoCode => {
     promoCode.active = true;
@@ -53,7 +60,9 @@ const PromoCodesInterface = ({ user, db }) => {
   };
 
   const updatePromo = promoCode => {
-    console.log('Update promocode: ', promoCode);
+    promoCode.startUses = Number(promoToEdit.startUses + (promoCode.uses - promoToEdit.uses)); // preserve # of promos used
+    promoToEdit.ref.update({ ...promoToEdit, ...promoCode }).then(() => getPromos(teacher));
+    setPromoToEdit({ isSet: false });
   };
 
   const classes = useStyles();
