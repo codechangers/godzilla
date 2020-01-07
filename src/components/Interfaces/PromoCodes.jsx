@@ -38,6 +38,18 @@ const PromoCodesInterface = ({ user, db }) => {
       });
   }, [db, user, setTeacher, setPromos]);
 
+  const createPromo = promoCode => {
+    promoCode.active = true;
+    promoCode.startUses = promoCode.uses;
+    promoCode.teacher = teacher.ref;
+    db.collection('promos')
+      .add(promoCode)
+      .then(promoRef => {
+        teacher.ref.update({ promos: [...teacher.promos, promoRef] });
+      })
+      .catch(err => console.log(err));
+  };
+
   const classes = useStyles();
 
   return (
@@ -51,13 +63,7 @@ const PromoCodesInterface = ({ user, db }) => {
           <h4>{p.code}</h4>
         </div>
       ))}
-      <PromoForm
-        showForm={showForm}
-        closeForm={() => setShowForm(false)}
-        onSubmit={promoCode => {
-          console.log('Create', promoCode);
-        }}
-      />
+      <PromoForm showForm={showForm} closeForm={() => setShowForm(false)} onSubmit={createPromo} />
     </div>
   );
 };
