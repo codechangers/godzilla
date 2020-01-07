@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
+import DeleteModal from './interfaceHelpers/DeleteModal';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -14,6 +15,7 @@ const PromoCodesInterface = ({ user, db }) => {
   const [promos, setPromos] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
+  const [promoToDelete, setPromoToDelete] = useState({ isSet: false });
 
   const getPromos = useCallback(
     teacher => {
@@ -24,7 +26,7 @@ const PromoCodesInterface = ({ user, db }) => {
           .then(promoDoc => {
             promos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
             if (promos.length === teacher.promos.length) {
-              setPromos(promos.reverse());
+              setPromos(promos.reverse().filter(p => p.active));
             }
           })
           .catch(err => console.log(err));
@@ -49,6 +51,11 @@ const PromoCodesInterface = ({ user, db }) => {
     promoCode.startUses = Number(promoToEdit.startUses + (promoCode.uses - promoToEdit.uses)); // preserve # of promos used
     promoToEdit.ref.update({ ...promoToEdit, ...promoCode }).then(() => getPromos(teacher));
     setPromoToEdit({ isSet: false });
+  };
+
+  const deletePromo = () => {
+    promoToDelete.ref.update({ ...promoToDelete, active: false }).then(() => getPromos(teacher));
+    setPromoToDelete({ isSet: false });
   };
 
   useEffect(() => {
@@ -83,7 +90,7 @@ const PromoCodesInterface = ({ user, db }) => {
           key={p.id}
           promoCode={p}
           onEdit={p => setPromoToEdit({ isSet: true, ...p })}
-          onDelete={() => null}
+          onDelete={p => setPromoToDelete({ isSet: true, ...p })}
         />
       ))}
       <PromoForm
@@ -94,6 +101,13 @@ const PromoCodesInterface = ({ user, db }) => {
           setPromoToEdit({ isSet: false });
         }}
         onSubmit={promoToEdit.isSet ? updatePromo : createPromo}
+      />
+      <DeleteModal
+        obj={promoToDelete}
+        onCancel={() => setPromoToDelete({ isSet: false })}
+        onConfirm={deletePromo}
+        prompt="Are you sure you want to deactivate this promo code?"
+        del="Deactivate"
       />
     </div>
   );
