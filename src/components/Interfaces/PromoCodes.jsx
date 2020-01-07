@@ -15,20 +15,6 @@ const PromoCodesInterface = ({ user, db }) => {
   const [showForm, setShowForm] = useState(false);
   const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
 
-  useEffect(() => {
-    // Get Promos
-    return db
-      .collection('teachers')
-      .doc(user.uid)
-      .onSnapshot(doc => {
-        const teacherData = { ...doc.data(), id: doc.id, ref: doc.ref };
-        setTeacher(teacherData);
-        if (teacherData.promos) {
-          getPromos(teacherData);
-        }
-      });
-  }, [db, user, setTeacher]);
-
   const getPromos = useCallback(
     teacher => {
       const promos = [];
@@ -64,6 +50,20 @@ const PromoCodesInterface = ({ user, db }) => {
     promoToEdit.ref.update({ ...promoToEdit, ...promoCode }).then(() => getPromos(teacher));
     setPromoToEdit({ isSet: false });
   };
+
+  useEffect(() => {
+    // Get Promos
+    return db
+      .collection('teachers')
+      .doc(user.uid)
+      .onSnapshot(doc => {
+        const teacherData = { ...doc.data(), id: doc.id, ref: doc.ref };
+        setTeacher(teacherData);
+        if (teacherData.promos) {
+          getPromos(teacherData);
+        }
+      });
+  }, [db, user, setTeacher, getPromos]);
 
   const classes = useStyles();
 
