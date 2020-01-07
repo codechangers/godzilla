@@ -18,6 +18,15 @@ const propTypes = {
   editPromo: PropTypes.object.isRequired
 };
 
+const dataMemberToValidation = {
+  code: data => (data.code.length >= 6 ? '' : 'Promo Code must be at least 6 character'),
+  discountType: data =>
+    data.discountType === '$' || data.discountType === '%' ? '' : 'Invalid Discount Type',
+  discountAmount: data => (data.discountAmount > 0 ? '' : 'Discount must be more than 0'),
+  uses: data => (data.limited && data.uses <= 0 ? 'Must have at least 1 use' : ''),
+  limited: data => (data.limited === true || data.limited === false ? '' : 'Invalid limited value')
+};
+
 const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
   const initialState = {
     code: '',
@@ -27,6 +36,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     limited: false
   };
   const [promoCode, setPromoCode] = useState(initialState);
+  const [errors, setErrors] = useState({});
 
   const setState = newState => {
     const approvedState = {};
@@ -51,11 +61,26 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     e.preventDefault();
     promoCode.discountAmount = Number(promoCode.discountAmount);
     promoCode.uses = Number(promoCode.uses);
-    onSubmit(promoCode);
-    if (!editPromo.isSet) {
-      closeForm();
+    console.log(promoCode);
+    let dataIsValid = true;
+    const newErrors = {};
+    Object.keys(promoCode).forEach(key => {
+      const v = dataMemberToValidation[key](promoCode);
+      newErrors[key] = v;
+      if (v !== '') {
+        dataIsValid = false;
+      }
+    });
+    setErrors({ ...errors, ...newErrors });
+    if (dataIsValid) {
+      onSubmit(promoCode);
+      if (!editPromo.isSet) {
+        closeForm();
+      }
     }
   };
+
+  const getErrorStatus = error => (error && error.length > 0 ? true : false);
 
   const classes = useStyles();
 
@@ -80,6 +105,8 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
               label="Code"
               className={classes.inputFull}
               onChange={e => setState({ code: e.target.value })}
+              error={getErrorStatus(errors.code)}
+              helperText={errors.code}
             />
           </div>
           <div className={classes.formRow}>
@@ -91,6 +118,8 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
               label="Discount Amount"
               className={classes.input}
               onChange={e => setState({ discountAmount: e.target.value })}
+              error={getErrorStatus(errors.discountAmount)}
+              helperText={errors.discountAmount}
             />
             <TextField
               variant="outlined"
@@ -99,6 +128,8 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
               label="Discount Type"
               className={classes.input}
               onChange={e => setState({ discountType: e.target.value })}
+              error={getErrorStatus(errors.discountType)}
+              helperText={errors.discountType}
               select
             >
               <MenuItem value="$">($) Dollars Off</MenuItem>
@@ -126,6 +157,8 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
               disabled={!promoCode.limited}
               className={classes.input}
               onChange={e => setState({ uses: e.target.value })}
+              error={getErrorStatus(errors.uses)}
+              helperText={errors.uses}
             />
           </div>
           <div className={classes.formRow}>
