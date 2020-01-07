@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
+import PromoCard from './interfaceHelpers/PromoCard';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -55,13 +56,16 @@ const PromoCodesInterface = ({ user, db }) => {
   return (
     <div className="page-content horiz-center">
       <h2>Manage Your Promo Codes</h2>
-      <Button variant="outlined" className={classes.createButton} onClick={() => setShowForm(true)}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        className={classes.createButton}
+        onClick={() => setShowForm(true)}
+      >
         Add A New Promo Code
       </Button>
       {promos.map(p => (
-        <div key={p.id}>
-          <h4>{p.code}</h4>
-        </div>
+        <PromoCard key={p.id} promoCode={p} onEdit={() => null} onDelete={() => null} />
       ))}
       <PromoForm showForm={showForm} closeForm={() => setShowForm(false)} onSubmit={createPromo} />
     </div>
