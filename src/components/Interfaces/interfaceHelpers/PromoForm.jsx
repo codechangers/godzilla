@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -14,21 +14,37 @@ import {
 const propTypes = {
   showForm: PropTypes.bool.isRequired,
   closeForm: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  editPromo: PropTypes.object.isRequired
 };
 
-const PromoForm = ({ showForm, closeForm, onSubmit }) => {
-  const [promoCode, setPromoCode] = useState({
+const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
+  const initialState = {
     code: '',
     discountType: '$',
     discountAmount: 0,
     uses: 0,
     limited: false
-  });
+  };
+  const [promoCode, setPromoCode] = useState(initialState);
 
   const setState = newState => {
-    setPromoCode({ ...promoCode, ...newState });
+    const approvedState = {};
+    Object.keys(newState).forEach(key => {
+      if (Object.keys(promoCode).includes(key)) {
+        approvedState[key] = newState[key];
+      }
+    });
+    setPromoCode({ ...promoCode, ...approvedState });
   };
+
+  useEffect(() => {
+    if (editPromo.isSet) {
+      setState(editPromo);
+    } else {
+      setState(initialState);
+    }
+  }, [editPromo]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -48,7 +64,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit }) => {
       className={classes.modal}
     >
       <Paper className={classes.paper}>
-        <h1>Create a Promo Code</h1>
+        <h1>{editPromo.isSet ? 'Edit your Promo Code' : 'Create a Promo Code'}</h1>
         <form className={classes.form} onSubmit={handleSubmit}>
           <div className={classes.formRow}>
             <TextField
@@ -114,7 +130,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit }) => {
               color="primary"
               className={classes.submitButton}
             >
-              Create
+              {editPromo.isSet ? 'Update' : 'Create'}
             </Button>
           </div>
         </form>

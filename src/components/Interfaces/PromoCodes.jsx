@@ -13,6 +13,7 @@ const PromoCodesInterface = ({ user, db }) => {
   const [teacher, setTeacher] = useState(null);
   const [promos, setPromos] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
 
   useEffect(() => {
     // Get Promos
@@ -51,6 +52,10 @@ const PromoCodesInterface = ({ user, db }) => {
       .catch(err => console.log(err));
   };
 
+  const updatePromo = promoCode => {
+    console.log('Update promocode: ', promoCode);
+  };
+
   const classes = useStyles();
 
   return (
@@ -65,9 +70,22 @@ const PromoCodesInterface = ({ user, db }) => {
         Add A New Promo Code
       </Button>
       {promos.map(p => (
-        <PromoCard key={p.id} promoCode={p} onEdit={() => null} onDelete={() => null} />
+        <PromoCard
+          key={p.id}
+          promoCode={p}
+          onEdit={p => setPromoToEdit({ isSet: true, ...p })}
+          onDelete={() => null}
+        />
       ))}
-      <PromoForm showForm={showForm} closeForm={() => setShowForm(false)} onSubmit={createPromo} />
+      <PromoForm
+        showForm={showForm || promoToEdit.isSet}
+        editPromo={promoToEdit}
+        closeForm={() => {
+          setShowForm(false);
+          setPromoToEdit({ isSet: false });
+        }}
+        onSubmit={promoToEdit.isSet ? updatePromo : createPromo}
+      />
     </div>
   );
 };
