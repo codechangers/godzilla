@@ -11,7 +11,9 @@ const TrainingTeacher = () => (
       both accounts. In order for you to set up your CodeChangers Go account and start creating
       classes, you will first need to create a Stripe account using your business information, or
       login with an account you already have. For every child that registers in your course,
-      CodeChangers receives a $10 licensing fee.
+      CodeChangers receives a $10 licensing fee. Just like any other payment software (PayPal,
+      Square, etc.), Stripe collects a fee of 2.9% + $0.30 per successful charge. This fee is taken
+      at the time of the charge.
     </h3>
     <div style={{ backgroundColor: '#8dc63f', borderRadius: '4px', margin: '30px' }}>
       <StripeConnect />
