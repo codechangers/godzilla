@@ -16,6 +16,7 @@ const PromoCodesInterface = ({ user, db }) => {
   const [showForm, setShowForm] = useState(false);
   const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
   const [promoToDelete, setPromoToDelete] = useState({ isSet: false });
+  const [showOldPromos, setShowOldPromos] = useState(false);
 
   const getPromos = useCallback(
     teacher => {
@@ -26,7 +27,7 @@ const PromoCodesInterface = ({ user, db }) => {
           .then(promoDoc => {
             promos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
             if (promos.length === teacher.promos.length) {
-              setPromos(promos.reverse().filter(p => p.active));
+              setPromos(promos.reverse());
             }
           })
           .catch(err => console.log(err));
@@ -77,22 +78,40 @@ const PromoCodesInterface = ({ user, db }) => {
   return (
     <div className="page-content horiz-center">
       <h2>Manage Your Promo Codes</h2>
-      <Button
-        variant="outlined"
-        color="secondary"
-        className={classes.createButton}
-        onClick={() => setShowForm(true)}
-      >
-        Add A New Promo Code
-      </Button>
-      {promos.map(p => (
-        <PromoCard
-          key={p.id}
-          promoCode={p}
-          onEdit={p => setPromoToEdit({ isSet: true, ...p })}
-          onDelete={p => setPromoToDelete({ isSet: true, ...p })}
-        />
-      ))}
+      {!showOldPromos ? (
+        <Button
+          variant="outlined"
+          color="secondary"
+          className={classes.createButton}
+          onClick={() => setShowForm(true)}
+        >
+          Add A New Promo Code
+        </Button>
+      ) : (
+        <Button
+          variant="outlined"
+          style={{ marginTop: '40px' }}
+          onClick={() => setShowOldPromos(false)}
+        >
+          Show Current Promo Codes
+        </Button>
+      )}
+      {promos
+        .filter(p => (showOldPromos ? !p.active : p.active))
+        .map(p => (
+          <PromoCard
+            key={p.id}
+            promoCode={p}
+            onEdit={p => setPromoToEdit({ isSet: true, ...p })}
+            onDelete={p => setPromoToDelete({ isSet: true, ...p })}
+            expired={!p.active}
+          />
+        ))}
+      {!showOldPromos && (
+        <Button style={{ marginTop: 40, marginBottom: 18 }} onClick={() => setShowOldPromos(true)}>
+          Show Deactivated Promo Codes
+        </Button>
+      )}
       <PromoForm
         showForm={showForm || promoToEdit.isSet}
         editPromo={promoToEdit}
