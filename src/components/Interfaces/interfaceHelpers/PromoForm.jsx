@@ -65,7 +65,6 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     e.preventDefault();
     promoCode.discountAmount = Number(promoCode.discountAmount);
     promoCode.uses = Number(promoCode.uses);
-    console.log(promoCode);
     let dataIsValid = true;
     const newErrors = {};
     Object.keys(promoCode).forEach(key => {

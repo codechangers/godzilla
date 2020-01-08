@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, makeStyles } from '@material-ui/core';
+import { getDateFromTimestamp, getMMDDYYYY, getHrMn } from '../../../helpers';
 
 const propTypes = {
   promoCode: PropTypes.object.isRequired,
@@ -17,8 +18,8 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
   const { code, discountType, discountAmount, startUses, uses, limited } = promoCode;
   const classes = useStyles();
   return (
-    <div className={classes.wrapper} style={expired ? { justifyContent: 'center' } : null}>
-      <Card className={classes.card} style={expired ? { backgroundColor: '#a4a4a4' } : null}>
+    <div className={classes.wrapper}>
+      <Card className={classes.card}>
         <div className={classes.cardRow}>
           <p style={{ fontWeight: 'bold' }}>{code}</p>
           <p>Used: {startUses - uses} times</p>
@@ -31,19 +32,34 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
           <p>{limited ? `${uses} uses left` : ''}</p>
         </div>
       </Card>
-      <div className={classes.options} style={expired ? { display: 'none' } : null}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={() => onEdit(promoCode)}
-        >
-          Edit Details
-        </Button>
-        <Button variant="outlined" className={classes.button} onClick={() => onDelete(promoCode)}>
-          Deactivate
-        </Button>
-      </div>
+      {expired ? (
+        <div className={classes.options}>
+          <p className={classes.optionB}>Created:</p>
+          <p className={classes.optionP}>
+            {getMMDDYYYY(getDateFromTimestamp(promoCode.createdOn))} @{' '}
+            {getHrMn(getDateFromTimestamp(promoCode.createdOn))}
+          </p>
+          <p className={classes.optionB}>Deactivated:</p>
+          <p className={classes.optionP}>
+            {getMMDDYYYY(getDateFromTimestamp(promoCode.deletedOn))} @{' '}
+            {getHrMn(getDateFromTimestamp(promoCode.deletedOn))}
+          </p>
+        </div>
+      ) : (
+        <div className={classes.options}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => onEdit(promoCode)}
+          >
+            Edit Details
+          </Button>
+          <Button variant="outlined" className={classes.button} onClick={() => onDelete(promoCode)}>
+            Deactivate
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
@@ -82,6 +98,17 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  optionP: {
+    margin: 0,
+    fontSize: '0.9rem',
+    alignSelf: 'flex-end'
+  },
+  optionB: {
+    margin: 0,
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    alignSelf: 'flex-start'
   },
   button: {
     width: '100%'

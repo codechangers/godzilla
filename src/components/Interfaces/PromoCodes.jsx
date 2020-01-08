@@ -40,6 +40,7 @@ const PromoCodesInterface = ({ user, db }) => {
     promoCode.active = true;
     promoCode.startUses = promoCode.uses;
     promoCode.teacher = teacher.ref;
+    promoCode.createdOn = { seconds: Date.now() / 1000 };
     db.collection('promos')
       .add(promoCode)
       .then(promoRef => {
@@ -55,7 +56,13 @@ const PromoCodesInterface = ({ user, db }) => {
   };
 
   const deletePromo = () => {
-    promoToDelete.ref.update({ ...promoToDelete, active: false }).then(() => getPromos(teacher));
+    promoToDelete.ref
+      .update({
+        ...promoToDelete,
+        active: false,
+        deletedOn: { seconds: Date.now() / 1000 }
+      })
+      .then(() => getPromos(teacher));
     setPromoToDelete({ isSet: false });
   };
 
@@ -90,7 +97,7 @@ const PromoCodesInterface = ({ user, db }) => {
       ) : (
         <Button
           variant="outlined"
-          style={{ marginTop: '40px' }}
+          className={classes.createButton}
           onClick={() => setShowOldPromos(false)}
         >
           Show Current Promo Codes
@@ -108,7 +115,11 @@ const PromoCodesInterface = ({ user, db }) => {
           />
         ))}
       {!showOldPromos && (
-        <Button style={{ marginTop: 40, marginBottom: 18 }} onClick={() => setShowOldPromos(true)}>
+        <Button
+          variant="outlined"
+          style={{ marginTop: 40, marginBottom: 18 }}
+          onClick={() => setShowOldPromos(true)}
+        >
           Show Deactivated Promo Codes
         </Button>
       )}
