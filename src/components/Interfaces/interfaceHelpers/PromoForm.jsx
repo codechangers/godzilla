@@ -19,7 +19,10 @@ const propTypes = {
 };
 
 const dataMemberToValidation = {
-  code: data => (data.code.length >= 6 ? '' : 'Promo Code must be at least 6 character'),
+  code: data =>
+    data.code.length >= 6 && data.code.length <= 10
+      ? ''
+      : 'Promo Code must be between 6 and 10 characters long',
   discountType: data =>
     data.discountType === '$' || data.discountType === '%' ? '' : 'Invalid Discount Type',
   discountAmount: data => (data.discountAmount > 0 ? '' : 'Discount must be more than 0'),
