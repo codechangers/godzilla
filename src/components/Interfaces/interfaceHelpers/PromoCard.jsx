@@ -5,15 +5,20 @@ import { Card, Button, makeStyles } from '@material-ui/core';
 const propTypes = {
   promoCode: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  expried: PropTypes.bool
 };
 
-const PromoCard = ({ promoCode, onEdit, onDelete }) => {
+const defaultProps = {
+  expired: false
+};
+
+const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
   const { code, discountType, discountAmount, startUses, uses, limited } = promoCode;
   const classes = useStyles();
   return (
-    <div className={classes.wrapper}>
-      <Card className={classes.card}>
+    <div className={classes.wrapper} style={expired ? { justifyContent: 'center' } : null}>
+      <Card className={classes.card} style={expired ? { backgroundColor: '#a4a4a4' } : null}>
         <div className={classes.cardRow}>
           <p style={{ fontWeight: 'bold' }}>{code}</p>
           <p>Used: {startUses - uses} times</p>
@@ -26,7 +31,7 @@ const PromoCard = ({ promoCode, onEdit, onDelete }) => {
           <p>{limited ? `${uses} uses left` : ''}</p>
         </div>
       </Card>
-      <div className={classes.options}>
+      <div className={classes.options} style={expired ? { display: 'none' } : null}>
         <Button
           variant="contained"
           color="primary"
@@ -44,6 +49,7 @@ const PromoCard = ({ promoCode, onEdit, onDelete }) => {
 };
 
 PromoCard.propTypes = propTypes;
+PromoCard.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   wrapper: {
