@@ -57,6 +57,7 @@ class ClassSignUpInterface extends React.Component {
       isProcessing: false,
       paymentSucceeded: false,
       paymentFailed: false,
+      invalidPayment: '',
       promoCode: '',
       promoError: '',
       promoDoc: null
@@ -159,7 +160,7 @@ class ClassSignUpInterface extends React.Component {
     if (selectedClass !== null) {
       if (promoDoc !== null) {
         const { discountType, discountAmount } = promoDoc;
-        if (discountType == '$') {
+        if (discountType === '$') {
           total =
             (selectedClass.price - discountAmount) *
             selectedChildren.filter(c => !this.checkDisabled(c)).length;
@@ -196,44 +197,59 @@ class ClassSignUpInterface extends React.Component {
 
   async handleSubmit() {
     const { selectedClass, selectedChildren } = this.state;
-    const { token } = await this.props.stripe.createToken({ name: 'Name' });
-    this.setState({ isProcessing: true });
-    if (token) {
-      // eslint-disable-next-line
-      fetch(`${API_URL}/charge`, {
-        method: 'POST',
-        body: JSON.stringify({
-          token: token.id,
-          classID: selectedClass.id,
-          teacherID: selectedClass.teacher.id,
-          parentID: this.props.user.uid,
-          numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (res.status === 200) {
-            const children = selectedClass.children || [];
-            selectedChildren.forEach(child => {
-              const classes = child.classes || [];
-              classes.push(selectedClass.ref);
-              child.ref.update({ classes });
-              children.push(child.ref);
-            });
-            selectedClass.ref.update({ children });
-            this.setState({ paymentSucceeded: true });
-          } else {
-            console.log(res);
-            this.setState({ paymentFailed: true });
+    this.setState({ isProcessing: true, invalidPayment: '' });
+    if (this.getTotal > 0) {
+      const { token } = await this.props.stripe.createToken({ name: 'Name' });
+      if (token) {
+        // eslint-disable-next-line
+        fetch(`${API_URL}/charge`, {
+          method: 'POST',
+          body: JSON.stringify({
+            token: token.id,
+            classID: selectedClass.id,
+            teacherID: selectedClass.teacher.id,
+            parentID: this.props.user.uid,
+            numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
+          }),
+          headers: {
+            'Content-Type': 'application/json'
           }
         })
-        .catch(err => {
-          console.log(err);
-          this.setState({ paymentFailed: true });
-        });
+          .then(res => res.json())
+          .then(res => {
+            if (res.status === 200) {
+              const children = selectedClass.children || [];
+              selectedChildren.forEach(child => {
+                const classes = child.classes || [];
+                classes.push(selectedClass.ref);
+                child.ref.update({ classes });
+                children.push(child.ref);
+              });
+              selectedClass.ref.update({ children });
+              this.setState({ paymentSucceeded: true });
+            } else {
+              console.log(res);
+              this.setState({ paymentFailed: true });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.setState({ paymentFailed: true });
+          });
+      } else {
+        this.setState({ isProcessing: false, invalidPayment: 'Invalid Payment Information!' });
+      }
+    } else {
+      // Skip charge
+      const children = selectedClass.children || [];
+      selectedChildren.forEach(child => {
+        const classes = child.classes || [];
+        classes.push(selectedClass.ref);
+        child.ref.update({ classes });
+        children.push(child.ref);
+      });
+      selectedClass.ref.update({ children });
+      this.setState({ paymentSucceeded: true });
     }
   }
 
@@ -422,14 +438,14 @@ class ClassSignUpInterface extends React.Component {
                       <p style={{ fontSize: '1rem', margin: '16px 0 12px 0', lineHeight: '20px' }}>
                         <strong>{this.state.promoDoc.code}</strong>
                         {' - '}
-                        {this.state.promoDoc.discountType == '$'
+                        {this.state.promoDoc.discountType === '$'
                           ? `$${this.state.promoDoc.discountAmount}`
                           : `${this.state.promoDoc.discountAmount}%`}{' '}
                         off each student!
-                        <Tooltip title="Remove Promo" placement="top">
+                        <Tooltip title="Remove Discount" placement="top">
                           <IconButton
                             style={{ margin: '0 0 3px 10px' }}
-                            aria-label="Remove Promo"
+                            aria-label="Remove Discount"
                             size="small"
                             onClick={() => this.setState({ promoDoc: null })}
                           >
@@ -451,10 +467,10 @@ class ClassSignUpInterface extends React.Component {
                           helperText={this.state.promoError}
                           error={this.state.promoError.length > 0}
                         />
-                        <Tooltip title="Apply Code" placement="top">
+                        <Tooltip title="Apply Discount" placement="top">
                           <IconButton
                             style={{ margin: '12px 0 0 10px' }}
-                            aria-label="Apply Code"
+                            aria-label="Apply Discount"
                             size="small"
                             color="primary"
                             onClick={this.applyPromo}
@@ -469,8 +485,15 @@ class ClassSignUpInterface extends React.Component {
                       {`$${this.getTotal()}`}
                     </p>
                   </div>
+                  {this.getTotal() > 0 && (
+                    <p style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>
+                      {this.state.invalidPayment}
+                    </p>
+                  )}
                   {this.getTotal() > 0 ? (
-                    <Styled.CardInfo>
+                    <Styled.CardInfo
+                      style={this.state.invalidPayment ? { border: '1px solid red' } : null}
+                    >
                       <CardElement />
                     </Styled.CardInfo>
                   ) : null}
@@ -483,7 +506,9 @@ class ClassSignUpInterface extends React.Component {
                       Cancel
                     </Button>
                     <Button
-                      disabled={this.getTotal() <= 0}
+                      disabled={
+                        this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <= 0
+                      }
                       onClick={this.handleSubmit}
                       variant="contained"
                       color="primary"
