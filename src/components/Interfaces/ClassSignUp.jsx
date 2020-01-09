@@ -158,20 +158,27 @@ class ClassSignUpInterface extends React.Component {
     const { selectedChildren, selectedClass, promoDoc } = this.state;
     let total = 0;
     if (selectedClass !== null) {
+      const registrations = selectedChildren.filter(c => !this.checkDisabled(c)).length;
       if (promoDoc !== null) {
-        const { discountType, discountAmount } = promoDoc;
+        const { discountType, discountAmount, uses, limited } = promoDoc;
         if (discountType === '$') {
           total =
-            (selectedClass.price - discountAmount) *
-            selectedChildren.filter(c => !this.checkDisabled(c)).length;
+            registrations > uses && limited
+              ? (selectedClass.price - discountAmount >= 0
+                  ? selectedClass.price - discountAmount
+                  : 0 * uses) +
+                selectedClass.price * (registrations - uses)
+              : (selectedClass.price - discountAmount) * registrations;
         } else {
           total =
-            selectedClass.price *
-            (0.01 * discountAmount) *
-            selectedChildren.filter(c => !this.checkDisabled(c)).length;
+            registrations > uses && limited
+              ? selectedClass.price * (0.01 * discountAmount) * uses +
+                selectedClass.price * registrations -
+                uses
+              : selectedClass.price * (0.01 * discountAmount) * registrations;
         }
       } else {
-        total = selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
+        total = selectedClass.price * registrations;
       }
     }
     if (total < 0) {
@@ -197,9 +204,9 @@ class ClassSignUpInterface extends React.Component {
 
   async handleSubmit() {
     const { selectedClass, selectedChildren } = this.state;
-    this.setState({ isProcessing: true, invalidPayment: '' });
-    if (this.getTotal > 0) {
+    if (this.getTotal() > 0) {
       const { token } = await this.props.stripe.createToken({ name: 'Name' });
+      this.setState({ isProcessing: true, invalidPayment: '' });
       if (token) {
         // eslint-disable-next-line
         fetch(`${API_URL}/charge`, {
