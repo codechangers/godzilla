@@ -16,12 +16,17 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  TextField,
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import SendIcon from '@material-ui/icons/Send';
+import ClearIcon from '@material-ui/icons/Clear';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -51,7 +56,10 @@ class ClassSignUpInterface extends React.Component {
       isLoading: true,
       isProcessing: false,
       paymentSucceeded: false,
-      paymentFailed: false
+      paymentFailed: false,
+      promoCode: '',
+      promoError: '',
+      promoDoc: null
     };
     autoBind(this);
   }
@@ -146,10 +154,29 @@ class ClassSignUpInterface extends React.Component {
   }
 
   getTotal() {
-    const { selectedChildren, selectedClass } = this.state;
-    if (selectedClass !== null)
-      return selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
-    return 0;
+    const { selectedChildren, selectedClass, promoDoc } = this.state;
+    let total = 0;
+    if (selectedClass !== null) {
+      if (promoDoc !== null) {
+        const { discountType, discountAmount } = promoDoc;
+        if (discountType == '$') {
+          total =
+            (selectedClass.price - discountAmount) *
+            selectedChildren.filter(c => !this.checkDisabled(c)).length;
+        } else {
+          total =
+            selectedClass.price *
+            (0.01 * discountAmount) *
+            selectedChildren.filter(c => !this.checkDisabled(c)).length;
+        }
+      } else {
+        total = selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
+      }
+    }
+    if (total < 0) {
+      total = 0;
+    }
+    return total;
   }
 
   checkToggle(child) {
@@ -208,6 +235,38 @@ class ClassSignUpInterface extends React.Component {
           this.setState({ paymentFailed: true });
         });
     }
+  }
+
+  setPromo(e) {
+    this.setState({ promoCode: e.target.value });
+  }
+
+  applyPromo() {
+    this.props.db
+      .collection('promos')
+      .where('code', '==', this.state.promoCode)
+      .get()
+      .then(qSnap => {
+        qSnap.forEach(doc => {
+          if (
+            doc.exists &&
+            doc.data().teacher.id === this.state.selectedClass.teacher.id &&
+            doc.data().active &&
+            !doc.data().deletedOn
+          ) {
+            this.setState({
+              promoDoc: { ...doc.data(), id: doc.id, ref: doc.ref },
+              promoCode: '',
+              promoError: ''
+            });
+          } else {
+            this.setState({ promoError: 'Invalid Promo Code' });
+          }
+        });
+        if (qSnap.empty) {
+          this.setState({ promoError: 'Invalid Promo Code' });
+        }
+      });
   }
 
   checkDisabled(child) {
@@ -348,10 +407,68 @@ class ClassSignUpInterface extends React.Component {
                       );
                     })}
                   </List>
-                  <p style={{ textAlign: 'right', margin: '10px 16px 20px 0' }}>
-                    <strong style={{ marginRight: '15px' }}>Total:</strong>
-                    {`$${this.getTotal()}`}
-                  </p>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      boxSizing: 'border-box',
+                      padding: '10px 20px 20px 20px'
+                    }}
+                  >
+                    {this.state.promoDoc !== null ? (
+                      <p style={{ fontSize: '1rem', margin: '16px 0 12px 0', lineHeight: '20px' }}>
+                        <strong>{this.state.promoDoc.code}</strong>
+                        {' - '}
+                        {this.state.promoDoc.discountType == '$'
+                          ? `$${this.state.promoDoc.discountAmount}`
+                          : `${this.state.promoDoc.discountAmount}%`}{' '}
+                        off each student!
+                        <Tooltip title="Remove Promo" placement="top">
+                          <IconButton
+                            style={{ margin: '0 0 3px 10px' }}
+                            aria-label="Remove Promo"
+                            size="small"
+                            onClick={() => this.setState({ promoDoc: null })}
+                          >
+                            <ClearIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
+                      </p>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <TextField
+                          label="Promo Code"
+                          onChange={this.setPromo}
+                          value={this.state.promoCode}
+                          helperText={this.state.promoError}
+                          error={this.state.promoError.length > 0}
+                        />
+                        <Tooltip title="Apply Code" placement="top">
+                          <IconButton
+                            style={{ margin: '12px 0 0 10px' }}
+                            aria-label="Apply Code"
+                            size="small"
+                            color="primary"
+                            onClick={this.applyPromo}
+                          >
+                            <SendIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    )}
+                    <p style={{ fontSize: '1rem', margin: '16px 0', lineHeight: '20px' }}>
+                      <strong style={{ marginRight: '15px' }}>Total:</strong>
+                      {`$${this.getTotal()}`}
+                    </p>
+                  </div>
                   {this.getTotal() > 0 ? (
                     <Styled.CardInfo>
                       <CardElement />
