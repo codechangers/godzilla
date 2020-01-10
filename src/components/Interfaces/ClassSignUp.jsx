@@ -248,6 +248,7 @@ class ClassSignUpInterface extends React.Component {
       }
     } else {
       // Skip charge
+      // TODO: run a dry charge to keep track of the transaction and handle promoCode tracking.
       const children = selectedClass.children || [];
       selectedChildren.forEach(child => {
         const classes = child.classes || [];
@@ -290,6 +291,23 @@ class ClassSignUpInterface extends React.Component {
           this.setState({ promoError: 'Invalid Promo Code' });
         }
       });
+  }
+
+  getPromoUses() {
+    const { promoDoc, selectedChildren } = this.state;
+    const registrations = selectedChildren.filter(c => !this.checkDisabled(c)).length;
+    if (promoDoc !== null) {
+      if (promoDoc.limited && registrations > promoDoc.uses) {
+        return `Code ${promoDoc.code} applied to ${promoDoc.uses} registration${
+          promoDoc.uses === 1 ? '' : 's'
+        }, code has been redeemed the max amount of times.`;
+      } else {
+        return `Code ${promoDoc.code} applied to ${registrations} registration${
+          registrations === 1 ? '' : 's'
+        }.`;
+      }
+    }
+    return '';
   }
 
   checkDisabled(child) {
@@ -442,7 +460,14 @@ class ClassSignUpInterface extends React.Component {
                     }}
                   >
                     {this.state.promoDoc !== null ? (
-                      <p style={{ fontSize: '1rem', margin: '16px 0 12px 0', lineHeight: '20px' }}>
+                      <p
+                        style={{
+                          fontSize: '1rem',
+                          margin: '15px 0 0 0',
+                          lineHeight: '20px',
+                          maxWidth: '350px'
+                        }}
+                      >
                         <strong>{this.state.promoDoc.code}</strong>
                         {' - '}
                         {this.state.promoDoc.discountType === '$'
@@ -459,12 +484,23 @@ class ClassSignUpInterface extends React.Component {
                             <ClearIcon fontSize="inherit" />
                           </IconButton>
                         </Tooltip>
+                        <br />
+                        <span
+                          style={{
+                            fontSize: '0.8rem',
+                            color: 'rgba(0,0,0,0.7)',
+                            lineHeight: '12px'
+                          }}
+                        >
+                          {this.getPromoUses()}
+                        </span>
                       </p>
                     ) : (
                       <div
                         style={{
                           display: 'flex',
-                          alignItems: 'center'
+                          alignItems: 'center',
+                          marginBottom: '14px'
                         }}
                       >
                         <TextField
