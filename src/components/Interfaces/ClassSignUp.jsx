@@ -298,13 +298,13 @@ class ClassSignUpInterface extends React.Component {
     const registrations = selectedChildren.filter(c => !this.checkDisabled(c)).length;
     if (promoDoc !== null) {
       if (promoDoc.limited && registrations > promoDoc.uses) {
-        return `Code ${promoDoc.code} applied to ${promoDoc.uses} registration${
+        return `${promoDoc.code} applied to ${promoDoc.uses} registration${
           promoDoc.uses === 1 ? '' : 's'
-        }, code has been redeemed the max amount of times.`;
+        } (redeemed max amount times)`;
       } else {
-        return `Code ${promoDoc.code} applied to ${registrations} registration${
+        return `${promoDoc.code} applied to ${registrations} registration${
           registrations === 1 ? '' : 's'
-        }.`;
+        }`;
       }
     }
     return '';
@@ -464,8 +464,7 @@ class ClassSignUpInterface extends React.Component {
                         style={{
                           fontSize: '1rem',
                           margin: '15px 0 0 0',
-                          lineHeight: '20px',
-                          maxWidth: '350px'
+                          lineHeight: '20px'
                         }}
                       >
                         <strong>{this.state.promoDoc.code}</strong>
