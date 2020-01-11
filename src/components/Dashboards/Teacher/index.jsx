@@ -5,6 +5,7 @@ import CurriculumInterface from '../../Interfaces/Curriculum';
 import PaymentInterface from '../../Interfaces/Payment';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
+import PromoCodesInterface from '../../Interfaces/PromoCodes';
 import SideBar from '../../UI/SideBar';
 import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
@@ -18,7 +19,8 @@ const routeToInterface = {
   '/teacher/curriculum': CurriculumInterface,
   '/teacher/payments': PaymentInterface,
   '/teacher/profile': ProfileInterface,
-  '/teacher/settings': SettingsInterface
+  '/teacher/settings': SettingsInterface,
+  '/teacher/promo': PromoCodesInterface
 };
 
 let teacherListener = () => {};
@@ -47,6 +49,11 @@ class TeacherDashboard extends React.Component {
     teacherListener = () => {};
   }
 
+  isApproved() {
+    const { teacher } = this.state;
+    return teacher && teacher.isVerrified && !teacher.isTraining;
+  }
+
   getInterface() {
     const Interface = routeToInterface[this.props.location.pathname];
     const { firebase, db, user, accounts } = this.props;
@@ -71,10 +78,15 @@ class TeacherDashboard extends React.Component {
 
   render() {
     const { user, firebase } = this.props;
+    const approvedRoutes = this.isApproved() ? ['Promo Codes'] : [];
 
     return user.isSignedIn ? (
       <div className="page-wrapper">
-        <SideBar names={['Dashboard', 'Profile']} baseRoute="/teacher" firebase={firebase} />
+        <SideBar
+          names={['Dashboard', 'Profile'].concat(approvedRoutes)}
+          baseRoute="/teacher"
+          firebase={firebase}
+        />
         {this.getInterface() || this.getDashboard()}
       </div>
     ) : (

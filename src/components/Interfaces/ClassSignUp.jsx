@@ -16,12 +16,17 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  TextField,
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import SendIcon from '@material-ui/icons/Send';
+import ClearIcon from '@material-ui/icons/Clear';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassPanel from '../Classes/Panel';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -51,7 +56,12 @@ class ClassSignUpInterface extends React.Component {
       isLoading: true,
       isProcessing: false,
       paymentSucceeded: false,
-      paymentFailed: false
+      paymentFailed: false,
+      paymentError: '',
+      invalidPayment: '',
+      promoCode: '',
+      promoError: '',
+      promoDoc: null
     };
     autoBind(this);
   }
@@ -146,10 +156,36 @@ class ClassSignUpInterface extends React.Component {
   }
 
   getTotal() {
-    const { selectedChildren, selectedClass } = this.state;
-    if (selectedClass !== null)
-      return selectedClass.price * selectedChildren.filter(c => !this.checkDisabled(c)).length;
-    return 0;
+    const { selectedChildren, selectedClass, promoDoc } = this.state;
+    let total = 0;
+    if (selectedClass !== null) {
+      const registrations = selectedChildren.filter(c => !this.checkDisabled(c)).length;
+      if (promoDoc !== null) {
+        const { discountType, discountAmount, uses, limited } = promoDoc;
+        if (discountType === '$') {
+          total =
+            registrations > uses && limited
+              ? (selectedClass.price - discountAmount >= 0
+                  ? selectedClass.price - discountAmount
+                  : 0 * uses) +
+                selectedClass.price * (registrations - uses)
+              : (selectedClass.price - discountAmount) * registrations;
+        } else {
+          total =
+            registrations > uses && limited
+              ? selectedClass.price * (0.01 * discountAmount) * uses +
+                selectedClass.price * registrations -
+                uses
+              : selectedClass.price * (0.01 * discountAmount) * registrations;
+        }
+      } else {
+        total = selectedClass.price * registrations;
+      }
+    }
+    if (total < 0) {
+      total = 0;
+    }
+    return total;
   }
 
   checkToggle(child) {
@@ -168,18 +204,27 @@ class ClassSignUpInterface extends React.Component {
   }
 
   async handleSubmit() {
-    const { selectedClass, selectedChildren } = this.state;
-    const { token } = await this.props.stripe.createToken({ name: 'Name' });
-    this.setState({ isProcessing: true });
-    if (token) {
+    const { selectedClass, selectedChildren, promoDoc } = this.state;
+    let token;
+    let errorMessage = 'Invalid Payment Information!';
+    if (this.getTotal() > 0) {
+      const stripePayment = await this.props.stripe.createToken({ name: 'Name' });
+      token = stripePayment.token;
+      if (stripePayment.error) {
+        errorMessage = stripePayment.error.message;
+      }
+    }
+    if ((this.getTotal() > 0 && token) || this.getTotal() === 0) {
+      this.setState({ isProcessing: true, invalidPayment: '', paymentError: '' });
       // eslint-disable-next-line
       fetch(`${API_URL}/charge`, {
         method: 'POST',
         body: JSON.stringify({
-          token: token.id,
+          token: token ? token.id : '1234',
           classID: selectedClass.id,
           teacherID: selectedClass.teacher.id,
           parentID: this.props.user.uid,
+          promoId: promoDoc !== null ? promoDoc.id : '1234',
           numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
         }),
         headers: {
@@ -198,6 +243,13 @@ class ClassSignUpInterface extends React.Component {
             });
             selectedClass.ref.update({ children });
             this.setState({ paymentSucceeded: true });
+          } else if (res.error) {
+            console.log(res.error);
+            if (res.error.code === 'card_declined') {
+              this.setState({ isProcessing: false, invalidPayment: 'Your Card was Declined.' });
+            } else {
+              this.setState({ paymentFailed: true, paymentError: res.error.message });
+            }
           } else {
             console.log(res);
             this.setState({ paymentFailed: true });
@@ -207,7 +259,58 @@ class ClassSignUpInterface extends React.Component {
           console.log(err);
           this.setState({ paymentFailed: true });
         });
+    } else {
+      this.setState({ isProcessing: false, invalidPayment: errorMessage });
     }
+  }
+
+  setPromo(e) {
+    this.setState({ promoCode: e.target.value });
+  }
+
+  applyPromo() {
+    this.props.db
+      .collection('promos')
+      .where('code', '==', this.state.promoCode)
+      .get()
+      .then(qSnap => {
+        qSnap.forEach(doc => {
+          if (
+            doc.exists &&
+            doc.data().teacher.id === this.state.selectedClass.teacher.id &&
+            doc.data().active &&
+            !doc.data().deletedOn
+          ) {
+            this.setState({
+              promoDoc: { ...doc.data(), id: doc.id, ref: doc.ref },
+              promoCode: '',
+              promoError: ''
+            });
+          } else {
+            this.setState({ promoError: 'Invalid Promo Code' });
+          }
+        });
+        if (qSnap.empty) {
+          this.setState({ promoError: 'Invalid Promo Code' });
+        }
+      });
+  }
+
+  getPromoUses() {
+    const { promoDoc, selectedChildren } = this.state;
+    const registrations = selectedChildren.filter(c => !this.checkDisabled(c)).length;
+    if (promoDoc !== null) {
+      if (promoDoc.limited && registrations > promoDoc.uses) {
+        return `${promoDoc.code} applied to ${promoDoc.uses} registration${
+          promoDoc.uses === 1 ? '' : 's'
+        } (redeemed max amount times)`;
+      } else {
+        return `${promoDoc.code} applied to ${registrations} registration${
+          registrations === 1 ? '' : 's'
+        }`;
+      }
+    }
+    return '';
   }
 
   checkDisabled(child) {
@@ -255,8 +358,9 @@ class ClassSignUpInterface extends React.Component {
                 </h4>
               ) : paymentFailed ? (
                 <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
-                  An error occured while attempting to process your payment. Please try again at a
-                  later time.
+                  {this.state.paymentError.length > 0
+                    ? this.state.paymentError
+                    : 'An error occured while attempting to process your payment. Please try again at a later time.'}
                 </h4>
               ) : null}
               <div
@@ -348,12 +452,94 @@ class ClassSignUpInterface extends React.Component {
                       );
                     })}
                   </List>
-                  <p style={{ textAlign: 'right', margin: '10px 16px 20px 0' }}>
-                    <strong style={{ marginRight: '15px' }}>Total:</strong>
-                    {`$${this.getTotal()}`}
-                  </p>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      boxSizing: 'border-box',
+                      padding: '10px 20px 20px 20px'
+                    }}
+                  >
+                    {this.state.promoDoc !== null ? (
+                      <p
+                        style={{
+                          fontSize: '1rem',
+                          margin: '15px 0 0 0',
+                          lineHeight: '20px'
+                        }}
+                      >
+                        <strong>{this.state.promoDoc.code}</strong>
+                        {' - '}
+                        {this.state.promoDoc.discountType === '$'
+                          ? `$${this.state.promoDoc.discountAmount}`
+                          : `${this.state.promoDoc.discountAmount}%`}{' '}
+                        off each student!
+                        <Tooltip title="Remove Discount" placement="top">
+                          <IconButton
+                            style={{ margin: '0 0 3px 10px' }}
+                            aria-label="Remove Discount"
+                            size="small"
+                            onClick={() => this.setState({ promoDoc: null })}
+                          >
+                            <ClearIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
+                        <br />
+                        <span
+                          style={{
+                            fontSize: '0.8rem',
+                            color: 'rgba(0,0,0,0.7)',
+                            lineHeight: '12px'
+                          }}
+                        >
+                          {this.getPromoUses()}
+                        </span>
+                      </p>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginBottom: '14px'
+                        }}
+                      >
+                        <TextField
+                          label="Promo Code"
+                          onChange={this.setPromo}
+                          value={this.state.promoCode}
+                          helperText={this.state.promoError}
+                          error={this.state.promoError.length > 0}
+                        />
+                        <Tooltip title="Apply Discount" placement="top">
+                          <IconButton
+                            style={{ margin: '12px 0 0 10px' }}
+                            aria-label="Apply Discount"
+                            size="small"
+                            color="primary"
+                            onClick={this.applyPromo}
+                          >
+                            <SendIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    )}
+                    <p style={{ fontSize: '1rem', margin: '16px 0', lineHeight: '20px' }}>
+                      <strong style={{ marginRight: '15px' }}>Total:</strong>
+                      {`$${this.getTotal()}`}
+                    </p>
+                  </div>
+                  {this.getTotal() > 0 && (
+                    <p style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>
+                      {this.state.invalidPayment}
+                    </p>
+                  )}
                   {this.getTotal() > 0 ? (
-                    <Styled.CardInfo>
+                    <Styled.CardInfo
+                      style={this.state.invalidPayment ? { border: '1px solid red' } : null}
+                    >
                       <CardElement />
                     </Styled.CardInfo>
                   ) : null}
@@ -366,7 +552,9 @@ class ClassSignUpInterface extends React.Component {
                       Cancel
                     </Button>
                     <Button
-                      disabled={this.getTotal() <= 0}
+                      disabled={
+                        this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <= 0
+                      }
                       onClick={this.handleSubmit}
                       variant="contained"
                       color="primary"
