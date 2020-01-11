@@ -57,6 +57,7 @@ class ClassSignUpInterface extends React.Component {
       isProcessing: false,
       paymentSucceeded: false,
       paymentFailed: false,
+      paymentError: '',
       invalidPayment: '',
       promoCode: '',
       promoError: '',
@@ -214,7 +215,7 @@ class ClassSignUpInterface extends React.Component {
       }
     }
     if ((this.getTotal() > 0 && token) || this.getTotal() === 0) {
-      this.setState({ isProcessing: true, invalidPayment: '' });
+      this.setState({ isProcessing: true, invalidPayment: '', paymentError: '' });
       // eslint-disable-next-line
       fetch(`${API_URL}/charge`, {
         method: 'POST',
@@ -242,6 +243,13 @@ class ClassSignUpInterface extends React.Component {
             });
             selectedClass.ref.update({ children });
             this.setState({ paymentSucceeded: true });
+          } else if (res.error) {
+            console.log(res.error);
+            if (res.error.code === 'card_declined') {
+              this.setState({ isProcessing: false, invalidPayment: 'Your Card was Declined.' });
+            } else {
+              this.setState({ paymentFailed: true, paymentError: res.error.message });
+            }
           } else {
             console.log(res);
             this.setState({ paymentFailed: true });
@@ -350,8 +358,9 @@ class ClassSignUpInterface extends React.Component {
                 </h4>
               ) : paymentFailed ? (
                 <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
-                  An error occured while attempting to process your payment. Please try again at a
-                  later time.
+                  {this.state.paymentError.length > 0
+                    ? this.state.paymentError
+                    : 'An error occured while attempting to process your payment. Please try again at a later time.'}
                 </h4>
               ) : null}
               <div
