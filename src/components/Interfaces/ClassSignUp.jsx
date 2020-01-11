@@ -203,61 +203,56 @@ class ClassSignUpInterface extends React.Component {
   }
 
   async handleSubmit() {
-    const { selectedClass, selectedChildren } = this.state;
+    const { selectedClass, selectedChildren, promoDoc } = this.state;
+    let token;
+    let errorMessage = 'Invalid Payment Information!';
     if (this.getTotal() > 0) {
-      const { token } = await this.props.stripe.createToken({ name: 'Name' });
+      const stripePayment = await this.props.stripe.createToken({ name: 'Name' });
+      token = stripePayment.token;
+      if (stripePayment.error) {
+        errorMessage = stripePayment.error.message;
+      }
+    }
+    if ((this.getTotal() > 0 && token) || this.getTotal() === 0) {
       this.setState({ isProcessing: true, invalidPayment: '' });
-      if (token) {
-        // eslint-disable-next-line
-        fetch(`${API_URL}/charge`, {
-          method: 'POST',
-          body: JSON.stringify({
-            token: token.id,
-            classID: selectedClass.id,
-            teacherID: selectedClass.teacher.id,
-            parentID: this.props.user.uid,
-            numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
-          }),
-          headers: {
-            'Content-Type': 'application/json'
+      // eslint-disable-next-line
+      fetch(`${API_URL}/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          token: token ? token.id : '1234',
+          classID: selectedClass.id,
+          teacherID: selectedClass.teacher.id,
+          parentID: this.props.user.uid,
+          promoId: promoDoc !== null ? promoDoc.id : '1234',
+          numberOfChildren: selectedChildren.filter(c => !this.checkDisabled(c)).length
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 200) {
+            const children = selectedClass.children || [];
+            selectedChildren.forEach(child => {
+              const classes = child.classes || [];
+              classes.push(selectedClass.ref);
+              child.ref.update({ classes });
+              children.push(child.ref);
+            });
+            selectedClass.ref.update({ children });
+            this.setState({ paymentSucceeded: true });
+          } else {
+            console.log(res);
+            this.setState({ paymentFailed: true });
           }
         })
-          .then(res => res.json())
-          .then(res => {
-            if (res.status === 200) {
-              const children = selectedClass.children || [];
-              selectedChildren.forEach(child => {
-                const classes = child.classes || [];
-                classes.push(selectedClass.ref);
-                child.ref.update({ classes });
-                children.push(child.ref);
-              });
-              selectedClass.ref.update({ children });
-              this.setState({ paymentSucceeded: true });
-            } else {
-              console.log(res);
-              this.setState({ paymentFailed: true });
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            this.setState({ paymentFailed: true });
-          });
-      } else {
-        this.setState({ isProcessing: false, invalidPayment: 'Invalid Payment Information!' });
-      }
+        .catch(err => {
+          console.log(err);
+          this.setState({ paymentFailed: true });
+        });
     } else {
-      // Skip charge
-      // TODO: run a dry charge to keep track of the transaction and handle promoCode tracking.
-      const children = selectedClass.children || [];
-      selectedChildren.forEach(child => {
-        const classes = child.classes || [];
-        classes.push(selectedClass.ref);
-        child.ref.update({ classes });
-        children.push(child.ref);
-      });
-      selectedClass.ref.update({ children });
-      this.setState({ paymentSucceeded: true });
+      this.setState({ isProcessing: false, invalidPayment: errorMessage });
     }
   }
 
