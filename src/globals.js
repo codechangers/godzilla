@@ -20,6 +20,12 @@ export const months = [
   'December'
 ];
 
+export const programTypeToText = {
+  camp: 'Camp',
+  'after-school': 'After School Program',
+  'special-event': 'Special Event'
+};
+
 export const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const dataMemberToValidation = {

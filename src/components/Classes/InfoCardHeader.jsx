@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
 import { getDateString, getTime, calcSessions } from '../../helpers';
+import { programTypeToText } from '../../globals';
 import { Template2 } from '../Images';
 
 const SignUpsProgress = withStyles({
@@ -46,7 +47,24 @@ class InfoCardHeader extends React.Component {
           <h5>{cls.name}</h5>
           {children === null || hideImage ? null : (
             <div className="inliner col">
-              <p>{cls.locationName}</p>
+              <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+                {cls.locationName}
+                {cls.programType ? (
+                  <span
+                    style={{
+                      backgroundColor: '#8dc63f',
+                      fontSize: '0.8rem',
+                      color: '#fff',
+                      padding: '2px 8px',
+                      marginTop: '-10px',
+                      borderRadius: '20px',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    {programTypeToText[cls.programType]}
+                  </span>
+                ) : null}
+              </p>
               <p>
                 <LocationOn fontSize="inherit" />
                 {cls.locationAddress}
