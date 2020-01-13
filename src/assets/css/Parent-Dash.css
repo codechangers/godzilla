@@ -130,6 +130,8 @@
 .modal-content {
   padding: 40px;
   min-width: 400px;
+  max-height: 100%;
+  overflow: scroll;
   outline: none;
 }
 
