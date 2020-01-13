@@ -47,8 +47,7 @@ class InfoCardHeader extends React.Component {
           <h5>{cls.name}</h5>
           {children === null || hideImage ? null : (
             <div className="inliner col">
-              <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {cls.locationName}
+              <p>
                 {cls.programType ? (
                   <span
                     style={{
@@ -57,7 +56,7 @@ class InfoCardHeader extends React.Component {
                       color: '#fff',
                       padding: '2px 8px',
                       marginTop: '-10px',
-                      borderRadius: '20px',
+                      borderRadius: '4px',
                       boxSizing: 'border-box'
                     }}
                   >
@@ -65,6 +64,7 @@ class InfoCardHeader extends React.Component {
                   </span>
                 ) : null}
               </p>
+              <p>{cls.locationName}</p>
               <p>
                 <LocationOn fontSize="inherit" />
                 {cls.locationAddress}
