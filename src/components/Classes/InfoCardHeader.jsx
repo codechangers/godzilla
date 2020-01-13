@@ -71,6 +71,27 @@ class InfoCardHeader extends React.Component {
               </p>
             </div>
           )}
+          {children !== null && !hideImage ? null : (
+            <div className="inliner col">
+              <p>
+                {cls.programType ? (
+                  <span
+                    style={{
+                      backgroundColor: '#8dc63f',
+                      fontSize: '0.8rem',
+                      color: '#fff',
+                      padding: '2px 8px',
+                      marginTop: '-10px',
+                      borderRadius: '4px',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    {programTypeToText[cls.programType]}
+                  </span>
+                ) : null}
+              </p>
+            </div>
+          )}
           <div className="inliner">
             <p>{`Start Date: ${getDateString(cls.startDate)}`}</p>
             <p>{`End Date: ${getDateString(cls.endDate)}`}</p>
