@@ -6,7 +6,8 @@ import {
   Checkbox,
   InputAdornment,
   Button,
-  FormControlLabel
+  FormControlLabel,
+  MenuItem
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
@@ -17,6 +18,7 @@ import autoBind from '../../autoBind';
 
 const allFields = [
   'name',
+  'programType',
   'price',
   'description',
   'locationName',
@@ -31,7 +33,14 @@ const allFields = [
   'minStudents',
   'maxStudents'
 ];
-const dontConvert = ['name', 'description', 'locationName', 'locationAddress', 'daysOfWeek'];
+const dontConvert = [
+  'name',
+  'programType',
+  'description',
+  'locationName',
+  'locationAddress',
+  'daysOfWeek'
+];
 const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
 const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
 
@@ -40,6 +49,7 @@ class ClassEditor extends React.Component {
     super(props);
     this.state = {
       name: '',
+      programType: '',
       description: '',
       locationName: '',
       locationAddress: '',
@@ -104,9 +114,10 @@ class ClassEditor extends React.Component {
   }
 
   handleInput(e) {
-    const newState = this.state;
-    newState[e.target.id] = e.target.value;
-    this.setState({ ...newState });
+    const { id, name, value } = e.target;
+    const newState = {};
+    newState[id || name] = value;
+    this.setState(newState);
   }
 
   handleSubmit() {
@@ -145,24 +156,43 @@ class ClassEditor extends React.Component {
           error={getErrorStatus(this.state.errors.description)}
           helperText={this.state.errors.description}
         />
-        <TextField
-          id="price"
-          className="input most"
-          type="text"
-          label="Price Per Student"
-          variant="outlined"
-          value={this.state.price}
-          onChange={this.handleInput}
-          error={getErrorStatus(this.state.errors.price)}
-          helperText={this.state.errors.price}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment className="bold-icon" position="start">
-                $
-              </InputAdornment>
-            )
-          }}
-        />
+        <div className="inliner">
+          <TextField
+            id="price"
+            className="input most"
+            type="text"
+            label="Price Per Student"
+            variant="outlined"
+            value={this.state.price}
+            onChange={this.handleInput}
+            error={getErrorStatus(this.state.errors.price)}
+            helperText={this.state.errors.price}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment className="bold-icon" position="start">
+                  $
+                </InputAdornment>
+              )
+            }}
+          />
+          <TextField
+            id="programType"
+            name="programType"
+            className="input"
+            type="text"
+            label="Type of Program"
+            variant="outlined"
+            value={this.state.programType}
+            onChange={this.handleInput}
+            error={getErrorStatus(this.state.errors.programType)}
+            helperText={this.state.errors.programType}
+            select
+          >
+            <MenuItem value="camp">Camp</MenuItem>
+            <MenuItem value="after-school">After School Program</MenuItem>
+            <MenuItem value="special-event">Special Event</MenuItem>
+          </TextField>
+        </div>
         {this.state.errors.daysOfWeek ? (
           <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
         ) : null}
