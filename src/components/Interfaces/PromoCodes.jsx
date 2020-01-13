@@ -83,7 +83,7 @@ const PromoCodesInterface = ({ user, db }) => {
   const classes = useStyles();
 
   return (
-    <div className="page-content horiz-center">
+    <div className="page-content horiz-center" style={{ paddingBottom: 30 }}>
       <h2>Manage Your Promo Codes</h2>
       {!showOldPromos ? (
         <Button
