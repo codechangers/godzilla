@@ -174,6 +174,7 @@ const styles = {
     margin: 0,
     borderRadius: '4px',
     boxSizing: 'border-box',
+    lineHeight: '23px',
     border: '1px solid #8dc63f'
   },
   typeFilterActive: {
@@ -183,6 +184,7 @@ const styles = {
     padding: '2px 8px',
     margin: '1px',
     borderRadius: '4px',
+    lineHeight: '23px',
     boxSizing: 'border-box'
   },
   cardWrapper: {
