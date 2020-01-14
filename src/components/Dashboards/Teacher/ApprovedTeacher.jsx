@@ -21,6 +21,8 @@ const getMessage = () => (
   </span>
 );
 
+const controller = new AbortController();
+let abort = () => null;
 let teacherSub = () => null;
 
 class ApprovedTeacher extends React.Component {
@@ -46,11 +48,14 @@ class ApprovedTeacher extends React.Component {
       .then(res => {
         this.setState({ stripeIsLinked: res.stripe_is_linked });
       });
+    abort = controller.abort.bind(controller);
   }
 
   componentWillUnmount() {
     teacherSub();
     teacherSub = () => null;
+    abort();
+    abort = () => null;
   }
 
   getEmptyPrompt() {
