@@ -51,7 +51,10 @@ const PromoCodesInterface = ({ user, db }) => {
 
   const updatePromo = promoCode => {
     promoCode.startUses = Number(promoToEdit.startUses + (promoCode.uses - promoToEdit.uses)); // preserve # of promos used
-    promoToEdit.ref.update({ ...promoToEdit, ...promoCode }).then(() => getPromos(teacher));
+    const updatedPromo = { ...promoToEdit, ...promoCode };
+    delete updatedPromo.id;
+    delete updatedPromo.ref; // prevent these fields from being saved to the doc
+    promoToEdit.ref.update(updatedPromo).then(() => getPromos(teacher));
     setPromoToEdit({ isSet: false });
   };
 
