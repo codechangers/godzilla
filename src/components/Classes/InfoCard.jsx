@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
+import ContactsIcon from '@material-ui/icons/Contacts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { URL } from '../../globals';
 import InfoCardHeader from './InfoCardHeader';
@@ -62,9 +63,13 @@ class ClassInfoCard extends React.Component {
               Download Logins
             </Button>
           </CSVDownload>
+          <Button variant="contained">
+            <ContactsIcon />
+            Contact Info
+          </Button>
           <Button variant="contained" onClick={openUpdate}>
             <EditIcon />
-            EDIT CLASS DETAILS
+            EDIT CLASS
           </Button>
           <Button variant="contained" onClick={openDelete}>
             <DeleteIcon />
