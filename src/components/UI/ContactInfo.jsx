@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   Modal,
@@ -28,7 +28,25 @@ const ContactInfo = ({ cls, onClose }) => {
   const [students, setStudents] = useState([]);
   const [parents, setParents] = useState({});
 
-  const getStudents = () => {
+  const getParents = useCallback(
+    ns => {
+      const newParents = {};
+      const useableStudents = ns || students;
+      const studentsWithParent = useableStudents.filter(a => a.parent !== undefined);
+      studentsWithParent.forEach(s => {
+        s.parent.get().then(parentDoc => {
+          const { id, ref } = parentDoc;
+          newParents[id] = { ...parentDoc.data(), id, ref };
+          if (Object.keys(newParents).length === studentsWithParent.length) {
+            setParents(newParents);
+          }
+        });
+      });
+    },
+    [students, setParents]
+  );
+
+  const getStudents = useCallback(() => {
     const newStudents = [];
     cls.children.forEach(childRef => {
       childRef.get().then(childDoc => {
@@ -40,22 +58,7 @@ const ContactInfo = ({ cls, onClose }) => {
         }
       });
     });
-  };
-
-  const getParents = ns => {
-    const newParents = {};
-    const useableStudents = ns || students;
-    const studentsWithParent = useableStudents.filter(a => a.parent !== undefined);
-    studentsWithParent.forEach(s => {
-      s.parent.get().then(parentDoc => {
-        const { id, ref } = parentDoc;
-        newParents[id] = { ...parentDoc.data(), id, ref };
-        if (Object.keys(newParents).length === studentsWithParent.length) {
-          setParents(newParents);
-        }
-      });
-    });
-  };
+  }, [getParents, cls, setStudents]);
 
   const getContactInfo = () =>
     students.map(s => {
@@ -80,7 +83,7 @@ const ContactInfo = ({ cls, onClose }) => {
     if (cls !== null) {
       getStudents();
     }
-  }, [cls]);
+  }, [getStudents, cls]);
 
   const classes = useStyles();
   return (
