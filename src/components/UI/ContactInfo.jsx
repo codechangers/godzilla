@@ -67,13 +67,13 @@ const ContactInfo = ({ cls, onClose }) => {
     <Modal className={classes.modal} open={cls !== null} onClose={onClose} disableAutoFocus>
       <Paper className={classes.paper}>
         <div className={classes.header}>
-          <Typography variant="h2">Contact Info</Typography>
+          <Typography variant="h5">Contact Info</Typography>
           <Button variant="contained" style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
             <DownloadIcon style={{ marginRight: '8px' }} />
             Download Info
           </Button>
         </div>
-        <Table>
+        <Table style={{ marginBottom: '20px' }}>
           <TableHead>
             <TableRow>
               <TableCell>Student Name</TableCell>
@@ -129,13 +129,18 @@ const useStyles = makeStyles({
   paper: {
     width: '50%',
     minWidth: '350px',
-    padding: '20px'
+    padding: '0 20px',
+    maxHeight: '100%',
+    overflow: 'scroll',
+    outline: 'none'
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: '30px',
+    marginBottom: '5px'
   }
 });
 
