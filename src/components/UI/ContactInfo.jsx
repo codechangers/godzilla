@@ -13,6 +13,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
+import CSVDownload from './CSVDownload';
 
 const propTypes = {
   cls: PropTypes.object,
@@ -56,6 +57,25 @@ const ContactInfo = ({ cls, onClose }) => {
     });
   };
 
+  const getContactInfo = () =>
+    students.map(s => {
+      const parent =
+        s.parent && Object.keys(parents).includes(s.parent.id) ? parents[s.parent.id] : undefined;
+      return parent
+        ? {
+            student_name: `${s.fName} ${s.lName}`,
+            parent_name: `${parent.fName} ${parent.lName}`,
+            email: parent.email,
+            phone: parent.phone
+          }
+        : {
+            student_name: `${s.fName} ${s.lName}`,
+            parent_name: '',
+            email: '',
+            phone: ''
+          };
+    });
+
   useEffect(() => {
     if (cls !== null) {
       getStudents();
@@ -68,10 +88,15 @@ const ContactInfo = ({ cls, onClose }) => {
       <Paper className={classes.paper}>
         <div className={classes.header}>
           <Typography variant="h5">Contact Info</Typography>
-          <Button variant="contained" style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
-            <DownloadIcon style={{ marginRight: '8px' }} />
-            Download Info
-          </Button>
+          <CSVDownload
+            filename={`${cls !== null ? cls.name : 'blank'}-contacts.csv`}
+            data={getContactInfo()}
+          >
+            <Button variant="contained" style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+              <DownloadIcon style={{ marginRight: '8px' }} />
+              Download Info
+            </Button>
+          </CSVDownload>
         </div>
         <Table style={{ marginBottom: '20px' }}>
           <TableHead>
