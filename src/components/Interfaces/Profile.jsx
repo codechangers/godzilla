@@ -389,6 +389,9 @@ class ProfileInterface extends React.Component {
         gender
       };
       if (this.validateFields(childFields)) {
+        if (!child.parent) {
+          childFields.parent = this.props.db.collection('parents').doc(this.props.user.uid);
+        }
         child.ref.update(childFields);
       }
     }
