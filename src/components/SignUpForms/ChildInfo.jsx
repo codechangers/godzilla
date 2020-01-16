@@ -94,6 +94,7 @@ class ChildInfo extends React.Component {
               .collection('children')
               .add({
                 learnID,
+                parent: this.props.db.collection('parents').doc(user.uid),
                 ...this.getUserData(allFields)
               })
               .then(child => {

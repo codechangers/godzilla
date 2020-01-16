@@ -8,6 +8,7 @@ import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
 import StripeConnect from '../../UI/StripeConnect';
+import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
 import '../../../assets/css/Teacher.css';
@@ -33,7 +34,8 @@ class ApprovedTeacher extends React.Component {
       selected: null,
       showCreate: false,
       stripeIsLinked: false,
-      showOldClasses: false
+      showOldClasses: false,
+      contactClass: null
     };
     autoBind(this);
   }
@@ -231,6 +233,7 @@ class ApprovedTeacher extends React.Component {
               key={cls.id}
               openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
               openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+              openContacts={() => this.setState({ contactClass: cls })}
             />
           ) : null
         )}
@@ -252,6 +255,10 @@ class ApprovedTeacher extends React.Component {
             action={[<StripeConnect key="stripe_oauth" />]}
           />
         </Snackbar>
+        <ContactInfo
+          cls={this.state.contactClass}
+          onClose={() => this.setState({ contactClass: null })}
+        />
       </div>
     );
   }
