@@ -46,7 +46,7 @@ class ClassInfoCard extends React.Component {
   }
 
   render() {
-    const { cls, openUpdate, openDelete } = this.props;
+    const { cls, openUpdate, openDelete, openContacts } = this.props;
     return (
       <Paper className="infocard-wrapper">
         <InfoCardHeader cls={cls} />
@@ -63,7 +63,7 @@ class ClassInfoCard extends React.Component {
               Download Logins
             </Button>
           </CSVDownload>
-          <Button variant="contained">
+          <Button variant="contained" onClick={openContacts}>
             <ContactsIcon />
             Contact Info
           </Button>
@@ -90,7 +90,8 @@ class ClassInfoCard extends React.Component {
 ClassInfoCard.propTypes = {
   cls: PropTypes.object.isRequired,
   openUpdate: PropTypes.func.isRequired,
-  openDelete: PropTypes.func.isRequired
+  openDelete: PropTypes.func.isRequired,
+  openContacts: PropTypes.func.isRequired
 };
 
 export default ClassInfoCard;
