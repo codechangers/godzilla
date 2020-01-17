@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Modal,
@@ -28,25 +28,21 @@ const ContactInfo = ({ cls, onClose }) => {
   const [students, setStudents] = useState([]);
   const [parents, setParents] = useState({});
 
-  const getParents = useCallback(
-    ns => {
-      const newParents = {};
-      const useableStudents = ns || students;
-      const studentsWithParent = useableStudents.filter(a => a.parent !== undefined);
-      studentsWithParent.forEach(s => {
-        s.parent.get().then(parentDoc => {
-          const { id, ref } = parentDoc;
-          newParents[id] = { ...parentDoc.data(), id, ref };
-          if (Object.keys(newParents).length === studentsWithParent.length) {
-            setParents(newParents);
-          }
-        });
+  const getParents = ns => {
+    setParents({});
+    const useableStudents = ns || students;
+    const studentsWithParent = useableStudents.filter(a => a.parent !== undefined);
+    studentsWithParent.forEach(s => {
+      s.parent.get().then(parentDoc => {
+        const newParents = parents;
+        const { id, ref } = parentDoc;
+        newParents[id] = { ...parentDoc.data(), id, ref };
+        setParents(newParents);
       });
-    },
-    [students, setParents]
-  );
+    });
+  };
 
-  const getStudents = useCallback(() => {
+  const getStudents = () => {
     const newStudents = [];
     cls.children.forEach(childRef => {
       childRef.get().then(childDoc => {
@@ -58,7 +54,7 @@ const ContactInfo = ({ cls, onClose }) => {
         }
       });
     });
-  }, [getParents, cls, setStudents]);
+  };
 
   const getContactInfo = () =>
     students.map(s => {
@@ -83,7 +79,8 @@ const ContactInfo = ({ cls, onClose }) => {
     if (cls !== null) {
       getStudents();
     }
-  }, [getStudents, cls]);
+    // eslint-disable-next-line
+  }, [cls]);
 
   const classes = useStyles();
   return (
