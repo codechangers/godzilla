@@ -91,3 +91,20 @@ export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp))
 export const getDateString = timestamp => getMonthDDYYYY(getDateFromTimestamp(timestamp));
 
 export const getTime = timestamp => getHrMn(getDateFromTimestamp(timestamp));
+
+export const getOrdinal = int => {
+  const string = `${int}`;
+  const ordinals = {
+    0: 'th',
+    1: 'st',
+    2: 'nd',
+    3: 'rd',
+    4: 'th',
+    5: 'th',
+    6: 'th',
+    7: 'th',
+    8: 'th',
+    9: 'th'
+  };
+  return string + ordinals[string[string.length - 1]];
+};
