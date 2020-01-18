@@ -28,7 +28,7 @@ const getSchedule = cls => {
   let currentDate = getDateFromTimestamp(cls.startDate);
   while (currentDate.getTime() / 1000 <= cls.endDate.seconds) {
     if (cls.daysOfWeek.includes(weekDays[currentDate.getDay()])) {
-      dates.push(getDateString(currentDate));
+      dates.push([getDateString(currentDate), currentDate.getTime()]);
     }
     currentDate.setDate(currentDate.getDate() + 1);
   }
@@ -40,15 +40,30 @@ const ScheduleModal = ({ showModal, onClose, cls }) => {
   return (
     <Modal className={classes.modal} open={showModal} onClose={onClose} disableAutoFocus>
       <Paper className={classes.paper}>
-        <Typography variant="h5">Class Schedule</Typography>
-        <Typography variant="body1">
+        <Typography variant="h4" style={{ marginTop: 20 }}>
+          Class Schedule
+        </Typography>
+        <Typography
+          variant="body1"
+          style={{ margin: '12px 30px', fontWeight: '200', fontSize: '1.2rem' }}
+        >
           Classes are from {getTimeString(cls.startTime)} - {getTimeString(cls.endTime)}
         </Typography>
-        {getSchedule(cls).map(date => (
-          <Typography key={date} variant="body1">
-            {date}
+        {getSchedule(cls).map(([str, date]) => (
+          <Typography
+            className={classes.scheduleLine}
+            key={str}
+            variant="body1"
+            style={
+              date >= Date.now()
+                ? { backgroundColor: 'rgba(200, 200, 200, 0.3)' }
+                : { backgroundColor: 'rgba(60, 60, 60, 0.3)' }
+            }
+          >
+            {str}
           </Typography>
         ))}
+        <div style={{ marginBottom: 30 }} />
       </Paper>
     </Modal>
   );
@@ -68,7 +83,15 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     overflow: 'scroll',
     outline: 'none',
-    padding: 20
+    padding: '0 20px'
+  },
+  scheduleLine: {
+    margin: '0 30px',
+    backgroundColor: 'rgba(200, 200, 200, 0.3)',
+    border: '3px solid #fff',
+    boxSizing: 'border-box',
+    padding: '10px 20px',
+    borderRadius: '6px'
   }
 });
 
