@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
-import { getDateString, getTime, calcSessions } from '../../helpers';
+import { getDateString, getTime } from '../../helpers';
+import { programTypeToText } from '../../globals';
 import { Template2 } from '../Images';
+import ScheduleModal from '../UI/ScheduleModal';
 
 const SignUpsProgress = withStyles({
   root: {
@@ -21,7 +23,8 @@ class InfoCardHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      teacher: null
+      teacher: null,
+      showSchedule: false
     };
   }
 
@@ -39,17 +42,55 @@ class InfoCardHeader extends React.Component {
 
   render() {
     const { cls, children, hideImage } = this.props;
-    const { teacher } = this.state;
+    const { teacher, showSchedule } = this.state;
     return (
       <div className={`infocard-header${children !== null ? ' parent' : ''}`}>
         <div style={{ width: hideImage ? '100%' : 'auto' }}>
           <h5>{cls.name}</h5>
           {children === null || hideImage ? null : (
             <div className="inliner col">
+              <p>
+                {cls.programType ? (
+                  <span
+                    style={{
+                      backgroundColor: '#8dc63f',
+                      fontSize: '0.8rem',
+                      color: '#fff',
+                      padding: '2px 8px',
+                      marginTop: '-10px',
+                      borderRadius: '4px',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    {programTypeToText[cls.programType]}
+                  </span>
+                ) : null}
+              </p>
               <p>{cls.locationName}</p>
               <p>
                 <LocationOn fontSize="inherit" />
                 {cls.locationAddress}
+              </p>
+            </div>
+          )}
+          {children !== null && !hideImage ? null : (
+            <div className="inliner col">
+              <p>
+                {cls.programType ? (
+                  <span
+                    style={{
+                      backgroundColor: '#8dc63f',
+                      fontSize: '0.8rem',
+                      color: '#fff',
+                      padding: '2px 8px',
+                      marginTop: '-10px',
+                      borderRadius: '4px',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    {programTypeToText[cls.programType]}
+                  </span>
+                ) : null}
               </p>
             </div>
           )}
@@ -58,7 +99,21 @@ class InfoCardHeader extends React.Component {
             <p>{`End Date: ${getDateString(cls.endDate)}`}</p>
           </div>
           <div className="inliner">
-            <p>{`${calcSessions(cls)} Sessions`}</p>
+            <p style={{ textDecoration: 'underline' }}>
+              <button
+                onClick={() => this.setState({ showSchedule: true })}
+                style={{
+                  background: 'none',
+                  outline: 'none',
+                  border: 'none',
+                  padding: 0,
+                  fontSize: 'inherit',
+                  cursor: 'pointer'
+                }}
+              >
+                View Schedule
+              </button>
+            </p>
             <p>
               <AccessTime fontSize="inherit" />
               {getTime(cls.startTime)}
@@ -97,6 +152,11 @@ class InfoCardHeader extends React.Component {
           {children || <div className="bottom-line" />}
         </div>
         {hideImage || <Template2 />}
+        <ScheduleModal
+          showModal={showSchedule}
+          onClose={() => this.setState({ showSchedule: false })}
+          cls={cls}
+        />
       </div>
     );
   }

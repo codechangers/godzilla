@@ -159,6 +159,7 @@ class ProfileInterface extends React.Component {
       return this.state.accountData[field] !== undefined ? (
         <TextField
           select
+          className="input"
           value={this.state.accountData[field]}
           onChange={e => {
             const { accountData } = this.state;
@@ -176,6 +177,7 @@ class ProfileInterface extends React.Component {
     }
     return this.state.accountData[field] !== undefined ? (
       <InputBase
+        className="full-width"
         value={this.state.accountData[field]}
         onChange={e => {
           const { accountData } = this.state;
@@ -386,6 +388,9 @@ class ProfileInterface extends React.Component {
         gender
       };
       if (this.validateFields(childFields)) {
+        if (!child.parent) {
+          childFields.parent = this.props.db.collection('parents').doc(this.props.user.uid);
+        }
         child.ref.update(childFields);
       }
     }

@@ -8,6 +8,7 @@ import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
 import DeleteCard from '../../UI/DeleteCard';
 import StripeConnect from '../../UI/StripeConnect';
+import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
 
@@ -20,6 +21,8 @@ const getMessage = () => (
   </span>
 );
 
+const controller = new AbortController();
+let abort = () => null;
 let teacherSub = () => null;
 
 class ApprovedTeacher extends React.Component {
@@ -30,7 +33,8 @@ class ApprovedTeacher extends React.Component {
       selected: null,
       showCreate: false,
       stripeIsLinked: false,
-      showOldClasses: false
+      showOldClasses: false,
+      contactClass: null
     };
     autoBind(this);
   }
@@ -45,11 +49,14 @@ class ApprovedTeacher extends React.Component {
       .then(res => {
         this.setState({ stripeIsLinked: res.stripe_is_linked });
       });
+    abort = controller.abort.bind(controller);
   }
 
   componentWillUnmount() {
     teacherSub();
     teacherSub = () => null;
+    abort();
+    abort = () => null;
   }
 
   getEmptyPrompt() {
@@ -136,6 +143,7 @@ class ApprovedTeacher extends React.Component {
         const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
         classes.push(classData);
         if (classes.length === classRefs.length) {
+          classes.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
           this.setState({ classes });
         }
       });
@@ -224,6 +232,7 @@ class ApprovedTeacher extends React.Component {
               key={cls.id}
               openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
               openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+              openContacts={() => this.setState({ contactClass: cls })}
             />
           ) : null
         )}
@@ -245,6 +254,10 @@ class ApprovedTeacher extends React.Component {
             action={[<StripeConnect key="stripe_oauth" />]}
           />
         </Snackbar>
+        <ContactInfo
+          cls={this.state.contactClass}
+          onClose={() => this.setState({ contactClass: null })}
+        />
       </div>
     );
   }

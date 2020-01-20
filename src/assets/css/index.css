@@ -27,17 +27,41 @@ body {
 #template2-img {
   background-image: url('../images/template2.jpeg');
 }
-#students-img {
-  background-image: url('../images/students.jpg');
+#students-img0,
+#students-img1,
+#students-img2,
+#students-img3,
+#students-img4,
+#students-img5,
+#students-img6 {
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
-  background-position: left;
 }
-#students-img {
+#students-img0 {
   background-image: url('../images/students.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: left;
+  background-position: 48% center;
+}
+#students-img1 {
+  background-image: url('../images/students1.jpg');
+  background-position: center center;
+}
+#students-img2 {
+  background-image: url('../images/students2.jpg');
+  background-position: 45% center;
+}
+#students-img3 {
+  background-image: url('../images/students3.jpg');
+  background-position: 56% center;
+}
+#students-img4 {
+  background-image: url('../images/students4.jpg');
+  background-position: 56% center;
+}
+#students-img5 {
+  background-image: url('../images/students5.jpg');
+  background-position: 58% center;
+}
+#students-img6 {
+  background-image: url('../images/students6.jpg');
+  background-position: 56% center;
 }

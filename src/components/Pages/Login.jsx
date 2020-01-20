@@ -52,6 +52,7 @@ class Login extends React.Component {
       signupID: '',
       forgotPassword: false,
       showResetPrompt: false,
+      backgroundImage: 0,
       errors: {}
     };
     this.firebase = props.firebase;
@@ -63,6 +64,8 @@ class Login extends React.Component {
 
   componentDidMount() {
     const { state } = this.props.location;
+    const backgroundImage = Math.floor(Math.random() * 7);
+    this.setState({ backgroundImage });
     if (state && state.signupID) {
       this.checkAccounts(state.signupID);
       this.setState({ signupID: state.signupID });
@@ -273,7 +276,7 @@ class Login extends React.Component {
             Don&apos;t have an account? Sign up today
           </Link>
         </Box>
-        <div className="right-content" id="students-img" />
+        <div className="right-content" id={`students-img${this.state.backgroundImage}`} />
       </div>
     );
   }

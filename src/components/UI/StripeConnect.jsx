@@ -2,6 +2,9 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { API_URL } from '../../globals';
 
+const controller = new AbortController();
+let abort = () => null;
+
 const getStripeURL = clientId =>
   `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write`;
 
@@ -19,6 +22,12 @@ class StripeConnect extends React.Component {
         this.setState({ stripeURL: getStripeURL(res.client_id) });
       })
       .catch(err => console.log(err));
+    abort = controller.abort.bind(controller);
+  }
+
+  componentWillUnmount() {
+    abort();
+    abort = () => null;
   }
 
   render() {
