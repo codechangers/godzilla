@@ -11,7 +11,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  withStyles
 } from '@material-ui/core';
 
 import autoBind from '../../autoBind';
@@ -37,7 +38,8 @@ const propTypes = {
   db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 class Login extends React.Component {
@@ -153,12 +155,13 @@ class Login extends React.Component {
 
   render() {
     const { errors, signupID } = this.state;
+    const { classes } = this.props;
     return this.state.shouldRedirect.length > 0 ? (
       <Redirect to={{ pathname: this.state.shouldRedirect, state: { signupID } }} />
     ) : (
-      <div className="auth-page-wrapper">
-        <Box className="left-content">
-          <LogoText className="logo-text" />
+      <div className={classes.pageWrapper}>
+        <Box className={classes.leftContent}>
+          <LogoText className={classes.logoText} />
           <div className="login-form">
             <h1 className="login-form-title">
               {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
@@ -278,4 +281,26 @@ class Login extends React.Component {
 
 Login.propTypes = propTypes;
 
-export default withRouter(Login);
+const styles = {
+  pageWrapper: {
+    width: '100%',
+    height: '100vh',
+    backgroundColor: 'var(--secondary-color)'
+  },
+  leftContent: {
+    boxSizing: 'border-box',
+    padding: '30px 64px',
+    width: '50%',
+    minWidth: '300px',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    backgroundColor: 'var(--background-color)'
+  },
+  logoText: {
+    maxWidth: '240px'
+  }
+};
+
+export default withStyles(styles)(withRouter(Login));
