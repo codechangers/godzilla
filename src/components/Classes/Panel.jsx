@@ -14,7 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
-import * as Styled from './styles/StyledPanel';
+import * as Styled from './styles';
 
 const StyledTableCell = withStyles({
   head: {
