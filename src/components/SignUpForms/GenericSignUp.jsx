@@ -12,7 +12,7 @@ import {
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 import autoBind from '../../autoBind';
 
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const propTypes = {
   accountType: PropTypes.string.isRequired,

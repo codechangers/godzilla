@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const getHeaderStyle = width =>
   isWidthDown('md', width)

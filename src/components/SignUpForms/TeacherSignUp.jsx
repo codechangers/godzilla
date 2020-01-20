@@ -4,7 +4,7 @@ import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@mat
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const locationToPrompt = {
   '': 'Location Name',

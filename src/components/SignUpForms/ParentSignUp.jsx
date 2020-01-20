@@ -17,7 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../autoBind';
 
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,

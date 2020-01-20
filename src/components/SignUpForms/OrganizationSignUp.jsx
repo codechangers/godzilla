@@ -4,7 +4,7 @@ import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/c
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus } from '../../helpers';
 
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const idToDataMember = {
   name: 'name',

@@ -11,7 +11,7 @@ import ThankYou from '../SignUpForms/ThankYou';
 import logoText from '../../assets/images/logoText.svg';
 import autoBind from '../../autoBind';
 
-import * as Styled from './PageStyles/StyledSignUp';
+import * as Styled from './styles';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,

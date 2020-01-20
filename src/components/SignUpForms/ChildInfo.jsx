@@ -4,7 +4,7 @@ import { Button, MenuItem, TextField, Card, CardHeader, CardContent } from '@mat
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import autoBind from '../../autoBind';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
-import * as Styled from '../Pages/PageStyles/StyledSignUp';
+import * as Styled from './styles';
 import { API_URL } from '../../globals';
 
 const allFields = [
