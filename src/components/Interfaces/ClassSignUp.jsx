@@ -30,7 +30,7 @@ import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
 import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
 
-import * as Styled from './styles/StyledClassSignUp';
+import * as Styled from './styles';
 
 const StyledTableCell = withStyles({
   head: {
