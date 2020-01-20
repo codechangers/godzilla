@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
   withStyles
 } from '@material-ui/core';
 
@@ -165,14 +166,16 @@ class Login extends React.Component {
       <div className={classes.pageWrapper}>
         <Box className={classes.leftContent}>
           <LogoText className={classes.logoText} />
-          <div className="login-form">
-            <h1 className="login-form-title">
+          <div className={classes.loginForm}>
+            <Typography variant="h2" style={{ marginBottom: '40px' }}>
               {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
-            </h1>
+            </Typography>
             {this.state.forgotPassword ? (
-              <div>
+              <form
+                className={classes.loginForm}
+                onSubmit={() => this.setState({ showResetPrompt: false, forgotPassword: false })}
+              >
                 <TextField
-                  className="full-width"
                   error={getErrorStatus(errors.email)}
                   id="Email"
                   type="text"
@@ -182,12 +185,14 @@ class Login extends React.Component {
                   value={this.state.email}
                   onChange={this.handleChange}
                 />
-                <Button
-                  variant="contained"
-                  className="full-width"
-                  color="primary"
-                  onClick={this.resetPassword}
+                <button
+                  type="button"
+                  className={classes.linkButton}
+                  onClick={() => this.setState({ forgotPassword: false })}
                 >
+                  Go Back
+                </button>
+                <Button variant="contained" color="primary" onClick={this.resetPassword}>
                   Reset Password
                 </Button>
                 <Dialog
@@ -205,22 +210,15 @@ class Login extends React.Component {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button
-                      onClick={() =>
-                        this.setState({ showResetPrompt: false, forgotPassword: false })
-                      }
-                      color="primary"
-                      autoFocus
-                    >
+                    <Button type="submit" color="primary" autoFocus>
                       Okay
                     </Button>
                   </DialogActions>
                 </Dialog>
-              </div>
+              </form>
             ) : (
-              <form className="login-form" onSubmit={this.handleSubmit}>
+              <form className={classes.loginForm} onSubmit={this.handleSubmit}>
                 <TextField
-                  className="full-width"
                   error={getErrorStatus(errors.email)}
                   id="Email"
                   type="text"
@@ -231,7 +229,6 @@ class Login extends React.Component {
                   onChange={this.handleChange}
                 />
                 <TextField
-                  className="full-width"
                   error={getErrorStatus(errors.password)}
                   id="Password"
                   type="password"
@@ -243,13 +240,12 @@ class Login extends React.Component {
                 />
                 <button
                   type="button"
-                  className="link-button"
+                  className={classes.linkButton}
                   onClick={() => this.setState({ forgotPassword: true })}
                 >
                   Forgot Your Password?
                 </button>
                 <Button
-                  className="full-width"
                   style={{ marginBottom: 15 }}
                   variant="contained"
                   color="primary"
@@ -259,7 +255,6 @@ class Login extends React.Component {
                 </Button>
                 <Button
                   onClick={this.googleSignIn}
-                  className="full-width"
                   style={{ backgroundColor: '#fff', color: 'rgba(0, 0, 0, 0.6)' }}
                   variant="contained"
                 >
@@ -271,12 +266,12 @@ class Login extends React.Component {
           </div>
           <Link
             to={{ pathname: '/signup', state: { signupID: this.state.signupID } }}
-            className="sign-up-link"
+            className={classes.signupLink}
           >
             Don&apos;t have an account? Sign up today
           </Link>
         </Box>
-        <div className="right-content" id={`students-img${this.state.backgroundImage}`} />
+        <div className={classes.bigPic} id={`students-img${this.state.backgroundImage}`} />
       </div>
     );
   }
@@ -288,13 +283,18 @@ const styles = {
   pageWrapper: {
     width: '100%',
     height: '100vh',
-    backgroundColor: 'var(--secondary-color)'
+    backgroundColor: 'var(--secondary-color)',
+    display: 'flex'
+  },
+  bigPic: {
+    width: '55%',
+    height: '100%'
   },
   leftContent: {
     boxSizing: 'border-box',
     padding: '30px 64px',
-    width: '50%',
-    minWidth: '300px',
+    width: '45%',
+    minWidth: '400px',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -303,6 +303,34 @@ const styles = {
   },
   logoText: {
     maxWidth: '240px'
+  },
+  loginForm: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    '& .MuiInputBase-root': {
+      marginBottom: '20px'
+    }
+  },
+  linkButton: {
+    border: 'none',
+    outline: 'none',
+    background: 'none',
+    marginBottom: '20px',
+    fontSize: '14px',
+    textAlign: 'left',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  },
+  signupLink: {
+    color: '#000',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 };
 
