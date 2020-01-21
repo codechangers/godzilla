@@ -1,0 +1,46 @@
+.MuiCardHeader-title:first-letter {
+  text-transform:capitalize;
+  text-align: left !important;
+}
+
+#add-child {
+  margin-bottom: 20px;
+}
+
+/* may need to change */
+.request-info .MuiInputBase-root {
+  width: 100%;
+}
+
+.request-info {
+  padding: 40px;
+}
+
+.request-info .modalButtonContainer {
+  justify-content: space-evenly;
+}
+
+.request-info .modalButtonContainer button {
+  width: 200px;
+}
+
+.request-info .modalButtonContainer span {
+  margin: 0;
+}
+
+.request-info .input {
+  margin-bottom: 20px;
+}
+
+.birthdate-picker button {
+  width: 48px !important;
+  align-self: center !important;
+  justify-content: center;
+}
+.birthdate-picker button > span {
+  margin: 0;
+}
+
+.white-label label {
+  background-color: white;
+}

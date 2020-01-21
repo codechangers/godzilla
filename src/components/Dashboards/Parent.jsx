@@ -9,6 +9,7 @@ import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
 
 const routeToInterface = {
   '/parent': null,

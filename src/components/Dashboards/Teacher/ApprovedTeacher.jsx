@@ -11,6 +11,7 @@ import StripeConnect from '../../UI/StripeConnect';
 import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
+import '../../../assets/css/Teacher.css';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 

@@ -38,6 +38,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { dataMemberToValidation, API_URL } from '../../globals';
 import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
+import '../../assets/css/Parent-Dash.css';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,

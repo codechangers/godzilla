@@ -11,6 +11,8 @@ import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
+import '../../../assets/css/Dashboards.css';
+import '../../../assets/css/Teacher.css';
 
 const routeToInterface = {
   '/teacher': null,

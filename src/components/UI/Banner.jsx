@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
+import '../../assets/css/UI.css';
 
 const Banner = ({ onClick, buttonText, stripeIsLinked }) => (
   <div className="banner-wrapper">

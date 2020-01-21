@@ -7,6 +7,7 @@ import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
 import Spinner from '../UI/Spinner';
+import '../../assets/css/Parent-Dash.css';
 
 let parentListener = () => {};
 

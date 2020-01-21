@@ -14,6 +14,7 @@ import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
 import { weekDays } from '../../globals';
 import autoBind from '../../autoBind';
+import '../../assets/css/Teacher.css';
 
 const allFields = [
   'name',
