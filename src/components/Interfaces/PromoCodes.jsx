@@ -91,7 +91,7 @@ const PromoCodesInterface = ({ user, db }) => {
       {!showOldPromos ? (
         <Button
           variant="outlined"
-          color="secondary"
+          color="primary"
           className={classes.createButton}
           onClick={() => setShowForm(true)}
         >

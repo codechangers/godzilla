@@ -49,7 +49,7 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
         <div className={classes.options}>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.button}
             onClick={() => onEdit(promoCode)}
           >

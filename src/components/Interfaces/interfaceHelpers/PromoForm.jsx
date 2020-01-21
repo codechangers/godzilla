@@ -149,7 +149,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
                   color="primary"
                 />
               }
-              label="Limited number of uses"
+              label={<p style={{ margin: 0, fontSize: '1rem' }}>Limited number of uses</p>}
             />
             <TextField
               variant="outlined"
