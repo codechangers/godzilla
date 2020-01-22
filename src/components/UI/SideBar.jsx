@@ -112,6 +112,9 @@ const useStyles = makeStyles({
       alignItems: 'center',
       color: 'rgba(0, 0, 0, 0.6)'
     },
+    '& > a > div:hover': {
+      color: 'rgba(0, 20, 60, 0.6)'
+    },
     '& > a > div.selected': {
       color: 'rgba(0, 0, 0, 0.87)'
     }
