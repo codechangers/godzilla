@@ -10,6 +10,7 @@ import {
   Edit,
   CardGiftcard
 } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
 import Logout from './Logout';
 import { Logo } from '../Images';
@@ -46,8 +47,10 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     return nameToRoute[n] === path;
   };
 
+  const classes = useStyles();
+
   return (
-    <div className="sidebar-wrapper">
+    <div className={classes.sidebarWrapper}>
       <Logo />
       {names.map(name => {
         const Icon = nameToIcon[name];
@@ -60,7 +63,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
           </Link>
         );
       })}
-      <Logout firebase={firebase} className="logout-btn" />
+      <Logout firebase={firebase} className={classes.logoutButton} />
     </div>
   );
 };
@@ -76,5 +79,49 @@ SideBar.defaultProps = {
   names: [],
   baseRoute: '/'
 };
+
+const useStyles = makeStyles({
+  sidebarWrapper: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '96px',
+    height: '100vh',
+    boxSizing: 'border-box',
+    paddingTop: '40px',
+    margin: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'var(--background-color)',
+    '& > *': {
+      marginBottom: '20px'
+    },
+    '& > img': {
+      width: '40px'
+    },
+    '& > a': {
+      textDecoration: 'none'
+    },
+    '& > a > div': {
+      fontSize: '12px',
+      maxWidth: '80px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      color: 'rgba(0, 0, 0, 0.6)'
+    },
+    '& > a > div.selected': {
+      color: 'rgba(0, 0, 0, 0.87)'
+    }
+  },
+  logoutButton: {
+    position: 'absolute',
+    bottom: '6px',
+    left: 5,
+    right: 5
+  }
+});
 
 export default withRouter(SideBar);
