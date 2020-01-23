@@ -303,6 +303,7 @@ const styles = theme => ({
     },
     minWidth: '400px',
     height: '100%',
+    overflow: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -349,6 +350,7 @@ const styles = theme => ({
     color: '#000',
     textDecoration: 'none',
     textAlign: 'left',
+    margin: '20px 0',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center'
     },
