@@ -310,7 +310,10 @@ const styles = theme => ({
     backgroundColor: 'var(--background-color)'
   },
   logoText: {
-    maxWidth: '240px'
+    maxWidth: '240px',
+    [theme.breakpoints.down('sm')]: {
+      alignSelf: 'center'
+    }
   },
   loginForm: {
     width: '100%',
