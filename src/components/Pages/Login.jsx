@@ -299,7 +299,8 @@ const styles = theme => ({
     padding: '30px 64px',
     width: '45%',
     [theme.breakpoints.down('xs')]: {
-      width: '100%'
+      width: '100%',
+      padding: '30px 10px'
     },
     minWidth: '400px',
     height: '100%',
