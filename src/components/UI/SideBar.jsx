@@ -148,10 +148,10 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: 'rgba(0, 0, 0, 0.6)'
+      color: 'rgba(0, 20, 60, 0.6)'
     },
     '& > a > div:hover': {
-      color: 'rgba(0, 20, 60, 0.6)'
+      color: 'rgba(0, 0, 0, 0.6)'
     },
     '& > a > div.selected': {
       color: 'rgba(0, 0, 0, 0.87)'
