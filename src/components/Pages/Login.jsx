@@ -160,6 +160,7 @@ class Login extends React.Component {
   render() {
     const { errors, signupID } = this.state;
     const { classes } = this.props;
+
     return this.state.shouldRedirect.length > 0 ? (
       <Redirect to={{ pathname: this.state.shouldRedirect, state: { signupID } }} />
     ) : (
@@ -279,7 +280,7 @@ class Login extends React.Component {
 
 Login.propTypes = propTypes;
 
-const styles = {
+const styles = theme => ({
   pageWrapper: {
     width: '100%',
     height: '100vh',
@@ -288,21 +289,31 @@ const styles = {
   },
   bigPic: {
     width: '55%',
+    [theme.breakpoints.down('xs')]: {
+      width: 0
+    },
     height: '100%'
   },
   leftContent: {
     boxSizing: 'border-box',
     padding: '30px 64px',
     width: '45%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
     minWidth: '400px',
     height: '100%',
+    overflow: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: 'var(--background-color)'
   },
   logoText: {
-    maxWidth: '240px'
+    maxWidth: '240px',
+    [theme.breakpoints.down('sm')]: {
+      alignSelf: 'center'
+    }
   },
   loginForm: {
     width: '100%',
@@ -310,6 +321,16 @@ const styles = {
     flexDirection: 'column',
     '& .MuiInputBase-root': {
       marginBottom: '20px'
+    },
+    '& h2': {
+      fontSize: 60,
+      textAlign: 'left'
+    },
+    [theme.breakpoints.down('sm')]: {
+      '& h2': {
+        fontSize: 34,
+        textAlign: 'center'
+      }
     }
   },
   linkButton: {
@@ -319,6 +340,9 @@ const styles = {
     marginBottom: '20px',
     fontSize: '14px',
     textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
     textTransform: 'uppercase',
     cursor: 'pointer',
     '&:hover': {
@@ -328,10 +352,16 @@ const styles = {
   signupLink: {
     color: '#000',
     textDecoration: 'none',
+    textAlign: 'left',
+    margin: '20px 0',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
     '&:hover': {
       textDecoration: 'underline'
     }
   }
-};
+});
 
-export default withStyles(styles)(withRouter(Login));
+const StyledLogin = withStyles(styles)(Login);
+export default withRouter(StyledLogin);
