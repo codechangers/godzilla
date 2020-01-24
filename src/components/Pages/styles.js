@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { breakpoints } from '../../globals';
 
 export const SignupWrapper = styled.div({
   width: '100%',
@@ -14,7 +15,7 @@ export const SignupWrapper = styled.div({
 export const Form = styled.div(
   {
     width: '100%',
-    '@media (max-width: 750px)': {
+    [breakpoints.down.xs]: {
       maxWidth: '98% !important',
       marginTop: 80
     }
@@ -45,7 +46,7 @@ export const LogoText = styled.img({
   position: 'absolute',
   top: 30,
   left: 64,
-  '@media (max-width: 789px)': {
+  [breakpoints.down.xs]: {
     width: '60%',
     maxWidth: '789px',
     left: 'calc(20% + 8px)'

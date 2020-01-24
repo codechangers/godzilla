@@ -128,6 +128,6 @@ export default createMuiTheme({
   },
   // Default breakpoints for media queries
   breakpoints: {
-    values: breakpoints
+    values: breakpoints.values
   }
 });
