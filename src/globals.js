@@ -5,6 +5,14 @@ export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d
 export const URL = 'https://new-platform-f1070.web.app';
 export const API_URL = 'https://stripe-release.codechangers.com';
 
+export const breakpoints = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1280,
+  xl: 1920
+};
+
 export const months = [
   'January',
   'February',
