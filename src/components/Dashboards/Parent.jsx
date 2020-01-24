@@ -63,13 +63,11 @@ class ParentDashboard extends React.Component {
         <SP apiKey={this.props.apiKey}>
           <Elements>
             {this.getInterface() || (
-              <div className={classes.pageContent}>
-                <ClassViewInterface
-                  firebase={this.props.firebase}
-                  db={this.props.db}
-                  accounts={this.props.accounts}
-                />
-              </div>
+              <ClassViewInterface
+                firebase={this.props.firebase}
+                db={this.props.db}
+                accounts={this.props.accounts}
+              />
             )}
           </Elements>
         </SP>
@@ -107,17 +105,6 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'flex-start',
     backgroundColor: 'var(--background-color)'
-  },
-  pageContent: {
-    width: '100%',
-    boxSizing: 'border-box',
-    padding: '40px 132px 0 132px',
-    [theme.breakpoints.down('md')]: {
-      padding: '40px 40px 0 40px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      padding: '30px 20px 0 20px'
-    }
   }
 });
 

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { breakpoints } from '../../globals';
 
 export const TableWrapper = styled.div({
   width: '100%',
@@ -17,4 +18,16 @@ export const CardInfo = styled.div({
 export const ActionButtons = styled.div({
   display: 'flex',
   justifyContent: 'space-between'
+});
+
+export const PageContent = styled.div({
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '40px 132px 0 132px',
+  [breakpoints.down.md]: {
+    padding: '40px 40px 0 40px'
+  },
+  [breakpoints.down.xs]: {
+    padding: '30px 20px 0 20px'
+  }
 });
