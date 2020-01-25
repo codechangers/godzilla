@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Paper, Button } from '@material-ui/core';
 import { withRouter, Redirect, Link } from 'react-router-dom';
 import { programTypeToText } from '../../globals';
+import * as Styled from './styles';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
 
@@ -71,7 +72,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   };
 
   return (
-    <div className="page-content" style={{ display: 'flex', flexDirection: 'column' }}>
+    <Styled.PageContent style={{ display: 'flex', flexDirection: 'column' }}>
       <div className={classes.headerWrapper}>
         <h1 className={classes.pageHeader}>Class Search</h1>
         <div className={classes.typesWrapper}>
@@ -131,7 +132,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
       Object.keys(accounts).length === 1 ? (
         <Redirect to={{ pathname: `/parent/search/${searchId}`, state: { searchId } }} />
       ) : null}
-    </div>
+    </Styled.PageContent>
   );
 };
 

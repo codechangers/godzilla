@@ -38,6 +38,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { dataMemberToValidation, API_URL } from '../../globals';
 import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
+import * as Styled from './styles';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -414,7 +415,11 @@ class ProfileInterface extends React.Component {
 
   render() {
     return (
-      <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
+      <Styled.PageContent
+        style={{
+          paddingBottom: '20px'
+        }}
+      >
         <h2>Edit Your Profile</h2>
         <Paper className="paper-list-item">
           <List
@@ -553,7 +558,7 @@ class ProfileInterface extends React.Component {
             ]}
           />
         </Snackbar>
-      </div>
+      </Styled.PageContent>
     );
   }
 }

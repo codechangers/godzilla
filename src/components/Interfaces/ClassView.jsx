@@ -7,6 +7,7 @@ import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
 import Spinner from '../UI/Spinner';
+import * as Styled from './styles';
 
 let parentListener = () => {};
 
@@ -119,116 +120,119 @@ class ClassViewInterface extends React.Component {
   render() {
     const { showOldClasses } = this.state;
     return (
-      <div className="classes-container">
-        <h2>View Your Classes</h2>
-        {this.state.showEmpty ? (
-          <div className="empty-warning">
-            <h3>Looks like you don&apos;t have any kids registered yet.</h3>
-            <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
-          </div>
-        ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            style={{ alignSelf: 'flex-end', marginTop: '-48px', marginBottom: '12px' }}
-            onClick={() => this.setState({ showKidCreator: true })}
-          >
-            Add a Kid
-          </Button>
-        )}
-        <Tabs
-          className="view-classes-tabs"
-          value={this.state.tabIndex}
-          onChange={this.changeTab}
-          indicatorColor="primary"
-        >
-          {this.state.children.map(child => {
-            return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
-          })}
-        </Tabs>
-        <div
-          style={{
-            alignSelf: 'flex-end',
-            marginTop: '-48px',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '0.75rem'
-          }}
-        >
-          <p>Show Expired Classes</p>
-          <Switch
-            checked={showOldClasses}
-            onChange={() => this.setState({ showOldClasses: !showOldClasses })}
-            value="Show Expired Classes"
-            color="primary"
-            inputProps={{ 'aria-label': 'primary checkbox' }}
-          />
-        </div>
-        {this.state.isLoading ? (
-          <Spinner color="primary" />
-        ) : (
-          this.state.children.map((child, i) => {
-            return (
-              <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
-                {child.classesData.map(cls =>
-                  cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
-                    <Paper className="infocard-wrapper only" key={cls.id}>
-                      <InfoCardHeader cls={cls} db={this.props.db}>
-                        {this.getButton(cls)}
-                      </InfoCardHeader>
-                    </Paper>
-                  ) : null
-                )}
-                {child.classesData.filter(a => a.endDate.seconds * 1000 > Date.now()).length > 0 ||
-                (this.state.showOldClasses && child.classesData.length > 0) ? null : (
-                  <div className="empty-warning">
-                    <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
-                    <Button>
-                      <Link className="action" to="/parent/search">
-                        Find one now!
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </TabPanel>
-            );
-          })
-        )}
-        <Modal
-          className="modal-wrapper"
-          open={this.state.selectedClass !== null || this.state.showKidCreator}
-          onClose={() => this.setState({ selectedClass: null, showKidCreator: false })}
-          disableAutoFocus
-        >
-          {this.state.selectedClass === null ? (
-            <ChildInfo
-              firebase={this.props.firebase}
-              db={this.props.db}
-              handleClose={() => this.setState({ showKidCreator: false })}
-              addChildRef={this.addChildRef}
-            />
+      <Styled.PageContent>
+        <div className="classes-container">
+          <h2>View Your Classes</h2>
+          {this.state.showEmpty ? (
+            <div className="empty-warning">
+              <h3>Looks like you don&apos;t have any kids registered yet.</h3>
+              <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
+            </div>
           ) : (
-            <Card className="delete-card modal-content">
-              <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
-              <h4>This will remove your child from this class permanently.</h4>
-              <div className="options">
-                <Button
-                  color="default"
-                  variant="contained"
-                  onClick={() => this.setState({ selectedClass: null })}
-                >
-                  Cancel
-                </Button>
-                <Button color="secondary" variant="contained" onClick={this.removeClass}>
-                  Delete
-                </Button>
-              </div>
-            </Card>
+            <Button
+              color="primary"
+              variant="contained"
+              style={{ alignSelf: 'flex-end', marginTop: '-48px', marginBottom: '12px' }}
+              onClick={() => this.setState({ showKidCreator: true })}
+            >
+              Add a Kid
+            </Button>
           )}
-        </Modal>
-      </div>
+          <Tabs
+            className="view-classes-tabs"
+            value={this.state.tabIndex}
+            onChange={this.changeTab}
+            indicatorColor="primary"
+          >
+            {this.state.children.map(child => {
+              return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
+            })}
+          </Tabs>
+          <div
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: '-48px',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.75rem'
+            }}
+          >
+            <p>Show Expired Classes</p>
+            <Switch
+              checked={showOldClasses}
+              onChange={() => this.setState({ showOldClasses: !showOldClasses })}
+              value="Show Expired Classes"
+              color="primary"
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+          </div>
+          {this.state.isLoading ? (
+            <Spinner color="primary" />
+          ) : (
+            this.state.children.map((child, i) => {
+              return (
+                <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
+                  {child.classesData.map(cls =>
+                    cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
+                      <Paper className="infocard-wrapper only" key={cls.id}>
+                        <InfoCardHeader cls={cls} db={this.props.db}>
+                          {this.getButton(cls)}
+                        </InfoCardHeader>
+                      </Paper>
+                    ) : null
+                  )}
+                  {child.classesData.filter(a => a.endDate.seconds * 1000 > Date.now()).length >
+                    0 ||
+                  (this.state.showOldClasses && child.classesData.length > 0) ? null : (
+                    <div className="empty-warning">
+                      <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
+                      <Button>
+                        <Link className="action" to="/parent/search">
+                          Find one now!
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
+                </TabPanel>
+              );
+            })
+          )}
+          <Modal
+            className="modal-wrapper"
+            open={this.state.selectedClass !== null || this.state.showKidCreator}
+            onClose={() => this.setState({ selectedClass: null, showKidCreator: false })}
+            disableAutoFocus
+          >
+            {this.state.selectedClass === null ? (
+              <ChildInfo
+                firebase={this.props.firebase}
+                db={this.props.db}
+                handleClose={() => this.setState({ showKidCreator: false })}
+                addChildRef={this.addChildRef}
+              />
+            ) : (
+              <Card className="delete-card modal-content">
+                <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
+                <h4>This will remove your child from this class permanently.</h4>
+                <div className="options">
+                  <Button
+                    color="default"
+                    variant="contained"
+                    onClick={() => this.setState({ selectedClass: null })}
+                  >
+                    Cancel
+                  </Button>
+                  <Button color="secondary" variant="contained" onClick={this.removeClass}>
+                    Delete
+                  </Button>
+                </div>
+              </Card>
+            )}
+          </Modal>
+        </div>
+      </Styled.PageContent>
     );
   }
 }
