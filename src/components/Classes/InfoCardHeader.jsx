@@ -160,9 +160,10 @@ InfoCardHeader.defaultProps = {
   hideImage: false
 };
 
-const styles = {
+const styles = theme => ({
   infoCardHeader: {
     width: '100%',
+    minWidth: '300px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -194,7 +195,26 @@ const styles = {
       width: '50%',
       '& > button': {
         width: '100%',
-        marginBottom: '24px'
+        marginBottom: '24px',
+        [theme.breakpoints.down('xs')]: {
+          marginBottom: '4px'
+        }
+      }
+    },
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column-reverse',
+      '& > img': {
+        width: '100%',
+        maxWidth: '100%',
+        height: '120px'
+      },
+      '& > div': {
+        width: '100%'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& > div': {
+        padding: '16px 8px'
       }
     }
   },
@@ -233,7 +253,10 @@ const styles = {
     flexDirection: 'column',
     '& p': {
       fontSize: '20px',
-      marginBottom: '4px'
+      marginBottom: '4px',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '14px'
+      }
     }
   },
   description: {
@@ -287,6 +310,6 @@ const styles = {
       display: 'block'
     }
   }
-};
+});
 
 export default withStyles(styles)(InfoCardHeader);
