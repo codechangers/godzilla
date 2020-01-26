@@ -292,7 +292,7 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap-reverse',
     boxSizing: 'border-box'
   },
   childTabBar: {
@@ -302,8 +302,12 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '0.75rem'
+    justifyContent: 'flex-end',
+    flexGrow: 1,
+    fontSize: '0.75rem',
+    maxWidth: '100%',
+    marginBottom: '3px',
+    marginLeft: '5px'
   },
   tabPanel: {
     marginTop: '20px',
