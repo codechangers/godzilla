@@ -11,8 +11,10 @@ import {
   Switch,
   Typography,
   CircularProgress,
+  IconButton,
   withStyles
 } from '@material-ui/core';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
@@ -113,6 +115,22 @@ class ClassViewInterface extends React.Component {
     this.setState({ tabIndex: value });
   }
 
+  tabLeft() {
+    let { tabIndex } = this.state;
+    if (tabIndex >= 1) {
+      tabIndex -= 1;
+    }
+    this.setState({ tabIndex });
+  }
+
+  tabRight() {
+    let { tabIndex, children } = this.state;
+    if (tabIndex <= children.length - 2) {
+      tabIndex += 1;
+    }
+    this.setState({ tabIndex });
+  }
+
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
     const { childrenRefs } = this.state;
@@ -160,16 +178,24 @@ class ClassViewInterface extends React.Component {
             </div>
           )}
           <div className={classes.tabsWrapper}>
-            <Tabs
-              className={classes.childTabBar}
-              value={this.state.tabIndex}
-              onChange={this.changeTab}
-              indicatorColor="primary"
-            >
-              {this.state.children.map(child => {
-                return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
-              })}
-            </Tabs>
+            <div className={classes.tabButtons}>
+              <IconButton size="small" onClick={this.tabLeft} style={{ marginRight: '2px' }}>
+                <ChevronLeft />
+              </IconButton>
+              <Tabs
+                className={classes.childTabBar}
+                value={this.state.tabIndex}
+                onChange={this.changeTab}
+                indicatorColor="primary"
+              >
+                {this.state.children.map(child => {
+                  return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
+                })}
+              </Tabs>
+              <IconButton size="small" onClick={this.tabRight} style={{ marginLeft: '2px' }}>
+                <ChevronRight />
+              </IconButton>
+            </div>
             <div className={classes.expiredToggle}>
               <p>Show Expired Classes</p>
               <Switch
@@ -309,8 +335,16 @@ const styles = theme => ({
     flexWrap: 'wrap-reverse',
     boxSizing: 'border-box'
   },
+  tabButtons: {
+    maxWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    '& button': {
+      height: '30px !important'
+    }
+  },
   childTabBar: {
-    maxWidth: '100%'
+    maxWidth: 'calc(100% - 60px - 4px)'
   },
   expiredToggle: {
     display: 'flex',
