@@ -79,7 +79,7 @@ const useStyles = makeStyles({
   },
   paper: {
     width: '50%',
-    minWidth: '300px',
+    minWidth: '350px',
     maxHeight: '100%',
     overflow: 'scroll',
     outline: 'none',

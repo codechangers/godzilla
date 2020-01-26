@@ -179,7 +179,7 @@ const useStyles = makeStyles(theme => ({
     },
     background: 'none',
     boxShadow: 'none',
-    // position: 'absolute',
+    position: 'absolute',
     paddingTop: '7px',
     top: 5,
     left: 5
