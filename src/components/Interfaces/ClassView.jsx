@@ -136,7 +136,7 @@ class ClassViewInterface extends React.Component {
       >
         <div className={classes.classesContainer}>
           <div className={classes.titleRow}>
-            <div />
+            <div style={{ width: '124.58px' }} />
             <Typography variant="h3">View Your Classes</Typography>
             {!this.state.showEmpty ? (
               <Button
@@ -283,8 +283,22 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap',
-    marginBottom: '24px'
+    marginBottom: '24px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      '& button': {
+        width: '60%',
+        marginTop: '12px'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& h3': {
+        fontSize: '2rem'
+      },
+      '& button': {
+        width: '100%'
+      }
+    }
   },
   emptyWarning: {},
   tabsWrapper: {
@@ -306,7 +320,7 @@ const styles = theme => ({
     flexGrow: 1,
     fontSize: '0.75rem',
     maxWidth: '100%',
-    marginBottom: '3px',
+    marginBottom: '3.5px',
     marginLeft: '5px'
   },
   tabPanel: {
