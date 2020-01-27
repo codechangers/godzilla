@@ -15,7 +15,9 @@ import {
   SnackbarContent,
   IconButton,
   TextField,
-  MenuItem
+  MenuItem,
+  Typography,
+  withStyles
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import {
@@ -44,7 +46,8 @@ const propTypes = {
   accounts: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const accountToNames = {
@@ -414,13 +417,16 @@ class ProfileInterface extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <Styled.PageContent
         style={{
           paddingBottom: '20px'
         }}
       >
-        <h2>Edit Your Profile</h2>
+        <Typography variant="h3" className={classes.header}>
+          Edit Your Profile
+        </Typography>
         <Paper className="paper-list-item">
           <List
             component="nav"
@@ -565,4 +571,11 @@ class ProfileInterface extends React.Component {
 
 ProfileInterface.propTypes = propTypes;
 
-export default ProfileInterface;
+const styles = {
+  header: {
+    textAlign: 'center',
+    marginBottom: '30px'
+  }
+};
+
+export default withStyles(styles)(ProfileInterface);
