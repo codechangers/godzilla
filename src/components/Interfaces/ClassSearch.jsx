@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Paper, Button } from '@material-ui/core';
+import { withStyles, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
 import { withRouter, Redirect, Link } from 'react-router-dom';
 import { programTypeToText } from '../../globals';
 import * as Styled from './styles';
@@ -26,6 +26,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   const [searchId, setSearchId] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [filters, setFilters] = useState(Object.keys(programTypeToText));
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let { pathname } = location;
@@ -57,6 +58,9 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
       });
       classesData.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
       setClassList(classesData);
+      if (isLoading) {
+        setIsLoading(false);
+      }
     });
   }, [db, setClassList, location]);
 
@@ -74,9 +78,11 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   return (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column' }}>
       <div className={classes.headerWrapper}>
-        <h1 className={classes.pageHeader}>Class Search</h1>
+        <Typography variant="h3" className={classes.pageHeader}>
+          Class Search
+        </Typography>
         <div className={classes.typesWrapper}>
-          <p style={{ margin: '0 15px' }}>Filter by:</p>
+          <p style={{ margin: '4px 15px' }}>Filter by:</p>
           {Object.keys(programTypeToText).map(programType => (
             <button
               key={programType}
@@ -94,38 +100,47 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           ))}
         </div>
       </div>
-      {classList.map(cls =>
-        ((cls.endDate.seconds * 1000 > Date.now() || showOldClasses) &&
-          filters.includes(cls.programType)) ||
-        filters.length === 0 ? (
-          <Paper key={cls.id} className={classes.cardWrapper}>
-            <InfoCardHeader cls={cls} hideImage>
-              <div className={classes.buttonWrapper}>
-                <Link
-                  className={classes.button}
-                  to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
-                >
-                  <Button style={{ width: '100%' }} variant="contained">
-                    More Info
-                  </Button>
-                </Link>
-              </div>
-            </InfoCardHeader>
-          </Paper>
-        ) : null
+      {isLoading ? (
+        <div className={classes.spinnerWrapper}>
+          <CircularProgress color="primary" />
+        </div>
+      ) : (
+        classList.map(cls =>
+          ((cls.endDate.seconds * 1000 > Date.now() || showOldClasses) &&
+            filters.includes(cls.programType)) ||
+          filters.length === 0 ? (
+            <Paper key={cls.id} className={classes.cardWrapper}>
+              <InfoCardHeader cls={cls} hideImage>
+                <div className={classes.buttonWrapper}>
+                  <Link
+                    className={classes.button}
+                    to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
+                  >
+                    <Button style={{ width: '100%' }} variant="contained">
+                      More Info
+                    </Button>
+                  </Link>
+                </div>
+              </InfoCardHeader>
+            </Paper>
+          ) : null
+        )
       )}
-      {classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <= 0 &&
-        (searchId ? (
-          <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
-            There is no class available with the id: {searchId} <br /> Make sure you typed the id in
-            correctly, and that the class is still active.
-          </h1>
-        ) : (
-          <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
-            No Classes Available right now.... <br /> Check back later, new classes are added all
-            the time!
-          </h1>
-        ))}
+      {isLoading
+        ? null
+        : classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <=
+            0 &&
+          (searchId ? (
+            <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+              There is no class available with the id: {searchId} <br /> Make sure you typed the id
+              in correctly, and that the class is still active.
+            </h1>
+          ) : (
+            <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+              No Classes Available right now.... <br /> Check back later, new classes are added all
+              the time!
+            </h1>
+          ))}
       {isPublic &&
       user.isSignedIn &&
       Object.keys(accounts).includes('parents') &&
@@ -141,19 +156,13 @@ ClassSearchInterface.defaultProps = defaultProps;
 
 const styles = {
   headerWrapper: {
+    width: '80%',
+    marginLeft: '10%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 36
-  },
-  pageHeader: {
-    fontWeight: 300,
-    fontSize: '48px',
-    lineHeight: '56px',
-    color: 'rgba(0,0,0,0.6)',
-    alignSelf: 'flex-start',
-    margin: 0
   },
   blankButton: {
     outline: 'none',
@@ -170,16 +179,16 @@ const styles = {
   typeFilter: {
     backgroundColor: 'rgba(0,0,0,0)',
     fontSize: '0.8rem',
-    color: '#8dc63f',
+    color: 'var(--secondary-color)',
     padding: '2px 8px',
     margin: 0,
     borderRadius: '4px',
     boxSizing: 'border-box',
     lineHeight: '23px',
-    border: '1px solid #8dc63f'
+    border: '1px solid var(--secondary-color)'
   },
   typeFilterActive: {
-    backgroundColor: '#8dc63f',
+    backgroundColor: 'var(--secondary-color)',
     fontSize: '0.8rem',
     color: '#fff',
     padding: '2px 8px',
@@ -202,6 +211,11 @@ const styles = {
     textDecoration: 'none',
     color: '#fff',
     width: '40%'
+  },
+  spinnerWrapper: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
   }
 };
 
