@@ -62,7 +62,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
         setIsLoading(false);
       }
     });
-  }, [db, setClassList, location]);
+  }, [db, setClassList, location, isLoading]);
 
   const toggleFilter = f => {
     const filts = [...filters];
@@ -179,7 +179,7 @@ const styles = theme => ({
     background: 'none',
     cursor: 'pointer',
     [theme.breakpoints.down('xs')]: {
-      margin: 0
+      margin: '0 2px'
     }
   },
   typesWrapper: {
@@ -230,7 +230,17 @@ const styles = theme => ({
     width: '60%',
     maxWidth: '800px',
     alignSelf: 'center',
-    marginBottom: 12
+    marginBottom: 12,
+    [theme.breakpoints.down('md')]: {
+      width: '80%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '90%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '96%',
+      minWidth: '340px'
+    }
   },
   buttonWrapper: {
     display: 'flex',
