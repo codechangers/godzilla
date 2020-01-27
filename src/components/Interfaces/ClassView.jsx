@@ -166,47 +166,49 @@ class ClassViewInterface extends React.Component {
                 Add a Kid
               </Button>
             ) : (
-              <div />
+              <div style={{ width: '124.58px' }} />
             )}
           </div>
           {this.state.showEmpty && (
             <div className={classes.emptyWarning}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 Looks like you don&apos;t have any kids registered yet.
               </Typography>
               <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
             </div>
           )}
-          <div className={classes.tabsWrapper}>
-            <div className={classes.tabButtons}>
-              <IconButton size="small" onClick={this.tabLeft} style={{ marginRight: '2px' }}>
-                <ChevronLeft />
-              </IconButton>
-              <Tabs
-                className={classes.childTabBar}
-                value={this.state.tabIndex}
-                onChange={this.changeTab}
-                indicatorColor="primary"
-              >
-                {this.state.children.map(child => {
-                  return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
-                })}
-              </Tabs>
-              <IconButton size="small" onClick={this.tabRight} style={{ marginLeft: '2px' }}>
-                <ChevronRight />
-              </IconButton>
+          {!this.state.showEmpty && (
+            <div className={classes.tabsWrapper}>
+              <div className={classes.tabButtons}>
+                <IconButton size="small" onClick={this.tabLeft} style={{ marginRight: '2px' }}>
+                  <ChevronLeft />
+                </IconButton>
+                <Tabs
+                  className={classes.childTabBar}
+                  value={this.state.tabIndex}
+                  onChange={this.changeTab}
+                  indicatorColor="primary"
+                >
+                  {this.state.children.map(child => {
+                    return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
+                  })}
+                </Tabs>
+                <IconButton size="small" onClick={this.tabRight} style={{ marginLeft: '2px' }}>
+                  <ChevronRight />
+                </IconButton>
+              </div>
+              <div className={classes.expiredToggle}>
+                <p>Show Expired Classes</p>
+                <Switch
+                  checked={showOldClasses}
+                  onChange={() => this.setState({ showOldClasses: !showOldClasses })}
+                  value="Show Expired Classes"
+                  color="primary"
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+              </div>
             </div>
-            <div className={classes.expiredToggle}>
-              <p>Show Expired Classes</p>
-              <Switch
-                checked={showOldClasses}
-                onChange={() => this.setState({ showOldClasses: !showOldClasses })}
-                value="Show Expired Classes"
-                color="primary"
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
-            </div>
-          </div>
+          )}
           {this.state.isLoading ? (
             <CircularProgress />
           ) : (
@@ -230,13 +232,17 @@ class ClassViewInterface extends React.Component {
                   {child.classesData.filter(a => a.endDate.seconds * 1000 > Date.now()).length >
                     0 ||
                   (this.state.showOldClasses && child.classesData.length > 0) ? null : (
-                    <div className="empty-warning">
-                      <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
-                      <Button>
-                        <Link className="action" to="/parent/search">
-                          Find one now!
-                        </Link>
-                      </Button>
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                      <div className={classes.emptyWarning}>
+                        <Typography variant="h6">
+                          Looks like you haven&apos;t signed up for any classes yet.
+                        </Typography>
+                        <Button>
+                          <Link className="action" to="/parent/search">
+                            Find one now!
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </TabPanel>
@@ -326,7 +332,21 @@ const styles = theme => ({
       }
     }
   },
-  emptyWarning: {},
+  emptyWarning: {
+    width: '50%',
+    minWidth: '300px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    '& button': {
+      marginTop: '12px',
+      '& a': {
+        textDecoration: 'none',
+        color: '#000'
+      }
+    }
+  },
   tabsWrapper: {
     width: '100%',
     display: 'flex',
