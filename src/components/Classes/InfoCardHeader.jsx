@@ -219,7 +219,7 @@ const styles = theme => ({
     }
   },
   programType: {
-    backgroundColor: '#8dc63f',
+    backgroundColor: 'var(--secondary-color)',
     fontSize: '0.8rem',
     color: '#fff',
     padding: '2px 8px',

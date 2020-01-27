@@ -302,7 +302,7 @@ const styles = theme => ({
       width: '100%',
       padding: '30px 10px'
     },
-    minWidth: '400px',
+    minWidth: '340px',
     height: '100%',
     overflow: 'scroll',
     display: 'flex',
