@@ -82,22 +82,24 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           Class Search
         </Typography>
         <div className={classes.typesWrapper}>
-          <p style={{ margin: '4px 15px' }}>Filter by:</p>
-          {Object.keys(programTypeToText).map(programType => (
-            <button
-              key={programType}
-              className={classes.blankButton}
-              onClick={() => toggleFilter(programType)}
-            >
-              <p
-                className={
-                  filters.includes(programType) ? classes.typeFilterActive : classes.typeFilter
-                }
+          <p>Filter by:</p>
+          <div className={classes.types}>
+            {Object.keys(programTypeToText).map(programType => (
+              <button
+                key={programType}
+                className={classes.blankButton}
+                onClick={() => toggleFilter(programType)}
               >
-                {programTypeToText[programType]}
-              </p>
-            </button>
-          ))}
+                <p
+                  className={
+                    filters.includes(programType) ? classes.typeFilterActive : classes.typeFilter
+                  }
+                >
+                  {programTypeToText[programType]}
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       {isLoading ? (
@@ -154,7 +156,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
 ClassSearchInterface.propTypes = propTypes;
 ClassSearchInterface.defaultProps = defaultProps;
 
-const styles = {
+const styles = theme => ({
   headerWrapper: {
     width: '80%',
     marginLeft: '10%',
@@ -162,7 +164,12 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 36
+    marginBottom: 36,
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      width: '100%',
+      marginLeft: 0
+    }
   },
   blankButton: {
     outline: 'none',
@@ -170,11 +177,33 @@ const styles = {
     margin: '0 10px',
     padding: 0,
     background: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    [theme.breakpoints.down('xs')]: {
+      margin: 0
+    }
   },
   typesWrapper: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    '& > p': {
+      margin: '4px 15px 4px 0'
+    },
+    [theme.breakpoints.down('md')]: {
+      marginTop: '20px',
+      maxWidth: '450px',
+      flexWrap: 'wrap'
+    }
+  },
+  types: {
+    maxWidth: '100%',
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'flex-start'
+    }
   },
   typeFilter: {
     backgroundColor: 'rgba(0,0,0,0)',
@@ -217,6 +246,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center'
   }
-};
+});
 
 export default withStyles(styles)(withRouter(ClassSearchInterface));
