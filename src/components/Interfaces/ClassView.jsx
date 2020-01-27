@@ -359,7 +359,7 @@ const styles = theme => ({
   },
   tabPanel: {
     marginTop: '20px',
-    '& div.MuiBox-root.MuiBox-root-327': {
+    '& div.MuiBox-root': {
       padding: '0'
     }
   },
