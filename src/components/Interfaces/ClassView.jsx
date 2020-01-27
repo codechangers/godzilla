@@ -366,7 +366,12 @@ const styles = theme => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    '& .MuiPaper-root': {
+      minWidth: '340px',
+      maxHeight: '100%',
+      overflow: 'scroll'
+    }
   },
   deleteCard: {
     width: '50%',
