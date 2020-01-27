@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Tabs, Tab, Modal, Card, Paper, Switch } from '@material-ui/core';
+import {
+  Button,
+  Tabs,
+  Tab,
+  Modal,
+  Card,
+  Paper,
+  Switch,
+  Typography,
+  CircularProgress,
+  IconButton,
+  withStyles
+} from '@material-ui/core';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
-import Spinner from '../UI/Spinner';
 import * as Styled from './styles';
 
 let parentListener = () => {};
@@ -103,6 +115,22 @@ class ClassViewInterface extends React.Component {
     this.setState({ tabIndex: value });
   }
 
+  tabLeft() {
+    let { tabIndex } = this.state;
+    if (tabIndex >= 1) {
+      tabIndex -= 1;
+    }
+    this.setState({ tabIndex });
+  }
+
+  tabRight() {
+    let { tabIndex, children } = this.state;
+    if (tabIndex <= children.length - 2) {
+      tabIndex += 1;
+    }
+    this.setState({ tabIndex });
+  }
+
   addChildRef(childRef) {
     const user = this.props.firebase.auth().currentUser;
     const { childrenRefs } = this.state;
@@ -119,64 +147,82 @@ class ClassViewInterface extends React.Component {
 
   render() {
     const { showOldClasses } = this.state;
+    const { classes } = this.props;
     return (
-      <Styled.PageContent>
-        <div className="classes-container">
-          <h2>View Your Classes</h2>
-          {this.state.showEmpty ? (
-            <div className="empty-warning">
-              <h3>Looks like you don&apos;t have any kids registered yet.</h3>
+      <Styled.PageContent
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <div className={classes.classesContainer}>
+          <div className={classes.titleRow}>
+            <div style={{ width: '124.58px' }} />
+            <Typography variant="h3">View Your Classes</Typography>
+            {!this.state.showEmpty ? (
+              <Button
+                color="primary"
+                variant="contained"
+                style={{ padding: '6px 26px' }}
+                onClick={() => this.setState({ showKidCreator: true })}
+              >
+                Add a Kid
+              </Button>
+            ) : (
+              <div style={{ width: '124.58px' }} />
+            )}
+          </div>
+          {this.state.showEmpty && (
+            <div className={classes.emptyWarning}>
+              <Typography variant="h6">
+                Looks like you don&apos;t have any kids registered yet.
+              </Typography>
               <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
             </div>
-          ) : (
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ alignSelf: 'flex-end', marginTop: '-48px', marginBottom: '12px' }}
-              onClick={() => this.setState({ showKidCreator: true })}
-            >
-              Add a Kid
-            </Button>
           )}
-          <Tabs
-            className="view-classes-tabs"
-            value={this.state.tabIndex}
-            onChange={this.changeTab}
-            indicatorColor="primary"
-          >
-            {this.state.children.map(child => {
-              return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
-            })}
-          </Tabs>
-          <div
-            style={{
-              alignSelf: 'flex-end',
-              marginTop: '-48px',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.75rem'
-            }}
-          >
-            <p>Show Expired Classes</p>
-            <Switch
-              checked={showOldClasses}
-              onChange={() => this.setState({ showOldClasses: !showOldClasses })}
-              value="Show Expired Classes"
-              color="primary"
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-          </div>
+          {!this.state.showEmpty && (
+            <div className={classes.tabsWrapper}>
+              <div className={classes.tabButtons}>
+                <IconButton size="small" onClick={this.tabLeft} style={{ marginRight: '2px' }}>
+                  <ChevronLeft />
+                </IconButton>
+                <Tabs
+                  className={classes.childTabBar}
+                  value={this.state.tabIndex}
+                  onChange={this.changeTab}
+                  indicatorColor="primary"
+                >
+                  {this.state.children.map(child => {
+                    return <Tab key={child.id} label={`${child.fName} ${child.lName}`} />;
+                  })}
+                </Tabs>
+                <IconButton size="small" onClick={this.tabRight} style={{ marginLeft: '2px' }}>
+                  <ChevronRight />
+                </IconButton>
+              </div>
+              <div className={classes.expiredToggle}>
+                <p>Show Expired Classes</p>
+                <Switch
+                  checked={showOldClasses}
+                  onChange={() => this.setState({ showOldClasses: !showOldClasses })}
+                  value="Show Expired Classes"
+                  color="primary"
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+              </div>
+            </div>
+          )}
           {this.state.isLoading ? (
-            <Spinner color="primary" />
+            <CircularProgress />
           ) : (
             this.state.children.map((child, i) => {
               return (
-                <TabPanel key={child.id} value={this.state.tabIndex} index={i}>
+                <TabPanel
+                  className={classes.tabPanel}
+                  key={child.id}
+                  value={this.state.tabIndex}
+                  index={i}
+                >
                   {child.classesData.map(cls =>
                     cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
-                      <Paper className="infocard-wrapper only" key={cls.id}>
+                      <Paper key={cls.id}>
                         <InfoCardHeader cls={cls} db={this.props.db}>
                           {this.getButton(cls)}
                         </InfoCardHeader>
@@ -186,13 +232,17 @@ class ClassViewInterface extends React.Component {
                   {child.classesData.filter(a => a.endDate.seconds * 1000 > Date.now()).length >
                     0 ||
                   (this.state.showOldClasses && child.classesData.length > 0) ? null : (
-                    <div className="empty-warning">
-                      <h3>Looks like you haven&apos;t signed up for any classes yet.</h3>
-                      <Button>
-                        <Link className="action" to="/parent/search">
-                          Find one now!
-                        </Link>
-                      </Button>
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                      <div className={classes.emptyWarning}>
+                        <Typography variant="h6">
+                          Looks like you haven&apos;t signed up for any classes yet.
+                        </Typography>
+                        <Button>
+                          <Link className="action" to="/parent/search">
+                            Find one now!
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </TabPanel>
@@ -200,7 +250,7 @@ class ClassViewInterface extends React.Component {
             })
           )}
           <Modal
-            className="modal-wrapper"
+            className={classes.modal}
             open={this.state.selectedClass !== null || this.state.showKidCreator}
             onClose={() => this.setState({ selectedClass: null, showKidCreator: false })}
             disableAutoFocus
@@ -213,10 +263,15 @@ class ClassViewInterface extends React.Component {
                 addChildRef={this.addChildRef}
               />
             ) : (
-              <Card className="delete-card modal-content">
-                <h1>{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</h1>
-                <h4>This will remove your child from this class permanently.</h4>
-                <div className="options">
+              <Card className={classes.deleteCard}>
+                <Typography
+                  variant="h5"
+                  style={{ marginBottom: '12px' }}
+                >{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</Typography>
+                <Typography variant="body2" style={{ marginBottom: '20px' }}>
+                  This will remove your child from this class permanently.
+                </Typography>
+                <div className={classes.options}>
                   <Button
                     color="default"
                     variant="contained"
@@ -240,7 +295,120 @@ class ClassViewInterface extends React.Component {
 ClassViewInterface.propTypes = {
   accounts: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default ClassViewInterface;
+const styles = theme => ({
+  classesContainer: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    [theme.breakpoints.down('lg')]: {
+      width: '100%'
+    }
+  },
+  titleRow: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '24px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      '& button': {
+        width: '60%',
+        marginTop: '12px'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& h3': {
+        fontSize: '2rem'
+      },
+      '& button': {
+        width: '100%'
+      }
+    }
+  },
+  emptyWarning: {
+    width: '50%',
+    minWidth: '300px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    '& button': {
+      marginTop: '12px',
+      '& a': {
+        textDecoration: 'none',
+        color: '#000'
+      }
+    }
+  },
+  tabsWrapper: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap-reverse',
+    boxSizing: 'border-box'
+  },
+  tabButtons: {
+    maxWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    '& button': {
+      height: '30px !important'
+    }
+  },
+  childTabBar: {
+    maxWidth: 'calc(100% - 60px - 4px)'
+  },
+  expiredToggle: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexGrow: 1,
+    fontSize: '0.75rem',
+    maxWidth: '100%',
+    marginBottom: '3.5px',
+    marginLeft: '5px'
+  },
+  tabPanel: {
+    marginTop: '20px',
+    '& div.MuiBox-root': {
+      padding: '0'
+    }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& .MuiPaper-root': {
+      minWidth: '340px',
+      maxHeight: '100%',
+      overflow: 'scroll'
+    }
+  },
+  deleteCard: {
+    width: '50%',
+    minWidth: '350px',
+    outline: 'none',
+    boxSizing: 'border-box',
+    padding: '30px 20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  options: {
+    '& button': {
+      margin: '0 15px'
+    }
+  }
+});
+
+export default withStyles(styles)(ClassViewInterface);
