@@ -35,7 +35,6 @@ import {
   Fingerprint,
   Close
 } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { dataMemberToValidation, API_URL } from '../../globals';
 import { getDateFromTimestamp } from '../../helpers';
@@ -113,22 +112,6 @@ const childDropDowns = {
     axxl: 'Adult XXL',
     axxxl: 'Adult XXXL'
   }
-};
-
-const useStyles = () => {
-  makeStyles(theme => ({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper
-    },
-    nested: {
-      paddingLeft: theme.spacing(4)
-    },
-    paper: {
-      padding: theme.spacing(3, 2)
-    }
-  }));
 };
 
 const getSubHeader = text => (
@@ -277,7 +260,7 @@ class ProfileInterface extends React.Component {
       const Icon = nameToIcon[field];
       const error = this.state.errors[field];
       return (
-        <ListItem key={`${field}${childId}`}>
+        <ListItem key={`${field}${childId}`} className={this.props.classes.childListItem}>
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
@@ -419,22 +402,16 @@ class ProfileInterface extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Styled.PageContent
-        style={{
-          paddingBottom: '20px'
-        }}
-      >
-        <Typography variant="h3" className={classes.header}>
-          Edit Your Profile
-        </Typography>
-        <Paper className="paper-list-item">
+      <Styled.PageContent className={classes.wrapper}>
+        <Typography variant="h3">Edit Your Profile</Typography>
+        <Paper className={classes.paperListItem}>
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={getSubHeader(
               this.props.accounts.teachers ? 'Teacher Account' : 'Parent Account'
             )}
-            className={useStyles.root}
+            className={classes.root}
           >
             {this.getFields()}
             <ListItem>
@@ -454,18 +431,18 @@ class ProfileInterface extends React.Component {
           </List>
         </Paper>
         {this.state.children.length > 0 ? (
-          <div className="paper-list-item" style={{ marginTop: 0 }}>
+          <div className={classes.paperListItem} style={{ marginTop: 0 }}>
             {this.state.children.map(child => (
               <Paper style={{ marginTop: '30px' }} key={child.id}>
                 <List
                   component="nav"
                   aria-labelledby="nested-list-subheader"
                   subheader={getSubHeader("Child's Information")}
-                  className={useStyles.root}
+                  className={classes.root}
                 >
                   <ListItem
                     button
-                    className="child-list-item"
+                    className={classes.childListItem}
                     onClick={() => {
                       let { openChildren } = this.state;
                       if (openChildren.includes(child.id)) {
@@ -487,7 +464,7 @@ class ProfileInterface extends React.Component {
                     timeout="auto"
                     unmountOnExit
                   >
-                    <ListItem>
+                    <ListItem className={classes.childListItem}>
                       <ListItemIcon>
                         <Fingerprint />
                       </ListItemIcon>
@@ -571,11 +548,25 @@ class ProfileInterface extends React.Component {
 
 ProfileInterface.propTypes = propTypes;
 
-const styles = {
-  header: {
-    textAlign: 'center',
-    marginBottom: '30px'
+const styles = theme => ({
+  wrapper: {
+    paddingBottom: '20px !important',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  paperListItem: {
+    width: '60%',
+    marginTop: '30px'
+  },
+  childListItem: {
+    paddingLeft: '30px'
+  },
+  listRoot: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
   }
-};
+});
 
 export default withStyles(styles)(ProfileInterface);
