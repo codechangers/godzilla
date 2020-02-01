@@ -8,7 +8,9 @@ import {
   Settings,
   Search,
   Edit,
-  CardGiftcard
+  CardGiftcard,
+  AccountTree,
+  SupervisorAccount
 } from '@material-ui/icons';
 import { Link, withRouter } from 'react-router-dom';
 import Logout from './Logout';
@@ -23,7 +25,10 @@ const nameToIcon = {
   'Sign up': Edit,
   'Class Search': Search,
   'Promo Codes': CardGiftcard,
-  Settings
+  Settings,
+  'Parent Dash': AccountTree,
+  'Teacher Dash': AccountTree,
+  'Admin Dash': SupervisorAccount
 };
 
 const SideBar = ({ names, baseRoute, location, firebase }) => {
@@ -36,7 +41,10 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     'Sign up': `${baseRoute}/signup`,
     'Class Search': `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
-    Settings: `${baseRoute}/settings`
+    Settings: `${baseRoute}/settings`,
+    'Parent Dash': '/parent',
+    'Teacher Dash': '/teacher',
+    'Admin Dash': '/admin'
   };
 
   const isSelected = (n, l) => {
