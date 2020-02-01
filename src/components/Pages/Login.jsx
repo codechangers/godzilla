@@ -89,10 +89,10 @@ class Login extends React.Component {
         break;
       }
     }
-    if (shouldRedirect === accountTypeToRoute.parents && this.state.signupID.length > 0) {
-      shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
-    } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
-      shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
+    if (shouldRedirect !== '' && this.state.signupID.length > 0) {
+      shouldRedirect = `/parent/signup/${this.state.signupID}`;
+    } else if (shouldRedirect !== '' && signupID && signupID.length > 0) {
+      shouldRedirect = `/parent/signup/${signupID}`;
     } else if (user.newOAuth) {
       shouldRedirect = '/signup';
     }
