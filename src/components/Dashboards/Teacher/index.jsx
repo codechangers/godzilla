@@ -77,8 +77,9 @@ class TeacherDashboard extends React.Component {
   }
 
   render() {
-    const { user, firebase } = this.props;
-    const approvedRoutes = this.isApproved() ? ['Promo Codes', 'Parent Dash'] : ['Parent Dash'];
+    const { user, firebase, accounts } = this.props;
+    let approvedRoutes = this.isApproved() ? ['Promo Codes', 'Parent Dash'] : ['Parent Dash'];
+    approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
     return user.isSignedIn ? (
       <div className="page-wrapper">
