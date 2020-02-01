@@ -78,12 +78,12 @@ class TeacherDashboard extends React.Component {
 
   render() {
     const { user, firebase } = this.props;
-    const approvedRoutes = this.isApproved() ? ['Promo Codes'] : [];
+    const approvedRoutes = this.isApproved() ? ['Promo Codes', 'Parent Dash'] : ['Parent Dash'];
 
     return user.isSignedIn ? (
       <div className="page-wrapper">
         <SideBar
-          names={['Dashboard', 'Profile'].concat(approvedRoutes)}
+          names={['Profile', 'Dashboard'].concat(approvedRoutes)}
           baseRoute="/teacher"
           firebase={firebase}
         />

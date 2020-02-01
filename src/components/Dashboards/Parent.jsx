@@ -52,10 +52,11 @@ class ParentDashboard extends React.Component {
 
   render() {
     const SP = this.props.apiKey ? StripeProvider : Fail;
+    const accountRoutes = this.props.accounts.teachers ? ['Teacher Dash'] : [];
     return this.props.user.isSignedIn ? (
       <div className="page-wrapper">
         <SideBar
-          names={['My Classes', 'Class Search', 'Profile']}
+          names={['Profile', 'My Classes', 'Class Search'].concat(accountRoutes)}
           baseRoute="/parent"
           firebase={this.props.firebase}
         />
