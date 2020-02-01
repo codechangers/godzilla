@@ -47,6 +47,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
             const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
             setClassList([classData]);
           }
+          setIsLoading(false);
         });
       return;
     }
@@ -133,15 +134,15 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
         : classList.filter(a => a.endDate.seconds * 1000 > Date.now() || showOldClasses).length <=
             0 &&
           (searchId ? (
-            <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+            <Typography variant="h6" className={classes.empty}>
               There is no class available with the id: {searchId} <br /> Make sure you typed the id
               in correctly, and that the class is still active.
-            </h1>
+            </Typography>
           ) : (
-            <h1 style={{ textAlign: 'center', lineHeight: '60px', color: 'rgba(0,0,0,0.8)' }}>
+            <Typography variant="h6" className={classes.empty}>
               No Classes Available right now.... <br /> Check back later, new classes are added all
               the time!
-            </h1>
+            </Typography>
           ))}
       {isPublic && user.isSignedIn && accounts.parents ? (
         <Redirect
@@ -254,6 +255,12 @@ const styles = theme => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'center'
+  },
+  empty: {
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.9rem'
+    }
   }
 });
 
