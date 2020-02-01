@@ -143,11 +143,10 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
               the time!
             </h1>
           ))}
-      {isPublic &&
-      user.isSignedIn &&
-      Object.keys(accounts).includes('parents') &&
-      Object.keys(accounts).length === 1 ? (
-        <Redirect to={{ pathname: `/parent/search/${searchId}`, state: { searchId } }} />
+      {isPublic && user.isSignedIn && accounts.parents ? (
+        <Redirect
+          to={{ pathname: `/parent/search${searchId ? '/' + searchId : ''}`, state: { searchId } }}
+        />
       ) : null}
     </Styled.PageContent>
   );
