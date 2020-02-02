@@ -414,19 +414,27 @@ class ProfileInterface extends React.Component {
             className={classes.root}
           >
             {this.getFields()}
-            <ListItem>
-              <ListItemText
-                style={{ paddingBottom: '10px' }}
-                primary={<Button onClick={this.changePassword}>Change Password</Button>}
-              />
-              <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
-                <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+            <ListItem style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              <Button onClick={this.changePassword} className={classes.actionBtn}>
+                Change Password
+              </Button>
+              <div>
+                <Button
+                  onClick={this.fetchAccountData}
+                  className={classes.actionBtn}
+                  style={{ marginRight: 20 }}
+                >
                   Revert Changes
                 </Button>
-                <Button onClick={this.updateAccountData} variant="contained" color="primary">
+                <Button
+                  onClick={this.updateAccountData}
+                  className={classes.actionBtn}
+                  variant="contained"
+                  color="primary"
+                >
                   Save Changes
                 </Button>
-              </ListItemSecondaryAction>
+              </div>
             </ListItem>
           </List>
         </Paper>
@@ -475,37 +483,35 @@ class ProfileInterface extends React.Component {
                             : 'Get your Personal Student ID!'
                         }
                       />
-                      <ListItemSecondaryAction>
-                        {child.learnID ? (
-                          <CopyToClipboard text={child.learnID}>
-                            <Button>Copy ID</Button>
-                          </CopyToClipboard>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.getStudentID(child)}
-                          >
-                            Get your ID
-                          </Button>
-                        )}
-                      </ListItemSecondaryAction>
+
+                      {child.learnID ? (
+                        <CopyToClipboard text={child.learnID}>
+                          <Button>Copy ID</Button>
+                        </CopyToClipboard>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => this.getStudentID(child)}
+                        >
+                          Get your ID
+                        </Button>
+                      )}
                     </ListItem>
                     {this.getChildFields(child.id)}
                     <ListItem>
                       <ListItemText primary="" />
-                      <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
-                        <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
-                          Revert Changes
-                        </Button>
-                        <Button
-                          onClick={() => this.updateChildData(child.id)}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Save Changes
-                        </Button>
-                      </ListItemSecondaryAction>
+
+                      <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+                        Revert Changes
+                      </Button>
+                      <Button
+                        onClick={() => this.updateChildData(child.id)}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save Changes
+                      </Button>
                     </ListItem>
                   </Collapse>
                 </List>
@@ -557,7 +563,13 @@ const styles = theme => ({
   },
   paperListItem: {
     width: '60%',
-    marginTop: '30px'
+    marginTop: '30px',
+    [theme.breakpoints.down('sm')]: {
+      width: '80%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   },
   childListItem: {
     paddingLeft: '30px'
@@ -566,6 +578,9 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper
+  },
+  actionBtn: {
+    marginBottom: 10
   }
 });
 
