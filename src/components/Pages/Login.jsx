@@ -320,7 +320,7 @@ const styles = theme => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    '& .MuiInputBase-root': {
+    '& .MuiTextField-root': {
       marginBottom: '20px'
     },
     '& h2': {
