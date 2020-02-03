@@ -86,6 +86,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           <div className={classes.types}>
             {Object.keys(programTypeToText).map(programType => (
               <button
+                type="button"
                 key={programType}
                 className={classes.blankButton}
                 onClick={() => toggleFilter(programType)}

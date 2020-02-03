@@ -8,6 +8,8 @@ import { programTypeToText } from '../../globals';
 import { Template2 } from '../Images';
 import ScheduleModal from '../UI/ScheduleModal';
 
+import * as Styled from '../Interfaces/styles';
+
 const SignUpsProgress = withStyles({
   root: {
     height: 6,
@@ -44,104 +46,97 @@ class InfoCardHeader extends React.Component {
     const { cls, children, hideImage, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
-      <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
-        <div style={hideImage ? { width: '100%' } : null}>
-          <Typography variant="h5" style={{ marginBottom: '6px' }}>
-            {cls.name}
-          </Typography>
-          {children === null || hideImage ? null : (
-            <div className={`${classes.inliner} ${classes.col}`}>
-              <Typography variant="body1">
-                {cls.programType ? (
-                  <span className={classes.programType}>{programTypeToText[cls.programType]}</span>
-                ) : null}
-              </Typography>
-              <Typography variant="body1">{cls.locationName}</Typography>
-              <Typography variant="body1">
-                <LocationOn fontSize="inherit" />
-                {cls.locationAddress}
-              </Typography>
-            </div>
-          )}
-          {children !== null && !hideImage ? null : (
-            <div className={`${classes.inliner} ${classes.col}`}>
-              <Typography variant="body1">
-                {cls.programType ? (
-                  <span className={classes.programType}>{programTypeToText[cls.programType]}</span>
-                ) : null}
-              </Typography>
-            </div>
-          )}
-          <div className={classes.inliner}>
-            <Typography variant="body1">{`Start Date: ${getDateString(cls.startDate)}`}</Typography>
-            <Typography variant="body1">{`End Date: ${getDateString(cls.endDate)}`}</Typography>
-          </div>
-          <div className={classes.inliner}>
-            <Typography variant="body1" style={{ textDecoration: 'underline' }}>
-              <button
-                onClick={() => this.setState({ showSchedule: true })}
-                style={{
-                  background: 'none',
-                  outline: 'none',
-                  border: 'none',
-                  padding: 0,
-                  fontSize: 'inherit',
-                  cursor: 'pointer'
-                }}
-              >
-                View Schedule
-              </button>
+      <Styled.PageContent>
+        <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
+          <div style={hideImage ? { width: '100%' } : null}>
+            <Typography variant="h5" style={{ marginBottom: '6px' }}>
+              {cls.name}
             </Typography>
-            <Typography variant="body1">
-              <AccessTime fontSize="inherit" />
-              {getTime(cls.startTime)}
-            </Typography>
-            <Typography varaint="body1">{`$${cls.price} per Student`}</Typography>
-          </div>
-          {children !== null && !hideImage ? (
+            {children === null || hideImage ? null : (
+              <div className={`${classes.inliner} ${classes.col}`}>
+                <Typography variant="body1">
+                  {cls.programType ? (
+                    <span className={classes.programType}>
+                      {programTypeToText[cls.programType]}
+                    </span>
+                  ) : null}
+                </Typography>
+                <Typography variant="body1">{cls.locationName}</Typography>
+                <Typography variant="body1">
+                  <LocationOn fontSize="inherit" />
+                  {cls.locationAddress}
+                </Typography>
+              </div>
+            )}
+            {children !== null && !hideImage ? null : (
+              <div className={`${classes.inliner} ${classes.col}`}>
+                <Typography variant="body1">
+                  {cls.programType ? (
+                    <span className={classes.programType}>
+                      {programTypeToText[cls.programType]}
+                    </span>
+                  ) : null}
+                </Typography>
+              </div>
+            )}
             <div className={classes.inliner}>
-              <Typography variant="body1">{`Instructor: ${
-                teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''
-              }`}</Typography>
-              <Typography variant="body1">{`Phone: ${
-                teacher !== null ? teacher.phone : ''
-              }`}</Typography>
-              <Typography variant="body1">{`Email: ${
-                teacher !== null ? teacher.email : ''
-              }`}</Typography>
-            </div>
-          ) : (
-            <div className={`${classes.inliner} ${classes.col}`}>
-              <Typography variant="body1">{cls.locationName}</Typography>
               <Typography variant="body1">
-                <LocationOn fontSize="inherit" />
-                {cls.locationAddress}
+                {`Start Date: ${getDateString(cls.startDate)}`}
               </Typography>
+              <Typography variant="body1">{`End Date: ${getDateString(cls.endDate)}`}</Typography>
             </div>
-          )}
-          <div className={classes.description}>{cls.description}</div>
-          <div className={classes.progressLabel}>
-            <h6>Students Sign-up</h6>
-            <p>{`${cls.children.length}/${cls.maxStudents} STUDENTS`}</p>
+            <div className={classes.inliner}>
+              <Typography variant="body1">
+                <AccessTime fontSize="inherit" />
+                {getTime(cls.startTime)}
+              </Typography>
+              <Typography varaint="body1">{`$${cls.price} per Student`}</Typography>
+            </div>
+            {children !== null && !hideImage ? (
+              <div className={classes.inliner}>
+                <Typography variant="body1">
+                  {`Instructor: ${teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''}`}
+                </Typography>
+                <Typography variant="body1">
+                  {`Phone: ${teacher !== null ? teacher.phone : ''}`}
+                </Typography>
+                <Typography variant="body1">
+                  {`Email: ${teacher !== null ? teacher.email : ''}`}
+                </Typography>
+              </div>
+            ) : (
+              <div className={`${classes.inliner} ${classes.col}`}>
+                <Typography variant="body1">{cls.locationName}</Typography>
+                <Typography variant="body1">
+                  <LocationOn fontSize="inherit" />
+                  {cls.locationAddress}
+                </Typography>
+              </div>
+            )}
+            <div className={classes.description}>{cls.description}</div>
+            <div className={classes.progressLabel}>
+              <h6>Students Sign-up</h6>
+              <p>{`${cls.children.length}/${cls.maxStudents} STUDENTS`}</p>
+            </div>
+            <SignUpsProgress
+              className={classes.progressBar}
+              variant="determinate"
+              color="primary"
+              value={(cls.children.length / cls.maxStudents) * 100}
+            />
+            <div className={classes.progressOverlay}>
+              <span style={{ marginLeft: `${(cls.minStudents / cls.maxStudents) * 100}%` }} />
+            </div>
+            {children || <div className="bottom-line" />}
           </div>
-          <SignUpsProgress
-            className={classes.progressBar}
-            variant="determinate"
-            color="primary"
-            value={(cls.children.length / cls.maxStudents) * 100}
+          {hideImage || <Template2 />}
+          <ScheduleModal
+            showModal={showSchedule}
+            onClose={() => this.setState({ showSchedule: false })}
+            cls={cls}
           />
-          <div className={classes.progressOverlay}>
-            <span style={{ marginLeft: `${(cls.minStudents / cls.maxStudents) * 100}%` }} />
-          </div>
-          {children || <div className="bottom-line" />}
         </div>
-        {hideImage || <Template2 />}
-        <ScheduleModal
-          showModal={showSchedule}
-          onClose={() => this.setState({ showSchedule: false })}
-          cls={cls}
-        />
-      </div>
+      </Styled.PageContent>
     );
   }
 }
