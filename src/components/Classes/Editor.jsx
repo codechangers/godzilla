@@ -31,7 +31,8 @@ const allFields = [
   'startAge',
   'endAge',
   'minStudents',
-  'maxStudents'
+  'maxStudents',
+  'privacyCode'
 ];
 const dontConvert = [
   'name',
@@ -39,7 +40,9 @@ const dontConvert = [
   'description',
   'locationName',
   'locationAddress',
-  'daysOfWeek'
+  'daysOfWeek',
+  'isPrivate',
+  'privacyCode'
 ];
 const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
 const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
@@ -123,9 +126,16 @@ class ClassEditor extends React.Component {
   }
 
   handleSubmit() {
-    if (this.validateFields(allFields)) {
+    let fields = allFields;
+    if (!this.state.isPrivate) {
+      fields.filter(a => a !== 'privacyCode');
+    }
+    if (this.validateFields(fields)) {
       const data = { ...this.state };
       delete data.errors;
+      if (!this.state.isPrivate) {
+        data.privacyCode = '';
+      }
       this.props.submit(data);
     }
   }
