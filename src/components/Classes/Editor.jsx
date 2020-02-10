@@ -63,6 +63,8 @@ class ClassEditor extends React.Component {
       price: '',
       minStudents: '',
       maxStudents: '',
+      isPrivate: false,
+      privacyCode: '',
       errors: {}
     };
     this.getUserData = getUserData;
@@ -192,6 +194,34 @@ class ClassEditor extends React.Component {
             <MenuItem value="after-school">After School Program</MenuItem>
             <MenuItem value="special-event">Special Event</MenuItem>
           </TextField>
+        </div>
+        <div className="inliner">
+          <FormControlLabel
+            value="top"
+            control={
+              <Checkbox
+                checked={this.state.isPrivate}
+                onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
+                color="primary"
+                value={this.state.isPrivate}
+              />
+            }
+            label="Class is Private"
+            labelPlacement="end"
+            style={{ flexGrow: 'grow' }}
+          />
+          <TextField
+            id="privacyCode"
+            className="input most"
+            type="text"
+            label="Private Code for Registration"
+            variant="outlined"
+            value={this.state.privacyCode}
+            onChange={this.handleInput}
+            error={getErrorStatus(this.state.errors.privacyCode)}
+            helperText={this.state.errors.privacyCode}
+            disabled={!this.state.isPrivate}
+          />
         </div>
         {this.state.errors.daysOfWeek ? (
           <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
