@@ -195,34 +195,6 @@ class ClassEditor extends React.Component {
             <MenuItem value="special-event">Special Event</MenuItem>
           </TextField>
         </div>
-        <div className="inliner">
-          <FormControlLabel
-            value="top"
-            control={
-              <Checkbox
-                checked={this.state.isPrivate}
-                onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
-                color="primary"
-                value={this.state.isPrivate}
-              />
-            }
-            label="Class is Private"
-            labelPlacement="end"
-            style={{ flexGrow: 'grow' }}
-          />
-          <TextField
-            id="privacyCode"
-            className="input most"
-            type="text"
-            label="Private Code for Registration"
-            variant="outlined"
-            value={this.state.privacyCode}
-            onChange={this.handleInput}
-            error={getErrorStatus(this.state.errors.privacyCode)}
-            helperText={this.state.errors.privacyCode}
-            disabled={!this.state.isPrivate}
-          />
-        </div>
         {this.state.errors.daysOfWeek ? (
           <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
         ) : null}
@@ -379,6 +351,35 @@ class ClassEditor extends React.Component {
             }}
           />
         </div>
+        <FormControlLabel
+          value="top"
+          control={
+            <Checkbox
+              checked={this.state.isPrivate}
+              onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
+              color="primary"
+              value={this.state.isPrivate}
+            />
+          }
+          label="This Class is Private"
+          labelPlacement="end"
+          style={{ flexGrow: 'grow' }}
+        />
+        {this.state.isPrivate && (
+          <TextField
+            id="privacyCode"
+            className="input most"
+            style={{ width: '70%' }}
+            type="text"
+            label="Private Registration Code"
+            variant="outlined"
+            value={this.state.privacyCode}
+            onChange={this.handleInput}
+            error={getErrorStatus(this.state.errors.privacyCode)}
+            helperText={this.state.errors.privacyCode}
+            disabled={!this.state.isPrivate}
+          />
+        )}
         <div className="options">
           <Button onClick={this.props.close}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={this.handleSubmit}>
