@@ -472,7 +472,7 @@ class ProfileInterface extends React.Component {
                     timeout="auto"
                     unmountOnExit
                   >
-                    <ListItem className={classes.childListItem}>
+                    <ListItem className={classes.childListItem} style={{ flexWrap: 'wrap' }}>
                       <ListItemIcon>
                         <Fingerprint />
                       </ListItemIcon>
