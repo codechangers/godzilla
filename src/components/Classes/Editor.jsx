@@ -30,7 +30,8 @@ const allFields = [
   'startAge',
   'endAge',
   'minStudents',
-  'maxStudents'
+  'maxStudents',
+  'privacyCode'
 ];
 const dontConvert = [
   'name',
@@ -38,7 +39,9 @@ const dontConvert = [
   'description',
   'locationName',
   'locationAddress',
-  'daysOfWeek'
+  'daysOfWeek',
+  'isPrivate',
+  'privacyCode'
 ];
 const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
 const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
@@ -62,6 +65,8 @@ class ClassEditor extends React.Component {
       price: '',
       minStudents: '',
       maxStudents: '',
+      isPrivate: false,
+      privacyCode: '',
       errors: {}
     };
     this.getUserData = getUserData;
@@ -120,9 +125,16 @@ class ClassEditor extends React.Component {
   }
 
   handleSubmit() {
-    if (this.validateFields(allFields)) {
+    let fields = allFields;
+    if (!this.state.isPrivate) {
+      fields.filter(a => a !== 'privacyCode');
+    }
+    if (this.validateFields(fields)) {
       const data = { ...this.state };
       delete data.errors;
+      if (!this.state.isPrivate) {
+        data.privacyCode = '';
+      }
       this.props.submit(data);
     }
   }
@@ -348,6 +360,35 @@ class ClassEditor extends React.Component {
             }}
           />
         </div>
+        <FormControlLabel
+          value="top"
+          control={
+            <Checkbox
+              checked={this.state.isPrivate}
+              onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
+              color="primary"
+              value={this.state.isPrivate}
+            />
+          }
+          label="This Class is Private"
+          labelPlacement="end"
+          style={{ flexGrow: 'grow' }}
+        />
+        {this.state.isPrivate && (
+          <TextField
+            id="privacyCode"
+            className="input most"
+            style={{ width: '70%' }}
+            type="text"
+            label="Private Registration Code"
+            variant="outlined"
+            value={this.state.privacyCode}
+            onChange={this.handleInput}
+            error={getErrorStatus(this.state.errors.privacyCode)}
+            helperText={this.state.errors.privacyCode}
+            disabled={!this.state.isPrivate}
+          />
+        )}
         <div className="options">
           <Button onClick={this.props.close}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={this.handleSubmit}>

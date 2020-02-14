@@ -61,7 +61,10 @@ class ClassSignUpInterface extends React.Component {
       invalidPayment: '',
       promoCode: '',
       promoError: '',
-      promoDoc: null
+      promoDoc: null,
+      inputCode: '',
+      tempInputCode: '',
+      inputCodeError: ''
     };
     autoBind(this);
   }
@@ -144,7 +147,44 @@ class ClassSignUpInterface extends React.Component {
   }
 
   getButton(cls, style) {
-    return (
+    return cls.isPrivate && this.state.inputCode !== cls.privacyCode ? (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '12px'
+        }}
+      >
+        <TextField
+          label="Registration Code"
+          error={this.state.inputCodeError.length > 0}
+          helperText={this.state.inputCodeError}
+          onChange={e => this.setState({ tempInputCode: e.target.value })}
+        />
+        <Tooltip title="Use Code" placement="top">
+          <IconButton
+            style={
+              this.state.inputCodeError.length > 0
+                ? { marginLeft: '10px' }
+                : { marginLeft: '10px', marginTop: '12px' }
+            }
+            aria-label="Use Code"
+            size="small"
+            color="primary"
+            onClick={() => {
+              if (this.state.tempInputCode === cls.privacyCode) {
+                this.setState({ inputCode: this.state.tempInputCode, inputCodeError: '' });
+              } else {
+                this.setState({ inputCodeError: 'Invalid Code!' });
+              }
+            }}
+          >
+            <SendIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+      </div>
+    ) : (
       <Button
         onClick={() => {
           this.setState({ selectedClass: cls });
