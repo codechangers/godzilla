@@ -164,7 +164,7 @@ class ProfileInterface extends React.Component {
     }
     return this.state.accountData[field] !== undefined ? (
       <InputBase
-        className="full-width"
+        className={this.props.classes.fullWidth}
         value={this.state.accountData[field]}
         onChange={e => {
           const { accountData } = this.state;
@@ -203,7 +203,7 @@ class ProfileInterface extends React.Component {
     }
     return child !== undefined ? (
       <InputBase
-        className="full-width"
+        className={this.props.classes.fullWidth}
         value={child[field]}
         onChange={e => {
           const { children } = this.state;
@@ -581,6 +581,9 @@ const styles = theme => ({
   },
   actionBtn: {
     marginBottom: 10
+  },
+  fullWidth: {
+    width: '100%'
   }
 });
 
