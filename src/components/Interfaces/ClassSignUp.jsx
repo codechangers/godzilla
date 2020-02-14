@@ -555,7 +555,8 @@ class ClassSignUpInterface extends React.Component {
                       </Button>
                       <Button
                         disabled={
-                          this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <= 0
+                          this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <=
+                          0
                         }
                         onClick={this.handleSubmit}
                         variant="contained"
@@ -587,6 +588,7 @@ const styles = theme => ({
   modalWrapper: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     margin: 0
   },
