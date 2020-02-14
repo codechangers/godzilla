@@ -418,16 +418,12 @@ class ProfileInterface extends React.Component {
               <Button
                 onClick={this.changePassword}
                 className={classes.actionBtn}
-                style={{ marginRight: 20 }}
+                style={{ flexGrow: 1 }}
               >
                 Change Password
               </Button>
-              <div>
-                <Button
-                  onClick={this.fetchAccountData}
-                  className={classes.actionBtn}
-                  style={{ marginRight: 20 }}
-                >
+              <div className={this.props.classes.saveWrapper}>
+                <Button onClick={this.fetchAccountData} className={classes.actionBtn}>
                   Revert Changes
                 </Button>
                 <Button
@@ -505,17 +501,16 @@ class ProfileInterface extends React.Component {
                     {this.getChildFields(child.id)}
                     <ListItem>
                       <ListItemText primary="" />
-
-                      <Button onClick={this.fetchAccountData} style={{ marginRight: 20 }}>
-                        Revert Changes
-                      </Button>
-                      <Button
-                        onClick={() => this.updateChildData(child.id)}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Save Changes
-                      </Button>
+                      <div className={this.props.classes.saveWrapper}>
+                        <Button onClick={this.fetchAccountData}>Revert Changes</Button>
+                        <Button
+                          onClick={() => this.updateChildData(child.id)}
+                          variant="contained"
+                          color="primary"
+                        >
+                          Save Changes
+                        </Button>
+                      </div>
                     </ListItem>
                   </Collapse>
                 </List>
@@ -588,6 +583,19 @@ const styles = theme => ({
   },
   fullWidth: {
     width: '100%'
+  },
+  saveWrapper: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
+    '& button': {
+      marginRight: '5px',
+      marginLeft: '5px'
+    },
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'space-around'
+    }
   }
 });
 
