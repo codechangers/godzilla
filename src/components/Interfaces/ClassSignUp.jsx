@@ -116,7 +116,9 @@ class ClassSignUpInterface extends React.Component {
     if (this.state.spotlight !== null) {
       return (
         <div>
-          <Typography variant="h3">Class Search</Typography>
+          <Typography variant="h3" style={{ textAlign: 'center', marginBottom: '36px' }}>
+            Class Signup
+          </Typography>
           <Paper>
             <InfoCardHeader cls={this.state.spotlight} db={this.props.db}>
               {this.getButton(this.state.spotlight)}
@@ -127,7 +129,9 @@ class ClassSignUpInterface extends React.Component {
     }
     return (
       <div>
-        <Typography variant="h3">Choose A Class</Typography>
+        <Typography variant="h3" style={{ textAlign: 'center', marginBottom: '36px' }}>
+          Choose A Class
+        </Typography>
         {this.state.isLoading ? (
           <Spinner color="primary" />
         ) : (
