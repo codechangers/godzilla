@@ -7,7 +7,6 @@ import {
   ListSubheader,
   ListItemIcon,
   ListItemText,
-  ListItemSecondaryAction,
   Button,
   InputBase,
   Collapse,
