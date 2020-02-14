@@ -19,7 +19,8 @@ import {
   TableCell,
   TextField,
   IconButton,
-  Tooltip
+  Tooltip,
+  Typography
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountIcon from '@material-ui/icons/AccountCircle';
@@ -114,9 +115,11 @@ class ClassSignUpInterface extends React.Component {
   getClasses() {
     if (this.state.spotlight !== null) {
       return (
-        <div className="class-container page-content">
-          <h1>{`Signup For ${this.state.spotlight.name}`}</h1>
-          <Paper className="infocard-wrapper only">
+        <div>
+          <Typography variant="h3" style={{ textAlign: 'center', marginBottom: '36px' }}>
+            Class Signup
+          </Typography>
+          <Paper>
             <InfoCardHeader cls={this.state.spotlight} db={this.props.db}>
               {this.getButton(this.state.spotlight)}
             </InfoCardHeader>
@@ -125,8 +128,10 @@ class ClassSignUpInterface extends React.Component {
       );
     }
     return (
-      <div className="classes-container page-content">
-        <h2>Choose A Class</h2>
+      <div>
+        <Typography variant="h3" style={{ textAlign: 'center', marginBottom: '36px' }}>
+          Choose A Class
+        </Typography>
         {this.state.isLoading ? (
           <Spinner color="primary" />
         ) : (
@@ -321,252 +326,256 @@ class ClassSignUpInterface extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { selectedClass, isProcessing, paymentSucceeded, paymentFailed, children } = this.state;
     return (
-      <div>
-        {this.getClasses()}
-        <Modal
-          className="modal-wrapper"
-          open={selectedClass !== null}
-          onClose={() => {
-            this.setState({ selectedClass: null });
-          }}
-          disableAutoFocus
-        >
-          {isProcessing ? (
-            <Paper
-              className="modal-content"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <h2>
-                {paymentSucceeded
-                  ? 'Successfully Processed Payment!'
-                  : paymentFailed
-                  ? 'Payment process failed!'
-                  : 'Processing Payment with Stripe...'}
-              </h2>
-              {paymentSucceeded ? (
-                <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
-                  You can find more information regarding this class in the &quot;My Classes&quot;
-                  Section of your dashboard.
-                </h4>
-              ) : paymentFailed ? (
-                <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
-                  {this.state.paymentError.length > 0
-                    ? this.state.paymentError
-                    : 'An error occured while attempting to process your payment. Please try again at a later time.'}
-                </h4>
-              ) : null}
-              <div
+      <Styled.PageContent>
+        <div>
+          {this.getClasses()}
+          <Modal
+            className={classes.modalWrapper}
+            open={selectedClass !== null}
+            onClose={() => {
+              this.setState({ selectedClass: null });
+            }}
+            disableAutoFocus
+          >
+            {isProcessing ? (
+              <Paper
+                className={classes.modalContent}
                 style={{
-                  marginTop: '28px',
-                  position: 'relative'
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }}
               >
-                <Fab
-                  color={paymentSucceeded ? 'primary' : 'default'}
-                  onClick={() =>
-                    this.setState({
-                      selectedClass: null,
-                      selectedChildren: [],
-                      isProcessing: false,
-                      paymentSucceeded: false
-                    })
-                  }
+                <h2>
+                  {paymentSucceeded
+                    ? 'Successfully Processed Payment!'
+                    : paymentFailed
+                    ? 'Payment process failed!'
+                    : 'Processing Payment with Stripe...'}
+                </h2>
+                {paymentSucceeded ? (
+                  <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
+                    You can find more information regarding this class in the &quot;My Classes&quot;
+                    Section of your dashboard.
+                  </h4>
+                ) : paymentFailed ? (
+                  <h4 style={{ maxWidth: '400px', margin: 0, opacity: 0.7 }}>
+                    {this.state.paymentError.length > 0
+                      ? this.state.paymentError
+                      : 'An error occured while attempting to process your payment. Please try again at a later time.'}
+                  </h4>
+                ) : null}
+                <div
+                  style={{
+                    marginTop: '28px',
+                    position: 'relative'
+                  }}
                 >
-                  {paymentSucceeded ? <CheckIcon /> : paymentFailed ? <CloseIcon /> : <div />}
-                </Fab>
-                {!paymentSucceeded && !paymentFailed && (
-                  <CircularProgress
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      zIndex: 1
-                    }}
-                  />
-                )}
-              </div>
-            </Paper>
-          ) : (
-            <Paper className="modal-content">
-              {selectedClass && (
-                <div>
-                  <h2>
-                    Register for&nbsp;
-                    {selectedClass.name}
-                  </h2>
-                  <Styled.TableWrapper>
-                    <Table aria-label="customized table">
-                      <TableHead>
-                        <TableRow>
-                          <StyledTableCell>AGE</StyledTableCell>
-                          <StyledTableCell>START DATE</StyledTableCell>
-                          <StyledTableCell>
-                            {selectedClass.daysOfWeek.length > 1 ? 'DAYS' : 'DAY'}
-                          </StyledTableCell>
-                          <StyledTableCell>TIME</StyledTableCell>
-                          <StyledTableCell>SESSIONS</StyledTableCell>
-                          <StyledTableCell align="right">COST</StyledTableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            {`${selectedClass.startAge} - ${selectedClass.endAge}`}
-                          </TableCell>
-                          <TableCell>{`${getDate(selectedClass.startDate)}`}</TableCell>
-                          <TableCell>{getWeekDays(selectedClass.daysOfWeek)}</TableCell>
-                          <TableCell>{getTime(selectedClass.startTime)}</TableCell>
-                          <TableCell>{calcSessions(selectedClass)}</TableCell>
-                          <TableCell align="right">{`$${selectedClass.price}`}</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </Styled.TableWrapper>
-                  <p style={{ marginBottom: 0, color: 'grey' }}>Select Children to Register</p>
-                  <List>
-                    {children.map(child => {
-                      return (
-                        <ListItem
-                          key={child.id}
-                          button
-                          onClick={() => this.toggleChild(child)}
-                          disabled={this.checkDisabled(child)}
-                        >
-                          <ListItemAvatar>
-                            <AccountIcon />
-                          </ListItemAvatar>
-                          <ListItemText primary={`${child.fName} ${child.lName}`} />
-                          <Checkbox edge="end" checked={this.checkToggle(child)} />
-                          <p style={{ marginLeft: 10 }}>{`$${selectedClass.price}`}</p>
-                        </ListItem>
-                      );
-                    })}
-                  </List>
-                  <div
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      boxSizing: 'border-box',
-                      padding: '10px 20px 20px 20px'
-                    }}
+                  <Fab
+                    color={paymentSucceeded ? 'primary' : 'default'}
+                    onClick={() =>
+                      this.setState({
+                        selectedClass: null,
+                        selectedChildren: [],
+                        isProcessing: false,
+                        paymentSucceeded: false
+                      })
+                    }
                   >
-                    {this.state.promoDoc !== null ? (
-                      <p
-                        style={{
-                          fontSize: '1rem',
-                          margin: '15px 0 0 0',
-                          lineHeight: '20px'
-                        }}
-                      >
-                        <strong>{this.state.promoDoc.code}</strong>
-                        {' - '}
-                        {this.state.promoDoc.discountType === '$'
-                          ? `$${this.state.promoDoc.discountAmount}`
-                          : `${this.state.promoDoc.discountAmount}%`}{' '}
-                        off each student!
-                        <Tooltip title="Remove Discount" placement="top">
-                          <IconButton
-                            style={{ margin: '0 0 3px 10px' }}
-                            aria-label="Remove Discount"
-                            size="small"
-                            onClick={() => this.setState({ promoDoc: null })}
-                          >
-                            <ClearIcon fontSize="inherit" />
-                          </IconButton>
-                        </Tooltip>
-                        <br />
-                        <span
-                          style={{
-                            fontSize: '0.8rem',
-                            color: 'rgba(0,0,0,0.7)',
-                            lineHeight: '12px'
-                          }}
-                        >
-                          {this.getPromoUses()}
-                        </span>
-                      </p>
-                    ) : (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          marginBottom: '14px'
-                        }}
-                      >
-                        <TextField
-                          label="Promo Code"
-                          onChange={this.setPromo}
-                          value={this.state.promoCode}
-                          helperText={this.state.promoError}
-                          error={this.state.promoError.length > 0}
-                        />
-                        <Tooltip title="Apply Discount" placement="top">
-                          <IconButton
-                            style={{ margin: '12px 0 0 10px' }}
-                            aria-label="Apply Discount"
-                            size="small"
-                            color="primary"
-                            onClick={this.applyPromo}
-                          >
-                            <SendIcon fontSize="inherit" />
-                          </IconButton>
-                        </Tooltip>
-                      </div>
-                    )}
-                    <p style={{ fontSize: '1rem', margin: '16px 0', lineHeight: '20px' }}>
-                      <strong style={{ marginRight: '15px' }}>Total:</strong>
-                      {`$${this.getTotal()}`}
-                    </p>
-                  </div>
-                  {this.getTotal() > 0 && (
-                    <p style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>
-                      {this.state.invalidPayment}
-                    </p>
+                    {paymentSucceeded ? <CheckIcon /> : paymentFailed ? <CloseIcon /> : <div />}
+                  </Fab>
+                  {!paymentSucceeded && !paymentFailed && (
+                    <CircularProgress
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 1
+                      }}
+                    />
                   )}
-                  {this.getTotal() > 0 ? (
-                    <Styled.CardInfo
-                      style={this.state.invalidPayment ? { border: '1px solid red' } : null}
-                    >
-                      <CardElement />
-                    </Styled.CardInfo>
-                  ) : null}
-                  <Styled.ActionButtons>
-                    <Button
-                      onClick={() => {
-                        this.setState({ selectedClass: null });
+                </div>
+              </Paper>
+            ) : (
+              <Paper className={classes.modalContent}>
+                {selectedClass && (
+                  <div>
+                    <h2>
+                      Register for&nbsp;
+                      {selectedClass.name}
+                    </h2>
+                    <Styled.TableWrapper>
+                      <Table aria-label="customized table">
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell>AGE</StyledTableCell>
+                            <StyledTableCell>START DATE</StyledTableCell>
+                            <StyledTableCell>
+                              {selectedClass.daysOfWeek.length > 1 ? 'DAYS' : 'DAY'}
+                            </StyledTableCell>
+                            <StyledTableCell>TIME</StyledTableCell>
+                            <StyledTableCell>SESSIONS</StyledTableCell>
+                            <StyledTableCell align="right">COST</StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell component="th" scope="row">
+                              {`${selectedClass.startAge} - ${selectedClass.endAge}`}
+                            </TableCell>
+                            <TableCell>{`${getDate(selectedClass.startDate)}`}</TableCell>
+                            <TableCell>{getWeekDays(selectedClass.daysOfWeek)}</TableCell>
+                            <TableCell>{getTime(selectedClass.startTime)}</TableCell>
+                            <TableCell>{calcSessions(selectedClass)}</TableCell>
+                            <TableCell align="right">{`$${selectedClass.price}`}</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </Styled.TableWrapper>
+                    <p style={{ marginBottom: 0, color: 'grey' }}>Select Children to Register</p>
+                    <List>
+                      {children.map(child => {
+                        return (
+                          <ListItem
+                            key={child.id}
+                            button
+                            onClick={() => this.toggleChild(child)}
+                            disabled={this.checkDisabled(child)}
+                          >
+                            <ListItemAvatar>
+                              <AccountIcon />
+                            </ListItemAvatar>
+                            <ListItemText primary={`${child.fName} ${child.lName}`} />
+                            <Checkbox edge="end" checked={this.checkToggle(child)} />
+                            <p style={{ marginLeft: 10 }}>{`$${selectedClass.price}`}</p>
+                          </ListItem>
+                        );
+                      })}
+                    </List>
+                    <div
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        boxSizing: 'border-box',
+                        padding: '10px 20px 20px 20px'
                       }}
                     >
-                      Cancel
-                    </Button>
-                    <Button
-                      disabled={
-                        this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <= 0
-                      }
-                      onClick={this.handleSubmit}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Sign Up!
-                    </Button>
-                  </Styled.ActionButtons>
-                </div>
-              )}
-            </Paper>
-          )}
-        </Modal>
-      </div>
+                      {this.state.promoDoc !== null ? (
+                        <p
+                          style={{
+                            fontSize: '1rem',
+                            margin: '15px 0 0 0',
+                            lineHeight: '20px'
+                          }}
+                        >
+                          <strong>{this.state.promoDoc.code}</strong>
+                          {' - '}
+                          {this.state.promoDoc.discountType === '$'
+                            ? `$${this.state.promoDoc.discountAmount}`
+                            : `${this.state.promoDoc.discountAmount}%`}{' '}
+                          off each student!
+                          <Tooltip title="Remove Discount" placement="top">
+                            <IconButton
+                              style={{ margin: '0 0 3px 10px' }}
+                              aria-label="Remove Discount"
+                              size="small"
+                              onClick={() => this.setState({ promoDoc: null })}
+                            >
+                              <ClearIcon fontSize="inherit" />
+                            </IconButton>
+                          </Tooltip>
+                          <br />
+                          <span
+                            style={{
+                              fontSize: '0.8rem',
+                              color: 'rgba(0,0,0,0.7)',
+                              lineHeight: '12px'
+                            }}
+                          >
+                            {this.getPromoUses()}
+                          </span>
+                        </p>
+                      ) : (
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginBottom: '14px'
+                          }}
+                        >
+                          <TextField
+                            label="Promo Code"
+                            onChange={this.setPromo}
+                            value={this.state.promoCode}
+                            helperText={this.state.promoError}
+                            error={this.state.promoError.length > 0}
+                          />
+                          <Tooltip title="Apply Discount" placement="top">
+                            <IconButton
+                              style={{ margin: '12px 0 0 10px' }}
+                              aria-label="Apply Discount"
+                              size="small"
+                              color="primary"
+                              onClick={this.applyPromo}
+                            >
+                              <SendIcon fontSize="inherit" />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                      )}
+                      <p style={{ fontSize: '1rem', margin: '16px 0', lineHeight: '20px' }}>
+                        <strong style={{ marginRight: '15px' }}>Total:</strong>
+                        {`$${this.getTotal()}`}
+                      </p>
+                    </div>
+                    {this.getTotal() > 0 && (
+                      <p style={{ color: 'red', fontWeight: 'bold', textAlign: 'center' }}>
+                        {this.state.invalidPayment}
+                      </p>
+                    )}
+                    {this.getTotal() > 0 ? (
+                      <Styled.CardInfo
+                        style={this.state.invalidPayment ? { border: '1px solid red' } : null}
+                      >
+                        <CardElement />
+                      </Styled.CardInfo>
+                    ) : null}
+                    <Styled.ActionButtons>
+                      <Button
+                        onClick={() => {
+                          this.setState({ selectedClass: null });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        disabled={
+                          this.state.selectedChildren.filter(c => !this.checkDisabled(c)).length <=
+                          0
+                        }
+                        onClick={this.handleSubmit}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Sign Up!
+                      </Button>
+                    </Styled.ActionButtons>
+                  </div>
+                )}
+              </Paper>
+            )}
+          </Modal>
+        </div>
+      </Styled.PageContent>
     );
   }
 }
@@ -575,7 +584,27 @@ ClassSignUpInterface.propTypes = {
   db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  stripe: PropTypes.object.isRequired
+  stripe: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default withRouter(injectStripe(ClassSignUpInterface));
+const styles = theme => ({
+  modalWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 0
+  },
+  modalContent: {
+    padding: 40,
+    minWidth: 400,
+    maxHeight: '100%',
+    overflow: 'scroll',
+    outline: 'none'
+  }
+});
+
+const StyledClassSignUpInterface = withStyles(styles)(ClassSignUpInterface);
+
+export default withRouter(injectStripe(StyledClassSignUpInterface));
