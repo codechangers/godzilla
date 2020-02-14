@@ -415,7 +415,11 @@ class ProfileInterface extends React.Component {
           >
             {this.getFields()}
             <ListItem style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-              <Button onClick={this.changePassword} className={classes.actionBtn}>
+              <Button
+                onClick={this.changePassword}
+                className={classes.actionBtn}
+                style={{ marginRight: 20 }}
+              >
                 Change Password
               </Button>
               <div>
@@ -502,7 +506,7 @@ class ProfileInterface extends React.Component {
                     <ListItem>
                       <ListItemText primary="" />
 
-                      <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+                      <Button onClick={this.fetchAccountData} style={{ marginRight: 20 }}>
                         Revert Changes
                       </Button>
                       <Button
