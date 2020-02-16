@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { CircularProgress, Typography, makeStyles, Paper } from '@material-ui/core';
+import { CircularProgress, Typography, makeStyles, Paper, Button } from '@material-ui/core';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import DSUlogo from '../../assets/images/dsu.png';
@@ -48,12 +48,20 @@ const ClassInfoInterface = ({ location, db }) => {
       {foundClass && (
         <div className={classes.content}>
           <Paper className={classes.cardWrapper}>
-            <div className={classes.left}>
-              <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
-              <InfoCardHeader cls={cls} hideImage></InfoCardHeader>
-            </div>
             <div className={classes.right}>
+              <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
               <img src={MapsTemp} alt="Loading_Maps" className={classes.maps} />
+            </div>
+            <div className={classes.left}>
+              <InfoCardHeader cls={cls} hideImage>
+                <Button
+                  disabled={cls.children.length >= cls.maxStudents}
+                  variant="contained"
+                  color="primary"
+                >
+                  Sign Up!
+                </Button>
+              </InfoCardHeader>
             </div>
           </Paper>
         </div>
@@ -94,6 +102,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     boxSizing: 'border-box',
     padding: '20px 0'
   },
@@ -102,7 +111,7 @@ const useStyles = makeStyles({
     maxHeight: '150px'
   },
   maps: {
-    maxWidth: '90%',
+    maxWidth: '75%',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)'
   }
