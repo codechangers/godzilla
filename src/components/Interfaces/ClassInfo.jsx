@@ -65,8 +65,8 @@ const ClassInfoInterface = ({ location, db }) => {
     </Styled.PageContent>
   ) : (
     <Styled.PageContent>
-      <Typography variant="h3" style={{ marginBottom: '36px', textAlign: 'center' }}>
-        {foundClass ? cls.name : 'Class not found...'}
+      <Typography variant="h3" className={classes.mainHeader}>
+        {foundClass ? 'Class Info' : 'Class not found...'}
       </Typography>
       {foundClass && (
         <Paper className={classes.content}>
@@ -82,7 +82,7 @@ const ClassInfoInterface = ({ location, db }) => {
               ></iframe>
             </div>
             <div className={classes.left}>
-              <InfoCardHeader cls={cls} hideImage>
+              <InfoCardHeader cls={cls} hideImage hideAccountType>
                 <Button
                   disabled={cls.children.length >= cls.maxStudents}
                   variant="contained"
@@ -115,7 +115,7 @@ const ClassInfoInterface = ({ location, db }) => {
             </div>
           </div>
           <div className={classes.faqWrapper}>
-            <Typography variant="h4" style={{ marginBottom: '20px' }}>
+            <Typography variant="h4" className={classes.faqHeader}>
               Important Information
             </Typography>
             {tempFaq.map(faq => (
@@ -124,11 +124,16 @@ const ClassInfoInterface = ({ location, db }) => {
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
+                  className={classes.summary}
                 >
-                  <Typography variant="h6">{faq.q}</Typography>
+                  <Typography variant="h6" className={classes.question}>
+                    {faq.q}
+                  </Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Typography variant="body1">{faq.a}</Typography>
+                <ExpansionPanelDetails className={classes.details}>
+                  <Typography variant="body1" className={classes.answer}>
+                    {faq.a}
+                  </Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             ))}
@@ -136,7 +141,7 @@ const ClassInfoInterface = ({ location, db }) => {
               disabled={cls.children.length >= cls.maxStudents}
               variant="contained"
               color="primary"
-              style={{ width: '50%', marginTop: '20px' }}
+              className={classes.bottomButton}
             >
               Sign Up!
             </Button>
@@ -150,8 +155,13 @@ const ClassInfoInterface = ({ location, db }) => {
 ClassInfoInterface.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
+  mainHeader: {
+    marginBottom: '36px',
+    textAlign: 'center'
+  },
   content: {
     width: '100%',
+    minWidth: '300px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -205,11 +215,14 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px'
   },
   maps: {
-    maxWidth: '75%',
+    width: '75%',
     height: '250px',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)',
-    backgroundColor: 'rgba(120,120,120,0.3)'
+    backgroundColor: 'rgba(120,120,120,0.3)',
+    [theme.breakpoints.down('md')]: {
+      width: '90%'
+    }
   },
   youtube: {
     width: '90%',
@@ -217,12 +230,50 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)',
     margin: '10px 0',
-    backgroundColor: 'rgba(120,120,120,0.3)'
+    backgroundColor: 'rgba(120,120,120,0.3)',
+    [theme.breakpoints.down('xs')]: {
+      height: '200px'
+    }
   },
   faqPanel: {
     width: '80%',
     backgroundColor: '#e0e0e0',
     [theme.breakpoints.down('sm')]: {
+      width: '98%'
+    }
+  },
+  faqHeader: {
+    marginBottom: '20px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.5rem'
+    }
+  },
+  summary: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 12px'
+    }
+  },
+  details: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 12px 12px 12px'
+    }
+  },
+  question: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1rem',
+      lineHeight: '20px'
+    }
+  },
+  answer: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.8rem',
+      lineHeight: '15px'
+    }
+  },
+  bottomButton: {
+    width: '60%',
+    marginTop: '20px',
+    [theme.breakpoints.down('xs')]: {
       width: '98%'
     }
   }
