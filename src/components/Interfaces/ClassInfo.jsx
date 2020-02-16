@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { CircularProgress, Typography, makeStyles, Paper, Button } from '@material-ui/core';
+import {
+  CircularProgress,
+  Typography,
+  makeStyles,
+  Paper,
+  Button,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import DSUlogo from '../../assets/images/dsu.png';
@@ -9,6 +19,20 @@ import DSUlogo from '../../assets/images/dsu.png';
 const propTypes = {
   location: PropTypes.object.isRequired
 };
+
+const tempFaq = [
+  { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
+  { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
+  {
+    q: 'When are opening and closing ceremonies',
+    a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
+  },
+  {
+    q: 'What should I bring to camp',
+    a:
+      'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
+  }
+];
 
 const ClassInfoInterface = ({ location, db }) => {
   const [cls, setCls] = useState({});
@@ -69,6 +93,54 @@ const ClassInfoInterface = ({ location, db }) => {
               </InfoCardHeader>
             </div>
           </Paper>
+          <Paper className={classes.cardWrapper}>
+            <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
+              <Typography variant="h4">About Camp</Typography>
+              <Typography variant="body1" style={{ marginBottom: '15px' }}>
+                Located about hour away from Zion’s National Park, Dixie State University is
+                dedicated to fields such as Computer Science and Information Tech-nology. Throughout
+                the year, we hold our after school programs and tutoring here. It is the per-fect
+                place to attend a camp while enjoying the famous and sunny city, St. George, Utah.
+              </Typography>
+            </div>
+            <div className={classes.left}>
+              <iframe
+                title="youtube"
+                className={classes.youtube}
+                src="https://www.youtube.com/embed/Rt89gPYeB1c"
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </Paper>
+          <Paper className={classes.faqWrapper}>
+            <Typography variant="h4" style={{ marginBottom: '20px' }}>
+              Important Information
+            </Typography>
+            {tempFaq.map(faq => (
+              <ExpansionPanel key={faq.q} className={classes.faqPanel}>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography variant="h6">{faq.q}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography variant="body1">{faq.a}</Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            ))}
+            <Button
+              disabled={cls.children.length >= cls.maxStudents}
+              variant="contained"
+              color="primary"
+              style={{ width: '50%', marginTop: '20px' }}
+            >
+              Sign Up!
+            </Button>
+          </Paper>
         </div>
       )}
     </Styled.PageContent>
@@ -77,7 +149,7 @@ const ClassInfoInterface = ({ location, db }) => {
 
 ClassInfoInterface.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   content: {
     width: '100%',
     display: 'flex',
@@ -94,6 +166,17 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-around',
     flexWrap: 'wrap-reverse'
+  },
+  faqWrapper: {
+    width: '100%',
+    maxWidth: '1000px',
+    minWidth: '300px',
+    marginBottom: '30px',
+    boxSizing: 'border-box',
+    padding: '15px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   left: {
     width: '60%',
@@ -124,7 +207,21 @@ const useStyles = makeStyles({
     height: '250px',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)'
+  },
+  youtube: {
+    width: '90%',
+    height: '350px',
+    borderRadius: '3px',
+    border: '2px solid rgba(120,120,120,0.3)',
+    margin: '10px 0'
+  },
+  faqPanel: {
+    width: '80%',
+    backgroundColor: '#e0e0e0',
+    [theme.breakpoints.down('sm')]: {
+      width: '98%'
+    }
   }
-});
+}));
 
 export default withRouter(ClassInfoInterface);
