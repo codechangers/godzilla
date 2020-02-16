@@ -69,8 +69,8 @@ const ClassInfoInterface = ({ location, db }) => {
         {foundClass ? cls.name : 'Class not found...'}
       </Typography>
       {foundClass && (
-        <div className={classes.content}>
-          <Paper className={classes.cardWrapper}>
+        <Paper className={classes.content}>
+          <div className={classes.cardWrapper}>
             <div className={classes.right}>
               <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
               <iframe
@@ -92,8 +92,8 @@ const ClassInfoInterface = ({ location, db }) => {
                 </Button>
               </InfoCardHeader>
             </div>
-          </Paper>
-          <Paper className={classes.cardWrapper}>
+          </div>
+          <div className={classes.cardWrapper}>
             <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
               <Typography variant="h4">About Camp</Typography>
               <Typography variant="body1" style={{ marginBottom: '15px' }}>
@@ -113,8 +113,8 @@ const ClassInfoInterface = ({ location, db }) => {
                 allowFullScreen
               ></iframe>
             </div>
-          </Paper>
-          <Paper className={classes.faqWrapper}>
+          </div>
+          <div className={classes.faqWrapper}>
             <Typography variant="h4" style={{ marginBottom: '20px' }}>
               Important Information
             </Typography>
@@ -140,8 +140,8 @@ const ClassInfoInterface = ({ location, db }) => {
             >
               Sign Up!
             </Button>
-          </Paper>
-        </div>
+          </div>
+        </Paper>
       )}
     </Styled.PageContent>
   );
@@ -155,17 +155,19 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: '30px'
   },
   cardWrapper: {
-    width: '100%',
+    width: 'calc(100% - 4px)',
     maxWidth: '1000px',
     minWidth: '300px',
     marginBottom: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    flexWrap: 'wrap-reverse'
+    flexWrap: 'wrap-reverse',
+    borderBottom: '2px solid rgba(150,150,150,0.3)'
   },
   faqWrapper: {
     width: '100%',
@@ -206,14 +208,16 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '75%',
     height: '250px',
     borderRadius: '3px',
-    border: '2px solid rgba(120,120,120,0.3)'
+    border: '2px solid rgba(120,120,120,0.3)',
+    backgroundColor: 'rgba(120,120,120,0.3)'
   },
   youtube: {
     width: '90%',
     height: '350px',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)',
-    margin: '10px 0'
+    margin: '10px 0',
+    backgroundColor: 'rgba(120,120,120,0.3)'
   },
   faqPanel: {
     width: '80%',
