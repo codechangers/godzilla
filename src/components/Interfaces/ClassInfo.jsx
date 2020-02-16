@@ -48,11 +48,13 @@ const ClassInfoInterface = ({ location, db }) => {
       {foundClass && (
         <div className={classes.content}>
           <Paper className={classes.cardWrapper}>
-            <InfoCardHeader cls={cls} hideImage></InfoCardHeader>
-          </Paper>
-          <Paper className={classes.locationWrapper}>
-            <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
-            <img src={MapsTemp} alt="Loading_Maps" className={classes.maps} />
+            <div className={classes.left}>
+              <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
+              <InfoCardHeader cls={cls} hideImage></InfoCardHeader>
+            </div>
+            <div className={classes.right}>
+              <img src={MapsTemp} alt="Loading_Maps" className={classes.maps} />
+            </div>
           </Paper>
         </div>
       )}
@@ -66,29 +68,38 @@ const useStyles = makeStyles({
   content: {
     width: '100%',
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap'
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   cardWrapper: {
-    width: '60%',
-    maxWidth: '800px',
-    minWidth: '300px',
-    marginBottom: '20px'
+    width: '100%',
+    maxWidth: '1000px',
+    minWidth: '500px',
+    marginBottom: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  locationWrapper: {
+  left: {
+    width: '60%',
+    minWidth: '300px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  right: {
     width: '38%',
     minWidth: '300px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    justifyContent: 'center',
     boxSizing: 'border-box',
     padding: '20px 0'
   },
   logo: {
     maxWidth: '90%',
-    maxHeight: '200px'
+    maxHeight: '150px'
   },
   maps: {
     maxWidth: '90%',
