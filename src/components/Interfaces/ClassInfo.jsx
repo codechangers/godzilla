@@ -5,7 +5,6 @@ import { CircularProgress, Typography, makeStyles, Paper, Button } from '@materi
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import DSUlogo from '../../assets/images/dsu.png';
-import MapsTemp from '../../assets/images/maps.png';
 
 const propTypes = {
   location: PropTypes.object.isRequired
@@ -50,7 +49,12 @@ const ClassInfoInterface = ({ location, db }) => {
           <Paper className={classes.cardWrapper}>
             <div className={classes.right}>
               <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
-              <img src={MapsTemp} alt="Loading_Maps" className={classes.maps} />
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus"
+                frameBorder="0"
+                allowFullScreen=""
+                className={classes.maps}
+              ></iframe>
             </div>
             <div className={classes.left}>
               <InfoCardHeader cls={cls} hideImage>
@@ -108,10 +112,12 @@ const useStyles = makeStyles({
   },
   logo: {
     maxWidth: '90%',
-    maxHeight: '150px'
+    maxHeight: '140px',
+    marginBottom: '10px'
   },
   maps: {
     maxWidth: '75%',
+    height: '250px',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)'
   }
