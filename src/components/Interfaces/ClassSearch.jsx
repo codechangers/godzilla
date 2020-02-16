@@ -240,7 +240,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '96%',
-      minWidth: '340px'
+      minWidth: '300px'
     }
   },
   buttonWrapper: {

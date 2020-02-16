@@ -237,7 +237,7 @@ const useStyles = makeStyles(theme => ({
   },
   faqPanel: {
     width: '80%',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#f0f0f0',
     [theme.breakpoints.down('sm')]: {
       width: '98%'
     }
@@ -271,7 +271,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   bottomButton: {
-    width: '60%',
+    width: 'calc(60% - 48px)',
     marginTop: '20px',
     [theme.breakpoints.down('xs')]: {
       width: '98%'
