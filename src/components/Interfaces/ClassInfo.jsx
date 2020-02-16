@@ -50,6 +50,7 @@ const ClassInfoInterface = ({ location, db }) => {
             <div className={classes.right}>
               <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
               <iframe
+                title="maps"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus"
                 frameBorder="0"
                 allowFullScreen=""
@@ -87,18 +88,20 @@ const useStyles = makeStyles({
   cardWrapper: {
     width: '100%',
     maxWidth: '1000px',
-    minWidth: '500px',
+    minWidth: '300px',
     marginBottom: '20px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around',
+    flexWrap: 'wrap-reverse'
   },
   left: {
     width: '60%',
     minWidth: '300px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexGrow: 1
   },
   right: {
     width: '38%',
@@ -108,7 +111,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     boxSizing: 'border-box',
-    padding: '20px 0'
+    paddingBottom: '20px',
+    flexGrow: 1
   },
   logo: {
     maxWidth: '90%',
