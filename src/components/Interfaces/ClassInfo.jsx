@@ -60,13 +60,16 @@ const ClassInfoInterface = ({ location, db }) => {
   const classes = useStyles();
 
   return isLoading ? (
-    <Styled.PageContent>
+    <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography variant="h3" style={{ marginBottom: '20px' }}>
+        Finding Class...
+      </Typography>
       <CircularProgress color="primary" />
     </Styled.PageContent>
   ) : (
     <Styled.PageContent>
       <Typography variant="h3" className={classes.mainHeader}>
-        {foundClass ? 'Class Info' : 'Class not found...'}
+        {foundClass ? 'Class Info' : 'Class not found.'}
       </Typography>
       {foundClass && (
         <Paper className={classes.content}>
