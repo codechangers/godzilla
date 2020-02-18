@@ -53,9 +53,9 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
     } else {
       selectedCopy.splice(index, 1);
     }
-    setSelectedChildren();
+    setSelectedChildren(selectedCopy);
   };
-  const checkDisabled = childId => {};
+  const checkDisabled = childId => cls.children.some(c => c.id === childId);
   const checkToggle = childId => selectedChildren.includes(childId) || checkDisabled(childId);
 
   const classes = useStyles();
