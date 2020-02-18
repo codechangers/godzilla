@@ -12,6 +12,7 @@ import {
   Checkbox
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import PromoInput from '../UI/PromoInput';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -25,6 +26,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
+  const [promoDoc, setPromoDoc] = useState(null);
 
   useEffect(() => {
     return db
@@ -58,6 +60,22 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
   const checkDisabled = childId => cls.children.some(c => c.id === childId);
   const checkToggle = childId => selectedChildren.includes(childId) || checkDisabled(childId);
 
+  const getPromoUses = () => {
+    const registrations = selectedChildren.filter(c => !checkDisabled(c)).length;
+    if (promoDoc !== null) {
+      if (promoDoc.limited && registrations > promoDoc.uses) {
+        return `${promoDoc.code} applied to ${promoDoc.uses} registration${
+          promoDoc.uses === 1 ? '' : 's'
+        } (redeemed max amount times)`;
+      } else {
+        return `${promoDoc.code} applied to ${registrations} registration${
+          registrations === 1 ? '' : 's'
+        }`;
+      }
+    }
+    return '';
+  };
+
   const classes = useStyles();
   return (
     <Modal className={classes.modalWrapper} open={open} onClose={onClose} disableAutoFocus>
@@ -88,6 +106,13 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
               </ListItem>
             ))}
           </List>
+          <PromoInput
+            db={db}
+            cls={cls}
+            promoDoc={promoDoc}
+            setPromoDoc={setPromoDoc}
+            getPromoUses={getPromoUses}
+          />
         </Paper>
       )}
     </Modal>
@@ -106,6 +131,8 @@ const useStyles = makeStyles({
   },
   modalContent: {
     padding: '40px',
+    width: '100%',
+    maxWidth: '600px',
     minWidth: '300px',
     maxHeight: '100%',
     overflow: 'scroll',
