@@ -7,7 +7,6 @@ import {
   ListSubheader,
   ListItemIcon,
   ListItemText,
-  ListItemSecondaryAction,
   Button,
   InputBase,
   Collapse,
@@ -15,7 +14,9 @@ import {
   SnackbarContent,
   IconButton,
   TextField,
-  MenuItem
+  MenuItem,
+  Typography,
+  withStyles
 } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import {
@@ -33,18 +34,19 @@ import {
   Fingerprint,
   Close
 } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { dataMemberToValidation, API_URL } from '../../globals';
 import { getDateFromTimestamp } from '../../helpers';
 import autoBind from '../../autoBind';
 import '../../assets/css/Parent-Dash.css';
+import * as Styled from './styles';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const accountToNames = {
@@ -112,22 +114,6 @@ const childDropDowns = {
   }
 };
 
-const useStyles = () => {
-  makeStyles(theme => ({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper
-    },
-    nested: {
-      paddingLeft: theme.spacing(4)
-    },
-    paper: {
-      padding: theme.spacing(3, 2)
-    }
-  }));
-};
-
 const getSubHeader = text => (
   <ListSubheader
     component="div"
@@ -178,7 +164,7 @@ class ProfileInterface extends React.Component {
     }
     return this.state.accountData[field] !== undefined ? (
       <InputBase
-        className="full-width"
+        className={this.props.classes.fullWidth}
         value={this.state.accountData[field]}
         onChange={e => {
           const { accountData } = this.state;
@@ -217,7 +203,7 @@ class ProfileInterface extends React.Component {
     }
     return child !== undefined ? (
       <InputBase
-        className="full-width"
+        className={this.props.classes.fullWidth}
         value={child[field]}
         onChange={e => {
           const { children } = this.state;
@@ -274,7 +260,7 @@ class ProfileInterface extends React.Component {
       const Icon = nameToIcon[field];
       const error = this.state.errors[field];
       return (
-        <ListItem key={`${field}${childId}`}>
+        <ListItem key={`${field}${childId}`} className={this.props.classes.childListItem}>
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
@@ -414,48 +400,57 @@ class ProfileInterface extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div className="page-content horiz-center" style={{ paddingBottom: '20px' }}>
-        <h2>Edit Your Profile</h2>
-        <Paper className="paper-list-item">
+      <Styled.PageContent className={classes.wrapper}>
+        <Typography variant="h3">Edit Your Profile</Typography>
+        <Paper className={classes.paperListItem}>
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={getSubHeader(
               this.props.accounts.teachers ? 'Teacher Account' : 'Parent Account'
             )}
-            className={useStyles.root}
+            className={classes.root}
           >
             {this.getFields()}
-            <ListItem>
-              <ListItemText
-                style={{ paddingBottom: '10px' }}
-                primary={<Button onClick={this.changePassword}>Change Password</Button>}
-              />
-              <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
-                <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
+            <ListItem style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              <Button
+                onClick={this.changePassword}
+                className={classes.actionBtn}
+                style={{ flexGrow: 1 }}
+              >
+                Change Password
+              </Button>
+              <div className={this.props.classes.saveWrapper}>
+                <Button onClick={this.fetchAccountData} className={classes.actionBtn}>
                   Revert Changes
                 </Button>
-                <Button onClick={this.updateAccountData} variant="contained" color="primary">
+                <Button
+                  onClick={this.updateAccountData}
+                  className={classes.actionBtn}
+                  variant="contained"
+                  color="primary"
+                >
                   Save Changes
                 </Button>
-              </ListItemSecondaryAction>
+              </div>
             </ListItem>
           </List>
         </Paper>
         {this.state.children.length > 0 ? (
-          <div className="paper-list-item" style={{ marginTop: 0 }}>
+          <div className={classes.paperListItem} style={{ marginTop: 0 }}>
             {this.state.children.map(child => (
               <Paper style={{ marginTop: '30px' }} key={child.id}>
                 <List
                   component="nav"
                   aria-labelledby="nested-list-subheader"
                   subheader={getSubHeader("Child's Information")}
-                  className={useStyles.root}
+                  className={classes.root}
                 >
                   <ListItem
                     button
-                    className="child-list-item"
+                    className={classes.childListItem}
                     onClick={() => {
                       let { openChildren } = this.state;
                       if (openChildren.includes(child.id)) {
@@ -477,7 +472,7 @@ class ProfileInterface extends React.Component {
                     timeout="auto"
                     unmountOnExit
                   >
-                    <ListItem>
+                    <ListItem className={classes.childListItem} style={{ flexWrap: 'wrap' }}>
                       <ListItemIcon>
                         <Fingerprint />
                       </ListItemIcon>
@@ -488,29 +483,26 @@ class ProfileInterface extends React.Component {
                             : 'Get your Personal Student ID!'
                         }
                       />
-                      <ListItemSecondaryAction>
-                        {child.learnID ? (
-                          <CopyToClipboard text={child.learnID}>
-                            <Button>Copy ID</Button>
-                          </CopyToClipboard>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.getStudentID(child)}
-                          >
-                            Get your ID
-                          </Button>
-                        )}
-                      </ListItemSecondaryAction>
+
+                      {child.learnID ? (
+                        <CopyToClipboard text={child.learnID}>
+                          <Button>Copy ID</Button>
+                        </CopyToClipboard>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => this.getStudentID(child)}
+                        >
+                          Get your ID
+                        </Button>
+                      )}
                     </ListItem>
                     {this.getChildFields(child.id)}
                     <ListItem>
                       <ListItemText primary="" />
-                      <ListItemSecondaryAction style={{ paddingBottom: '10px' }}>
-                        <Button onClick={this.fetchAccountData} style={{ marginRight: '20px' }}>
-                          Revert Changes
-                        </Button>
+                      <div className={this.props.classes.saveWrapper}>
+                        <Button onClick={this.fetchAccountData}>Revert Changes</Button>
                         <Button
                           onClick={() => this.updateChildData(child.id)}
                           variant="contained"
@@ -518,7 +510,7 @@ class ProfileInterface extends React.Component {
                         >
                           Save Changes
                         </Button>
-                      </ListItemSecondaryAction>
+                      </div>
                     </ListItem>
                   </Collapse>
                 </List>
@@ -554,11 +546,57 @@ class ProfileInterface extends React.Component {
             ]}
           />
         </Snackbar>
-      </div>
+      </Styled.PageContent>
     );
   }
 }
 
 ProfileInterface.propTypes = propTypes;
 
-export default ProfileInterface;
+const styles = theme => ({
+  wrapper: {
+    paddingBottom: '20px !important',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  paperListItem: {
+    width: '60%',
+    marginTop: '30px',
+    [theme.breakpoints.down('sm')]: {
+      width: '80%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
+  },
+  childListItem: {
+    paddingLeft: '30px'
+  },
+  listRoot: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
+  },
+  actionBtn: {
+    marginBottom: 10
+  },
+  fullWidth: {
+    width: '100%'
+  },
+  saveWrapper: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
+    '& button': {
+      marginRight: '5px',
+      marginLeft: '5px'
+    },
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'space-around'
+    }
+  }
+});
+
+export default withStyles(styles)(ProfileInterface);

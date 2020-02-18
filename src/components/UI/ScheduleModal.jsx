@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper, Typography, makeStyles } from '@material-ui/core';
+import { Modal, Paper, Typography, Button, makeStyles } from '@material-ui/core';
 import { getDateFromTimestamp, getHrMn, getOrdinal } from '../../helpers';
 import { months, fullWeekDays, weekDays } from '../../globals';
 
@@ -63,6 +63,9 @@ const ScheduleModal = ({ showModal, onClose, cls }) => {
             {str}
           </Typography>
         ))}
+        <Button onClick={onClose} style={{ marginTop: '12px', alignSelf: 'center', width: '50%' }}>
+          Close
+        </Button>
         <div style={{ marginBottom: 30 }} />
       </Paper>
     </Modal>
@@ -79,11 +82,13 @@ const useStyles = makeStyles({
   },
   paper: {
     width: '50%',
-    minWidth: '300px',
+    minWidth: '350px',
     maxHeight: '100%',
     overflow: 'scroll',
     outline: 'none',
-    padding: '0 20px'
+    padding: '0 20px',
+    display: 'flex',
+    flexDirection: 'column'
   },
   scheduleLine: {
     margin: '0 30px',

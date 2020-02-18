@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { breakpoints } from '../../globals';
 
 // AccountType styles
 export const AccountType = styled.div({
@@ -11,7 +12,7 @@ export const AccountType = styled.div({
   justifyContent: 'center',
   padding: '30px 64px',
   overflow: 'scroll',
-  '@media (max-width: 600px)': {
+  [breakpoints.down.xs]: {
     padding: '30px 20px'
   }
 });
@@ -50,7 +51,7 @@ export const AccountLinkButtonWrapper = styled.div({
   paddingRight: 64,
   boxSizing: 'border-box',
   bottom: 30,
-  '@media (max-width: 600px)': {
+  [breakpoints.down.xs]: {
     width: 'calc(100% - 40px)',
     paddingRight: 0
   }
@@ -74,7 +75,7 @@ export const AccountLinkButton = styled.button(
     ':hover': {
       textDecoration: 'underline'
     },
-    '@media (max-width: 600px)': {
+    [breakpoints.down.xs]: {
       lineHeight: '20px',
       display: 'flex',
       flexDirection: 'column',

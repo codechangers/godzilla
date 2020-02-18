@@ -5,6 +5,30 @@ export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d
 export const URL = 'https://new-platform-f1070.web.app';
 export const API_URL = 'https://stripe-release.codechangers.com';
 
+const bpValues = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1280,
+  xl: 1920
+};
+const getSizes = () => {
+  const up = {};
+  const down = {};
+  const keys = Object.keys(bpValues);
+  keys.forEach((size, i) => {
+    up[size] = `@media (min-width: ${bpValues[size]}px)`;
+    if (i < keys.length - 1) {
+      down[size] = `@media (max-width: ${bpValues[keys[i + 1]]}px)`;
+    }
+  });
+  return { up, down };
+};
+export const breakpoints = {
+  values: bpValues,
+  ...getSizes()
+};
+
 export const months = [
   'January',
   'February',
@@ -59,6 +83,7 @@ export const dataMemberToValidation = {
   location: () => '',
   address: () => '',
   aboutMe: () => '',
+  privacyCode: () => '',
   password: state =>
     state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
   confirmPassword: state =>

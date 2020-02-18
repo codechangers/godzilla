@@ -91,10 +91,10 @@ class Login extends React.Component {
         break;
       }
     }
-    if (shouldRedirect === accountTypeToRoute.parents && this.state.signupID.length > 0) {
-      shouldRedirect = `${shouldRedirect}/signup/${this.state.signupID}`;
-    } else if (shouldRedirect === accountTypeToRoute.parents && signupID && signupID.length > 0) {
-      shouldRedirect = `${shouldRedirect}/signup/${signupID}`;
+    if (shouldRedirect !== '' && this.state.signupID.length > 0) {
+      shouldRedirect = `/parent/signup/${this.state.signupID}`;
+    } else if (shouldRedirect !== '' && signupID && signupID.length > 0) {
+      shouldRedirect = `/parent/signup/${signupID}`;
     } else if (user.newOAuth) {
       shouldRedirect = '/signup';
     }
@@ -160,6 +160,7 @@ class Login extends React.Component {
   render() {
     const { errors, signupID } = this.state;
     const { classes } = this.props;
+
     return this.state.shouldRedirect.length > 0 ? (
       <Redirect to={{ pathname: this.state.shouldRedirect, state: { signupID } }} />
     ) : (
@@ -279,7 +280,7 @@ class Login extends React.Component {
 
 Login.propTypes = propTypes;
 
-const styles = {
+const styles = theme => ({
   pageWrapper: {
     width: '100%',
     height: '100vh',
@@ -288,28 +289,49 @@ const styles = {
   },
   bigPic: {
     width: '55%',
+    [theme.breakpoints.down('xs')]: {
+      width: 0
+    },
     height: '100%'
   },
   leftContent: {
     boxSizing: 'border-box',
     padding: '30px 64px',
     width: '45%',
-    minWidth: '400px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      padding: '30px 10px'
+    },
+    minWidth: '340px',
     height: '100%',
+    overflow: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: 'var(--background-color)'
   },
   logoText: {
-    maxWidth: '240px'
+    maxWidth: '240px',
+    [theme.breakpoints.down('sm')]: {
+      alignSelf: 'center'
+    }
   },
   loginForm: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    '& .MuiInputBase-root': {
+    '& .MuiTextField-root': {
       marginBottom: '20px'
+    },
+    '& h2': {
+      fontSize: 60,
+      textAlign: 'left'
+    },
+    [theme.breakpoints.down('sm')]: {
+      '& h2': {
+        fontSize: 34,
+        textAlign: 'center'
+      }
     }
   },
   linkButton: {
@@ -319,6 +341,9 @@ const styles = {
     marginBottom: '20px',
     fontSize: '14px',
     textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
     textTransform: 'uppercase',
     cursor: 'pointer',
     '&:hover': {
@@ -328,10 +353,16 @@ const styles = {
   signupLink: {
     color: '#000',
     textDecoration: 'none',
+    textAlign: 'left',
+    margin: '20px 0',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
     '&:hover': {
       textDecoration: 'underline'
     }
   }
-};
+});
 
-export default withStyles(styles)(withRouter(Login));
+const StyledLogin = withStyles(styles)(Login);
+export default withRouter(StyledLogin);

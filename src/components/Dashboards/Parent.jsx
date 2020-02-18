@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
+import { withStyles } from '@material-ui/core';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 import ClassSignUpInterface from '../Interfaces/ClassSignUp';
@@ -52,23 +53,26 @@ class ParentDashboard extends React.Component {
 
   render() {
     const SP = this.props.apiKey ? StripeProvider : Fail;
+    const { classes } = this.props;
+    let approvedRoutes = this.props.accounts.teachers ? ['Teacher Dash'] : [];
+    approvedRoutes = this.props.accounts.admins
+      ? approvedRoutes.concat(['Admin Dash'])
+      : approvedRoutes;
     return this.props.user.isSignedIn ? (
-      <div className="page-wrapper">
+      <div className={classes.pageWrapper}>
         <SideBar
-          names={['My Classes', 'Class Search', 'Profile']}
+          names={['Profile', 'My Classes', 'Class Search'].concat(approvedRoutes)}
           baseRoute="/parent"
           firebase={this.props.firebase}
         />
         <SP apiKey={this.props.apiKey}>
           <Elements>
             {this.getInterface() || (
-              <div className="page-content">
-                <ClassViewInterface
-                  firebase={this.props.firebase}
-                  db={this.props.db}
-                  accounts={this.props.accounts}
-                />
-              </div>
+              <ClassViewInterface
+                firebase={this.props.firebase}
+                db={this.props.db}
+                accounts={this.props.accounts}
+              />
             )}
           </Elements>
         </SP>
@@ -85,11 +89,28 @@ ParentDashboard.propTypes = {
   accounts: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  apiKey: PropTypes.string
+  apiKey: PropTypes.string,
+  classes: PropTypes.object.isRequired
 };
 
 ParentDashboard.defaultProps = {
   apiKey: null
 };
 
-export default withRouter(ParentDashboard);
+const styles = theme => ({
+  pageWrapper: {
+    width: '100%',
+    boxSizing: 'border-box',
+    paddingLeft: '96px',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 0
+    },
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: 'var(--background-color)'
+  }
+});
+
+export default withStyles(styles)(withRouter(ParentDashboard));
