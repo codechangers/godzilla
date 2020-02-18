@@ -12,12 +12,15 @@ import {
   ExpansionPanelDetails
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import DSUlogo from '../../assets/images/dsu.png';
 
 const propTypes = {
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const tempFaq = [
@@ -34,10 +37,11 @@ const tempFaq = [
   }
 ];
 
-const ClassInfoInterface = ({ location, db }) => {
+const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     const { pathname } = location;
@@ -90,6 +94,7 @@ const ClassInfoInterface = ({ location, db }) => {
                   disabled={cls.children.length >= cls.maxStudents}
                   variant="contained"
                   color="primary"
+                  onClick={() => setShowSignup(true)}
                 >
                   Sign Up!
                 </Button>
@@ -145,12 +150,20 @@ const ClassInfoInterface = ({ location, db }) => {
               variant="contained"
               color="primary"
               className={classes.bottomButton}
+              onClick={() => setShowSignup(true)}
             >
               Sign Up!
             </Button>
           </div>
         </Paper>
       )}
+      <ClassSignUp
+        open={showSignup}
+        onClose={() => setShowSignup(false)}
+        cls={cls}
+        db={db}
+        user={user}
+      />
     </Styled.PageContent>
   );
 };
