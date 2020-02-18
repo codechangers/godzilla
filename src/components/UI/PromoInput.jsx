@@ -38,66 +38,47 @@ const PromoInput = ({ db, cls, promoDoc, setPromoDoc, getPromoUses }) => {
   };
 
   const classes = useStyles();
-  return (
-    <div className={classes.totalWrapper}>
-      {promoDoc !== null ? (
-        <Typography
-          variant="body1"
-          style={{
-            fontSize: '1rem',
-            margin: '15px 0 0 0',
-            lineHeight: '20px'
-          }}
+  return promoDoc !== null ? (
+    <Typography variant="body1" className={classes.text1}>
+      <strong>{promoDoc.code}</strong>
+      {' - '}
+      {promoDoc.discountType === '$'
+        ? `$${promoDoc.discountAmount}`
+        : `${promoDoc.discountAmount}%`}{' '}
+      off each student!
+      <Tooltip title="Remove Discount" placement="top">
+        <IconButton
+          style={{ margin: '0 0 3px 10px' }}
+          aria-label="Remove Discount"
+          size="small"
+          onClick={() => setPromoDoc(null)}
         >
-          <strong>{promoDoc.code}</strong>
-          {' - '}
-          {promoDoc.discountType === '$'
-            ? `$${promoDoc.discountAmount}`
-            : `${promoDoc.discountAmount}%`}{' '}
-          off each student!
-          <Tooltip title="Remove Discount" placement="top">
-            <IconButton
-              style={{ margin: '0 0 3px 10px' }}
-              aria-label="Remove Discount"
-              size="small"
-              onClick={() => setPromoDoc(null)}
-            >
-              <ClearIcon fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
-          <br />
-          <span
-            style={{
-              fontSize: '0.8rem',
-              color: 'rgba(0,0,0,0.7)',
-              lineHeight: '12px'
-            }}
-          >
-            {getPromoUses()}
-          </span>
-        </Typography>
-      ) : (
-        <div className={classes.promoWrapper}>
-          <TextField
-            label="Promo Code"
-            onChange={e => setPromoCode(e.target.value)}
-            value={promo}
-            helperText={promoError}
-            error={promoError.length > 0}
-          />
-          <Tooltip title="Apply Discount" placement="top">
-            <IconButton
-              style={{ margin: '12px 0 0 10px' }}
-              aria-label="Apply Discount"
-              size="small"
-              color="primary"
-              onClick={applyPromo}
-            >
-              <SendIcon fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
-        </div>
-      )}
+          <ClearIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+      <br />
+      <span className={classes.text2}>{getPromoUses()}</span>
+    </Typography>
+  ) : (
+    <div className={classes.promoWrapper}>
+      <TextField
+        label="Promo Code"
+        onChange={e => setPromoCode(e.target.value)}
+        value={promo}
+        helperText={promoError}
+        error={promoError.length > 0}
+      />
+      <Tooltip title="Apply Discount" placement="top">
+        <IconButton
+          style={{ margin: '12px 0 0 10px' }}
+          aria-label="Apply Discount"
+          size="small"
+          color="primary"
+          onClick={applyPromo}
+        >
+          <SendIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
     </div>
   );
 };
@@ -106,19 +87,20 @@ PromoInput.propTypes = propTypes;
 PromoInput.defaultProps = { promoDoc: null };
 
 const useStyles = makeStyles({
-  totalWrapper: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    boxSizing: 'border-box',
-    padding: '10px 20px 20px 20px'
-  },
   promoWrapper: {
     display: 'flex',
     alignItems: 'center',
     marginBottom: '14px'
+  },
+  text1: {
+    fontSize: '1rem',
+    margin: '15px 0 0 0',
+    lineHeight: '20px'
+  },
+  text2: {
+    fontSize: '0.8rem',
+    color: 'rgba(0,0,0,0.7)',
+    lineHeight: '12px'
   }
 });
 

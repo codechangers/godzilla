@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const ClassSignUp = ({ open, onClose, cls, db, user }) => {
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing] = useState(false);
   const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
@@ -76,6 +76,32 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
     return '';
   };
 
+  const getTotal = () => {
+    let total = 0;
+    const registrations = selectedChildren.filter(c => !checkDisabled(c)).length;
+    if (promoDoc !== null) {
+      const { discountType, discountAmount, uses, limited } = promoDoc;
+      if (discountType === '$') {
+        total =
+          registrations > uses && limited
+            ? (cls.price - discountAmount >= 0 ? cls.price - discountAmount : 0 * uses) +
+              cls.price * (registrations - uses)
+            : (cls.price - discountAmount) * registrations;
+      } else {
+        total =
+          registrations > uses && limited
+            ? cls.price * (0.01 * discountAmount) * uses + cls.price * registrations - uses
+            : cls.price * (0.01 * discountAmount) * registrations;
+      }
+    } else {
+      total = cls.price * registrations;
+    }
+    if (total < 0) {
+      total = 0;
+    }
+    return total;
+  };
+
   const classes = useStyles();
   return (
     <Modal className={classes.modalWrapper} open={open} onClose={onClose} disableAutoFocus>
@@ -106,13 +132,19 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
               </ListItem>
             ))}
           </List>
-          <PromoInput
-            db={db}
-            cls={cls}
-            promoDoc={promoDoc}
-            setPromoDoc={setPromoDoc}
-            getPromoUses={getPromoUses}
-          />
+          <div className={classes.totalWrapper}>
+            <PromoInput
+              db={db}
+              cls={cls}
+              promoDoc={promoDoc}
+              setPromoDoc={setPromoDoc}
+              getPromoUses={getPromoUses}
+            />
+            <Typography variant="body1" className={classes.totalText}>
+              <strong style={{ marginRight: '15px' }}>Total:</strong>
+              {`$${getTotal()}`}
+            </Typography>
+          </div>
         </Paper>
       )}
     </Modal>
@@ -137,6 +169,20 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     overflow: 'scroll',
     outline: 'none'
+  },
+  totalWrapper: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    boxSizing: 'border-box',
+    padding: '10px 20px 20px 20px'
+  },
+  totalText: {
+    fontSize: '1rem',
+    margin: '16px 0',
+    lineHeight: '20px'
   }
 });
 
