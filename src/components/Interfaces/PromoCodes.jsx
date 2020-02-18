@@ -44,7 +44,7 @@ const PromoCodesInterface = ({ user, db }) => {
     db.collection('promos')
       .add(promoCode)
       .then(promoRef => {
-        teacher.ref.update({ promos: [...teacher.promos, promoRef] });
+        teacher.ref.update({ promos: teacher.promos ? [...teacher.promos, promoRef] : [promoRef] });
       })
       .catch(err => console.log(err));
   };
