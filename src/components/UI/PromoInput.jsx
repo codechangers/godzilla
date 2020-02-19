@@ -86,7 +86,7 @@ const PromoInput = ({ db, cls, promoDoc, setPromoDoc, getPromoUses }) => {
 PromoInput.propTypes = propTypes;
 PromoInput.defaultProps = { promoDoc: null };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   promoWrapper: {
     display: 'flex',
     alignItems: 'center',
@@ -95,13 +95,16 @@ const useStyles = makeStyles({
   text1: {
     fontSize: '1rem',
     margin: '15px 0 0 0',
-    lineHeight: '20px'
+    lineHeight: '20px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.8rem'
+    }
   },
   text2: {
     fontSize: '0.8rem',
     color: 'rgba(0,0,0,0.7)',
     lineHeight: '12px'
   }
-});
+}));
 
 export default PromoInput;

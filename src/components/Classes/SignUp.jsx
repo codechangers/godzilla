@@ -313,13 +313,17 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     padding: '10px 20px 20px 20px',
     [theme.breakpoints.down('xs')]: {
-      padding: '10px 0'
+      flexWrap: 'wrap',
+      justifyContent: 'space-around'
     }
   },
   totalText: {
     fontSize: '1rem',
     margin: '16px 0',
-    lineHeight: '20px'
+    lineHeight: '20px',
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: '10px'
+    }
   },
   error: {
     color: 'red',
