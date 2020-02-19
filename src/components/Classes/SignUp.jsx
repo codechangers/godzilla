@@ -9,24 +9,37 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Checkbox
+  Checkbox,
+  Button
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import { CardElement, injectStripe } from 'react-stripe-elements';
 import PromoInput from '../UI/PromoInput';
+import { API_URL } from '../../globals';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   cls: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  stripe: PropTypes.object.isRequired
 };
 
-const ClassSignUp = ({ open, onClose, cls, db, user }) => {
-  const [isProcessing] = useState(false);
+const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
+  const [isProcessing, setIsProcessing] = useState(false);
   const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
+  const [invalidPayment, setInvalidPayment] = useState('');
+  const [payment, setPayment] = useState({
+    succeeded: false,
+    error: '',
+    failed: false
+  });
+  const updatePayment = changes => {
+    setPayment({ ...payment, ...changes });
+  };
 
   useEffect(() => {
     return db
@@ -46,6 +59,70 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
         });
       });
   }, [db, user]);
+
+  const handleSubmit = async () => {
+    let token;
+    let errorMessage = 'Invalid Payment Information!';
+    if (getTotal() > 0) {
+      const stripePayment = await stripe.createToken({ name: 'Registration Payment' });
+      token = stripePayment.token;
+      if (stripePayment.error) {
+        errorMessage = stripePayment.error.message;
+      }
+    }
+    if ((getTotal() > 0 && token) || getTotal() === 0) {
+      setIsProcessing(true);
+      setInvalidPayment('');
+      updatePayment({ error: '' });
+      // eslint-disable-next-line
+      fetch(`${API_URL}/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          token: token ? token.id : '1234',
+          classID: cls.id,
+          teacherID: cls.teacher.id,
+          parentID: user.uid,
+          promoId: promoDoc !== null ? promoDoc.id : '1234',
+          numberOfChildren: selectedChildren.filter(c => !checkDisabled(c)).length
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 200) {
+            const children = cls.children || [];
+            selectedChildren.forEach(child => {
+              const classes = child.classes || [];
+              classes.push(cls.ref);
+              child.ref.update({ classes });
+              children.push(child.ref);
+            });
+            cls.ref.update({ children });
+            updatePayment({ succeeded: true });
+          } else if (res.error) {
+            console.log(res.error);
+            if (res.error.code === 'card_declined') {
+              setIsProcessing(false);
+              setInvalidPayment('Your Card was Declined.');
+            } else {
+              updatePayment({ failed: true });
+              updatePayment({ error: res.error.message });
+            }
+          } else {
+            updatePayment({ failed: true });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          updatePayment({ failed: true });
+        });
+    } else {
+      setIsProcessing(false);
+      setInvalidPayment(errorMessage);
+    }
+  };
 
   const toggleChild = childId => {
     const selectedCopy = [...selectedChildren];
@@ -145,6 +222,30 @@ const ClassSignUp = ({ open, onClose, cls, db, user }) => {
               {`$${getTotal()}`}
             </Typography>
           </div>
+          {getTotal() > 0 && (
+            <>
+              <Typography variant="body1" className={classes.error}>
+                {invalidPayment}
+              </Typography>
+              <div
+                className={classes.cardInfo}
+                style={invalidPayment ? { border: '1px solid red' } : null}
+              >
+                <CardElement />
+              </div>
+            </>
+          )}
+          <div className={classes.actionButtons}>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button
+              disabled={selectedChildren.filter(c => !checkDisabled(c)).length <= 0}
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+            >
+              Sign Up!
+            </Button>
+          </div>
         </Paper>
       )}
     </Modal>
@@ -168,7 +269,8 @@ const useStyles = makeStyles({
     minWidth: '300px',
     maxHeight: '100%',
     overflow: 'scroll',
-    outline: 'none'
+    outline: 'none',
+    boxSizing: 'border-box'
   },
   totalWrapper: {
     width: '100%',
@@ -183,7 +285,25 @@ const useStyles = makeStyles({
     fontSize: '1rem',
     margin: '16px 0',
     lineHeight: '20px'
+  },
+  error: {
+    color: 'red',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  cardInfo: {
+    border: '1px solid rgba(224, 224, 224, 1)',
+    padding: 14,
+    marginBottom: 20
+  },
+  actionButtons: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap'
   }
 });
 
-export default ClassSignUp;
+export default injectStripe(ClassSignUp);
