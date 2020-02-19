@@ -127,7 +127,7 @@ class ClassEditor extends React.Component {
   handleSubmit() {
     let fields = allFields;
     if (!this.state.isPrivate) {
-      fields.filter(a => a !== 'privacyCode');
+      fields = fields.filter(a => a !== 'privacyCode');
     }
     if (this.validateFields(fields)) {
       const data = { ...this.state };
