@@ -118,7 +118,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
                 <div className={classes.buttonWrapper}>
                   <Link
                     className={classes.button}
-                    to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
+                    to={{ pathname: `/parent/info/${cls.id}`, state: { signupID: cls.id } }}
                   >
                     <Button style={{ width: '100%' }} variant="contained">
                       More Info
@@ -240,7 +240,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '96%',
-      minWidth: '340px'
+      minWidth: '300px'
     }
   },
   buttonWrapper: {

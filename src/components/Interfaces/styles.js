@@ -29,5 +29,8 @@ export const PageContent = styled.div({
   },
   [breakpoints.down.xs]: {
     padding: '30px 20px 0 20px'
+  },
+  '@media (max-width: 340px)': {
+    padding: '30px 0 0 0'
   }
 });
