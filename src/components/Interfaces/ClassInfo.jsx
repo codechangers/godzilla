@@ -32,7 +32,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
     const { pathname } = location;
     if (pathname) {
       db.collection('classes')
-        .doc(pathname.replace('/parent/info/', ''))
+        .doc(pathname.replace('/parent/signup/', ''))
         .get()
         .then(classDoc => {
           if (classDoc.exists) {

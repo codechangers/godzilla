@@ -118,7 +118,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
                 <div className={classes.buttonWrapper}>
                   <Link
                     className={classes.button}
-                    to={{ pathname: `/parent/info/${cls.id}`, state: { signupID: cls.id } }}
+                    to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
                   >
                     <Button style={{ width: '100%' }} variant="contained">
                       More Info
