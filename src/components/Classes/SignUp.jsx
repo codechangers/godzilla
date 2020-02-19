@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import { CardElement, injectStripe } from 'react-stripe-elements';
+import ClassTable from '../Classes/ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import { API_URL } from '../../globals';
@@ -202,7 +203,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
             <br className={classes.mobileBreak} />{' '}
             <span className={classes.mobileCenter}>{cls.name}</span>
           </Typography>
-          {/* Table Goes Here */}
+          <ClassTable cls={cls} />
           <Typography variant="body1">Select Children to Register</Typography>
           <List>
             {children.map(child => (
@@ -280,7 +281,7 @@ const useStyles = makeStyles(theme => ({
   modalContent: {
     padding: '40px',
     width: '100%',
-    maxWidth: '600px',
+    maxWidth: '700px',
     minWidth: '300px',
     maxHeight: '100%',
     overflow: 'scroll',
