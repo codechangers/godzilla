@@ -65,7 +65,9 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     [theme.breakpoints.down('xs')]: {
-      fontSize: '1.5rem'
+      fontSize: '1.5rem',
+      lineHeight: '25px',
+      textAlign: 'center'
     }
   },
   mainText: {

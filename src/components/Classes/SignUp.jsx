@@ -197,7 +197,11 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
         </Paper>
       ) : (
         <Paper className={classes.modalContent}>
-          <Typography variant="h5">Register for: {cls.name}</Typography>
+          <Typography variant="h5">
+            Register for:
+            <br className={classes.mobileBreak} />{' '}
+            <span className={classes.mobileCenter}>{cls.name}</span>
+          </Typography>
           {/* Table Goes Here */}
           <Typography variant="body1">Select Children to Register</Typography>
           <List>
@@ -265,7 +269,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
 
 ClassSignUp.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   modalWrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -281,7 +285,24 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     overflow: 'scroll',
     outline: 'none',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    [theme.breakpoints.down('xs')]: {
+      padding: '20px 4px'
+    }
+  },
+  mobileBreak: {
+    display: 'none',
+    [theme.breakpoints.down('xs')]: {
+      display: 'block'
+    }
+  },
+  mobileCenter: {
+    fontWeight: 500,
+    [theme.breakpoints.down('xs')]: {
+      display: 'block',
+      textAlign: 'center',
+      width: '100%'
+    }
   },
   totalWrapper: {
     width: '100%',
@@ -290,7 +311,10 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     boxSizing: 'border-box',
-    padding: '10px 20px 20px 20px'
+    padding: '10px 20px 20px 20px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '10px 0'
+    }
   },
   totalText: {
     fontSize: '1rem',
@@ -315,6 +339,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     flexWrap: 'wrap'
   }
-});
+}));
 
 export default injectStripe(ClassSignUp);
