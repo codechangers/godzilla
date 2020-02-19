@@ -253,7 +253,7 @@ class ChildInfo extends React.Component {
               variant="contained"
               color="primary"
             >
-              {this.props.prevData ? 'Update Child' : 'Add Child'}
+              {this.props.prevData ? 'Update Child' : 'Save Child'}
             </Button>
           </Styled.NavigationButtons>
         </CardContent>
