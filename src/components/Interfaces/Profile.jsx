@@ -402,7 +402,9 @@ class ProfileInterface extends React.Component {
     const { classes } = this.props;
     return (
       <Styled.PageContent className={classes.wrapper}>
-        <Typography variant="h3">Edit Your Profile</Typography>
+        <Typography variant="h3" style={{ textAlign: 'center' }}>
+          Edit Your Profile
+        </Typography>
         <Paper className={classes.paperListItem}>
           <List
             component="nav"
