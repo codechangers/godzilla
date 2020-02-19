@@ -13,7 +13,7 @@ const PaymentProcess = ({ payment, onClose }) => {
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
-      <Typography variant="h4">
+      <Typography variant="h4" className={classes.header}>
         {payment.succeeded
           ? 'Successfully Processed Payment!'
           : payment.failed
@@ -55,7 +55,7 @@ const PaymentProcess = ({ payment, onClose }) => {
 
 PaymentProcess.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -63,10 +63,19 @@ const useStyles = makeStyles({
     alignItems: 'center',
     width: '100%'
   },
+  header: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.5rem'
+    }
+  },
   mainText: {
     margin: 0,
     marginTop: '8px',
-    opacity: 0.7
+    opacity: 0.7,
+    padding: '0 12px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 2px'
+    }
   },
   spinner: {
     position: 'absolute',
@@ -74,6 +83,6 @@ const useStyles = makeStyles({
     left: 0,
     zIndex: 1
   }
-});
+}));
 
 export default PaymentProcess;
