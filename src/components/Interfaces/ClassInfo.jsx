@@ -15,7 +15,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
-import DSUlogo from '../../assets/images/dsu.png';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -23,26 +22,11 @@ const propTypes = {
   user: PropTypes.object.isRequired
 };
 
-const tempFaq = [
-  { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
-  { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
-  {
-    q: 'When are opening and closing ceremonies',
-    a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
-  },
-  {
-    q: 'What should I bring to camp',
-    a:
-      'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
-  }
-];
-
 const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
-  const [editMode] = useState(true);
 
   useEffect(() => {
     const { pathname } = location;
@@ -62,28 +46,14 @@ const ClassInfoInterface = ({ location, db, user }) => {
     }
   }, [location, db]);
 
-  const DSU_EXAMPLE = {
-    logo: DSUlogo,
-    maps:
-      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
-    title: 'About Camp',
-    about: `Located about hour away from Zion’s National Park, Dixie State University is
-dedicated to fields such as Computer Science and Information Tech-nology. Throughout
-the year, we hold our after school programs and tutoring here. It is the per-fect
-place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
-    youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
-    faqs: tempFaq
+  const classInfo = cls.info || {
+    logo: '',
+    maps: '',
+    title: '',
+    about: '',
+    youtube: '',
+    faqs: []
   };
-
-  const classInfo = cls.info ||
-    DSU_EXAMPLE || {
-      logo: '',
-      maps: '',
-      title: '',
-      about: '',
-      youtube: '',
-      faqs: []
-    };
   const classes = useStyles();
   return isLoading ? (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -156,7 +126,7 @@ place to attend a camp while enjoying the famous and sunny city, St. George, Uta
               )}
             </div>
           )}
-          {classInfo.faqs && (
+          {classInfo.faqs.length > 0 && (
             <div
               className={classes.faqWrapper}
               style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
