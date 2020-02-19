@@ -15,6 +15,7 @@ import {
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import PromoInput from '../UI/PromoInput';
+import PaymentProcess from '../UI/PaymentProcess';
 import { API_URL } from '../../globals';
 
 const propTypes = {
@@ -124,18 +125,18 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
     }
   };
 
-  const toggleChild = childId => {
+  const toggleChild = child => {
     const selectedCopy = [...selectedChildren];
-    const index = selectedCopy.indexOf(childId);
+    const index = selectedCopy.indexOf(child);
     if (index === -1) {
-      selectedCopy.push(childId);
+      selectedCopy.push(child);
     } else {
       selectedCopy.splice(index, 1);
     }
     setSelectedChildren(selectedCopy);
   };
-  const checkDisabled = childId => cls.children.some(c => c.id === childId);
-  const checkToggle = childId => selectedChildren.includes(childId) || checkDisabled(childId);
+  const checkDisabled = child => cls.children.some(c => c.id === child.id);
+  const checkToggle = child => selectedChildren.includes(child) || checkDisabled(child);
 
   const getPromoUses = () => {
     const registrations = selectedChildren.filter(c => !checkDisabled(c)).length;
@@ -183,7 +184,17 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
   return (
     <Modal className={classes.modalWrapper} open={open} onClose={onClose} disableAutoFocus>
       {isProcessing ? (
-        <Paper className={classes.modalContent}></Paper>
+        <Paper className={classes.modalContent}>
+          <PaymentProcess
+            payment={payment}
+            onClose={() => {
+              setSelectedChildren([]);
+              setIsProcessing(false);
+              updatePayment({ succeeded: false });
+              onClose();
+            }}
+          />
+        </Paper>
       ) : (
         <Paper className={classes.modalContent}>
           <Typography variant="h5">Register for: {cls.name}</Typography>
@@ -194,14 +205,14 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
               <ListItem
                 key={child.id}
                 button
-                onClick={() => toggleChild(child.id)}
-                disabled={checkDisabled(child.id)}
+                onClick={() => toggleChild(child)}
+                disabled={checkDisabled(child)}
               >
                 <ListItemAvatar>
                   <AccountIcon />
                 </ListItemAvatar>
                 <ListItemText primary={`${child.fName} ${child.lName}`} />
-                <Checkbox edge="end" checked={checkToggle(child.id)} />
+                <Checkbox edge="end" checked={checkToggle(child)} />
                 <Typography
                   variant="body1"
                   style={{ marginLeft: 10 }}
