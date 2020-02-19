@@ -262,15 +262,18 @@ class Login extends React.Component {
                   <img src={GoogleIcon} alt="G" style={{ marginRight: '11px' }} />
                   Sign In With Google
                 </Button>
+                <Link
+                  to={{ pathname: '/signup', state: { signupID: this.state.signupID } }}
+                  style={{ textDecoration: 'none', width: '100%', marginTop: '15px' }}
+                >
+                  <Button variant="outlined" color="secondary" style={{ width: '100%' }}>
+                    Create an Account
+                  </Button>
+                </Link>
               </form>
             )}
           </div>
-          <Link
-            to={{ pathname: '/signup', state: { signupID: this.state.signupID } }}
-            className={classes.signupLink}
-          >
-            Don&apos;t have an account? Sign up today
-          </Link>
+          <div></div>
         </Box>
         <div className={classes.bigPic} id={`students-img${this.state.backgroundImage}`} />
       </div>
@@ -298,11 +301,11 @@ const styles = theme => ({
     boxSizing: 'border-box',
     padding: '30px 64px',
     width: '45%',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
       padding: '30px 10px'
     },
-    minWidth: '340px',
+    minWidth: '300px',
     height: '100%',
     overflow: 'scroll',
     display: 'flex',
