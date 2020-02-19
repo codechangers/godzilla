@@ -5,7 +5,6 @@ import { StripeProvider, Elements } from 'react-stripe-elements';
 import { withStyles } from '@material-ui/core';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
-import ClassSignUpInterface from '../Interfaces/ClassSignUp';
 import ClassInfoInterface from '../Interfaces/ClassInfo';
 import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
@@ -15,8 +14,7 @@ import '../../assets/css/Parent-Dash.css';
 
 const routeToInterface = {
   '/parent': null,
-  '/parent/signup': ClassSignUpInterface,
-  '/parent/info': ClassInfoInterface,
+  '/parent/signup': ClassInfoInterface,
   '/parent/search': ClassSearchInterface,
   '/parent/profile': Profile,
   '/parent/settings': SettingsInterface
