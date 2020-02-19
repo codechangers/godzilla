@@ -41,7 +41,7 @@ class InfoCardHeader extends React.Component {
   }
 
   render() {
-    const { cls, children, hideImage, classes } = this.props;
+    const { cls, children, hideImage, hideAccountType, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
       <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
@@ -52,7 +52,7 @@ class InfoCardHeader extends React.Component {
           {children === null || hideImage ? null : (
             <div className={`${classes.inliner} ${classes.col}`}>
               <Typography variant="body1">
-                {cls.programType ? (
+                {cls.programType && !hideAccountType ? (
                   <span className={classes.programType}>{programTypeToText[cls.programType]}</span>
                 ) : null}
               </Typography>
@@ -66,7 +66,7 @@ class InfoCardHeader extends React.Component {
           {children !== null && !hideImage ? null : (
             <div className={`${classes.inliner} ${classes.col}`}>
               <Typography variant="body1">
-                {cls.programType ? (
+                {cls.programType && !hideAccountType ? (
                   <span className={classes.programType}>{programTypeToText[cls.programType]}</span>
                 ) : null}
               </Typography>
@@ -151,13 +151,15 @@ InfoCardHeader.propTypes = {
   children: PropTypes.node,
   db: PropTypes.object,
   hideImage: PropTypes.bool,
+  hideAccountType: PropTypes.bool,
   classes: PropTypes.object.isRequired
 };
 
 InfoCardHeader.defaultProps = {
   children: null,
   db: null,
-  hideImage: false
+  hideImage: false,
+  hideAccountType: false
 };
 
 const styles = theme => ({
