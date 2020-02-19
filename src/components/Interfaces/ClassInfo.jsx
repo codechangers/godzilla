@@ -42,6 +42,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [editMode] = useState(true);
 
   useEffect(() => {
     const { pathname } = location;
@@ -61,8 +62,29 @@ const ClassInfoInterface = ({ location, db, user }) => {
     }
   }, [location, db]);
 
-  const classes = useStyles();
+  const DSU_EXAMPLE = {
+    logo: DSUlogo,
+    maps:
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
+    title: 'About Camp',
+    about: `Located about hour away from Zion’s National Park, Dixie State University is
+dedicated to fields such as Computer Science and Information Tech-nology. Throughout
+the year, we hold our after school programs and tutoring here. It is the per-fect
+place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
+    youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
+    faqs: tempFaq
+  };
 
+  const classInfo = cls.info ||
+    DSU_EXAMPLE || {
+      logo: '',
+      maps: '',
+      title: '',
+      about: '',
+      youtube: '',
+      faqs: []
+    };
+  const classes = useStyles();
   return isLoading ? (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Typography variant="h3" style={{ marginBottom: '20px' }}>
@@ -78,16 +100,22 @@ const ClassInfoInterface = ({ location, db, user }) => {
       {foundClass && (
         <Paper className={classes.content}>
           <div className={classes.cardWrapper}>
-            <div className={classes.right}>
-              <img src={DSUlogo} alt="DSU_Logo" className={classes.logo} />
-              <iframe
-                title="maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus"
-                frameBorder="0"
-                allowFullScreen=""
-                className={classes.maps}
-              ></iframe>
-            </div>
+            {(classInfo.logo || classInfo.maps) && (
+              <div className={classes.right}>
+                {classInfo.logo && (
+                  <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
+                )}
+                {classInfo.maps && (
+                  <iframe
+                    title="maps"
+                    src={classInfo.maps}
+                    frameBorder="0"
+                    allowFullScreen=""
+                    className={classes.maps}
+                  ></iframe>
+                )}
+              </div>
+            )}
             <div className={classes.left}>
               <InfoCardHeader cls={cls} hideImage hideAccountType>
                 <Button
@@ -101,60 +129,71 @@ const ClassInfoInterface = ({ location, db, user }) => {
               </InfoCardHeader>
             </div>
           </div>
-          <div className={classes.cardWrapper}>
-            <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
-              <Typography variant="h4">About Camp</Typography>
-              <Typography variant="body1" style={{ marginBottom: '15px' }}>
-                Located about hour away from Zion’s National Park, Dixie State University is
-                dedicated to fields such as Computer Science and Information Tech-nology. Throughout
-                the year, we hold our after school programs and tutoring here. It is the per-fect
-                place to attend a camp while enjoying the famous and sunny city, St. George, Utah.
-              </Typography>
-            </div>
-            <div className={classes.left}>
-              <iframe
-                title="youtube"
-                className={classes.youtube}
-                src="https://www.youtube.com/embed/Rt89gPYeB1c"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-          <div className={classes.faqWrapper}>
-            <Typography variant="h4" className={classes.faqHeader}>
-              Important Information
-            </Typography>
-            {tempFaq.map(faq => (
-              <ExpansionPanel key={faq.q} className={classes.faqPanel}>
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  className={classes.summary}
-                >
-                  <Typography variant="h6" className={classes.question}>
-                    {faq.q}
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.details}>
-                  <Typography variant="body1" className={classes.answer}>
-                    {faq.a}
-                  </Typography>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            ))}
-            <Button
-              disabled={cls.children.length >= cls.maxStudents}
-              variant="contained"
-              color="primary"
-              className={classes.bottomButton}
-              onClick={() => setShowSignup(true)}
+          {(classInfo.title || classInfo.about || classInfo.youtube) && (
+            <div
+              className={classes.cardWrapper}
+              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
             >
-              Sign Up!
-            </Button>
-          </div>
+              {(classInfo.title || classInfo.about) && (
+                <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
+                  <Typography variant="h4">{classInfo.title}</Typography>
+                  <Typography variant="body1" style={{ marginBottom: '15px' }}>
+                    {classInfo.about}
+                  </Typography>
+                </div>
+              )}
+              {classInfo.youtube && (
+                <div className={classes.left}>
+                  <iframe
+                    title="youtube"
+                    className={classes.youtube}
+                    src={classInfo.youtube}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+            </div>
+          )}
+          {classInfo.faqs && (
+            <div
+              className={classes.faqWrapper}
+              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+            >
+              <Typography variant="h4" className={classes.faqHeader}>
+                Important Information
+              </Typography>
+              {classInfo.faqs.map(faq => (
+                <ExpansionPanel key={faq.q} className={classes.faqPanel}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    className={classes.summary}
+                  >
+                    <Typography variant="h6" className={classes.question}>
+                      {faq.q}
+                    </Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails className={classes.details}>
+                    <Typography variant="body1" className={classes.answer}>
+                      {faq.a}
+                    </Typography>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              ))}
+              <Button
+                disabled={cls.children.length >= cls.maxStudents}
+                variant="contained"
+                color="primary"
+                className={classes.bottomButton}
+                onClick={() => setShowSignup(true)}
+              >
+                Sign Up!
+              </Button>
+            </div>
+          )}
         </Paper>
       )}
       <ClassSignUp
@@ -192,8 +231,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    flexWrap: 'wrap-reverse',
-    borderBottom: '2px solid rgba(150,150,150,0.3)'
+    flexWrap: 'wrap-reverse'
   },
   faqWrapper: {
     width: '100%',
