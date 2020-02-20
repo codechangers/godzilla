@@ -12,6 +12,7 @@ import {
   ExpansionPanelDetails
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -48,11 +49,32 @@ place to attend a camp while enjoying the famous and sunny city, St. George, Uta
   ]
 };
 
+const Fill = ({ className, prompt, isEditing }) => {
+  const classes = useStyles();
+  return (
+    isEditing && (
+      <div className={`${className} ${classes.fill}`}>
+        <Button>
+          <AddIcon />
+          {prompt}
+        </Button>
+      </div>
+    )
+  );
+};
+
+Fill.propTypes = {
+  className: PropTypes.string.isRequired,
+  prompt: PropTypes.string.isRequired,
+  isEditing: PropTypes.bool.isRequired
+};
+
 const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [isEditing] = useState(true);
 
   useEffect(() => {
     const { pathname } = location;
@@ -72,15 +94,14 @@ const ClassInfoInterface = ({ location, db, user }) => {
     }
   }, [location, db]);
 
-  const classInfo = cls.info ||
-    DSU_EXAMPLE || {
-      logo: '',
-      maps: '',
-      title: '',
-      about: '',
-      youtube: '',
-      faqs: []
-    };
+  const classInfo = cls.info || {
+    logo: '',
+    maps: '',
+    title: '',
+    about: '',
+    youtube: '',
+    faqs: []
+  };
   const classes = useStyles();
   return isLoading ? (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -97,12 +118,14 @@ const ClassInfoInterface = ({ location, db, user }) => {
       {foundClass && (
         <Paper className={classes.content}>
           <div className={classes.cardWrapper}>
-            {(classInfo.logo || classInfo.maps) && (
+            {(classInfo.logo || classInfo.maps || isEditing) && (
               <div className={classes.right}>
-                {classInfo.logo && (
+                {(classInfo.logo && (
                   <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
+                )) || (
+                  <Fill className={classes.logoFill} prompt="Add a Logo" isEditing={isEditing} />
                 )}
-                {classInfo.maps && (
+                {(classInfo.maps && (
                   <iframe
                     title="maps"
                     src={classInfo.maps}
@@ -110,6 +133,8 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     allowFullScreen=""
                     className={classes.maps}
                   ></iframe>
+                )) || (
+                  <Fill className={classes.mapsFill} prompt="Add a Map" isEditing={isEditing} />
                 )}
               </div>
             )}
@@ -260,9 +285,22 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '20px',
     flexGrow: 1
   },
+  fill: {
+    display: 'block',
+    background: '#ddd',
+    borderRadius: '3px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   logo: {
     maxWidth: '90%',
     maxHeight: '140px',
+    marginBottom: '10px'
+  },
+  logoFill: {
+    width: '90%',
+    height: '140px',
     marginBottom: '10px'
   },
   maps: {
@@ -271,6 +309,13 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)',
     backgroundColor: 'rgba(120,120,120,0.3)',
+    [theme.breakpoints.down('md')]: {
+      width: '90%'
+    }
+  },
+  mapsFill: {
+    width: '75%',
+    height: '250px',
     [theme.breakpoints.down('md')]: {
       width: '90%'
     }
