@@ -9,14 +9,15 @@ import {
   Button,
   ExpansionPanel,
   ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelDetails,
+  InputBase
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
-import DSUlogo from '../../assets/images/dsu.png';
+// import DSUlogo from '../../assets/images/dsu.png';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -24,30 +25,30 @@ const propTypes = {
   user: PropTypes.object.isRequired
 };
 
-const DSU_EXAMPLE = {
-  logo: DSUlogo,
-  maps:
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
-  title: 'About Camp',
-  about: `Located about hour away from Zion’s National Park, Dixie State University is
-dedicated to fields such as Computer Science and Information Tech-nology. Throughout
-the year, we hold our after school programs and tutoring here. It is the per-fect
-place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
-  youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
-  faqs: [
-    { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
-    { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
-    {
-      q: 'When are opening and closing ceremonies',
-      a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
-    },
-    {
-      q: 'What should I bring to camp',
-      a:
-        'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
-    }
-  ]
-};
+// const DSU_EXAMPLE = {
+//   logo: DSUlogo,
+//   maps:
+//     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
+//   title: 'About Camp',
+//   about: `Located about hour away from Zion’s National Park, Dixie State University is
+// dedicated to fields such as Computer Science and Information Tech-nology. Throughout
+// the year, we hold our after school programs and tutoring here. It is the per-fect
+// place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
+//   youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
+//   faqs: [
+//     { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
+//     { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
+//     {
+//       q: 'When are opening and closing ceremonies',
+//       a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
+//     },
+//     {
+//       q: 'What should I bring to camp',
+//       a:
+//         'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
+//     }
+//   ]
+// };
 
 const Fill = ({ className, prompt, isEditing }) => {
   const classes = useStyles();
@@ -75,6 +76,8 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
   const [isEditing] = useState(true);
+  const [editTitle, setEditTitle] = useState(cls.title || '');
+  const [editAbout, setEditAbout] = useState(cls.about || '');
 
   useEffect(() => {
     const { pathname } = location;
@@ -151,20 +154,41 @@ const ClassInfoInterface = ({ location, db, user }) => {
               </InfoCardHeader>
             </div>
           </div>
-          {(classInfo.title || classInfo.about || classInfo.youtube) && (
+          {(classInfo.title || classInfo.about || classInfo.youtube || isEditing) && (
             <div
               className={classes.cardWrapper}
               style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
             >
-              {(classInfo.title || classInfo.about) && (
+              {(isEditing && (
                 <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
-                  <Typography variant="h4">{classInfo.title}</Typography>
-                  <Typography variant="body1" style={{ marginBottom: '15px' }}>
-                    {classInfo.about}
-                  </Typography>
+                  <InputBase
+                    className={classes.titleInput}
+                    value={editTitle}
+                    onChange={e => setEditTitle(e.target.value)}
+                    inputProps={{ style: { textAlign: 'center' } }}
+                    placeholder="Add a Title"
+                  />
+                  <InputBase
+                    className={classes.aboutInput}
+                    value={editAbout}
+                    onChange={e => setEditAbout(e.target.value)}
+                    placeholder="Add an About"
+                    multiline
+                  />
                 </div>
-              )}
-              {classInfo.youtube && (
+              )) ||
+                ((classInfo.title || classInfo.about) && (
+                  <div
+                    className={classes.right}
+                    style={{ boxSizing: 'border-box', padding: '12px' }}
+                  >
+                    <Typography variant="h4">{classInfo.title}</Typography>
+                    <Typography variant="body1" style={{ marginBottom: '15px' }}>
+                      {classInfo.about}
+                    </Typography>
+                  </div>
+                ))}
+              {(classInfo.youtube && (
                 <div className={classes.left}>
                   <iframe
                     title="youtube"
@@ -175,7 +199,16 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     allowFullScreen
                   ></iframe>
                 </div>
-              )}
+              )) ||
+                (isEditing && (
+                  <div className={classes.left}>
+                    <Fill
+                      className={classes.youtubeFill}
+                      prompt="Add a Video"
+                      isEditing={isEditing}
+                    />
+                  </div>
+                ))}
             </div>
           )}
           {classInfo.faqs.length > 0 && (
@@ -286,7 +319,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   fill: {
-    display: 'block',
     background: '#ddd',
     borderRadius: '3px',
     display: 'flex',
@@ -320,6 +352,23 @@ const useStyles = makeStyles(theme => ({
       width: '90%'
     }
   },
+  titleInput: {
+    width: '100%',
+    fontSize: '34px',
+    fontWeight: 'normal',
+    lineHeight: '40px',
+    letterSpacing: '0.25px',
+    color: 'rgba(0,0,0,0.87)'
+  },
+  aboutInput: {
+    width: '100%',
+    color: 'rgba(0,0,0,0.87)',
+    fontSize: '18px',
+    fontWeight: 400,
+    letterSpacing: '0.5px',
+    lineHeight: '28px',
+    marginBottom: '15px'
+  },
   youtube: {
     width: '90%',
     height: '350px',
@@ -327,6 +376,14 @@ const useStyles = makeStyles(theme => ({
     border: '2px solid rgba(120,120,120,0.3)',
     margin: '10px 0',
     backgroundColor: 'rgba(120,120,120,0.3)',
+    [theme.breakpoints.down('xs')]: {
+      height: '200px'
+    }
+  },
+  youtubeFill: {
+    width: '90%',
+    height: '350px',
+    margin: '10px 0',
     [theme.breakpoints.down('xs')]: {
       height: '200px'
     }
