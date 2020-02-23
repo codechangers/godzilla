@@ -211,44 +211,56 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 ))}
             </div>
           )}
-          {classInfo.faqs.length > 0 && (
-            <div
-              className={classes.faqWrapper}
-              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
-            >
-              <Typography variant="h4" className={classes.faqHeader}>
-                Important Information
-              </Typography>
-              {classInfo.faqs.map(faq => (
-                <ExpansionPanel key={faq.q} className={classes.faqPanel}>
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    className={classes.summary}
-                  >
-                    <Typography variant="h6" className={classes.question}>
-                      {faq.q}
-                    </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails className={classes.details}>
-                    <Typography variant="body1" className={classes.answer}>
-                      {faq.a}
-                    </Typography>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              ))}
-              <Button
-                disabled={cls.children.length >= cls.maxStudents}
-                variant="contained"
-                color="primary"
-                className={classes.bottomButton}
-                onClick={() => setShowSignup(true)}
+          {classInfo.faqs.length > 0 ||
+            (isEditing && (
+              <div
+                className={classes.faqWrapper}
+                style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
               >
-                Sign Up!
-              </Button>
-            </div>
-          )}
+                <Typography variant="h4" className={classes.faqHeader}>
+                  Important Information
+                </Typography>
+                {classInfo.faqs.map(faq => (
+                  <ExpansionPanel key={faq.q} className={classes.faqPanel}>
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      className={classes.summary}
+                    >
+                      <Typography variant="h6" className={classes.question}>
+                        {faq.q}
+                      </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails className={classes.details}>
+                      <Typography variant="body1" className={classes.answer}>
+                        {faq.a}
+                      </Typography>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                ))}
+                {isEditing ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.bottomButton}
+                    onClick={() => {}}
+                  >
+                    Add a FAQ
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={cls.children.length >= cls.maxStudents}
+                    variant="contained"
+                    color="primary"
+                    className={classes.bottomButton}
+                    onClick={() => setShowSignup(true)}
+                  >
+                    Sign Up!
+                  </Button>
+                )}
+              </div>
+            ))}
         </Paper>
       )}
       <ClassSignUp
