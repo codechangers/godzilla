@@ -17,7 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
-// import DSUlogo from '../../assets/images/dsu.png';
+import DSUlogo from '../../assets/images/dsu.png';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -25,30 +25,30 @@ const propTypes = {
   user: PropTypes.object.isRequired
 };
 
-// const DSU_EXAMPLE = {
-//   logo: DSUlogo,
-//   maps:
-//     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
-//   title: 'About Camp',
-//   about: `Located about hour away from Zion’s National Park, Dixie State University is
-// dedicated to fields such as Computer Science and Information Tech-nology. Throughout
-// the year, we hold our after school programs and tutoring here. It is the per-fect
-// place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
-//   youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
-//   faqs: [
-//     { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
-//     { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
-//     {
-//       q: 'When are opening and closing ceremonies',
-//       a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
-//     },
-//     {
-//       q: 'What should I bring to camp',
-//       a:
-//         'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
-//     }
-//   ]
-// };
+const DSU_EXAMPLE = {
+  logo: DSUlogo,
+  maps:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.079959868037!2d-113.56743758422124!3d37.10321407988719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b29bfd1899f%3A0x96dee69b51421265!2sDixie%20State%20University!5e0!3m2!1sen!2sus!4v1581868804818!5m2!1sen!2sus',
+  title: 'About Camp',
+  about: `Located about hour away from Zion’s National Park, Dixie State University is
+dedicated to fields such as Computer Science and Information Tech-nology. Throughout
+the year, we hold our after school programs and tutoring here. It is the per-fect
+place to attend a camp while enjoying the famous and sunny city, St. George, Utah.`,
+  youtube: 'https://www.youtube.com/embed/Rt89gPYeB1c',
+  faqs: [
+    { q: 'Who Can Attend this Camp', a: 'Anyone of any age.' },
+    { q: 'What are the camp hours', a: 'This is a 24/7 camp you code from 8:00 am to 2:30 pm.' },
+    {
+      q: 'When are opening and closing ceremonies',
+      a: 'Opening is at 7:30am, and the closing is at 3:00pm.'
+    },
+    {
+      q: 'What should I bring to camp',
+      a:
+        'Water, food, phone charger if the is something you whould like to have, a sweatshirt, and lipbalm or your mom will get mad.'
+    }
+  ]
+};
 
 const Fill = ({ className, prompt, isEditing }) => {
   const classes = useStyles();
@@ -211,56 +211,56 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 ))}
             </div>
           )}
-          {classInfo.faqs.length > 0 ||
-            (isEditing && (
-              <div
-                className={classes.faqWrapper}
-                style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
-              >
-                <Typography variant="h4" className={classes.faqHeader}>
-                  Important Information
-                </Typography>
-                {classInfo.faqs.map(faq => (
-                  <ExpansionPanel key={faq.q} className={classes.faqPanel}>
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                      className={classes.summary}
-                    >
-                      <Typography variant="h6" className={classes.question}>
-                        {faq.q}
-                      </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className={classes.details}>
-                      <Typography variant="body1" className={classes.answer}>
-                        {faq.a}
-                      </Typography>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                ))}
-                {isEditing ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.bottomButton}
-                    onClick={() => {}}
+          {(classInfo.faqs.length > 0 || isEditing) && (
+            <div
+              className={classes.faqWrapper}
+              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+            >
+              <Typography variant="h4" className={classes.faqHeader}>
+                Important Information
+              </Typography>
+              {classInfo.faqs.map(faq => (
+                <ExpansionPanel key={faq.q} className={classes.faqPanel}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    className={classes.summary}
                   >
-                    Add a FAQ
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={cls.children.length >= cls.maxStudents}
-                    variant="contained"
-                    color="primary"
-                    className={classes.bottomButton}
-                    onClick={() => setShowSignup(true)}
-                  >
-                    Sign Up!
-                  </Button>
-                )}
-              </div>
-            ))}
+                    <Typography variant="h6" className={classes.question}>
+                      {faq.q}
+                    </Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails className={classes.details}>
+                    <Typography variant="body1" className={classes.answer}>
+                      {faq.a}
+                    </Typography>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              ))}
+              {isEditing ? (
+                <Button
+                  variant="contained"
+                  className={classes.faqPanel}
+                  style={{ borderRadius: 0, marginTop: 1 }}
+                  onClick={() => {}}
+                >
+                  <AddIcon />
+                  Add a FAQ
+                </Button>
+              ) : (
+                <Button
+                  disabled={cls.children.length >= cls.maxStudents}
+                  variant="contained"
+                  color="primary"
+                  className={classes.bottomButton}
+                  onClick={() => setShowSignup(true)}
+                >
+                  Sign Up!
+                </Button>
+              )}
+            </div>
+          )}
         </Paper>
       )}
       <ClassSignUp
