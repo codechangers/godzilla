@@ -67,6 +67,14 @@ const nameToIcon = {
   gender: Wc
 };
 
+const nameToPlaceholder = {
+  fName: 'First Name',
+  lName: 'Last Name',
+  phone: 'Phone Number',
+  address: 'Address',
+  currentSchool: 'School Name'
+};
+
 const accountDropDowns = {
   location: {
     school: 'School',
@@ -165,6 +173,7 @@ class ProfileInterface extends React.Component {
       <InputBase
         className={this.props.classes.fullWidth}
         value={this.state.accountData[field]}
+        placeholder={nameToPlaceholder[field] || ''}
         onChange={e => {
           const { accountData } = this.state;
           accountData[field] = e.target.value;
@@ -204,6 +213,7 @@ class ProfileInterface extends React.Component {
       <InputBase
         className={this.props.classes.fullWidth}
         value={child[field]}
+        placeholder={nameToPlaceholder[field]}
         onChange={e => {
           const { children } = this.state;
           const childIndex = children.indexOf(child);
