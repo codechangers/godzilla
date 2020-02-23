@@ -15,17 +15,8 @@ body {
 }
 
 /**** Background Images ****/
-#logo-img {
-  background-image: url('../images//logo.svg');
-}
 #background1-img {
   background-image: url('../images/background1.png');
-}
-#template1-img {
-  background-image: url('../images/template1.png');
-}
-#template2-img {
-  background-image: url('../images/template2.jpeg');
 }
 #students-img0,
 #students-img1,
@@ -36,32 +27,44 @@ body {
 #students-img6 {
   background-repeat: no-repeat;
   background-size: cover;
+  animation: fadeIn 800ms ease;
 }
 #students-img0 {
-  background-image: url('../images/students.jpg');
+  background-image: url('../images/students-min.jpg');
   background-position: 48% center;
 }
 #students-img1 {
-  background-image: url('../images/students1.jpg');
+  background-image: url('../images/students1-min.jpg');
   background-position: center center;
 }
 #students-img2 {
-  background-image: url('../images/students2.jpg');
+  background-image: url('../images/students2-min.jpg');
   background-position: 45% center;
 }
 #students-img3 {
-  background-image: url('../images/students3.jpg');
+  background-image: url('../images/students3-min.jpg');
   background-position: 56% center;
 }
 #students-img4 {
-  background-image: url('../images/students4.jpg');
+  background-image: url('../images/students4-min.jpg');
   background-position: 56% center;
 }
 #students-img5 {
-  background-image: url('../images/students5.jpg');
+  background-image: url('../images/students5-min.jpg');
   background-position: 58% center;
 }
 #students-img6 {
-  background-image: url('../images/students6.jpg');
+  background-image: url('../images/students6-min.jpg');
   background-position: 56% center;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
