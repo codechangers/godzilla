@@ -14,9 +14,10 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
+import InfoCardHeader from '../Classes/InfoCardHeader';
+import InfoModal from './interfaceHelpers/InfoModal';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
-import InfoCardHeader from '../Classes/InfoCardHeader';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -24,12 +25,12 @@ const propTypes = {
   user: PropTypes.object.isRequired
 };
 
-const Fill = ({ className, prompt, isEditing }) => {
+const Fill = ({ className, prompt, isEditing, onClick }) => {
   const classes = useStyles();
   return (
     isEditing && (
       <div className={`${className} ${classes.fill}`}>
-        <Button>
+        <Button onClick={onClick}>
           <AddIcon />
           {prompt}
         </Button>
@@ -41,7 +42,8 @@ const Fill = ({ className, prompt, isEditing }) => {
 Fill.propTypes = {
   className: PropTypes.string.isRequired,
   prompt: PropTypes.string.isRequired,
-  isEditing: PropTypes.bool.isRequired
+  isEditing: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 const ClassInfoInterface = ({ location, db, user }) => {
@@ -49,6 +51,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const [isEditing] = useState(true);
   const [classInfo, setClassInfo] = useState({
     logo: '',
@@ -102,7 +105,12 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 {(classInfo.logo && (
                   <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
                 )) || (
-                  <Fill className={classes.logoFill} prompt="Add a Logo" isEditing={isEditing} />
+                  <Fill
+                    className={classes.logoFill}
+                    prompt="Add a Logo"
+                    isEditing={isEditing}
+                    onClick={() => setShowInfo(true)}
+                  />
                 )}
                 {(classInfo.maps && (
                   <iframe
@@ -113,7 +121,12 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     className={classes.maps}
                   ></iframe>
                 )) || (
-                  <Fill className={classes.mapsFill} prompt="Add a Map" isEditing={isEditing} />
+                  <Fill
+                    className={classes.mapsFill}
+                    prompt="Add a Map"
+                    isEditing={isEditing}
+                    onClick={() => null}
+                  />
                 )}
               </div>
             )}
@@ -182,6 +195,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
                       className={classes.youtubeFill}
                       prompt="Add a Video"
                       isEditing={isEditing}
+                      onClick={() => null}
                     />
                   </div>
                 ))}
@@ -239,6 +253,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
           )}
         </Paper>
       )}
+      {/* ======= Modals ======= */}
       <ClassSignUp
         open={showSignup}
         onClose={() => setShowSignup(false)}
@@ -246,6 +261,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
         db={db}
         user={user}
       />
+      <InfoModal open={showInfo} onClose={() => setShowInfo(false)} />
     </Styled.PageContent>
   );
 };
