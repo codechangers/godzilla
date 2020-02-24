@@ -261,7 +261,17 @@ const ClassInfoInterface = ({ location, db, user }) => {
         db={db}
         user={user}
       />
-      <InfoModal open={showInfo} onClose={() => setShowInfo(false)} />
+      <InfoModal
+        open={showInfo}
+        onClose={() => setShowInfo(false)}
+        onSubmit={url => {
+          updateClassInfo({ logo: url });
+          setShowInfo(false);
+        }}
+        prompt="Add a Logo"
+        label="Logo URL"
+        placeholder="https://codechangers.com/logo.png"
+      />
     </Styled.PageContent>
   );
 };
