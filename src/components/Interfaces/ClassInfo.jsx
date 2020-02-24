@@ -10,10 +10,13 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  InputBase
+  InputBase,
+  IconButton,
+  Tooltip
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import ClassSignUp from '../Classes/SignUp';
@@ -46,6 +49,29 @@ Fill.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
+const EditButton = ({ isEditing, title, onClick }) =>
+  isEditing && (
+    <Tooltip title={title} aria-label={title} placement="top" arrow>
+      <IconButton
+        edge="end"
+        size="small"
+        style={{
+          margin: '2px 0 0 -32px',
+          backgroundColor: 'rgba(200,200,200,0.7)'
+        }}
+        onClick={onClick}
+      >
+        <EditIcon />
+      </IconButton>
+    </Tooltip>
+  );
+
+EditButton.propTypes = {
+  isEditing: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
 const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
@@ -54,7 +80,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing] = useState(true);
   const [classInfo, setClassInfo] = useState({
-    logo: '',
+    logo: 'https://www.nicepng.com/png/full/46-466247_dsu-logo-dixie-state-university-logo.png',
     maps: '',
     title: '',
     about: '',
@@ -103,7 +129,16 @@ const ClassInfoInterface = ({ location, db, user }) => {
             {(classInfo.logo || classInfo.maps || isEditing) && (
               <div className={classes.right}>
                 {(classInfo.logo && (
-                  <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
+                  <div
+                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
+                  >
+                    <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
+                    <EditButton
+                      isEditing={isEditing}
+                      title="Change Logo"
+                      onClick={() => setShowInfo(true)}
+                    />
+                  </div>
                 )) || (
                   <Fill
                     className={classes.logoFill}

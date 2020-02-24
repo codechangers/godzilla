@@ -8,17 +8,19 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   prompt: PropTypes.string,
   label: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  initialValue: PropTypes.string
 };
 
 const defaultProps = {
   prompt: 'Enter information:',
   label: '',
-  placeholder: ''
+  placeholder: '',
+  initialValue: ''
 };
 
-const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder }) => {
-  const [input, setInput] = useState('');
+const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initialValue }) => {
+  const [input, setInput] = useState(initialValue);
 
   const classes = useStyles();
   return (
