@@ -9,6 +9,7 @@ const propTypes = {
   prompt: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  acceptUrl: PropTypes.string,
   initialValue: PropTypes.string
 };
 
@@ -16,10 +17,27 @@ const defaultProps = {
   prompt: 'Enter information:',
   label: '',
   placeholder: '',
-  initialValue: ''
+  initialValue: '',
+  acceptUrl: ''
 };
 
-const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initialValue }) => {
+/*
+ *
+ * TODO
+ * Build out a way to have instructions, I am thinking lay them out in a crousel.
+ *
+ */
+
+const InfoModal = ({
+  open,
+  onClose,
+  onSubmit,
+  prompt,
+  label,
+  placeholder,
+  acceptUrl,
+  initialValue
+}) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -27,6 +45,14 @@ const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initia
       setInput(initialValue);
     }
   }, [initialValue]);
+
+  const checkInput = input => {
+    let r = input;
+    if (input.includes('<iframe') && input.includes('src="')) {
+      r = input.split('src="')[1].split('"')[0];
+    }
+    return r.includes(acceptUrl) ? r : '';
+  };
 
   const classes = useStyles();
   return (
@@ -58,7 +84,7 @@ const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initia
             variant="contained"
             color="primary"
             onClick={() => {
-              onSubmit(input);
+              onSubmit(checkInput(input));
               setInput('');
               onClose();
             }}

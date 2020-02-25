@@ -83,12 +83,14 @@ const modalPropSets = {
     prompt: 'Add a Map',
     label: 'Maps URL',
     placeholder: 'https://www.google.com/maps/embed',
+    acceptUrl: 'https://www.google.com/maps/embed',
     key: 'maps'
   },
   youtube: {
     prompt: 'Add a Video',
     label: 'Youtube URL',
     placeholder: 'https://www.youtube.com/embed/_hOGCXpfyeQ',
+    acceptUrl: 'https://www.youtube.com/embed',
     key: 'youtube'
   }
 };
@@ -362,6 +364,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
         prompt={modalProps.prompt}
         label={modalProps.label}
         placeholder={modalProps.placeholder}
+        acceptUrl={modalProps.acceptUrl}
         initialValue={classInfo[modalProps.key]}
       />
     </Styled.PageContent>
