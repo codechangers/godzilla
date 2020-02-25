@@ -84,6 +84,12 @@ const modalPropSets = {
     label: 'Maps URL',
     placeholder: 'https://www.google.com/maps/embed',
     key: 'maps'
+  },
+  youtube: {
+    prompt: 'Add a Video',
+    label: 'Youtube URL',
+    placeholder: 'https://www.youtube.com/embed/_hOGCXpfyeQ',
+    key: 'youtube'
   }
 };
 
@@ -247,14 +253,24 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 ))}
               {(classInfo.youtube && (
                 <div className={classes.left}>
-                  <iframe
-                    title="youtube"
-                    className={classes.youtube}
-                    src={classInfo.youtube}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  <div className={classes.editWrapper} style={{ margin: '10px 0' }}>
+                    <iframe
+                      title="youtube"
+                      className={classes.youtube}
+                      src={classInfo.youtube}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                    <EditButton
+                      isEditing={isEditing}
+                      title="Update Video"
+                      onClick={() => {
+                        setModalProps(modalPropSets.youtube);
+                        setShowInfo(true);
+                      }}
+                    />
+                  </div>
                 </div>
               )) ||
                 (isEditing && (
@@ -263,7 +279,10 @@ const ClassInfoInterface = ({ location, db, user }) => {
                       className={classes.youtubeFill}
                       prompt="Add a Video"
                       isEditing={isEditing}
-                      onClick={() => null}
+                      onClick={() => {
+                        setModalProps(modalPropSets.youtube);
+                        setShowInfo(true);
+                      }}
                     />
                   </div>
                 ))}
@@ -467,7 +486,6 @@ const useStyles = makeStyles(theme => ({
     height: '350px',
     borderRadius: '3px',
     border: '2px solid rgba(120,120,120,0.3)',
-    margin: '10px 0',
     backgroundColor: 'rgba(120,120,120,0.3)',
     [theme.breakpoints.down('xs')]: {
       height: '200px'
