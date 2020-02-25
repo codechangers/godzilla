@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Modal, Paper, Typography, TextField, Button } from '@material-ui/core';
 
@@ -20,7 +20,13 @@ const defaultProps = {
 };
 
 const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initialValue }) => {
-  const [input, setInput] = useState(initialValue);
+  const [input, setInput] = useState('');
+
+  useEffect(() => {
+    if (initialValue.length > 0) {
+      setInput(initialValue);
+    }
+  }, [initialValue]);
 
   const classes = useStyles();
   return (
@@ -39,10 +45,24 @@ const InfoModal = ({ open, onClose, onSubmit, prompt, label, placeholder, initia
           className={classes.input}
         />
         <div className={classes.options}>
-          <Button variant="outlined" onClick={onClose}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setInput('');
+              onClose();
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="contained" color="primary" onClick={() => onSubmit(input)}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              onSubmit(input);
+              setInput('');
+              onClose();
+            }}
+          >
             Submit
           </Button>
         </div>

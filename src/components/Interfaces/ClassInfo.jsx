@@ -57,7 +57,7 @@ const EditButton = ({ isEditing, title, onClick }) =>
         size="small"
         style={{
           margin: '2px 0 0 -32px',
-          backgroundColor: 'rgba(200,200,200,0.7)'
+          backgroundColor: 'rgba(190, 190, 190, 0.7)'
         }}
         onClick={onClick}
       >
@@ -72,6 +72,21 @@ EditButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
+const modalPropSets = {
+  logo: {
+    prompt: 'Add a Logo',
+    label: 'Logo URL',
+    placeholder: 'https://codechangers.com/logo.png',
+    key: 'logo'
+  },
+  maps: {
+    prompt: 'Add a Map',
+    label: 'Maps URL',
+    placeholder: 'https://www.google.com/maps/embed',
+    key: 'maps'
+  }
+};
+
 const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
@@ -79,8 +94,9 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [showSignup, setShowSignup] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing] = useState(true);
+  const [modalProps, setModalProps] = useState({});
   const [classInfo, setClassInfo] = useState({
-    logo: 'https://www.nicepng.com/png/full/46-466247_dsu-logo-dixie-state-university-logo.png',
+    logo: '',
     maps: '',
     title: '',
     about: '',
@@ -129,14 +145,15 @@ const ClassInfoInterface = ({ location, db, user }) => {
             {(classInfo.logo || classInfo.maps || isEditing) && (
               <div className={classes.right}>
                 {(classInfo.logo && (
-                  <div
-                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
-                  >
+                  <div className={classes.editWrapper}>
                     <img src={classInfo.logo} alt="Class_Logo" className={classes.logo} />
                     <EditButton
                       isEditing={isEditing}
                       title="Change Logo"
-                      onClick={() => setShowInfo(true)}
+                      onClick={() => {
+                        setModalProps(modalPropSets.logo);
+                        setShowInfo(true);
+                      }}
                     />
                   </div>
                 )) || (
@@ -144,23 +161,39 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     className={classes.logoFill}
                     prompt="Add a Logo"
                     isEditing={isEditing}
-                    onClick={() => setShowInfo(true)}
+                    onClick={() => {
+                      setModalProps(modalPropSets.logo);
+                      setShowInfo(true);
+                    }}
                   />
                 )}
                 {(classInfo.maps && (
-                  <iframe
-                    title="maps"
-                    src={classInfo.maps}
-                    frameBorder="0"
-                    allowFullScreen=""
-                    className={classes.maps}
-                  ></iframe>
+                  <div className={classes.editWrapper}>
+                    <iframe
+                      title="maps"
+                      src={classInfo.maps}
+                      frameBorder="0"
+                      allowFullScreen=""
+                      className={classes.maps}
+                    ></iframe>
+                    <EditButton
+                      isEditing={isEditing}
+                      title="Update Map"
+                      onClick={() => {
+                        setModalProps(modalPropSets.maps);
+                        setShowInfo(true);
+                      }}
+                    />
+                  </div>
                 )) || (
                   <Fill
                     className={classes.mapsFill}
                     prompt="Add a Map"
                     isEditing={isEditing}
-                    onClick={() => null}
+                    onClick={() => {
+                      setModalProps(modalPropSets.maps);
+                      setShowInfo(true);
+                    }}
                   />
                 )}
               </div>
@@ -298,14 +331,19 @@ const ClassInfoInterface = ({ location, db, user }) => {
       />
       <InfoModal
         open={showInfo}
-        onClose={() => setShowInfo(false)}
-        onSubmit={url => {
-          updateClassInfo({ logo: url });
+        onClose={() => {
           setShowInfo(false);
+          setModalProps({});
         }}
-        prompt="Add a Logo"
-        label="Logo URL"
-        placeholder="https://codechangers.com/logo.png"
+        onSubmit={url => {
+          const newState = {};
+          newState[modalProps.key] = url;
+          updateClassInfo(newState);
+        }}
+        prompt={modalProps.prompt}
+        label={modalProps.label}
+        placeholder={modalProps.placeholder}
+        initialValue={classInfo[modalProps.key]}
       />
     </Styled.PageContent>
   );
@@ -373,6 +411,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  editWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%'
   },
   logo: {
     maxWidth: '90%',
