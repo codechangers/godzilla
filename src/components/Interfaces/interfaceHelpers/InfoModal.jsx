@@ -10,7 +10,8 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   acceptUrl: PropTypes.string,
-  initialValue: PropTypes.string
+  initialValue: PropTypes.string,
+  children: PropTypes.node
 };
 
 const defaultProps = {
@@ -18,15 +19,9 @@ const defaultProps = {
   label: '',
   placeholder: '',
   initialValue: '',
-  acceptUrl: ''
+  acceptUrl: '',
+  children: null
 };
-
-/*
- *
- * TODO
- * Build out a way to have instructions, I am thinking lay them out in a crousel.
- *
- */
 
 const InfoModal = ({
   open,
@@ -36,7 +31,8 @@ const InfoModal = ({
   label,
   placeholder,
   acceptUrl,
-  initialValue
+  initialValue,
+  children
 }) => {
   const [input, setInput] = useState('');
 
@@ -92,6 +88,7 @@ const InfoModal = ({
             Submit
           </Button>
         </div>
+        {children}
       </Paper>
     </Modal>
   );
