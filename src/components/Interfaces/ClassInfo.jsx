@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
+import FAQModal from './interfaceHelpers/FAQModal';
 import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 
@@ -103,6 +104,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing] = useState(true);
   const [modalProps, setModalProps] = useState({});
+  const [editFAQ, setEditFAQ] = useState(null);
   const [classInfo, setClassInfo] = useState({
     logo: '',
     maps: '',
@@ -322,7 +324,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
                   variant="contained"
                   className={classes.faqPanel}
                   style={{ borderRadius: 0, marginTop: 1 }}
-                  onClick={() => {}}
+                  onClick={() => setEditFAQ({ q: '', a: '', new: true })}
                 >
                   <AddIcon />
                   Add a FAQ
@@ -366,6 +368,12 @@ const ClassInfoInterface = ({ location, db, user }) => {
         placeholder={modalProps.placeholder}
         acceptUrl={modalProps.acceptUrl}
         initialValue={classInfo[modalProps.key]}
+      />
+      <FAQModal
+        open={editFAQ !== null}
+        onClose={() => setEditFAQ(null)}
+        onSubmit={f => updateClassInfo({ faqs: [...classInfo.faqs, f] })}
+        faq={editFAQ || undefined}
       />
     </Styled.PageContent>
   );
