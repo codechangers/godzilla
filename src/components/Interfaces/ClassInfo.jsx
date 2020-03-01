@@ -17,6 +17,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
@@ -317,11 +318,31 @@ const ClassInfoInterface = ({ location, db, user }) => {
                       {faq.a}
                     </Typography>
                     {isEditing && (
-                      <Tooltip title="Edit FAQ" aria-label="Edit FAQ" placement="top" arrow>
-                        <IconButton edge="end" size="small" onClick={() => setEditFAQ([faq, i])}>
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <div className={classes.faqButtons}>
+                        <Tooltip title="Edit FAQ" aria-label="Edit FAQ" placement="left" arrow>
+                          <IconButton
+                            style={{ marginBottom: '5px' }}
+                            edge="end"
+                            size="small"
+                            onClick={() => setEditFAQ([faq, i])}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete FAQ" aria-label="Delete FAQ" placement="left" arrow>
+                          <IconButton
+                            edge="end"
+                            size="small"
+                            onClick={() => {
+                              const newFaqs = [...classInfo.faqs];
+                              newFaqs.splice(i, 1);
+                              updateClassInfo({ faqs: newFaqs });
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
                     )}
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -570,6 +591,10 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       width: '98%'
     }
+  },
+  faqButtons: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 }));
 
