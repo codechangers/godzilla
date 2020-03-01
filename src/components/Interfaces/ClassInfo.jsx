@@ -104,7 +104,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing] = useState(true);
   const [modalProps, setModalProps] = useState({});
-  const [editFAQ, setEditFAQ] = useState(null);
+  const [editFAQ, setEditFAQ] = useState([null, -1]);
   const [classInfo, setClassInfo] = useState({
     logo: '',
     maps: '',
@@ -300,7 +300,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
               <Typography variant="h4" className={classes.faqHeader}>
                 Important Information
               </Typography>
-              {classInfo.faqs.map(faq => (
+              {classInfo.faqs.map((faq, i) => (
                 <ExpansionPanel key={faq.q} className={classes.faqPanel}>
                   <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -316,6 +316,13 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     <Typography variant="body1" className={classes.answer}>
                       {faq.a}
                     </Typography>
+                    {isEditing && (
+                      <Tooltip title="Edit FAQ" aria-label="Edit FAQ" placement="top" arrow>
+                        <IconButton edge="end" size="small" onClick={() => setEditFAQ([faq, i])}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               ))}
@@ -324,7 +331,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
                   variant="contained"
                   className={classes.faqPanel}
                   style={{ borderRadius: 0, marginTop: 1 }}
-                  onClick={() => setEditFAQ({ q: '', a: '', new: true })}
+                  onClick={() => setEditFAQ([{ q: '', a: '', new: true }, -1])}
                 >
                   <AddIcon />
                   Add a FAQ
@@ -370,10 +377,19 @@ const ClassInfoInterface = ({ location, db, user }) => {
         initialValue={classInfo[modalProps.key]}
       />
       <FAQModal
-        open={editFAQ !== null}
-        onClose={() => setEditFAQ(null)}
-        onSubmit={f => updateClassInfo({ faqs: [...classInfo.faqs, f] })}
-        faq={editFAQ || undefined}
+        open={editFAQ[0] !== null}
+        onClose={() => setEditFAQ([null, -1])}
+        onSubmit={(f, i, isNew) => {
+          const newFaqs = [...classInfo.faqs];
+          if (isNew) {
+            newFaqs.push(f);
+          } else {
+            newFaqs[i] = f;
+          }
+          updateClassInfo({ faqs: newFaqs });
+        }}
+        faq={editFAQ[0] || undefined}
+        index={editFAQ[1]}
       />
     </Styled.PageContent>
   );
@@ -529,6 +545,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   details: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
       padding: '0 12px 12px 12px'
     }

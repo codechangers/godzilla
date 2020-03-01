@@ -6,14 +6,15 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  faq: PropTypes.object
+  faq: PropTypes.object,
+  index: PropTypes.number.isRequired
 };
 
 const defaultProps = {
   faq: { q: '', a: '' }
 };
 
-const FAQModal = ({ open, onClose, onSubmit, faq }) => {
+const FAQModal = ({ open, onClose, onSubmit, faq, index }) => {
   const [q, setQ] = useState('');
   const [a, setA] = useState('');
 
@@ -61,7 +62,7 @@ const FAQModal = ({ open, onClose, onSubmit, faq }) => {
             variant="contained"
             color="primary"
             onClick={() => {
-              onSubmit({ q, a });
+              onSubmit({ q, a }, index, faq.new || false);
               clear();
             }}
           >
