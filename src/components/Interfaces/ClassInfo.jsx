@@ -97,6 +97,15 @@ const modalPropSets = {
   }
 };
 
+const defaultClassInfo = {
+  logo: '',
+  maps: '',
+  title: '',
+  about: '',
+  youtube: '',
+  faqs: []
+};
+
 const ClassInfoInterface = ({ location, db, user }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
@@ -106,14 +115,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [isEditing] = useState(true);
   const [modalProps, setModalProps] = useState({});
   const [editFAQ, setEditFAQ] = useState([null, -1]);
-  const [classInfo, setClassInfo] = useState({
-    logo: '',
-    maps: '',
-    title: '',
-    about: '',
-    youtube: '',
-    faqs: []
-  });
+  const [classInfo, setClassInfo] = useState(defaultClassInfo);
 
   const updateClassInfo = newInfo => {
     setClassInfo({ ...classInfo, ...newInfo });
@@ -128,6 +130,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
         .then(classDoc => {
           if (classDoc.exists) {
             setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
+            updateClassInfo(classDoc.data().info || defaultClassInfo);
             setFoundClass(true);
           }
           setIsLoading(false);
@@ -135,7 +138,27 @@ const ClassInfoInterface = ({ location, db, user }) => {
     } else {
       setIsLoading(false);
     }
+    // eslint-disable-next-line
   }, [location, db]);
+
+  const getClassInfo = () => {
+    setIsLoading(true);
+    cls.ref
+      .get()
+      .then(classDoc => {
+        setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
+        updateClassInfo(classDoc.data().info || defaultClassInfo);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const saveClassInfo = () => {
+    cls.ref.update({ info: classInfo }).then(getClassInfo);
+  };
 
   const classes = useStyles();
   return isLoading ? (
@@ -150,6 +173,14 @@ const ClassInfoInterface = ({ location, db, user }) => {
       <Typography variant="h3" className={classes.mainHeader}>
         {foundClass ? 'Class Info' : 'Class not found.'}
       </Typography>
+      {isEditing && (
+        <div className={classes.editButtons}>
+          <Button onClick={getClassInfo}>Revert Changes</Button>
+          <Button color="primary" variant="outlined" onClick={saveClassInfo}>
+            Save Changes
+          </Button>
+        </div>
+      )}
       {foundClass && (
         <Paper className={classes.content}>
           <div className={classes.cardWrapper}>
@@ -238,8 +269,8 @@ const ClassInfoInterface = ({ location, db, user }) => {
                   />
                   <InputBase
                     className={classes.aboutInput}
-                    value={classInfo.aboute}
-                    onChange={e => updateClassInfo({ aboute: e.target.value })}
+                    value={classInfo.about}
+                    onChange={e => updateClassInfo({ about: e.target.value })}
                     placeholder="Add an About"
                     multiline
                   />
@@ -595,6 +626,24 @@ const useStyles = makeStyles(theme => ({
   faqButtons: {
     display: 'flex',
     flexDirection: 'column'
+  },
+  editButtons: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: '5px',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column-reverse',
+      '& button': {
+        marginLeft: 0,
+        marginBottom: '6px',
+        width: '80%'
+      }
+    },
+    '& button': {
+      marginLeft: '8px'
+    }
   }
 }));
 
