@@ -114,7 +114,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
             filters.includes(cls.programType)) ||
           filters.length === 0 ? (
             <Paper key={cls.id} className={classes.cardWrapper}>
-              <InfoCardHeader cls={cls} hideImage>
+              <InfoCardHeader cls={cls} preview hideImage>
                 <div className={classes.buttonWrapper}>
                   <Link
                     className={classes.button}
