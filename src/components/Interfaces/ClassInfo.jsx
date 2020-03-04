@@ -118,6 +118,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [modalProps, setModalProps] = useState({});
   const [editFAQ, setEditFAQ] = useState([null, -1]);
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
+  const [isOwner, setIsOwner] = useState(false);
 
   const updateClassInfo = newInfo => {
     setClassInfo({ ...classInfo, ...newInfo });
@@ -134,6 +135,9 @@ const ClassInfoInterface = ({ location, db, user }) => {
             setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
             updateClassInfo(classDoc.data().info || defaultClassInfo);
             setFoundClass(true);
+            if (classDoc.data().teacher.id === user.uid) {
+              setIsOwner(true);
+            }
           }
           setIsLoading(false);
         });
@@ -445,22 +449,23 @@ const ClassInfoInterface = ({ location, db, user }) => {
         faq={editFAQ[0] || undefined}
         index={editFAQ[1]}
       />
-      {isEditing ? (
-        <Fab variant="extended" className={classes.fab} onClick={() => setIsEditing(false)}>
-          <VisibilityIcon style={{ marginRight: '5px' }} />
-          View Preview
-        </Fab>
-      ) : (
-        <Fab
-          color="secondary"
-          variant="extended"
-          className={classes.fab}
-          onClick={() => setIsEditing(true)}
-        >
-          <EditIcon style={{ marginRight: '5px' }} />
-          Edit Info
-        </Fab>
-      )}
+      {isOwner &&
+        (isEditing ? (
+          <Fab variant="extended" className={classes.fab} onClick={() => setIsEditing(false)}>
+            <VisibilityIcon style={{ marginRight: '5px' }} />
+            View Preview
+          </Fab>
+        ) : (
+          <Fab
+            color="secondary"
+            variant="extended"
+            className={classes.fab}
+            onClick={() => setIsEditing(true)}
+          >
+            <EditIcon style={{ marginRight: '5px' }} />
+            Edit Info
+          </Fab>
+        ))}
     </Styled.PageContent>
   );
 };
