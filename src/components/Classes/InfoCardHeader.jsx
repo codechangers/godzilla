@@ -41,7 +41,7 @@ class InfoCardHeader extends React.Component {
   }
 
   render() {
-    const { cls, children, hideImage, hideAccountType, classes } = this.props;
+    const { cls, children, hideImage, preview, hideAccountType, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
       <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
@@ -49,7 +49,7 @@ class InfoCardHeader extends React.Component {
           <Typography variant="h5" style={{ marginBottom: '6px' }}>
             {cls.name}
           </Typography>
-          {children === null || hideImage ? null : (
+          {children === null || preview ? null : (
             <div className={`${classes.inliner} ${classes.col}`}>
               <Typography variant="body1">
                 {cls.programType && !hideAccountType ? (
@@ -63,7 +63,7 @@ class InfoCardHeader extends React.Component {
               </Typography>
             </div>
           )}
-          {children !== null && !hideImage ? null : (
+          {children !== null && !preview ? null : (
             <div className={`${classes.inliner} ${classes.col}`}>
               <Typography variant="body1">
                 {cls.programType && !hideAccountType ? (
@@ -98,7 +98,7 @@ class InfoCardHeader extends React.Component {
             </Typography>
             <Typography varaint="body1">{`$${cls.price} per Student`}</Typography>
           </div>
-          {children !== null && !hideImage ? (
+          {children !== null && !preview ? (
             <div className={classes.inliner}>
               <Typography variant="body1">{`Instructor: ${
                 teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''
@@ -150,6 +150,7 @@ InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired,
   children: PropTypes.node,
   db: PropTypes.object,
+  preview: PropTypes.bool,
   hideImage: PropTypes.bool,
   hideAccountType: PropTypes.bool,
   classes: PropTypes.object.isRequired
@@ -158,6 +159,7 @@ InfoCardHeader.propTypes = {
 InfoCardHeader.defaultProps = {
   children: null,
   db: null,
+  preview: false,
   hideImage: false,
   hideAccountType: false
 };

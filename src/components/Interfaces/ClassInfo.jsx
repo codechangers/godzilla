@@ -247,7 +247,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
               </div>
             )}
             <div className={classes.left}>
-              <InfoCardHeader cls={cls} hideImage hideAccountType>
+              <InfoCardHeader cls={cls} db={db} hideImage hideAccountType>
                 <Button
                   disabled={cls.children.length >= cls.maxStudents}
                   variant="contained"
