@@ -12,12 +12,14 @@ import {
   ExpansionPanelDetails,
   InputBase,
   IconButton,
-  Tooltip
+  Tooltip,
+  Fab
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
@@ -112,7 +114,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [isEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const [editFAQ, setEditFAQ] = useState([null, -1]);
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
@@ -443,6 +445,22 @@ const ClassInfoInterface = ({ location, db, user }) => {
         faq={editFAQ[0] || undefined}
         index={editFAQ[1]}
       />
+      {isEditing ? (
+        <Fab variant="extended" className={classes.fab} onClick={() => setIsEditing(false)}>
+          <VisibilityIcon style={{ marginRight: '5px' }} />
+          View Preview
+        </Fab>
+      ) : (
+        <Fab
+          color="secondary"
+          variant="extended"
+          className={classes.fab}
+          onClick={() => setIsEditing(true)}
+        >
+          <EditIcon style={{ marginRight: '5px' }} />
+          Edit Info
+        </Fab>
+      )}
     </Styled.PageContent>
   );
 };
@@ -643,6 +661,19 @@ const useStyles = makeStyles(theme => ({
     },
     '& button': {
       marginLeft: '8px'
+    }
+  },
+  fab: {
+    position: 'fixed',
+    top: '20px',
+    right: '140px',
+    [theme.breakpoints.down('md')]: {
+      right: '60px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      right: '10px',
+      top: 'auto',
+      bottom: '10px'
     }
   }
 }));
