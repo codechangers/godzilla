@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Modal, Button, Card, Snackbar, SnackbarContent, Switch } from '@material-ui/core';
+import {
+  Modal,
+  Button,
+  Card,
+  Snackbar,
+  SnackbarContent,
+  Switch,
+  CircularProgress
+} from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
@@ -35,7 +43,8 @@ class ApprovedTeacher extends React.Component {
       showCreate: false,
       stripeIsLinked: false,
       showOldClasses: false,
-      contactClass: null
+      contactClass: null,
+      loadingClasses: false
     };
     autoBind(this);
   }
@@ -136,6 +145,7 @@ class ApprovedTeacher extends React.Component {
   }
 
   async fetchClasses(t) {
+    this.setState({ loadingClasses: true });
     const teacherDoc = t || (await this.props.accounts.teachers.ref.get());
     const classRefs = teacherDoc.data().classes || [];
     const classes = [];
@@ -145,10 +155,13 @@ class ApprovedTeacher extends React.Component {
         classes.push(classData);
         if (classes.length === classRefs.length) {
           classes.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
-          this.setState({ classes });
+          this.setState({ classes, loadingClasses: false });
         }
       });
     });
+    if (classRefs.length <= 0) {
+      this.setState({ loadingClasses: false });
+    }
   }
 
   createClass(classData) {
@@ -201,7 +214,7 @@ class ApprovedTeacher extends React.Component {
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
           }
-          stripeIsLinked={this.state.stripeIsLinked}
+          stripeIsLinked={this.state.loadingClasses ? false : this.state.stripeIsLinked}
           buttonText="ADD A NEW CLASS"
           onClick={() => this.setState({ showCreate: true })}
         />
@@ -226,6 +239,19 @@ class ApprovedTeacher extends React.Component {
           />
         </div>
         {this.getEmptyPrompt()}
+        <div
+          style={{
+            width: '100%',
+            height: this.state.loadingClasses ? '60px' : 0,
+            display: 'flex',
+            justifyContent: 'center',
+            transition: 'all 300ms ease'
+          }}
+        >
+          {this.state.loadingClasses && (
+            <CircularProgress style={{ marginBottom: '10px' }} color="primary" />
+          )}
+        </div>
         {this.state.classes.map(cls =>
           cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
             <ClassInfoCard
