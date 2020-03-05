@@ -30,9 +30,10 @@ const getMessage = () => (
   </span>
 );
 
+const getClassRefs = classes => classes.map(cls => cls.ref);
+
 const controller = new AbortController();
 let abort = () => null;
-let teacherSub = () => null;
 
 class ApprovedTeacher extends React.Component {
   constructor(props) {
@@ -50,9 +51,7 @@ class ApprovedTeacher extends React.Component {
   }
 
   componentDidMount() {
-    teacherSub = this.props.accounts.teachers.ref.onSnapshot(teacher => {
-      this.fetchClasses(teacher);
-    });
+    this.fetchClasses();
     // eslint-disable-next-line
     fetch(`${API_URL}/teacher_account/${this.props.user.uid}`, { method: 'GET' })
       .then(res => res.json())
@@ -63,8 +62,6 @@ class ApprovedTeacher extends React.Component {
   }
 
   componentWillUnmount() {
-    teacherSub();
-    teacherSub = () => null;
     abort();
     abort = () => null;
   }
@@ -170,14 +167,15 @@ class ApprovedTeacher extends React.Component {
       .collection('classes')
       .add({ ...classData, children: [], teacher: teachers.ref })
       .then(classObj => {
-        const classes = teachers.data().classes || [];
+        const classes = getClassRefs(this.state.classes);
         classes.push(classObj);
-        teachers.ref.update({ classes });
+        teachers.ref.update({ classes }).then(() => this.fetchClasses());
       });
-    this.setState({ showCreate: false });
+    this.setState({ showCreate: false, loadingClasses: true });
   }
 
   updateClass(classId, classData) {
+    this.setState({ loadingClasses: true });
     this.props.db
       .collection('classes')
       .doc(classId)
@@ -191,6 +189,7 @@ class ApprovedTeacher extends React.Component {
     const { teachers } = this.props.accounts;
     const cls = this.state.classes.filter(c => c.id === classId)[0];
     if (cls) {
+      this.setState({ loadingClasses: false });
       cls.children.forEach(childRef => {
         childRef.get().then(childDoc => {
           let childClasses = childDoc.data().classes || [];
@@ -199,9 +198,9 @@ class ApprovedTeacher extends React.Component {
         });
       });
       cls.ref.delete().then(() => {
-        let classes = teachers.data().classes || [];
+        let classes = getClassRefs(this.state.classes);
         classes = classes.filter(c => c.id !== classId);
-        teachers.ref.update({ classes });
+        teachers.ref.update({ classes }).then(() => this.fetchClasses());
       });
     }
   }
