@@ -18,20 +18,25 @@ const getHref = data => {
   return encodeURI(`data:text/csv;charset=utf-8,${result}`);
 };
 
-const CSVDownload = ({ filename, data, children }) => (
-  <a href={getHref(data)} download={filename} style={{ textDecoration: 'none' }}>
-    {children}
-  </a>
-);
+const CSVDownload = ({ filename, data, children, disabled }) =>
+  disabled ? (
+    children
+  ) : (
+    <a href={getHref(data)} download={filename} style={{ textDecoration: 'none' }}>
+      {children}
+    </a>
+  );
 
 CSVDownload.propTypes = {
   data: PropTypes.array.isRequired,
   filename: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  disabled: PropTypes.bool
 };
 
 CSVDownload.defaultProps = {
-  children: []
+  children: [],
+  disabled: false
 };
 
 export default CSVDownload;
