@@ -250,6 +250,7 @@ class ClassViewInterface extends React.Component {
               );
             })
           )}
+          {/* TODO: Use new UI/Modal component */}
           <Modal
             className={classes.modal}
             open={this.state.selectedClass !== null || this.state.showKidCreator}

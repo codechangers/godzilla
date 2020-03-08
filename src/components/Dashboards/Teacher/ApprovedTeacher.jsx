@@ -86,6 +86,7 @@ class ApprovedTeacher extends React.Component {
   getCrudModal() {
     if (this.state.showCreate) {
       return (
+        // TODO: Use new UI/Modal component
         <Modal
           style={{
             display: 'flex',
@@ -105,6 +106,7 @@ class ApprovedTeacher extends React.Component {
       );
     }
     return (
+      // TODO: Use new UI/Modal component
       <Modal
         style={{
           display: 'flex',

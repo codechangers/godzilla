@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Modal,
-  Paper,
   Typography,
   Table,
   TableHead,
@@ -15,6 +13,7 @@ import {
 } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import CSVDownload from './CSVDownload';
+import Modal from '../UI/Modal';
 
 const propTypes = {
   cls: PropTypes.object,
@@ -98,71 +97,74 @@ const ContactInfo = ({ cls, onClose }) => {
 
   const classes = useStyles();
   return (
-    <Modal className={classes.modal} open={cls !== null} onClose={onClose} disableAutoFocus>
-      <Paper className={classes.paper}>
-        <div className={classes.header}>
-          <Typography variant="h5">Contact Info</Typography>
-          <CSVDownload
-            filename={`${cls !== null ? cls.name : 'blank'}-contacts.csv`}
-            data={getContactInfo()}
+    <Modal
+      open={cls !== null}
+      onClose={onClose}
+      title="Contact Info"
+      description="Display or Download contact info for all students in this class."
+    >
+      <div className={classes.header}>
+        <Typography variant="h5">Contact Info</Typography>
+        <CSVDownload
+          filename={`${cls !== null ? cls.name : 'blank'}-contacts.csv`}
+          data={getContactInfo()}
+          disabled={isLoading}
+        >
+          <Button
+            variant="contained"
             disabled={isLoading}
+            style={{ color: isLoading ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.6)' }}
           >
-            <Button
-              variant="contained"
-              disabled={isLoading}
-              style={{ color: isLoading ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.6)' }}
-            >
-              <DownloadIcon style={{ marginRight: '8px' }} />
-              Download Info
-            </Button>
-          </CSVDownload>
+            <DownloadIcon style={{ marginRight: '8px' }} />
+            Download Info
+          </Button>
+        </CSVDownload>
+      </div>
+      {isLoading ? (
+        <div className={classes.progressWrapper}>
+          <CircularProgress color="primary" />
         </div>
-        {isLoading ? (
-          <div className={classes.progressWrapper}>
-            <CircularProgress color="primary" />
-          </div>
-        ) : (
-          <Table style={{ marginBottom: '20px' }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Student Name</TableCell>
-                <TableCell>Parent Name</TableCell>
-                <TableCell>Parent Email</TableCell>
-                <TableCell>Parent Phone</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {students.map(s => {
-                const parent =
-                  s.parent && Object.keys(parents).includes(s.parent.id)
-                    ? parents[s.parent.id]
-                    : undefined;
-                return parent ? (
-                  <TableRow key={s.id}>
-                    <TableCell>
-                      {s.fName} {s.lName}
-                    </TableCell>
-                    <TableCell>
-                      {parent.fName} {parent.lName}
-                    </TableCell>
-                    <TableCell>{parent.email}</TableCell>
-                    <TableCell>{parent.phone}</TableCell>
-                  </TableRow>
-                ) : (
-                  <TableRow key={s.id}>
-                    <TableCell>
-                      {s.fName} {s.lName}
-                    </TableCell>
-                    <TableCell>Parent Unavailable</TableCell>
-                    <TableCell />
-                    <TableCell />
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        )}
-      </Paper>
+      ) : (
+        <Table style={{ marginBottom: '20px' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Student Name</TableCell>
+              <TableCell>Parent Name</TableCell>
+              <TableCell>Parent Email</TableCell>
+              <TableCell>Parent Phone</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {students.map(s => {
+              const parent =
+                s.parent && Object.keys(parents).includes(s.parent.id)
+                  ? parents[s.parent.id]
+                  : undefined;
+              return parent ? (
+                <TableRow key={s.id}>
+                  <TableCell>
+                    {s.fName} {s.lName}
+                  </TableCell>
+                  <TableCell>
+                    {parent.fName} {parent.lName}
+                  </TableCell>
+                  <TableCell>{parent.email}</TableCell>
+                  <TableCell>{parent.phone}</TableCell>
+                </TableRow>
+              ) : (
+                <TableRow key={s.id}>
+                  <TableCell>
+                    {s.fName} {s.lName}
+                  </TableCell>
+                  <TableCell>Parent Unavailable</TableCell>
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      )}
     </Modal>
   );
 };
@@ -171,25 +173,13 @@ ContactInfo.propTypes = propTypes;
 ContactInfo.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
-  modal: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  paper: {
-    width: '50%',
-    minWidth: '350px',
-    padding: '0 20px',
-    maxHeight: '100%',
-    overflow: 'scroll',
-    outline: 'none'
-  },
   header: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: '30px',
+    marginTop: '10px',
     marginBottom: '5px'
   },
   progressWrapper: {
