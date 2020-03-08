@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper, Typography, Button, makeStyles } from '@material-ui/core';
+import { Typography, Button, makeStyles } from '@material-ui/core';
+import Modal from './Modal';
 import { getDateFromTimestamp, getHrMn, getOrdinal } from '../../helpers';
 import { months, fullWeekDays, weekDays } from '../../globals';
 
@@ -38,36 +39,40 @@ const getSchedule = cls => {
 const ScheduleModal = ({ showModal, onClose, cls }) => {
   const classes = useStyles();
   return (
-    <Modal className={classes.modal} open={showModal} onClose={onClose} disableAutoFocus>
-      <Paper className={classes.paper}>
-        <Typography variant="h4" style={{ marginTop: 20 }}>
-          Class Schedule
-        </Typography>
+    <Modal
+      open={showModal}
+      onClose={onClose}
+      className={classes.modal}
+      title="Schedule Modal"
+      description="Displaying all days and times this class meets."
+    >
+      <Typography variant="h4" style={{ marginTop: 20 }}>
+        Class Schedule
+      </Typography>
+      <Typography
+        variant="body1"
+        style={{ margin: '12px 30px', fontWeight: '200', fontSize: '1.2rem' }}
+      >
+        Classes are from {getTimeString(cls.startTime)} - {getTimeString(cls.endTime)}
+      </Typography>
+      {getSchedule(cls).map(([str, date]) => (
         <Typography
+          className={classes.scheduleLine}
+          key={str}
           variant="body1"
-          style={{ margin: '12px 30px', fontWeight: '200', fontSize: '1.2rem' }}
+          style={
+            date >= Date.now()
+              ? { backgroundColor: 'rgba(200, 200, 200, 0.3)' }
+              : { backgroundColor: 'rgba(60, 60, 60, 0.3)' }
+          }
         >
-          Classes are from {getTimeString(cls.startTime)} - {getTimeString(cls.endTime)}
+          {str}
         </Typography>
-        {getSchedule(cls).map(([str, date]) => (
-          <Typography
-            className={classes.scheduleLine}
-            key={str}
-            variant="body1"
-            style={
-              date >= Date.now()
-                ? { backgroundColor: 'rgba(200, 200, 200, 0.3)' }
-                : { backgroundColor: 'rgba(60, 60, 60, 0.3)' }
-            }
-          >
-            {str}
-          </Typography>
-        ))}
-        <Button onClick={onClose} style={{ marginTop: '12px', alignSelf: 'center', width: '50%' }}>
-          Close
-        </Button>
-        <div style={{ marginBottom: 30 }} />
-      </Paper>
+      ))}
+      <Button onClick={onClose} style={{ marginTop: '12px', alignSelf: 'center', width: '50%' }}>
+        Close
+      </Button>
+      <div style={{ marginBottom: 30 }} />
     </Modal>
   );
 };
@@ -76,19 +81,9 @@ ScheduleModal.propTypes = propTypes;
 
 const useStyles = makeStyles({
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  paper: {
-    width: '50%',
-    minWidth: '350px',
-    maxHeight: '100%',
-    overflow: 'scroll',
-    outline: 'none',
     padding: '0 20px',
-    display: 'flex',
-    flexDirection: 'column'
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   },
   scheduleLine: {
     margin: '0 30px',
@@ -96,7 +91,8 @@ const useStyles = makeStyles({
     border: '3px solid #fff',
     boxSizing: 'border-box',
     padding: '10px 20px',
-    borderRadius: '6px'
+    borderRadius: '6px',
+    width: 'calc(100% - 60px)'
   }
 });
 

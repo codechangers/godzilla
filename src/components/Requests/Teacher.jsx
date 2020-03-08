@@ -205,6 +205,7 @@ class TeacherRequest extends React.Component {
           {this.getOptionButtons()}
         </ListItem>
         <Divider />
+        {/* TODO: Use new UI/Modal component */}
         <Modal
           className="admin-modal-wrapper"
           open={this.state.open}
