@@ -37,14 +37,20 @@ Modal.defaultProps = {
   description: 'This is a UI Modal'
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   modal: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingLeft: '96px',
+    transition: 'padding 300ms ease',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: '0'
+    }
   },
   paper: {
+    boxSizing: 'border-box',
     padding: '20px',
     outline: 'none',
     width: '100%',
@@ -57,6 +63,6 @@ const useStyles = makeStyles({
     justifyContent: 'space-around',
     alignItems: 'center'
   }
-});
+}));
 
 export default Modal;

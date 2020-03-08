@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
-  Modal,
-  Paper,
   Typography,
   List,
   ListItem,
@@ -17,6 +15,7 @@ import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassTable from '../Classes/ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
+import Modal from '../UI/Modal';
 import { API_URL } from '../../globals';
 
 const propTypes = {
@@ -183,21 +182,19 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
 
   const classes = useStyles();
   return (
-    <Modal className={classes.modalWrapper} open={open} onClose={onClose} disableAutoFocus>
+    <Modal open={open} onClose={onClose} className={classes.modal}>
       {isProcessing ? (
-        <Paper className={classes.modalContent}>
-          <PaymentProcess
-            payment={payment}
-            onClose={() => {
-              setSelectedChildren([]);
-              setIsProcessing(false);
-              updatePayment({ succeeded: false });
-              onClose();
-            }}
-          />
-        </Paper>
+        <PaymentProcess
+          payment={payment}
+          onClose={() => {
+            setSelectedChildren([]);
+            setIsProcessing(false);
+            updatePayment({ succeeded: false });
+            onClose();
+          }}
+        />
       ) : (
-        <Paper className={classes.modalContent}>
+        <>
           <Typography variant="h5">
             Register for:
             <br className={classes.mobileBreak} />{' '}
@@ -205,7 +202,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
           </Typography>
           <ClassTable cls={cls} />
           <Typography variant="body1">Select Children to Register</Typography>
-          <List>
+          <List style={{ width: '100%' }}>
             {children.map(child => (
               <ListItem
                 key={child.id}
@@ -262,7 +259,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
               Sign Up!
             </Button>
           </div>
-        </Paper>
+        </>
       )}
     </Modal>
   );
@@ -271,22 +268,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
 ClassSignUp.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
-  modalWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0
-  },
-  modalContent: {
+  modal: {
     padding: '40px',
-    width: '100%',
-    maxWidth: '700px',
-    minWidth: '300px',
-    maxHeight: '100%',
-    overflow: 'scroll',
-    outline: 'none',
-    boxSizing: 'border-box',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     [theme.breakpoints.down('xs')]: {
       padding: '20px 4px'
     }
@@ -332,6 +317,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   cardInfo: {
+    width: 'calc(100% - 30px)',
     border: '1px solid rgba(224, 224, 224, 1)',
     padding: 14,
     marginBottom: 20
