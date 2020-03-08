@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Modal, Paper, Typography, TextField, Button } from '@material-ui/core';
+import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
+import Modal from '../../UI/Modal';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -52,44 +53,42 @@ const InfoModal = ({
 
   const classes = useStyles();
   return (
-    <Modal open={open} onClose={onClose} disableAutoFocus className={classes.modal}>
-      <Paper className={classes.paper}>
-        <Typography variant="h4" style={{ marginBottom: '20px' }}>
-          {prompt}
-        </Typography>
-        <TextField
+    <Modal open={open} onClose={onClose} title={prompt} description="Add or update Information">
+      <Typography variant="h4" style={{ marginBottom: '20px' }}>
+        {prompt}
+      </Typography>
+      <TextField
+        variant="outlined"
+        color="primary"
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        label={label}
+        placeholder={placeholder}
+        className={classes.input}
+      />
+      <div className={classes.options}>
+        <Button
           variant="outlined"
+          onClick={() => {
+            setInput('');
+            onClose();
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
           color="primary"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          label={label}
-          placeholder={placeholder}
-          className={classes.input}
-        />
-        <div className={classes.options}>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setInput('');
-              onClose();
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              onSubmit(checkInput(input));
-              setInput('');
-              onClose();
-            }}
-          >
-            Submit
-          </Button>
-        </div>
-        {children}
-      </Paper>
+          onClick={() => {
+            onSubmit(checkInput(input));
+            setInput('');
+            onClose();
+          }}
+        >
+          Submit
+        </Button>
+      </div>
+      {children}
     </Modal>
   );
 };
@@ -98,25 +97,6 @@ InfoModal.propTypes = propTypes;
 InfoModal.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
-  modal: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  paper: {
-    padding: '20px',
-    outline: 'none',
-    width: '100%',
-    maxWidth: '700px',
-    minWidth: '300px',
-    maxHeight: '100%',
-    overflow: 'scroll',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
   input: {
     width: '60%',
     [theme.breakpoints.down('xs')]: {
