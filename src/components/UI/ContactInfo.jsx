@@ -100,6 +100,7 @@ const ContactInfo = ({ cls, onClose }) => {
     <Modal
       open={cls !== null}
       onClose={onClose}
+      className={classes.modal}
       title="Contact Info"
       description="Display or Download contact info for all students in this class."
     >
@@ -173,6 +174,9 @@ ContactInfo.propTypes = propTypes;
 ContactInfo.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
+  modal: {
+    maxWidth: '1000px'
+  },
   header: {
     width: '100%',
     display: 'flex',
