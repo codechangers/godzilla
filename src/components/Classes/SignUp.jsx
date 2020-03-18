@@ -190,6 +190,9 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
             setSelectedChildren([]);
             setIsProcessing(false);
             updatePayment({ succeeded: false });
+            if (cls.hasWaiver) {
+              window.open(cls.waiverURL, '_blank');
+            }
             onClose();
           }}
         />
