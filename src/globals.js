@@ -60,6 +60,7 @@ export const dataMemberToValidation = {
   address: () => '',
   aboutMe: () => '',
   privacyCode: () => '',
+  waiverURL: () => '',
   password: state =>
     state.password.length < 8 ? 'Password must be at least 8 characters long' : '',
   confirmPassword: state =>

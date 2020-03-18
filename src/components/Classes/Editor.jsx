@@ -32,7 +32,8 @@ const allFields = [
   'endAge',
   'minStudents',
   'maxStudents',
-  'privacyCode'
+  'privacyCode',
+  'waiverURL'
 ];
 const dontConvert = [
   'name',
@@ -42,7 +43,9 @@ const dontConvert = [
   'locationAddress',
   'daysOfWeek',
   'isPrivate',
-  'privacyCode'
+  'privacyCode',
+  'hasWaiver',
+  'waiverURL'
 ];
 const convertToNumber = ['startAge', 'endAge', 'price', 'minStudents', 'maxStudents'];
 const convertToDate = ['startDate', 'endDate', 'startTime', 'endTime'];
@@ -68,6 +71,8 @@ class ClassEditor extends React.Component {
       maxStudents: '',
       isPrivate: false,
       privacyCode: '',
+      hasWaiver: false,
+      waiverURL: '',
       errors: {}
     };
     this.getUserData = getUserData;
@@ -130,11 +135,17 @@ class ClassEditor extends React.Component {
     if (!this.state.isPrivate) {
       fields = fields.filter(a => a !== 'privacyCode');
     }
+    if (!this.state.hasWaiver) {
+      fields = fields.filter(a => a !== 'waiverURL');
+    }
     if (this.validateFields(fields)) {
       const data = { ...this.state };
       delete data.errors;
       if (!this.state.isPrivate) {
         data.privacyCode = '';
+      }
+      if (!this.state.hasWaiver) {
+        data.waiverURL = '';
       }
       this.props.submit(data);
     }
@@ -361,35 +372,70 @@ class ClassEditor extends React.Component {
             }}
           />
         </div>
-        <FormControlLabel
-          value="top"
-          control={
-            <Checkbox
-              checked={this.state.isPrivate}
-              onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
-              color="primary"
-              value={this.state.isPrivate}
+        <div className="inliner" style={{ alignItems: 'flex-start' }}>
+          <div className="input most" style={{ marginBottom: 0 }}>
+            <FormControlLabel
+              value="top"
+              control={
+                <Checkbox
+                  checked={this.state.isPrivate}
+                  onChange={() => this.setState({ isPrivate: !this.state.isPrivate })}
+                  color="primary"
+                  value={this.state.isPrivate}
+                />
+              }
+              label="This Class is Private"
+              labelPlacement="end"
+              style={{ flexGrow: 'grow' }}
             />
-          }
-          label="This Class is Private"
-          labelPlacement="end"
-          style={{ flexGrow: 'grow' }}
-        />
-        {this.state.isPrivate && (
-          <TextField
-            id="privacyCode"
-            className="input most"
-            style={{ width: '70%' }}
-            type="text"
-            label="Private Registration Code"
-            variant="outlined"
-            value={this.state.privacyCode}
-            onChange={this.handleInput}
-            error={getErrorStatus(this.state.errors.privacyCode)}
-            helperText={this.state.errors.privacyCode}
-            disabled={!this.state.isPrivate}
-          />
-        )}
+            {this.state.isPrivate && (
+              <TextField
+                id="privacyCode"
+                className="input most"
+                style={{ width: '100%' }}
+                type="text"
+                label="Private Registration Code"
+                variant="outlined"
+                value={this.state.privacyCode}
+                onChange={this.handleInput}
+                error={getErrorStatus(this.state.errors.privacyCode)}
+                helperText={this.state.errors.privacyCode}
+                disabled={!this.state.isPrivate}
+              />
+            )}
+          </div>
+          <div className="input most" style={{ marginBottom: 0 }}>
+            <FormControlLabel
+              value="top"
+              control={
+                <Checkbox
+                  checked={this.state.hasWaiver}
+                  onChange={() => this.setState({ hasWaiver: !this.state.hasWaiver })}
+                  color="primary"
+                  value={this.state.hasWaiver}
+                />
+              }
+              label="Class requires a Waiver"
+              labelPlacement="end"
+              style={{ flexGrow: 'grow' }}
+            />
+            {this.state.hasWaiver && (
+              <TextField
+                id="waiverURL"
+                className="input most"
+                style={{ width: '100%' }}
+                type="text"
+                label="URL of online Waiver"
+                variant="outlined"
+                value={this.state.waiverURL}
+                onChange={this.handleInput}
+                error={getErrorStatus(this.state.errors.waiverURL)}
+                helperText={this.state.errors.waiverURL}
+                disabled={!this.state.hasWaiver}
+              />
+            )}
+          </div>
+        </div>
         <div className="options">
           <Button onClick={this.props.close}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={this.handleSubmit}>
