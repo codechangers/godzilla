@@ -10,6 +10,7 @@ export const PageWrapper = styled.div({
   justifyContent: 'center',
   alignItems: 'flex-start',
   backgroundColor: 'var(--background-color)',
+  transition: 'padding 300ms ease',
   [breakpoints.down.xs]: {
     paddingLeft: 0
   }
