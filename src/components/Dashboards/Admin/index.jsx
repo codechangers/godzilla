@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Tabs, Tab, IconButton, Typography } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { withStyles, Tabs, Tab, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
@@ -29,7 +28,7 @@ class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      teacherOrgToggle: 0,
+      tabIndex: 0,
       shouldShowSideDrawer: false
     };
     this.firebase = this.props.firebase;
@@ -43,7 +42,7 @@ class AdminDashboard extends React.Component {
         db={this.db}
         firebase={this.firebase}
         showSideDrawer={this.state.shouldShowSideDrawer}
-        toggleDrawer={() => this.toggleSideDrawer()}
+        toggleDrawer={() => null}
       />
     );
   }
@@ -54,35 +53,9 @@ class AdminDashboard extends React.Component {
         db={this.db}
         firebase={this.firebase}
         showSideDrawer={this.state.shouldShowSideDrawer}
-        toggleDrawer={() => this.toggleSideDrawer()}
+        toggleDrawer={() => null}
       />
     );
-  }
-
-  getSideDrawerButton() {
-    return (
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={this.toggleSideDrawer}
-        edge="start"
-        className="side-drawer-button"
-      >
-        <MenuIcon />
-      </IconButton>
-    );
-  }
-
-  toggleTeacherOrg(_, value) {
-    let { teacherOrgToggle } = this.state;
-    teacherOrgToggle = value;
-    this.setState({ teacherOrgToggle });
-  }
-
-  toggleSideDrawer() {
-    let { shouldShowSideDrawer } = this.state;
-    shouldShowSideDrawer = !shouldShowSideDrawer;
-    this.setState({ shouldShowSideDrawer });
   }
 
   getInterface() {
@@ -93,6 +66,7 @@ class AdminDashboard extends React.Component {
 
   render() {
     const { firebase, user, classes } = this.props;
+    const { tabIndex } = this.state;
     return user.isSignedIn ? (
       <PageWrapper>
         <SideBar
@@ -106,17 +80,17 @@ class AdminDashboard extends React.Component {
               Account Requests
             </Typography>
             <Tabs
-              value={this.state.teacherOrgToggle}
-              onChange={this.toggleTeacherOrg}
+              value={tabIndex}
+              onChange={(_, v) => this.setState({ tabIndex: v })}
               indicatorColor="primary"
             >
               <Tab label="Teacher Requests" />
               <Tab label="Organization Requests" />
             </Tabs>
-            <TabPanel value={this.state.teacherOrgToggle} index={0}>
+            <TabPanel value={tabIndex} index={0}>
               <div className="admin-dashboard">{this.getTeacherRequests()}</div>
             </TabPanel>
-            <TabPanel value={this.state.teacherOrgToggle} index={1}>
+            <TabPanel value={tabIndex} index={1}>
               <div className="admin-dashboard">{this.getOrgRequests()}</div>
             </TabPanel>
           </div>
