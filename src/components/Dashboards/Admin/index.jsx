@@ -6,7 +6,8 @@ import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
 import { PageWrapper } from '../styles';
-import NavBar from '../../UI/NavBar';
+import ProfileInterface from '../../Interfaces/Profile';
+import SideBar from '../../UI/SideBar';
 import TabPanel from '../../UI/TabPanel';
 import autoBind from '../../../autoBind';
 
@@ -14,7 +15,13 @@ const propTypes = {
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  accounts: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
+
+const routeToInterface = {
+  '/admin': null,
+  '/admin/profile': ProfileInterface
 };
 
 class AdminDashboard extends React.Component {
@@ -77,29 +84,40 @@ class AdminDashboard extends React.Component {
     this.setState({ shouldShowSideDrawer });
   }
 
+  getInterface() {
+    const Interface = routeToInterface[this.props.location.pathname];
+    const { firebase, db, user, accounts } = this.props;
+    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
+  }
+
   render() {
-    return this.props.user.isSignedIn ? (
+    const { firebase, user } = this.props;
+    return user.isSignedIn ? (
       <PageWrapper>
-        <NavBar
-          accounts={this.props.accounts}
-          firebase={this.firebase}
-          getMenuButton={this.getSideDrawerButton}
+        <SideBar
+          names={['Profile', 'Dashboard', 'Parent Dash', 'Teacher Dash']}
+          baseRoute="/admin"
+          firebase={firebase}
         />
-        <h1>Hello Admin</h1>
-        <Tabs
-          value={this.state.teacherOrgToggle}
-          onChange={this.toggleTeacherOrg}
-          indicatorColor="primary"
-        >
-          <Tab label="Teacher Requests" />
-          <Tab label="Organization Requests" />
-        </Tabs>
-        <TabPanel value={this.state.teacherOrgToggle} index={0}>
-          <div className="admin-dashboard">{this.getTeacherRequests()}</div>
-        </TabPanel>
-        <TabPanel value={this.state.teacherOrgToggle} index={1}>
-          <div className="admin-dashboard">{this.getOrgRequests()}</div>
-        </TabPanel>
+        {this.getInterface() || (
+          <div>
+            <h1>Hello Admin</h1>
+            <Tabs
+              value={this.state.teacherOrgToggle}
+              onChange={this.toggleTeacherOrg}
+              indicatorColor="primary"
+            >
+              <Tab label="Teacher Requests" />
+              <Tab label="Organization Requests" />
+            </Tabs>
+            <TabPanel value={this.state.teacherOrgToggle} index={0}>
+              <div className="admin-dashboard">{this.getTeacherRequests()}</div>
+            </TabPanel>
+            <TabPanel value={this.state.teacherOrgToggle} index={1}>
+              <div className="admin-dashboard">{this.getOrgRequests()}</div>
+            </TabPanel>
+          </div>
+        )}
       </PageWrapper>
     ) : (
       <Redirect to="/login" />
