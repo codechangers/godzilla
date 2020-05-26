@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
 import AdminOrganizationPage from './OrganizationPage';
+import { PageWrapper } from '../styles';
 import NavBar from '../../UI/NavBar';
 import TabPanel from '../../UI/TabPanel';
 import autoBind from '../../../autoBind';
@@ -78,7 +79,7 @@ class AdminDashboard extends React.Component {
 
   render() {
     return this.props.user.isSignedIn ? (
-      <div className="admin-dashboard">
+      <PageWrapper>
         <NavBar
           accounts={this.props.accounts}
           firebase={this.firebase}
@@ -99,7 +100,7 @@ class AdminDashboard extends React.Component {
         <TabPanel value={this.state.teacherOrgToggle} index={1}>
           <div className="admin-dashboard">{this.getOrgRequests()}</div>
         </TabPanel>
-      </div>
+      </PageWrapper>
     ) : (
       <Redirect to="/login" />
     );
