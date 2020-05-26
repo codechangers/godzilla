@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, IconButton } from '@material-ui/core';
+import { withStyles, Tabs, Tab, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Redirect } from 'react-router-dom';
 import AdminTeacherPage from './TeacherPage';
@@ -16,7 +16,8 @@ const propTypes = {
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const routeToInterface = {
@@ -91,7 +92,7 @@ class AdminDashboard extends React.Component {
   }
 
   render() {
-    const { firebase, user } = this.props;
+    const { firebase, user, classes } = this.props;
     return user.isSignedIn ? (
       <PageWrapper>
         <SideBar
@@ -100,8 +101,10 @@ class AdminDashboard extends React.Component {
           firebase={firebase}
         />
         {this.getInterface() || (
-          <div>
-            <h1>Hello Admin</h1>
+          <div className={classes.reqsWrapper}>
+            <Typography variant="h2" style={{ marginBottom: '15px' }}>
+              Account Requests
+            </Typography>
             <Tabs
               value={this.state.teacherOrgToggle}
               onChange={this.toggleTeacherOrg}
@@ -127,4 +130,15 @@ class AdminDashboard extends React.Component {
 
 AdminDashboard.propTypes = propTypes;
 
-export default AdminDashboard;
+const styles = {
+  reqsWrapper: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: '20px 8px 15px 8px'
+  }
+};
+
+export default withStyles(styles)(AdminDashboard);
