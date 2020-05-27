@@ -7,7 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import Search from './Pages/Search';
-import AdminDashboard from './Dashboards/Admin/index';
+import AdminDashboard from './Dashboards/Admin';
 import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
