@@ -24,10 +24,10 @@ const AccountRequests = ({ db }) => {
         <Tab label="Teacher Requests" />
         <Tab label="Organization Requests" />
       </Tabs>
-      <TabPanel value={tabIndex} index={0}>
+      <TabPanel value={tabIndex} index={0} className={classes.panel}>
         <Requests db={db} collection={db.collection('teachers')} />
       </TabPanel>
-      <TabPanel value={tabIndex} index={1}>
+      <TabPanel value={tabIndex} index={1} className={classes.panel}>
         <Requests db={db} collection={db.collection('organizations')} />
       </TabPanel>
     </div>
@@ -44,6 +44,9 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: '20px 8px 15px 8px'
+  },
+  panel: {
+    width: '50%'
   }
 });
 
