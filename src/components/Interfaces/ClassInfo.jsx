@@ -138,6 +138,8 @@ const ClassInfoInterface = ({ location, db, user }) => {
             if (classDoc.data().teacher.id === user.uid) {
               setIsOwner(true);
             }
+          } else {
+            setCls({ children: [] });
           }
           setIsLoading(false);
         });
