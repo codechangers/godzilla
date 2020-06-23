@@ -13,13 +13,15 @@ import {
   InputBase,
   IconButton,
   Tooltip,
-  Fab
+  Fab,
+  TextField
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import SendIcon from '@material-ui/icons/Send';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
@@ -76,30 +78,67 @@ EditButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const SignUpButton = ({ isPrivate, disabled, onClick, className }) =>
-  isPrivate ? (
-    <p>This class is is private...</p>
+const SignUpButton = ({ cls, onClick, className, inputCode, setInputCode }) => {
+  const [tempCode, setTempCode] = useState('');
+  const [error, setError] = useState('');
+
+  const classes = useStyles();
+  return cls.isPrivate && inputCode !== cls.privacyCode ? (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        if (tempCode === cls.privacyCode) {
+          setInputCode(tempCode);
+          setError('');
+        } else {
+          setError('Invalid Code!');
+        }
+      }}
+      className={classes.registrationCode}
+      style={error.length > 0 ? { marginBottom: 0 } : {}}
+    >
+      <TextField
+        label="Registration Code"
+        error={error.length > 0}
+        helperText={error}
+        onChange={e => setTempCode(e.target.value)}
+        className={classes.registrationCodeInput}
+      />
+      <Tooltip title="Use Code" placement="top">
+        <IconButton
+          style={
+            error.length > 0 ? { marginLeft: '10px' } : { marginLeft: '10px', marginTop: '12px' }
+          }
+          aria-label="Use Code"
+          size="small"
+          color="primary"
+          type="submit"
+        >
+          <SendIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+    </form>
   ) : (
     <Button
       variant="contained"
       color="primary"
-      disabled={disabled}
+      disabled={cls.children.length >= cls.maxStudents}
       className={className}
       onClick={onClick}
     >
       Sign Up!
     </Button>
   );
+};
 
 SignUpButton.propTypes = {
-  isPrivate: PropTypes.bool,
-  disabled: PropTypes.bool,
+  cls: PropTypes.object.isRequired,
   onClick: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  inputCode: PropTypes.string.isRequired,
+  setInputCode: PropTypes.func.isRequired
 };
 SignUpButton.defaultProps = {
-  isPrivate: false,
-  disabled: false,
   onClick: () => {},
   className: ''
 };
@@ -147,6 +186,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
   const [editFAQ, setEditFAQ] = useState([null, -1]);
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
   const [isOwner, setIsOwner] = useState(false);
+  const [inputCode, setInputCode] = useState('');
 
   const updateClassInfo = newInfo => {
     setClassInfo({ ...classInfo, ...newInfo });
@@ -279,9 +319,10 @@ const ClassInfoInterface = ({ location, db, user }) => {
             <div className={classes.left}>
               <InfoCardHeader cls={cls} db={db} hideImage hideAccountType>
                 <SignUpButton
-                  isPrivate={cls.isPrivate}
-                  disabled={cls.children.length >= cls.maxStudents}
+                  cls={cls}
                   onClick={() => setShowSignup(true)}
+                  inputCode={inputCode}
+                  setInputCode={setInputCode}
                 />
               </InfoCardHeader>
             </div>
@@ -423,9 +464,11 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 </Button>
               ) : (
                 <SignUpButton
-                  isPrivate={cls.isPrivate}
-                  disabled={cls.children.length >= cls.maxStudents}
+                  cls={cls}
+                  className={classes.bottomButton}
                   onClick={() => setShowSignup(true)}
+                  inputCode={inputCode}
+                  setInputCode={setInputCode}
                 />
               )}
             </div>
@@ -703,6 +746,18 @@ const useStyles = makeStyles(theme => ({
       top: 'auto',
       bottom: '10px'
     }
+  },
+  registrationCode: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: '20px',
+    marginTop: '20px'
+  },
+  registrationCodeInput: {
+    width: '50%',
+    maxWidth: '250px'
   }
 }));
 
