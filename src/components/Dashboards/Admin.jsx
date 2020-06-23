@@ -12,8 +12,7 @@ const propTypes = {
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired
 };
 
 const routeToInterface = {
