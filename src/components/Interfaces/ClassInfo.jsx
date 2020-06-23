@@ -76,6 +76,34 @@ EditButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
+const SignUpButton = ({ isPrivate, disabled, onClick, className }) =>
+  isPrivate ? (
+    <p>This class is is private...</p>
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      disabled={disabled}
+      className={className}
+      onClick={onClick}
+    >
+      Sign Up!
+    </Button>
+  );
+
+SignUpButton.propTypes = {
+  isPrivate: PropTypes.bool,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func,
+  className: PropTypes.string
+};
+SignUpButton.defaultProps = {
+  isPrivate: false,
+  disabled: false,
+  onClick: () => {},
+  className: ''
+};
+
 const modalPropSets = {
   logo: {
     prompt: 'Add a Logo',
@@ -250,14 +278,11 @@ const ClassInfoInterface = ({ location, db, user }) => {
             )}
             <div className={classes.left}>
               <InfoCardHeader cls={cls} db={db} hideImage hideAccountType>
-                <Button
+                <SignUpButton
+                  isPrivate={cls.isPrivate}
                   disabled={cls.children.length >= cls.maxStudents}
-                  variant="contained"
-                  color="primary"
                   onClick={() => setShowSignup(true)}
-                >
-                  Sign Up!
-                </Button>
+                />
               </InfoCardHeader>
             </div>
           </div>
@@ -397,15 +422,11 @@ const ClassInfoInterface = ({ location, db, user }) => {
                   Add a FAQ
                 </Button>
               ) : (
-                <Button
+                <SignUpButton
+                  isPrivate={cls.isPrivate}
                   disabled={cls.children.length >= cls.maxStudents}
-                  variant="contained"
-                  color="primary"
-                  className={classes.bottomButton}
                   onClick={() => setShowSignup(true)}
-                >
-                  Sign Up!
-                </Button>
+                />
               )}
             </div>
           )}
