@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography, Chip } from '@material-ui/core';
 import { CheckCircle, Block, Info } from '@material-ui/icons';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 const propTypes = {
-  account: PropTypes.object.isRequired
+  account: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired
 };
 
 const ACCEPTED = 'ACCEPTED';
@@ -33,23 +35,29 @@ const getStatus = account => {
   }
 };
 
-const Request = ({ account }) => {
+const Request = ({ account, width }) => {
   const classes = useStyles();
   const status = getStatus(account);
   const Icon = statusIcon[status];
   return (
     <div className={classes.wrapper}>
-      <Typography variant="h5">
+      <Typography variant="h5" className={classes.name}>
         {account.parent.fName} {account.parent.lName}
       </Typography>
-      <Chip label={status} icon={<Icon />} color={statusColor[status]} />
+      <Chip
+        style={{ width: '116px' }}
+        label={status}
+        icon={<Icon />}
+        color={statusColor[status]}
+        size={isWidthDown('sm', width) ? 'small' : 'medium'}
+      />
     </div>
   );
 };
 
 Request.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     width: '98%',
     padding: '10px 40px',
@@ -57,8 +65,18 @@ const useStyles = makeStyles({
     borderTop: '1px solid rgba(100,100,100,0.3)',
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      padding: '8px 18px'
+    }
+  },
+  name: {
+    fontSize: 'default',
+    paddingRight: '8px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1rem'
+    }
   }
-});
+}));
 
-export default Request;
+export default withWidth()(Request);

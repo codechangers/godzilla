@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Tabs, Tab, Typography, Paper, CircularProgress } from '@material-ui/core';
+import { makeStyles, Tabs, Tab, Typography } from '@material-ui/core';
+import Requests from './interfaceHelpers/Requests';
 import TabPanel from '../UI/TabPanel';
-import Request from '../UI/Request';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -55,7 +55,7 @@ const AccountRequests = ({ db }) => {
   const classes = useStyles();
   return (
     <div className={classes.reqsWrapper}>
-      <Typography variant="h2" style={{ marginBottom: '15px' }}>
+      <Typography variant="h2" className={classes.header}>
         Account Requests
       </Typography>
       <Tabs value={tabIndex} onChange={(_, v) => setTabIndex(v)} indicatorColor="primary">
@@ -63,22 +63,10 @@ const AccountRequests = ({ db }) => {
         <Tab label="Organization Requests" />
       </Tabs>
       <TabPanel value={tabIndex} index={0} className={classes.panel}>
-        <Paper className={classes.paper}>
-          {loadingTeachers ? (
-            <CircularProgress color="primary" />
-          ) : (
-            teacherReqs.map(r => <Request account={r} key={r.id} />)
-          )}
-        </Paper>
+        <Requests reqs={teacherReqs} loading={loadingTeachers} />
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <Paper className={classes.paper}>
-          {loadingOrgs ? (
-            <CircularProgress color="primary" />
-          ) : (
-            orgReqs.map(r => <Request account={r} key={r.id} />)
-          )}
-        </Paper>
+        <Requests reqs={orgReqs} loading={loadingOrgs} />
       </TabPanel>
     </div>
   );
@@ -86,7 +74,7 @@ const AccountRequests = ({ db }) => {
 
 AccountRequests.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   reqsWrapper: {
     width: '100%',
     display: 'flex',
@@ -95,17 +83,20 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '20px 8px 15px 8px'
   },
-  panel: {
-    width: '50%'
+  header: {
+    marginBottom: '15px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '2rem'
+    }
   },
-  paper: {
+  panel: {
     width: '100%',
-    padding: '20px',
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    padding: 0,
+    '& > div.MuiBox-root': {
+      padding: 0,
+      paddingTop: '20px'
+    }
   }
-});
+}));
 
 export default AccountRequests;
