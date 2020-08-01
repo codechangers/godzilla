@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Tabs, Tab, Typography } from '@material-ui/core';
-import Requests from './interfaceHelpers/Requests';
+import { makeStyles, Tabs, Tab, Typography, Paper, CircularProgress } from '@material-ui/core';
 import TabPanel from '../UI/TabPanel';
+import Request from '../UI/Request';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -13,6 +13,44 @@ const propTypes = {
 
 const AccountRequests = ({ db }) => {
   const [tabIndex, setTabIndex] = useState(0);
+  const [loadingTeachers, setLoadingTeachers] = useState(false);
+  const [loadingOrgs, setLoadingOrgs] = useState(false);
+  const [teacherReqs, setTeacherReqs] = useState([]);
+  const [orgReqs, setOrgReqs] = useState([]);
+
+  useEffect(() => {
+    const subToReqs = (collection, setReqs, setIsLoading) =>
+      collection.onSnapshot(users => {
+        setIsLoading(true);
+        const requests = [];
+        users.docs.forEach(u => {
+          db.collection('parents')
+            .doc(u.id)
+            .get()
+            .then(parentDoc => {
+              const req = {
+                id: u.id,
+                ...u.data(),
+                parent: parentDoc.data()
+              };
+              requests.push(req);
+              if (requests.length === users.docs.length) {
+                requests.sort(
+                  (a, b) => new Date(b.dateApplied.seconds) - new Date(a.dateApplied.seconds)
+                );
+                setReqs(requests);
+                setIsLoading(false);
+              }
+            });
+        });
+      });
+    const cancelTeachers = subToReqs(db.collection('teachers'), setTeacherReqs, setLoadingTeachers);
+    const cancelOrgs = subToReqs(db.collection('organizations'), setOrgReqs, setLoadingOrgs);
+    return () => {
+      cancelTeachers();
+      cancelOrgs();
+    };
+  }, [db]);
 
   const classes = useStyles();
   return (
@@ -25,10 +63,22 @@ const AccountRequests = ({ db }) => {
         <Tab label="Organization Requests" />
       </Tabs>
       <TabPanel value={tabIndex} index={0} className={classes.panel}>
-        <Requests db={db} collection={db.collection('teachers')} />
+        <Paper className={classes.paper}>
+          {loadingTeachers ? (
+            <CircularProgress color="primary" />
+          ) : (
+            teacherReqs.map(r => <Request account={r} key={r.id} />)
+          )}
+        </Paper>
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <Requests db={db} collection={db.collection('organizations')} />
+        <Paper className={classes.paper}>
+          {loadingOrgs ? (
+            <CircularProgress color="primary" />
+          ) : (
+            orgReqs.map(r => <Request account={r} key={r.id} />)
+          )}
+        </Paper>
       </TabPanel>
     </div>
   );
@@ -47,6 +97,14 @@ const useStyles = makeStyles({
   },
   panel: {
     width: '50%'
+  },
+  paper: {
+    width: '100%',
+    padding: '20px',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 });
 
