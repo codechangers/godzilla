@@ -11,7 +11,8 @@ import {
   CardGiftcard,
   Menu,
   AccountTree,
-  SupervisorAccount
+  SupervisorAccount,
+  School
 } from '@material-ui/icons';
 import { Fab, makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
@@ -29,7 +30,7 @@ const nameToIcon = {
   'Promo Codes': CardGiftcard,
   Settings,
   'Parent Dash': AccountTree,
-  'Teacher Dash': AccountTree,
+  'Teacher Dash': School,
   'Admin Dash': SupervisorAccount
 };
 
