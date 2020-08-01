@@ -6,6 +6,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 const propTypes = {
   account: PropTypes.object.isRequired,
+  show: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired
 };
 
@@ -35,12 +36,16 @@ const getStatus = account => {
   }
 };
 
-const Request = ({ account, width }) => {
+const Request = ({ account, show, width }) => {
   const classes = useStyles();
   const status = getStatus(account);
   const Icon = statusIcon[status];
   return (
-    <div className={classes.wrapper}>
+    <div
+      className={classes.wrapper}
+      onClick={() => show(account.parent)}
+      style={account.isRead ? { backgroundColor: 'rgba(0,0,0,0.04)' } : null}
+    >
       <Typography variant="h5" className={classes.name}>
         {account.parent.fName} {account.parent.lName}
       </Typography>
@@ -66,6 +71,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    cursor: 'pointer',
+    transition: 'background-color 50ms ease',
+    '&:hover': {
+      boxShadow: '0px 0px 7px 1px rgba(0,0,0,0.1)'
+    },
     [theme.breakpoints.down('sm')]: {
       padding: '8px 18px'
     }
