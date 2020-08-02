@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography, Chip } from '@material-ui/core';
-import { CheckCircle, Block, Info } from '@material-ui/icons';
+import { CheckCircle, Block, Info, FiberManualRecord } from '@material-ui/icons';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 const propTypes = {
@@ -41,14 +41,15 @@ const Request = ({ account, show, width }) => {
   const status = getStatus(account);
   const Icon = statusIcon[status];
   return (
-    <div
-      className={classes.wrapper}
-      onClick={() => show(account.parent)}
-      style={account.isRead ? { backgroundColor: 'rgba(0,0,0,0.04)' } : null}
-    >
-      <Typography variant="h5" className={classes.name}>
-        {account.parent.fName} {account.parent.lName}
-      </Typography>
+    <div className={classes.wrapper} onClick={() => show(account.parent)}>
+      <div className={classes.nameWrapper}>
+        {!account.isRead && (
+          <FiberManualRecord color="primary" fontSize="small" className={classes.nameNotify} />
+        )}
+        <Typography variant="h5" className={classes.name}>
+          {account.parent.fName} {account.parent.lName}
+        </Typography>
+      </div>
       <Chip
         style={{ width: '116px' }}
         label={status}
@@ -78,6 +79,20 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       padding: '8px 18px'
+    }
+  },
+  nameWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  nameNotify: {
+    marginLeft: -20 - 9,
+    marginRight: 9,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: -10 - 1,
+      marginRight: 1
     }
   },
   name: {
