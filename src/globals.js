@@ -61,6 +61,12 @@ export const fullWeekDays = [
   'Saturday'
 ];
 
+export const STATUS = {
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  PENDING: 'PENDING'
+};
+
 export const dataMemberToValidation = {
   name: () => '',
   programType: () => '',
