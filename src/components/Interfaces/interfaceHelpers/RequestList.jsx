@@ -9,7 +9,7 @@ const propTypes = {
   loading: PropTypes.bool.isRequired
 };
 
-const Requests = ({ reqs, loading }) => {
+const RequestList = ({ reqs, loading }) => {
   const [showAccount, setShowAccount] = useState(null);
 
   const classes = useStyles();
@@ -40,7 +40,7 @@ const Requests = ({ reqs, loading }) => {
   );
 };
 
-Requests.propTypes = propTypes;
+RequestList.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -56,4 +56,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default Requests;
+export default RequestList;

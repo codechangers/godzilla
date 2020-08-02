@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Tabs, Tab, Typography } from '@material-ui/core';
-import Requests from './interfaceHelpers/Requests';
+import RequestList from './interfaceHelpers/RequestList';
 import TabPanel from '../UI/TabPanel';
 
 const propTypes = {
@@ -63,10 +63,10 @@ const AccountRequests = ({ db }) => {
         <Tab label="Organization Requests" />
       </Tabs>
       <TabPanel value={tabIndex} index={0} className={classes.panel}>
-        <Requests reqs={teacherReqs} loading={loadingTeachers} />
+        <RequestList reqs={teacherReqs} loading={loadingTeachers} />
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <Requests reqs={orgReqs} loading={loadingOrgs} />
+        <RequestList reqs={orgReqs} loading={loadingOrgs} />
       </TabPanel>
     </div>
   );
