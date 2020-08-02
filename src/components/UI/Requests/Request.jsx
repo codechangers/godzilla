@@ -42,15 +42,14 @@ const Request = ({ account, show }) => {
           {account.parent.fName} {account.parent.lName}
         </Typography>
       </div>
-      <AccountChip account={account} smallBreak="sm" />
+      <AccountChip status={getStatus(account)} smallBreak="sm" />
     </div>
   );
 };
 
 Request.propTypes = propTypes;
 
-export const AccountChip = withWidth()(({ account, smallBreak, width }) => {
-  const status = getStatus(account);
+export const AccountChip = withWidth()(({ status, smallBreak, width }) => {
   const Icon = statusIcon[status];
   return (
     <Chip
@@ -64,7 +63,7 @@ export const AccountChip = withWidth()(({ account, smallBreak, width }) => {
 });
 
 AccountChip.propTypes = {
-  account: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
   smallBreak: PropTypes.string,
   width: PropTypes.string
 };
