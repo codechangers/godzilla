@@ -1,4 +1,4 @@
-import { dataMemberToValidation, months, weekDays } from './globals';
+import { dataMemberToValidation, months, weekDays, STATUS } from './globals';
 
 /*
  * For all functions that need to be binded to a component, ES5 functions must be used,
@@ -107,4 +107,14 @@ export const getOrdinal = int => {
     9: 'th'
   };
   return string + ordinals[string[string.length - 1]];
+};
+
+export const getStatus = account => {
+  if (account.isVerrified) {
+    return STATUS.ACCEPTED;
+  } else if (account.isDeclined) {
+    return STATUS.DECLINED;
+  } else {
+    return STATUS.PENDING;
+  }
 };
