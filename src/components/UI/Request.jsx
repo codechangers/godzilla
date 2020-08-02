@@ -41,7 +41,7 @@ const Request = ({ account, show, width }) => {
   const status = getStatus(account);
   const Icon = statusIcon[status];
   return (
-    <div className={classes.wrapper} onClick={() => show(account.parent)}>
+    <div className={classes.wrapper} onClick={() => show(account)}>
       <div className={classes.nameWrapper}>
         {!account.isRead && (
           <FiberManualRecord color="primary" fontSize="small" className={classes.nameNotify} />

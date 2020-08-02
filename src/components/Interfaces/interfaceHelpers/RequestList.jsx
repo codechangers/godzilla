@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Paper, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Paper, CircularProgress, Grid } from '@material-ui/core';
+import AccountTable from './AccountTable';
 import Request from '../../UI/Request';
 import Modal from '../../UI/Modal';
 
@@ -34,7 +35,7 @@ const RequestList = ({ reqs, loading }) => {
         title="Show Account"
         description="Show Account Details for Request Validation"
       >
-        {showAccount && <Typography>{showAccount.fName}</Typography>}
+        {showAccount && <AccountTable account={showAccount} />}
       </Modal>
     </>
   );
