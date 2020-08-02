@@ -6,12 +6,13 @@ import { AccountChip } from './Request';
 import Modal from '../Modal';
 
 const propTypes = {
-  showAccount: PropTypes.object.isRequired,
+  showAccount: PropTypes.object,
   setShowAccount: PropTypes.func.isRequired,
   orgs: PropTypes.bool
 };
 const defaultProps = {
-  orgs: false
+  orgs: false,
+  showAccount: null
 };
 
 const RequestModal = ({ showAccount, setShowAccount, orgs }) => {

@@ -6,8 +6,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 const propTypes = {
   account: PropTypes.object.isRequired,
-  show: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired
+  show: PropTypes.func.isRequired
 };
 
 const ACCEPTED = 'ACCEPTED';
@@ -72,7 +71,7 @@ export const AccountChip = withWidth()(({ account, smallBreak, width }) => {
 AccountChip.propTypes = {
   account: PropTypes.object.isRequired,
   smallBreak: PropTypes.string,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string
 };
 AccountChip.defaultProps = {
   smallBreak: 'xs'

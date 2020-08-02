@@ -6,7 +6,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 const propTypes = {
   account: PropTypes.object.isRequired,
   orgAccount: PropTypes.bool,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string
 };
 
 const defaultProps = {
