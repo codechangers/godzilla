@@ -25,7 +25,15 @@ const statusIcon = {
 const Request = ({ account, show }) => {
   const classes = useStyles();
   return (
-    <div className={classes.wrapper} onClick={() => show(account)}>
+    <div
+      className={classes.wrapper}
+      onClick={() => {
+        show(account);
+        if (!account.isRead) {
+          account.ref.update({ isRead: true });
+        }
+      }}
+    >
       <div className={classes.nameWrapper}>
         {!account.isRead && (
           <FiberManualRecord color="primary" fontSize="small" className={classes.nameNotify} />

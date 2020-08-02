@@ -30,6 +30,7 @@ const AccountRequests = ({ db }) => {
             .then(parentDoc => {
               const req = {
                 id: u.id,
+                ref: u.ref,
                 ...u.data(),
                 parent: parentDoc.data()
               };
