@@ -39,6 +39,7 @@ const RequestList = ({ reqs, loading, orgs }) => {
         onClose={() => setShowAccount(null)}
         title="Show Account"
         description="Show Account Details for Request Validation"
+        className={classes.modal}
       >
         {showAccount && (
           <>
@@ -77,6 +78,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     boxSizing: 'border-box',
     padding: '0 12px'
+  },
+  modal: {
+    maxWidth: '900px'
   }
 }));
 
