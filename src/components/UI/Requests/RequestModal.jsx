@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography, Button } from '@material-ui/core';
+import { CheckCircle, Block } from '@material-ui/icons';
 import RequestTable from './RequestTable';
 import { AccountChip } from './Request';
 import Modal from '../Modal';
+import { getStatus } from '../../../helpers';
+import { STATUS } from '../../../globals';
 
 const propTypes = {
   showAccount: PropTypes.object,
@@ -33,7 +36,29 @@ const RequestModal = ({ showAccount, setShowAccount, orgs }) => {
           </div>
           <RequestTable account={showAccount} orgAccount={orgs} />
           <div className={classes.options}>
-            <Button onClick={() => setShowAccount(null)}>Close</Button>
+            <Button variant="outlined" onClick={() => setShowAccount(null)}>
+              Cancel
+            </Button>
+            {getStatus(showAccount) === STATUS.PENDING && (
+              <>
+                <Button
+                  color="secondary"
+                  variant="outlined"
+                  onClick={() => null}
+                  startIcon={<Block />}
+                >
+                  Decline
+                </Button>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => null}
+                  startIcon={<CheckCircle />}
+                >
+                  Accept
+                </Button>
+              </>
+            )}
           </div>
         </>
       )}
@@ -61,7 +86,19 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '900px'
   },
   options: {
-    marginTop: '8px'
+    '& button': {
+      margin: '8px 10px 0 10px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flexWrap: 'wrap-reverse',
+      '& button': {
+        flexGrow: 1
+      }
+    }
   }
 }));
 
