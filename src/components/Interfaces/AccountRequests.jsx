@@ -66,7 +66,7 @@ const AccountRequests = ({ db }) => {
         <RequestList reqs={teacherReqs} loading={loadingTeachers} />
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <RequestList reqs={orgReqs} loading={loadingOrgs} />
+        <RequestList reqs={orgReqs} loading={loadingOrgs} orgs />
       </TabPanel>
     </div>
   );

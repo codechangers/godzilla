@@ -38,8 +38,6 @@ const getStatus = account => {
 
 const Request = ({ account, show, width }) => {
   const classes = useStyles();
-  const status = getStatus(account);
-  const Icon = statusIcon[status];
   return (
     <div className={classes.wrapper} onClick={() => show(account)}>
       <div className={classes.nameWrapper}>
@@ -50,18 +48,34 @@ const Request = ({ account, show, width }) => {
           {account.parent.fName} {account.parent.lName}
         </Typography>
       </div>
-      <Chip
-        style={{ width: '116px' }}
-        label={status}
-        icon={<Icon />}
-        color={statusColor[status]}
-        size={isWidthDown('sm', width) ? 'small' : 'medium'}
-      />
+      <AccountChip account={account} size={isWidthDown('sm', width) ? 'small' : 'medium'} />
     </div>
   );
 };
 
 Request.propTypes = propTypes;
+
+export const AccountChip = ({ account, size }) => {
+  const status = getStatus(account);
+  const Icon = statusIcon[status];
+  return (
+    <Chip
+      style={{ width: '116px' }}
+      label={status}
+      icon={<Icon />}
+      color={statusColor[status]}
+      size={size}
+    />
+  );
+};
+
+AccountChip.propTypes = {
+  account: PropTypes.object.isRequired,
+  size: PropTypes.string
+};
+AccountChip.defaultProps = {
+  size: 'medium'
+};
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

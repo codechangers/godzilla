@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Paper, CircularProgress, Grid } from '@material-ui/core';
+import { makeStyles, Paper, CircularProgress, Grid, Typography } from '@material-ui/core';
 import AccountTable from './AccountTable';
-import Request from '../../UI/Request';
+import Request, { AccountChip } from '../../UI/Request';
 import Modal from '../../UI/Modal';
 
 const propTypes = {
   reqs: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  orgs: PropTypes.bool
 };
 
-const RequestList = ({ reqs, loading }) => {
+const defaultProps = {
+  orgs: false
+};
+
+const RequestList = ({ reqs, loading, orgs }) => {
   const [showAccount, setShowAccount] = useState(null);
 
   const classes = useStyles();
@@ -35,13 +40,22 @@ const RequestList = ({ reqs, loading }) => {
         title="Show Account"
         description="Show Account Details for Request Validation"
       >
-        {showAccount && <AccountTable account={showAccount} />}
+        {showAccount && (
+          <>
+            <div className={classes.infoHeader}>
+              <Typography variant="h4">Account Info</Typography>
+              <AccountChip account={showAccount} />
+            </div>
+            <AccountTable account={showAccount} orgAccount={orgs} />
+          </>
+        )}
       </Modal>
     </>
   );
 };
 
 RequestList.propTypes = propTypes;
+RequestList.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -54,6 +68,15 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       padding: '18px 2px'
     }
+  },
+  infoHeader: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    padding: '0 12px'
   }
 }));
 
