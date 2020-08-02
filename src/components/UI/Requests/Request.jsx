@@ -36,7 +36,7 @@ const getStatus = account => {
   }
 };
 
-const Request = ({ account, show, width }) => {
+const Request = ({ account, show }) => {
   const classes = useStyles();
   return (
     <div className={classes.wrapper} onClick={() => show(account)}>
@@ -48,14 +48,14 @@ const Request = ({ account, show, width }) => {
           {account.parent.fName} {account.parent.lName}
         </Typography>
       </div>
-      <AccountChip account={account} size={isWidthDown('sm', width) ? 'small' : 'medium'} />
+      <AccountChip account={account} smallBreak="sm" />
     </div>
   );
 };
 
 Request.propTypes = propTypes;
 
-export const AccountChip = ({ account, size }) => {
+export const AccountChip = withWidth()(({ account, smallBreak, width }) => {
   const status = getStatus(account);
   const Icon = statusIcon[status];
   return (
@@ -64,17 +64,18 @@ export const AccountChip = ({ account, size }) => {
       label={status}
       icon={<Icon />}
       color={statusColor[status]}
-      size={size}
+      size={isWidthDown(smallBreak, width) ? 'small' : 'medium'}
     />
   );
-};
+});
 
 AccountChip.propTypes = {
   account: PropTypes.object.isRequired,
-  size: PropTypes.string
+  smallBreak: PropTypes.string,
+  width: PropTypes.string.isRequired
 };
 AccountChip.defaultProps = {
-  size: 'medium'
+  smallBreak: 'xs'
 };
 
 const useStyles = makeStyles(theme => ({
@@ -118,4 +119,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withWidth()(Request);
+export default Request;

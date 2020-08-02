@@ -51,7 +51,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     boxSizing: 'border-box',
-    padding: '0 12px'
+    padding: '0 12px',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
+    }
   },
   modal: {
     maxWidth: '900px'
