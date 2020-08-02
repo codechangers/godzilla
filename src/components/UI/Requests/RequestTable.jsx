@@ -11,7 +11,7 @@ const defaultProps = {
   orgAccount: false
 };
 
-const AccountTable = ({ account, orgAccount }) => {
+const RequestTable = ({ account, orgAccount }) => {
   const { parent } = account;
   const classes = useStyles();
   return (
@@ -65,8 +65,8 @@ const AccountTable = ({ account, orgAccount }) => {
   );
 };
 
-AccountTable.propTypes = propTypes;
-AccountTable.defaultProps = defaultProps;
+RequestTable.propTypes = propTypes;
+RequestTable.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   tableWrapper: {
@@ -81,4 +81,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default AccountTable;
+export default RequestTable;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Tabs, Tab, Typography } from '@material-ui/core';
-import RequestList from './interfaceHelpers/RequestList';
+import RequestList from '../UI/Requests/RequestList';
 import TabPanel from '../UI/TabPanel';
 
 const propTypes = {
