@@ -42,7 +42,7 @@ const RequestModal = ({ showAccount, setShowAccount, orgs }) => {
         <>
           <div className={classes.infoHeader}>
             <Typography variant="h4">Account Info</Typography>
-            <AccountChip account={getStatus(showAccount)} />
+            <AccountChip status={getStatus(showAccount)} />
           </div>
           <RequestTable account={showAccount} orgAccount={orgs} />
           <div className={classes.options}>

@@ -49,13 +49,15 @@ const Request = ({ account, show }) => {
 
 Request.propTypes = propTypes;
 
-export const AccountChip = withWidth()(({ status, smallBreak, width }) => {
+export const AccountChip = withWidth()(({ status, smallBreak, onClick, outlined, width }) => {
   const Icon = statusIcon[status];
   return (
     <Chip
-      style={{ width: '116px' }}
+      style={{ width: '120px' }}
       label={status}
       icon={<Icon />}
+      onClick={onClick}
+      variant={outlined ? 'outlined' : 'default'}
       color={statusColor[status]}
       size={isWidthDown(smallBreak, width) ? 'small' : 'medium'}
     />
@@ -65,10 +67,14 @@ export const AccountChip = withWidth()(({ status, smallBreak, width }) => {
 AccountChip.propTypes = {
   status: PropTypes.string.isRequired,
   smallBreak: PropTypes.string,
+  onClick: PropTypes.func,
+  outlined: PropTypes.bool,
   width: PropTypes.string
 };
 AccountChip.defaultProps = {
-  smallBreak: 'xs'
+  smallBreak: 'xs',
+  onClick: null,
+  outlined: false
 };
 
 const useStyles = makeStyles(theme => ({

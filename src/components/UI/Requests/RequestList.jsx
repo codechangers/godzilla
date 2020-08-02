@@ -17,6 +17,15 @@ const defaultProps = {
 
 const RequestList = ({ reqs, loading, orgs }) => {
   const [showAccount, setShowAccount] = useState(null);
+  const [toggles, setToggles] = useState({
+    ACCEPTED: false,
+    PENDING: true,
+    DECLINED: false
+  });
+
+  const toggleStatus = status => {
+    setToggles({ ...toggles, [status]: !toggles[status] });
+  };
 
   const classes = useStyles();
   return (
@@ -25,15 +34,21 @@ const RequestList = ({ reqs, loading, orgs }) => {
         <Grid item xs={false} sm={1} md={2} lg={3} />
         <Grid item xs={12} sm={10} md={8} lg={6}>
           <div className={classes.toggles}>
-            <button onClick={() => console.log('accepted')}>
-              <AccountChip status={STATUS.ACCEPTED} />
-            </button>
-            <button onClick={() => console.log('pending')}>
-              <AccountChip status={STATUS.PENDING} />
-            </button>
-            <button onClick={() => console.log('declinded')}>
-              <AccountChip status={STATUS.DECLINED} />
-            </button>
+            <AccountChip
+              status={STATUS.ACCEPTED}
+              outlined={!toggles[STATUS.ACCEPTED]}
+              onClick={() => toggleStatus(STATUS.ACCEPTED)}
+            />
+            <AccountChip
+              status={STATUS.PENDING}
+              outlined={!toggles[STATUS.PENDING]}
+              onClick={() => toggleStatus(STATUS.PENDING)}
+            />
+            <AccountChip
+              status={STATUS.DECLINED}
+              outlined={!toggles[STATUS.DECLINED]}
+              onClick={() => toggleStatus(STATUS.DECLINED)}
+            />
           </div>
           <Paper className={classes.paper}>
             {loading ? (
@@ -68,21 +83,14 @@ const useStyles = makeStyles(theme => ({
   toggles: {
     width: '100%',
     marginBottom: '10px',
-    '& > button': {
-      border: 'none',
-      outline: 'none',
-      background: 'none',
-      padding: '0',
+    '& > div': {
       margin: '0 6px'
     },
-    '& > button:first-child': {
+    '& > div:first-child': {
       marginLeft: 0,
       [theme.breakpoints.down('xs')]: {
         marginLeft: 6
       }
-    },
-    '& > button > div': {
-      cursor: 'pointer'
     }
   }
 }));
