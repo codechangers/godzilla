@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { makeStyles, Typography, Chip } from '@material-ui/core';
 import { CheckCircle, Block, Info, FiberManualRecord } from '@material-ui/icons';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { getStatus } from '../../../helpers';
 
 const propTypes = {
   account: PropTypes.object.isRequired,
   show: PropTypes.func.isRequired
 };
-
-const ACCEPTED = 'ACCEPTED';
-const DECLINED = 'DECLINED';
-const PENDING = 'PENDING';
 
 const statusColor = {
   ACCEPTED: 'primary',
@@ -23,16 +20,6 @@ const statusIcon = {
   ACCEPTED: CheckCircle,
   DECLINED: Block,
   PENDING: Info
-};
-
-const getStatus = account => {
-  if (account.isVerrified) {
-    return ACCEPTED;
-  } else if (account.isDeclined) {
-    return DECLINED;
-  } else {
-    return PENDING;
-  }
 };
 
 const Request = ({ account, show }) => {
