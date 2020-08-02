@@ -4,6 +4,7 @@ import { makeStyles, Paper, CircularProgress, Grid } from '@material-ui/core';
 import Request, { AccountChip } from './Request';
 import RequestModal from './RequestModal';
 import { STATUS } from '../../../globals';
+import { getStatus } from '../../../helpers';
 
 const propTypes = {
   reqs: PropTypes.array.isRequired,
@@ -54,7 +55,9 @@ const RequestList = ({ reqs, loading, orgs }) => {
             {loading ? (
               <CircularProgress color="primary" />
             ) : (
-              reqs.map(r => <Request account={r} key={r.id} show={setShowAccount} />)
+              reqs
+                .filter(r => toggles[getStatus(r)])
+                .map(r => <Request account={r} key={r.id} show={setShowAccount} />)
             )}
           </Paper>
         </Grid>
