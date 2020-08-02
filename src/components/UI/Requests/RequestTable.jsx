@@ -1,22 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 const propTypes = {
   account: PropTypes.object.isRequired,
-  orgAccount: PropTypes.bool
+  orgAccount: PropTypes.bool,
+  width: PropTypes.string.isRequired
 };
 
 const defaultProps = {
   orgAccount: false
 };
 
-const RequestTable = ({ account, orgAccount }) => {
+const RequestTable = ({ account, orgAccount, width }) => {
   const { parent } = account;
   const classes = useStyles();
   return (
     <div className={classes.tableWrapper}>
-      <Table className={classes.table}>
+      <Table className={classes.table} size={isWidthDown('xs', width) ? 'small' : 'medium'}>
         <TableBody>
           <TableRow>
             <TableCell className={classes.header}>Name</TableCell>
@@ -81,4 +83,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default RequestTable;
+export default withWidth()(RequestTable);
