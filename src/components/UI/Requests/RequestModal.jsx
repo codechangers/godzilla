@@ -19,6 +19,16 @@ const defaultProps = {
 };
 
 const RequestModal = ({ showAccount, setShowAccount, orgs }) => {
+  const accept = () => {
+    showAccount.ref.update({ isVerrified: true });
+    setShowAccount(null);
+  };
+
+  const decline = () => {
+    showAccount.ref.update({ isDeclined: true });
+    setShowAccount(null);
+  };
+
   const classes = useStyles();
   return (
     <Modal
@@ -44,7 +54,7 @@ const RequestModal = ({ showAccount, setShowAccount, orgs }) => {
                 <Button
                   color="secondary"
                   variant="outlined"
-                  onClick={() => null}
+                  onClick={decline}
                   startIcon={<Block />}
                 >
                   Decline
@@ -52,7 +62,7 @@ const RequestModal = ({ showAccount, setShowAccount, orgs }) => {
                 <Button
                   color="primary"
                   variant="outlined"
-                  onClick={() => null}
+                  onClick={accept}
                   startIcon={<CheckCircle />}
                 >
                   Accept
