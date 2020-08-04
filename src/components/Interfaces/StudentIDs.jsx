@@ -8,7 +8,8 @@ import {
   TableBody,
   TablePagination,
   Paper,
-  CircularProgress
+  CircularProgress,
+  Grid
 } from '@material-ui/core';
 import StudentInfoRow from '../Classes/StudentInfoRow';
 
@@ -47,33 +48,39 @@ const StudentIDs = ({ db }) => {
       <Typography variant="h2" className={classes.header}>
         Student IDs
       </Typography>
-      <Paper className={classes.paper}>
-        <div className={classes.tableWrapper}>
-          <Table>
-            <TableHead>
-              <StudentInfoRow showLables={true} />
-            </TableHead>
-            <TableBody>
-              {!isLoading && students.map((s, i) => <StudentInfoRow key={i} student={s} />)}
-            </TableBody>
-          </Table>
-        </div>
-        {isLoading && <CircularProgress color="primary" />}
-        {!isLoading && (
-          <TablePagination
-            component="div"
-            page={page}
-            onChangePage={(_, p) => setPage(p)}
-            count={count}
-            rowsPerPageOptions={[10, 25, 40]}
-            rowsPerPage={pageLimit}
-            onChangeRowsPerPage={e => {
-              setPage(0);
-              setPageLimit(e.target.value);
-            }}
-          />
-        )}
-      </Paper>
+      <Grid container>
+        <Grid item xs={false} md={1} lg={2} />
+        <Grid item xs={12} md={10} lg={8}>
+          <Paper className={classes.paper}>
+            <div className={classes.tableWrapper}>
+              <Table>
+                <TableHead>
+                  <StudentInfoRow showLables={true} />
+                </TableHead>
+                <TableBody>
+                  {!isLoading && students.map((s, i) => <StudentInfoRow key={i} student={s} />)}
+                </TableBody>
+              </Table>
+            </div>
+            {isLoading && <CircularProgress color="primary" />}
+            {!isLoading && (
+              <TablePagination
+                component="div"
+                page={page}
+                onChangePage={(_, p) => setPage(p)}
+                count={count}
+                rowsPerPageOptions={[10, 25, 40]}
+                rowsPerPage={pageLimit}
+                onChangeRowsPerPage={e => {
+                  setPage(0);
+                  setPageLimit(e.target.value);
+                }}
+              />
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={false} md={1} lg={2} />
+      </Grid>
     </div>
   );
 };
@@ -87,6 +94,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    boxSizing: 'border-box',
     padding: '20px 8px 15px 8px'
   },
   header: {
