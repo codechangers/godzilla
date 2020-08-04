@@ -36,23 +36,6 @@ const StudentIDs = ({ db }) => {
     setStudents(docs.map(d => d.data()));
   }, [page, pageLimit, allStudents]);
 
-  // useEffect(() => {
-  //   let childrenCol = db.collection('children').orderBy('lName');
-  //   if ((page + 1) * pageLimit > allStudents.length) {
-  //     if (allStudents.length !== 0) {
-  //       childrenCol = childrenCol.startAfter(allStudents[page * pageLimit - 1]);
-  //     }
-  //     childrenCol
-  //       .limit(pageLimit)
-  //       .get()
-  //       .then(res => {
-  //         setAllStudents([...allStudents, ...res.docs]);
-  //       });
-  //   } else {
-
-  //   }
-  // }, [db, page, pageLimit, allStudents]);
-
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
