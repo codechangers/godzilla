@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles, Typography, Table, TableHead, TableBody } from '@material-ui/core';
 import StudentInfoRow from '../Classes/StudentInfoRow';
 
-const StudentIDs = () => {
-  const [students] = useState([]);
+const propTypes = {
+  db: PropTypes.object.isRequired
+};
+
+const StudentIDs = ({ db }) => {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    db.collection('children')
+      .limit(30)
+      .get()
+      .then(res => {
+        setStudents(res.docs.map(d => d.data()));
+      });
+  }, [db]);
+
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
@@ -23,6 +38,8 @@ const StudentIDs = () => {
     </div>
   );
 };
+
+StudentIDs.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

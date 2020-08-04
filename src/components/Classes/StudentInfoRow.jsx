@@ -18,7 +18,7 @@ const lables = ['Name', 'Gender', 'Age', 'Current Grade', 'Current School', 'Stu
 const getInfo = student => [
   `${student.fName} ${student.lName}`,
   `${student.gender}`,
-  `${getAgeFromBirthday(student.birthDate)}`,
+  `${student.birthDate ? getAgeFromBirthday(student.birthDate) : 'No Birth Date'}`,
   `${student.currentGrade} Grade`,
   `${student.currentSchool}`,
   `${student.learnID || 'No Student ID'}`
