@@ -6,7 +6,9 @@ import {
   Table,
   TableHead,
   TableBody,
-  TablePagination
+  TablePagination,
+  Paper,
+  CircularProgress
 } from '@material-ui/core';
 import StudentInfoRow from '../Classes/StudentInfoRow';
 
@@ -20,13 +22,16 @@ const StudentIDs = ({ db }) => {
   const [page, setPage] = useState(0);
   const [pageLimit, setPageLimit] = useState(10);
   const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     db.collection('children')
       .get()
       .then(res => {
         setCount(res.size);
         setAllStudents(res.docs);
+        setIsLoading(false);
       });
   }, [db]);
 
@@ -42,28 +47,33 @@ const StudentIDs = ({ db }) => {
       <Typography variant="h2" className={classes.header}>
         Student IDs
       </Typography>
-      <Table>
-        <TableHead>
-          <StudentInfoRow showLables={true} />
-        </TableHead>
-        <TableBody>
-          {students.map((s, i) => (
-            <StudentInfoRow key={i} student={s} />
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        component="div"
-        page={page}
-        onChangePage={(_, p) => setPage(p)}
-        count={count}
-        rowsPerPageOptions={[10, 25, 40]}
-        rowsPerPage={pageLimit}
-        onChangeRowsPerPage={e => {
-          setPage(0);
-          setPageLimit(e.target.value);
-        }}
-      />
+      <Paper className={classes.paper}>
+        <div className={classes.tableWrapper}>
+          <Table>
+            <TableHead>
+              <StudentInfoRow showLables={true} />
+            </TableHead>
+            <TableBody>
+              {!isLoading && students.map((s, i) => <StudentInfoRow key={i} student={s} />)}
+            </TableBody>
+          </Table>
+        </div>
+        {isLoading && <CircularProgress color="primary" />}
+        {!isLoading && (
+          <TablePagination
+            component="div"
+            page={page}
+            onChangePage={(_, p) => setPage(p)}
+            count={count}
+            rowsPerPageOptions={[10, 25, 40]}
+            rowsPerPage={pageLimit}
+            onChangeRowsPerPage={e => {
+              setPage(0);
+              setPageLimit(e.target.value);
+            }}
+          />
+        )}
+      </Paper>
     </div>
   );
 };
@@ -84,6 +94,17 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: '2rem'
     }
+  },
+  paper: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  tableWrapper: {
+    width: '100%',
+    overflow: 'scroll'
   }
 }));
 
