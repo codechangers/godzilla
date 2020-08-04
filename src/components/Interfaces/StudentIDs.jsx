@@ -40,6 +40,9 @@ const StudentIDs = ({ db }) => {
     const i = page * pageLimit;
     const docs = allStudents.slice(i, i + pageLimit);
     setStudents(docs.map(d => d.data()));
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }, [page, pageLimit, allStudents]);
 
   const classes = useStyles();
