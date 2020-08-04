@@ -1,13 +1,25 @@
-import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { makeStyles, Typography, Table, TableHead, TableBody } from '@material-ui/core';
+import StudentInfoRow from '../Classes/StudentInfoRow';
 
 const StudentIDs = () => {
+  const [students] = useState([]);
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
       <Typography variant="h2" className={classes.header}>
         Student IDs
       </Typography>
+      <Table>
+        <TableHead>
+          <StudentInfoRow showLables={true} />
+        </TableHead>
+        <TableBody>
+          {students.map((s, i) => (
+            <StudentInfoRow key={i} student={s} />
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };
