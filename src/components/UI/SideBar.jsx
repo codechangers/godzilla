@@ -12,7 +12,8 @@ import {
   Menu,
   AccountTree,
   SupervisorAccount,
-  School
+  School,
+  Assignment
 } from '@material-ui/icons';
 import { Fab, makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
@@ -31,7 +32,8 @@ const nameToIcon = {
   Settings,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
-  'Admin Dash': SupervisorAccount
+  'Admin Dash': SupervisorAccount,
+  'Student IDs': Assignment
 };
 
 const SideBar = ({ names, baseRoute, location, firebase }) => {
@@ -49,7 +51,8 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     Settings: `${baseRoute}/settings`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
-    'Admin Dash': '/admin'
+    'Admin Dash': '/admin',
+    'Student IDs': '/admin/ids'
   };
 
   const isSelected = (n, l) => {
