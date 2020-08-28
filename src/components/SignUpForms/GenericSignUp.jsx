@@ -105,7 +105,8 @@ class GenericSignUp extends React.Component {
           accountType === 'parent' ? 'address' : ''
         ])
       )
-      .then(this.props.next);
+      .then(this.props.next)
+      .catch(err => console.log(err));
   }
 
   handleOAuthSubmit() {
@@ -136,11 +137,11 @@ class GenericSignUp extends React.Component {
               })
               .then(() => {
                 res.user.sendEmailVerification();
+                this.createParentDoc(res.user, accountType);
               })
               .catch(err => {
                 console.log(err);
               });
-            this.createParentDoc(res.user, accountType);
           }
         })
         .catch(err => {
