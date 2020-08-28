@@ -124,6 +124,9 @@ class App extends React.Component {
                         firebase={this.firebase}
                         db={this.db}
                         apiKey={this.state.apiKey}
+                        OAuthed={() =>
+                          this.setState({ user: { ...this.state.user, OAuthed: true } })
+                        }
                       />
                     );
                   }}

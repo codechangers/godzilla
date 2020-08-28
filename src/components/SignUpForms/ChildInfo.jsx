@@ -23,12 +23,14 @@ const propTypes = {
   handleClose: PropTypes.func.isRequired,
   addChildRef: PropTypes.func.isRequired,
   updateChildData: PropTypes.func,
-  prevData: PropTypes.object
+  prevData: PropTypes.object,
+  title: PropTypes.string
 };
 
 const defaultProps = {
   updateChildData: () => {},
-  prevData: undefined
+  prevData: undefined,
+  title: 'Parent Application'
 };
 
 const today = new Date();
@@ -117,11 +119,11 @@ class ChildInfo extends React.Component {
     return (
       <Card>
         <CardHeader
-          title="Parent Application"
+          title={this.props.title}
+          titleTypographyProps={{ variant: 'h4' }}
           style={{
             marginLeft: 5,
             textTransform: 'capitalize',
-            marginBottom: 18,
             textAlign: 'center'
           }}
         />
@@ -244,7 +246,7 @@ class ChildInfo extends React.Component {
               <MenuItem value="axxxl">Adult XXXL</MenuItem>
             </TextField>
           </Styled.FormFieldsRow>
-          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5 }}>
+          <Styled.NavigationButtons style={{ boxSizing: 'border-box', padding: 5, marginTop: 16 }}>
             <Button onClick={this.props.handleClose} variant="contained">
               Cancel
             </Button>
