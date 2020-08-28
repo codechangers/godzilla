@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from './styles';
 import AccountRequests from '../Interfaces/AccountRequests';
+import StudentIDs from '../Interfaces/StudentIDs';
 import ProfileInterface from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 import autoBind from '../../autoBind';
@@ -17,6 +18,7 @@ const propTypes = {
 
 const routeToInterface = {
   '/admin': AccountRequests,
+  '/admin/ids': StudentIDs,
   '/admin/profile': ProfileInterface
 };
 
@@ -43,7 +45,7 @@ class AdminDashboard extends React.Component {
     return user.isSignedIn ? (
       <PageWrapper>
         <SideBar
-          names={['Profile', 'Dashboard', 'Parent Dash', 'Teacher Dash']}
+          names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
           baseRoute="/admin"
           firebase={firebase}
         />
