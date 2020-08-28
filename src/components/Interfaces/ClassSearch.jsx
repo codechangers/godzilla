@@ -110,9 +110,8 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
         </div>
       ) : (
         classList.map(cls =>
-          ((cls.endDate.seconds * 1000 > Date.now() || showOldClasses) &&
-            filters.includes(cls.programType)) ||
-          filters.length === 0 ? (
+          (cls.endDate.seconds * 1000 > Date.now() || showOldClasses) &&
+          filters.includes(cls.programType) ? (
             <Paper key={cls.id} className={classes.cardWrapper}>
               <InfoCardHeader cls={cls} preview hideImage>
                 <div className={classes.buttonWrapper}>
