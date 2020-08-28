@@ -9,8 +9,10 @@ import {
   TablePagination,
   Paper,
   CircularProgress,
-  Grid
+  Grid,
+  Button
 } from '@material-ui/core';
+import IDGenerator from './interfaceHelpers/IDGenerator';
 import StudentInfoRow from '../Classes/StudentInfoRow';
 
 const propTypes = {
@@ -24,6 +26,7 @@ const StudentIDs = ({ db }) => {
   const [pageLimit, setPageLimit] = useState(10);
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,6 +54,11 @@ const StudentIDs = ({ db }) => {
       <Typography variant="h2" className={classes.header}>
         Student IDs
       </Typography>
+      <div className={classes.options}>
+        <Button variant="outlined" color="primary" onClick={() => setShowGenerator(true)}>
+          Generate Student IDs
+        </Button>
+      </div>
       <Grid container>
         <Grid item xs={false} md={1} lg={2} />
         <Grid item xs={12} md={10} lg={8}>
@@ -84,6 +92,7 @@ const StudentIDs = ({ db }) => {
         </Grid>
         <Grid item xs={false} md={1} lg={2} />
       </Grid>
+      <IDGenerator open={showGenerator} onClose={() => setShowGenerator(false)} />
     </div>
   );
 };
@@ -116,6 +125,9 @@ const useStyles = makeStyles(theme => ({
   tableWrapper: {
     width: '100%',
     overflow: 'scroll'
+  },
+  options: {
+    marginBottom: 14
   }
 }));
 
