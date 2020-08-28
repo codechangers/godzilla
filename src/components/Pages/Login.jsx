@@ -40,7 +40,8 @@ const propTypes = {
   accounts: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  updateAccounts: PropTypes.func.isRequired
 };
 
 class Login extends React.Component {
@@ -67,6 +68,7 @@ class Login extends React.Component {
     const { state } = this.props.location;
     const backgroundImage = Math.floor(Math.random() * 7);
     this.setState({ backgroundImage });
+    this.props.updateAccounts(this.props.user);
     if (state && state.signupID) {
       this.checkAccounts(state.signupID);
       this.setState({ signupID: state.signupID });
@@ -95,7 +97,7 @@ class Login extends React.Component {
       shouldRedirect = `/parent/signup/${this.state.signupID}`;
     } else if (shouldRedirect !== '' && signupID && signupID.length > 0) {
       shouldRedirect = `/parent/signup/${signupID}`;
-    } else if (user.newOAuth) {
+    } else if (!user.OAuthed && user.newOAuth) {
       shouldRedirect = '/signup';
     }
     this.setState({ shouldRedirect });

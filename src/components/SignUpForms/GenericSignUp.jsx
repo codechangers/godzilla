@@ -20,7 +20,8 @@ const propTypes = {
   prev: PropTypes.func.isRequired,
   firebase: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  OAuthed: PropTypes.func.isRequired
 };
 
 const allFields = ['fName', 'lName', 'email', 'phone', 'canText', 'password', 'confirmPassword'];
@@ -120,6 +121,7 @@ class GenericSignUp extends React.Component {
     } else {
       console.log('Invalid inputs from OAuth token');
     }
+    this.props.OAuthed();
   }
 
   handleSubmit() {

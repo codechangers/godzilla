@@ -20,7 +20,8 @@ const propTypes = {
   user: PropTypes.object.isRequired,
   location: PropTypes.shape({
     state: PropTypes.objectOf(PropTypes.string)
-  }).isRequired
+  }).isRequired,
+  OAuthed: PropTypes.func.isRequired
 };
 
 const accountTypeToForms = {
@@ -79,7 +80,7 @@ class SignUp extends React.Component {
 
   render() {
     const { formIndex, accountType } = this.state;
-    const { updateAccounts, user } = this.props;
+    const { updateAccounts, user, OAuthed } = this.props;
     const forms = accountTypeToForms[accountType];
     const Form = forms[formIndex];
 
@@ -102,6 +103,7 @@ class SignUp extends React.Component {
             setAccountType={a => this.setState({ accountType: a })}
             updateAccounts={updateAccounts}
             user={user}
+            OAuthed={OAuthed}
           />
         </Styled.Form>
       </Styled.SignupWrapper>
