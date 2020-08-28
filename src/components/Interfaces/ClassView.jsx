@@ -262,6 +262,7 @@ class ClassViewInterface extends React.Component {
                 db={this.props.db}
                 handleClose={() => this.setState({ showKidCreator: false })}
                 addChildRef={this.addChildRef}
+                title="Add a Child"
               />
             ) : (
               <Card className={classes.deleteCard}>
