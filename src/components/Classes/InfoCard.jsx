@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Button, withStyles } from '@material-ui/core';
+import { Paper, IconButton, Button, Tooltip, withStyles } from '@material-ui/core';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
@@ -12,6 +13,34 @@ import InfoCardHeader from './InfoCardHeader';
 import CSVDownload from '../UI/CSVDownload';
 import autoBind from '../../autoBind';
 import StudentInfo from './StudentInfo';
+
+const Option = ({ onClick, icon, text, label, small }) =>
+  small ? (
+    <Tooltip title={text} aria-label={label}>
+      <IconButton onClick={onClick}>{icon}</IconButton>
+    </Tooltip>
+  ) : (
+    <Button onClick={onClick} aria-label={label} variant="contained">
+      {icon}
+      {text}
+    </Button>
+  );
+
+Option.propTypes = {
+  onClick: PropTypes.func,
+  icon: PropTypes.node,
+  text: PropTypes.node,
+  label: PropTypes.string,
+  small: PropTypes.bool
+};
+
+Option.defaultProps = {
+  onClick: () => null,
+  icon: null,
+  text: 'OPTION',
+  label: 'option',
+  small: false
+};
 
 class ClassInfoCard extends React.Component {
   constructor(props) {
@@ -46,35 +75,49 @@ class ClassInfoCard extends React.Component {
   }
 
   render() {
-    const { classes, cls, openUpdate, openDelete, openContacts } = this.props;
+    const { classes, cls, openUpdate, openDelete, openContacts, width } = this.props;
+    const small = isWidthUp(width, 'sm');
     return (
       <Paper className={classes.wrapper}>
         <InfoCardHeader cls={cls} />
         <div className={classes.options}>
           <CopyToClipboard text={`${URL}/search/${cls.id}`}>
-            <Button variant="contained">
-              <LinkIcon />
-              STUDENT SIGN UP LINK
-            </Button>
+            <Option
+              icon={<LinkIcon />}
+              text="Student Sign Up Link"
+              label="signup-link"
+              small={small}
+            />
           </CopyToClipboard>
           <CSVDownload filename={`${cls.name}-students.csv`} data={this.getStudentData()}>
-            <Button variant="contained">
-              <DownloadIcon />
-              Download Logins
-            </Button>
+            <Option
+              icon={<DownloadIcon />}
+              text="Download Logins"
+              label="download-logins"
+              small={small}
+            />
           </CSVDownload>
-          <Button variant="contained" onClick={openContacts}>
-            <ContactsIcon />
-            Contact Info
-          </Button>
-          <Button variant="contained" onClick={openUpdate}>
-            <EditIcon />
-            EDIT CLASS
-          </Button>
-          <Button variant="contained" onClick={openDelete}>
-            <DeleteIcon />
-            DELETE CLASS
-          </Button>
+          <Option
+            onClick={openContacts}
+            icon={<ContactsIcon />}
+            text="Contact Info"
+            label="contact-info"
+            small={small}
+          />
+          <Option
+            onClick={openUpdate}
+            icon={<EditIcon />}
+            text="Edit Class"
+            label="edit-class"
+            small={small}
+          />
+          <Option
+            onClick={openDelete}
+            icon={<DeleteIcon />}
+            text="Delete Class"
+            label="delete-class"
+            small={small}
+          />
         </div>
         <div className={classes.students}>
           <StudentInfo showLabels />
@@ -95,7 +138,9 @@ ClassInfoCard.propTypes = {
 };
 
 const styles = {
+  // TODO: Mobile Styles...
   wrapper: {
+    width: '100%',
     marginBottom: 40,
     paddingBottom: 36
   },
@@ -121,4 +166,4 @@ const styles = {
   }
 };
 
-export default withStyles(styles)(ClassInfoCard);
+export default withWidth()(withStyles(styles)(ClassInfoCard));
