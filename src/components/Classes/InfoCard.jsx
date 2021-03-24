@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Button } from '@material-ui/core';
+import { Paper, Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
@@ -46,11 +46,11 @@ class ClassInfoCard extends React.Component {
   }
 
   render() {
-    const { cls, openUpdate, openDelete, openContacts } = this.props;
+    const { classes, cls, openUpdate, openDelete, openContacts } = this.props;
     return (
-      <Paper className="infocard-wrapper">
+      <Paper className={classes.wrapper}>
         <InfoCardHeader cls={cls} />
-        <div className="options">
+        <div className={classes.options}>
           <CopyToClipboard text={`${URL}/search/${cls.id}`}>
             <Button variant="contained">
               <LinkIcon />
@@ -76,7 +76,7 @@ class ClassInfoCard extends React.Component {
             DELETE CLASS
           </Button>
         </div>
-        <div className="students-wrapper">
+        <div className={classes.students}>
           <StudentInfo showLabels />
           {this.state.students.map(student => (
             <StudentInfo student={student} key={student.id} />
@@ -94,4 +94,31 @@ ClassInfoCard.propTypes = {
   openContacts: PropTypes.func.isRequired
 };
 
-export default ClassInfoCard;
+const styles = {
+  wrapper: {
+    marginBottom: 40,
+    paddingBottom: 36
+  },
+  options: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    boxSizing: 'border-box',
+    padding: '0 24px',
+    marginBottom: '40px',
+    '& button': {
+      marginRight: 16,
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.6)',
+      '& svg': {
+        marginRight: 8
+      }
+    }
+  },
+  students: {
+    padding: '0 24px'
+  }
+};
+
+export default withStyles(styles)(ClassInfoCard);
