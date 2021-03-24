@@ -187,6 +187,23 @@ const styles = theme => ({
       boxSizing: 'border-box',
       padding: '24px',
       paddingBottom: 0
+    },
+    [theme.breakpoints.down('md')]: {
+      marginBottom: 0,
+      flexDirection: 'column-reverse',
+      '& > img': {
+        width: '100%',
+        maxWidth: '100%',
+        height: '120px'
+      },
+      '& > div': {
+        width: '100%'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& > div': {
+        padding: '16px 8px'
+      }
     }
   },
   parent: {
@@ -200,12 +217,16 @@ const styles = theme => ({
       '& > button': {
         width: '100%',
         marginBottom: '24px',
+        [theme.breakpoints.down('sm')]: {
+          marginTop: '23px'
+        },
         [theme.breakpoints.down('xs')]: {
           marginBottom: '4px'
         }
       }
     },
     [theme.breakpoints.down('md')]: {
+      marginBottom: 0,
       flexDirection: 'column-reverse',
       '& > img': {
         width: '100%',
@@ -312,6 +333,9 @@ const styles = theme => ({
       height: '10px',
       backgroundColor: '#13506e',
       display: 'block'
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0
     }
   }
 });

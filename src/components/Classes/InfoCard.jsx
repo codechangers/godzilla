@@ -16,7 +16,7 @@ import StudentInfo from './StudentInfo';
 
 const Option = ({ onClick, icon, text, label, small }) =>
   small ? (
-    <Tooltip title={text} aria-label={label}>
+    <Tooltip title={text} aria-label={label} placement="top">
       <IconButton onClick={onClick}>{icon}</IconButton>
     </Tooltip>
   ) : (
@@ -137,8 +137,7 @@ ClassInfoCard.propTypes = {
   openContacts: PropTypes.func.isRequired
 };
 
-const styles = {
-  // TODO: Mobile Styles...
+const styles = theme => ({
   wrapper: {
     width: '100%',
     marginBottom: 40,
@@ -157,13 +156,23 @@ const styles = {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.6)',
       '& svg': {
-        marginRight: 8
+        marginRight: 8,
+        [theme.breakpoints.down('sm')]: {
+          marginRight: 0
+        }
+      }
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0,
+      justifyContent: 'space-around',
+      '& button': {
+        marginRight: 0
       }
     }
   },
   students: {
     padding: '0 24px'
   }
-};
+});
 
 export default withWidth()(withStyles(styles)(ClassInfoCard));
