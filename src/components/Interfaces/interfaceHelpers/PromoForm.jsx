@@ -6,7 +6,8 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 import Modal from '../../UI/Modal';
 
@@ -93,7 +94,9 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
       title="Promo Edit"
       description="Create or update promo codes for customers to use!"
     >
-      <h1>{editPromo.isSet ? 'Edit your Promo Code' : 'Create a Promo Code'}</h1>
+      <Typography variant="h4" style={{ marginBottom: 12, marginTop: 18 }}>
+        {editPromo.isSet ? 'Edit your Promo Code' : 'Create a Promo Code'}
+      </Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.formRow}>
           <TextField
@@ -145,7 +148,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
                 color="primary"
               />
             }
-            label="Limited number of uses"
+            label={<Typography variant="body1">Limit number of uses</Typography>}
           />
           <TextField
             variant="outlined"

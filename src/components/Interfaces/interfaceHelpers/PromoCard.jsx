@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, makeStyles } from '@material-ui/core';
+import { Card, Button, Typography, makeStyles } from '@material-ui/core';
 import { getDateFromTimestamp, getMMDDYYYY, getHrMn } from '../../../helpers';
 
 const propTypes = {
@@ -21,29 +21,35 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
     <div className={classes.wrapper}>
       <Card className={classes.card}>
         <div className={classes.cardRow}>
-          <p style={{ fontWeight: 'bold' }}>{code}</p>
-          <p>Used: {startUses - uses} times</p>
+          <Typography variant="body1" style={{ fontWeight: 'bold' }}>
+            {code}
+          </Typography>
+          <Typography variant="body2">Used: {startUses - uses} times</Typography>
         </div>
         <div className={classes.cardRow}>
-          <p>
+          <Typography variant="body2">
             {discountType === '$' ? discountType + discountAmount : discountAmount + discountType}{' '}
             Off
-          </p>
-          <p>{limited ? `${uses} uses left` : ''}</p>
+          </Typography>
+          <Typography variant="body2">{limited ? `${uses} uses left` : ''}</Typography>
         </div>
       </Card>
       {expired ? (
         <div className={classes.options}>
-          <p className={classes.optionB}>Created:</p>
-          <p className={classes.optionP}>
+          <Typography variant="body2" className={classes.optionB}>
+            Created:
+          </Typography>
+          <Typography variant="body2" className={classes.optionP}>
             {getMMDDYYYY(getDateFromTimestamp(promoCode.createdOn))} @{' '}
             {getHrMn(getDateFromTimestamp(promoCode.createdOn))}
-          </p>
-          <p className={classes.optionB}>Deactivated:</p>
-          <p className={classes.optionP}>
+          </Typography>
+          <Typography variant="body2" className={classes.optionB}>
+            Deactivated:
+          </Typography>
+          <Typography variant="body2" className={classes.optionP}>
             {getMMDDYYYY(getDateFromTimestamp(promoCode.deletedOn))} @{' '}
             {getHrMn(getDateFromTimestamp(promoCode.deletedOn))}
-          </p>
+          </Typography>
         </div>
       ) : (
         <div className={classes.options}>
@@ -70,7 +76,7 @@ PromoCard.defaultProps = defaultProps;
 const useStyles = makeStyles({
   wrapper: {
     width: '80%',
-    maxWidth: '500px',
+    maxWidth: '550px',
     marginTop: '20px',
     display: 'flex',
     flexDirection: 'row',
@@ -78,7 +84,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between'
   },
   card: {
-    width: 'calc(100% - 180px)',
+    width: 'calc(100% - 200px)',
     padding: '10px 30px',
     boxSizing: 'border-box'
   },
@@ -87,10 +93,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: '6px 0',
+    boxSizing: 'border-box'
   },
   options: {
-    width: '160px',
+    width: '180px',
     height: '120px',
     padding: '16px 0',
     boxSizing: 'border-box',

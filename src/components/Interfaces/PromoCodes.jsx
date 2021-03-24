@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
 import DeleteModal from './interfaceHelpers/DeleteModal';
+import * as Styled from './styles';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -86,8 +87,15 @@ const PromoCodesInterface = ({ user, db }) => {
   const classes = useStyles();
 
   return (
-    <div className="page-content horiz-center" style={{ paddingBottom: 30 }}>
-      <h2>Manage Your Promo Codes</h2>
+    <Styled.PageContent
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        paddingBottom: 30
+      }}
+    >
+      <Typography variant="h3">Manage Your Promo Codes</Typography>
       {!showOldPromos ? (
         <Button
           variant="outlined"
@@ -142,7 +150,7 @@ const PromoCodesInterface = ({ user, db }) => {
         prompt="Are you sure you want to deactivate this promo code?"
         del="Deactivate"
       />
-    </div>
+    </Styled.PageContent>
   );
 };
 
@@ -151,7 +159,7 @@ PromoCodesInterface.propTypes = propTypes;
 const useStyles = makeStyles({
   createButton: {
     width: '80%',
-    maxWidth: '500px',
+    maxWidth: '550px',
     marginTop: '40px'
   }
 });
