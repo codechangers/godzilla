@@ -119,11 +119,13 @@ class ClassInfoCard extends React.Component {
             small={small}
           />
         </div>
-        <div className={classes.students}>
-          <StudentInfo showLabels />
-          {this.state.students.map(student => (
-            <StudentInfo student={student} key={student.id} />
-          ))}
+        <div className={classes.studWrapper}>
+          <div className={classes.students}>
+            <StudentInfo showLabels />
+            {this.state.students.map(student => (
+              <StudentInfo student={student} key={student.id} />
+            ))}
+          </div>
         </div>
       </Paper>
     );
@@ -170,8 +172,13 @@ const styles = theme => ({
       }
     }
   },
+  studWrapper: {
+    width: '100%',
+    overflowX: 'scroll'
+  },
   students: {
-    padding: '0 24px'
+    padding: '0 24px',
+    minWidth: 936
   }
 });
 
