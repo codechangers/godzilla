@@ -94,7 +94,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
       title="Promo Edit"
       description="Create or update promo codes for customers to use!"
     >
-      <Typography variant="h4" style={{ marginBottom: 12, marginTop: 18 }}>
+      <Typography variant="h4" className={classes.formHeader}>
         {editPromo.isSet ? 'Edit your Promo Code' : 'Create a Promo Code'}
       </Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
@@ -180,7 +180,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
 
 PromoForm.propTypes = propTypes;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   form: {
     width: '90%',
     maxWidth: '460px',
@@ -189,7 +189,17 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginBottom: '30px'
+    marginBottom: '30px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
+  },
+  formHeader: {
+    marginBottom: 12,
+    marginTop: 18,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.5rem'
+    }
   },
   formRow: {
     width: '100%',
@@ -197,17 +207,32 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '12px 0'
+    padding: '12px 0',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      padding: 0
+    }
   },
   input: {
-    width: '48%'
+    width: '48%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      margin: '12px 0'
+    }
   },
   inputFull: {
-    width: '100%'
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: 6
+    }
   },
   submitButton: {
-    width: '100%'
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 6
+    }
   }
-});
+}));
 
 export default PromoForm;
