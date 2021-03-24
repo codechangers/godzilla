@@ -1,27 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button, Typography, makeStyles } from '@material-ui/core';
+import { Card, Button, Typography, makeStyles, IconButton, Tooltip } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { Delete, Edit } from '@material-ui/icons';
 import { getDateFromTimestamp, getMMDDYYYY, getHrMn } from '../../../helpers';
 
 const propTypes = {
   promoCode: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  expried: PropTypes.bool
+  expired: PropTypes.bool,
+  width: PropTypes.number.isRequired
 };
 
 const defaultProps = {
   expired: false
 };
 
-const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
+const PromoCard = ({ promoCode, onEdit, onDelete, expired, width }) => {
   const { code, discountType, discountAmount, startUses, uses, limited } = promoCode;
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
       <Card className={classes.card}>
         <div className={classes.cardRow}>
-          <Typography variant="body1" style={{ fontWeight: 'bold' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', marginRight: 8 }}>
             {code}
           </Typography>
           <Typography variant="body2">Used: {startUses - uses} times</Typography>
@@ -53,17 +56,38 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
         </div>
       ) : (
         <div className={classes.options}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => onEdit(promoCode)}
-          >
-            Edit Details
-          </Button>
-          <Button variant="outlined" className={classes.button} onClick={() => onDelete(promoCode)}>
-            Deactivate
-          </Button>
+          {isWidthDown(width, 'md') ? (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => onEdit(promoCode)}
+              >
+                Edit Details
+              </Button>
+              <Button
+                variant="outlined"
+                className={classes.button}
+                onClick={() => onDelete(promoCode)}
+              >
+                Deactivate
+              </Button>
+            </>
+          ) : (
+            <>
+              <Tooltip title="Edit" aria-label="edit" placement="left">
+                <IconButton color="primary" onClick={() => onEdit(promoCode)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Deactivate" aria-label="deactivate" placement="left">
+                <IconButton onClick={() => onDelete(promoCode)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
         </div>
       )}
     </div>
@@ -73,9 +97,9 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired }) => {
 PromoCard.propTypes = propTypes;
 PromoCard.defaultProps = defaultProps;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
-    width: '80%',
+    width: '100%',
     maxWidth: '550px',
     marginTop: '20px',
     display: 'flex',
@@ -86,7 +110,10 @@ const useStyles = makeStyles({
   card: {
     width: 'calc(100% - 200px)',
     padding: '10px 30px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   cardRow: {
     width: '100%',
@@ -95,7 +122,8 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '6px 0',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    flexWrap: 'wrap'
   },
   options: {
     width: '180px',
@@ -105,7 +133,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      height: 'auto',
+      padding: 0
+    }
   },
   optionP: {
     margin: 0,
@@ -121,6 +154,6 @@ const useStyles = makeStyles({
   button: {
     width: '100%'
   }
-});
+}));
 
-export default PromoCard;
+export default withWidth()(PromoCard);

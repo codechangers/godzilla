@@ -158,7 +158,7 @@ PromoCodesInterface.propTypes = propTypes;
 
 const useStyles = makeStyles({
   createButton: {
-    width: '80%',
+    width: '100%',
     maxWidth: '550px',
     marginTop: '40px'
   }
