@@ -95,7 +95,7 @@ const PromoCodesInterface = ({ user, db }) => {
         paddingBottom: 30
       }}
     >
-      <Typography variant="h3">Manage Your Promo Codes</Typography>
+      <Typography variant="h3">Promo Codes</Typography>
       {!showOldPromos ? (
         <Button
           variant="outlined"

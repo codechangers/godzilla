@@ -10,7 +10,7 @@ const propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   expired: PropTypes.bool,
-  width: PropTypes.number.isRequired
+  width: PropTypes.string.isRequired
 };
 
 const defaultProps = {
@@ -21,7 +21,7 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired, width }) => {
   const { code, discountType, discountAmount, startUses, uses, limited } = promoCode;
   const classes = useStyles();
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} style={expired ? { flexWrap: 'wrap' } : null}>
       <Card className={classes.card}>
         <div className={classes.cardRow}>
           <Typography variant="body1" style={{ fontWeight: 'bold', marginRight: 8 }}>
@@ -38,21 +38,25 @@ const PromoCard = ({ promoCode, onEdit, onDelete, expired, width }) => {
         </div>
       </Card>
       {expired ? (
-        <div className={classes.options}>
-          <Typography variant="body2" className={classes.optionB}>
-            Created:
-          </Typography>
-          <Typography variant="body2" className={classes.optionP}>
-            {getMMDDYYYY(getDateFromTimestamp(promoCode.createdOn))} @{' '}
-            {getHrMn(getDateFromTimestamp(promoCode.createdOn))}
-          </Typography>
-          <Typography variant="body2" className={classes.optionB}>
-            Deactivated:
-          </Typography>
-          <Typography variant="body2" className={classes.optionP}>
-            {getMMDDYYYY(getDateFromTimestamp(promoCode.deletedOn))} @{' '}
-            {getHrMn(getDateFromTimestamp(promoCode.deletedOn))}
-          </Typography>
+        <div className={`${classes.options} ${classes.optionsEx}`}>
+          <div>
+            <Typography variant="body2" className={classes.optionB}>
+              Created:
+            </Typography>
+            <Typography variant="body2" className={classes.optionP}>
+              {getMMDDYYYY(getDateFromTimestamp(promoCode.createdOn))} @{' '}
+              {getHrMn(getDateFromTimestamp(promoCode.createdOn))}
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="body2" className={classes.optionB}>
+              Deactivated:
+            </Typography>
+            <Typography variant="body2" className={classes.optionP}>
+              {getMMDDYYYY(getDateFromTimestamp(promoCode.deletedOn))} @{' '}
+              {getHrMn(getDateFromTimestamp(promoCode.deletedOn))}
+            </Typography>
+          </div>
         </div>
       ) : (
         <div className={classes.options}>
@@ -138,6 +142,20 @@ const useStyles = makeStyles(theme => ({
       width: 'auto',
       height: 'auto',
       padding: 0
+    }
+  },
+  optionsEx: {
+    [theme.breakpoints.down('sm')]: {
+      width: 'calc(100% - 10px)',
+      margin: 5,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      '& div': {
+        width: '50%',
+        paddingRight: 8,
+        boxSizing: 'border-box'
+      }
     }
   },
   optionP: {
