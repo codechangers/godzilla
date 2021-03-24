@@ -307,7 +307,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     boxSizing: 'border-box',
-    padding: '20px 8px'
+    padding: '30px 8px'
   }
 };
 

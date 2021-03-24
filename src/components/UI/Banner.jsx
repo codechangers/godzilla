@@ -7,8 +7,16 @@ const Banner = ({ onClick, buttonText, stripeIsLinked }) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.upper}>
-        <Typography variant="h3">Educator Dashboard</Typography>
-        <Button variant="contained" disabled={!stripeIsLinked} onClick={onClick} color="primary">
+        <Typography variant="h3" className={classes.header}>
+          Educator Dashboard
+        </Typography>
+        <Button
+          variant="contained"
+          disabled={!stripeIsLinked}
+          onClick={onClick}
+          color="primary"
+          className={classes.button}
+        >
           {buttonText}
         </Button>
       </div>
@@ -29,10 +37,9 @@ Banner.defaultProps = {
   stripeIsLinked: true
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     width: '100%',
-    maxWidth: 1000,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -43,14 +50,34 @@ const useStyles = makeStyles({
     marginBottom: '20px',
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  },
+  header: {
+    flexGrow: 1,
+    marginRight: 12,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 12,
+      marginBottom: 8,
+      textAlign: 'center'
+    }
+  },
+  button: {
+    flexGrow: 0,
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 8,
+      flexGrow: 1
+    }
   },
   lower: {
     width: '100%',
     height: 200,
     backgroundSize: 'cover',
-    backgroundPosition: 'center center'
+    backgroundPosition: 'center center',
+    [theme.breakpoints.down('xs')]: {
+      height: 100
+    }
   }
-});
+}));
 
 export default Banner;
