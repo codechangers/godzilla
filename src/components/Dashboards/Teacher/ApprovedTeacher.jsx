@@ -8,7 +8,8 @@ import {
   Snackbar,
   SnackbarContent,
   Switch,
-  CircularProgress
+  CircularProgress,
+  withStyles
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
@@ -208,8 +209,9 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     const { showOldClasses } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="page-content horiz-center">
+      <div className={classes.dashWrapper}>
         <Banner
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
@@ -296,4 +298,17 @@ ApprovedTeacher.propTypes = {
   user: PropTypes.object.isRequired
 };
 
-export default withRouter(ApprovedTeacher);
+const styles = {
+  dashWrapper: {
+    width: '100%',
+    maxWidth: 1000,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    padding: '20px 8px'
+  }
+};
+
+export default withStyles(styles)(withRouter(ApprovedTeacher));
