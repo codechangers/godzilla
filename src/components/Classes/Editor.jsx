@@ -468,10 +468,10 @@ ClassEditor.defaultProps = {
   close: () => console.log('closing...')
 };
 
-const styles = {
+const styles = theme => ({
   paper: {
-    width: '50%',
-    minWidth: '500px',
+    width: '100%',
+    maxWidth: '800px',
     padding: '24px',
     paddingBottom: '8px',
     boxSizing: 'border-box',
@@ -486,7 +486,10 @@ const styles = {
     marginBottom: 21
   },
   most: {
-    width: '70%'
+    width: '70%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   },
   wide: {
     width: '100%'
@@ -498,6 +501,12 @@ const styles = {
     alignItems: 'center',
     '& $input': {
       width: '45%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      '& $input': {
+        width: '100%'
+      }
     }
   },
   options: {
@@ -532,8 +541,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexWrap: 'wrap'
   }
-};
+});
 
 export default withStyles(styles)(ClassEditor);
