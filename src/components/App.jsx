@@ -44,7 +44,7 @@ class App extends React.Component {
     this.db = this.firebase
       .firestore()
       .collection('env')
-      .doc('DEVELOPMENT');
+      .doc(process.env.REACT_APP_ENV);
   }
 
   componentDidMount() {
