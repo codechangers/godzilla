@@ -8,6 +8,7 @@ import {
   SnackbarContent,
   Switch,
   CircularProgress,
+  Typography,
   withStyles
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -66,16 +67,24 @@ class ApprovedTeacher extends React.Component {
     abort = () => null;
   }
 
+  shown(cls) {
+    return cls.endDate.seconds * 1000 > Date.now() || this.state.showOldClasses;
+  }
+
   getEmptyPrompt() {
-    return this.state.classes.length <= 0 ? (
-      <Card className="alert-card">
-        <h3>
-          Looks like you don&apos;t have any classes yet.
-          <br />
+    const { classes } = this.props;
+    return this.state.classes.filter(this.shown).length <= 0 ? (
+      <Card className={classes.alertCard}>
+        <Typography variant="h5" style={{ marginBottom: 20, lineHeight: 1.5 }}>
+          Looks like you don&apos;t have any classes yet. <br />
           Add a new class to use the Educator Dashboard.
-        </h3>
+        </Typography>
         {this.state.stripeIsLinked ? (
-          <Button variant="contained" onClick={() => this.setState({ showCreate: true })}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => this.setState({ showCreate: true })}
+          >
             Add a New Class
           </Button>
         ) : null}
@@ -248,17 +257,15 @@ class ApprovedTeacher extends React.Component {
             <CircularProgress style={{ marginBottom: '10px' }} color="primary" />
           )}
         </div>
-        {this.state.classes.map(cls =>
-          cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
-            <ClassInfoCard
-              cls={cls}
-              key={cls.id}
-              openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
-              openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
-              openContacts={() => this.setState({ contactClass: cls })}
-            />
-          ) : null
-        )}
+        {this.state.classes.filter(this.shown).map(cls => (
+          <ClassInfoCard
+            cls={cls}
+            key={cls.id}
+            openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
+            openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+            openContacts={() => this.setState({ contactClass: cls })}
+          />
+        ))}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
         <Snackbar
           className="stripe-wrapper"
@@ -292,7 +299,7 @@ ApprovedTeacher.propTypes = {
   user: PropTypes.object.isRequired
 };
 
-const styles = {
+const styles = theme => ({
   dashWrapper: {
     width: '100%',
     maxWidth: 1000,
@@ -306,7 +313,23 @@ const styles = {
   editor: {
     maxWidth: '800px',
     alignItems: 'flex-start'
+  },
+  alertCard: {
+    width: '100%',
+    maxWidth: '600px',
+    padding: 18,
+    boxSizing: 'border-box',
+    alignSelf: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 24,
+    [theme.breakpoints.down('xs')]: {
+      '& br': {
+        display: 'none'
+      }
+    }
   }
-};
+});
 
 export default withStyles(styles)(withRouter(ApprovedTeacher));
