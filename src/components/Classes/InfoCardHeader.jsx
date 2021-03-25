@@ -133,7 +133,7 @@ class InfoCardHeader extends React.Component {
           <div className={classes.progressOverlay}>
             <span style={{ marginLeft: `${(cls.minStudents / cls.maxStudents) * 100}%` }} />
           </div>
-          {children || <div className="bottom-line" />}
+          {children || <div className={classes.bottomLine} />}
         </div>
         {hideImage || <Template2 />}
         <ScheduleModal
@@ -174,7 +174,7 @@ const styles = theme => ({
     alignItems: 'flex-start',
     marginBottom: '24px',
     '& > img': {
-      height: '360px',
+      height: '415px',
       maxWidth: '58%',
       maxHeight: '100%',
       borderRadius: '4px',
@@ -336,6 +336,14 @@ const styles = theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       marginBottom: 0
+    }
+  },
+  bottomLine: {
+    width: '100%',
+    height: 0,
+    borderBottom: '1px solid #e0e0e0',
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
     }
   }
 });
