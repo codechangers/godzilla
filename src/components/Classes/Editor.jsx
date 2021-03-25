@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Paper,
   TextField,
   Checkbox,
   InputAdornment,
   Button,
   FormControlLabel,
-  MenuItem
+  MenuItem,
+  Typography,
+  withStyles
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
@@ -151,12 +152,15 @@ class ClassEditor extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <Paper className="class-editor">
-        <h4>{this.props.title}</h4>
+      <>
+        <Typography variant="h4" style={{ marginBottom: 24 }}>
+          {this.props.title}
+        </Typography>
         <TextField
           id="name"
-          className="input most"
+          className={`${classes.input} ${classes.most}`}
           type="text"
           label="Name of Class"
           variant="outlined"
@@ -167,7 +171,7 @@ class ClassEditor extends React.Component {
         />
         <TextField
           id="description"
-          className="input wide"
+          className={`${classes.input} ${classes.wide}`}
           type="text"
           multiline
           rows="4"
@@ -178,10 +182,10 @@ class ClassEditor extends React.Component {
           error={getErrorStatus(this.state.errors.description)}
           helperText={this.state.errors.description}
         />
-        <div className="inliner">
+        <div className={classes.inliner}>
           <TextField
             id="price"
-            className="input most"
+            className={`${classes.input} ${classes.most}`}
             type="text"
             label="Price Per Student"
             variant="outlined"
@@ -191,7 +195,7 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.price}
             InputProps={{
               startAdornment: (
-                <InputAdornment className="bold-icon" position="start">
+                <InputAdornment className={classes.boldIcon} position="start">
                   $
                 </InputAdornment>
               )
@@ -200,7 +204,7 @@ class ClassEditor extends React.Component {
           <TextField
             id="programType"
             name="programType"
-            className="input"
+            className={classes.input}
             type="text"
             label="Type of Program"
             variant="outlined"
@@ -216,9 +220,11 @@ class ClassEditor extends React.Component {
           </TextField>
         </div>
         {this.state.errors.daysOfWeek ? (
-          <p style={{ textAlign: 'center', color: 'red' }}>{this.state.errors.daysOfWeek}</p>
+          <Typography variant="body2" style={{ textAlign: 'center', color: 'red' }}>
+            {this.state.errors.daysOfWeek}
+          </Typography>
         ) : null}
-        <div className="days-of-week">
+        <div className={classes.daysOfWeek}>
           {weekDays.map(day => (
             <FormControlLabel
               value="top"
@@ -229,10 +235,10 @@ class ClassEditor extends React.Component {
             />
           ))}
         </div>
-        <div className="inliner">
+        <div className={classes.inliner}>
           <KeyboardDatePicker
             clearable
-            className="input"
+            className={classes.input}
             value={this.state.startDate}
             placeholder="10/10/2010"
             onChange={date => this.setDate(date, 'startDate')}
@@ -242,7 +248,7 @@ class ClassEditor extends React.Component {
           />
           <KeyboardDatePicker
             clearable
-            className="input"
+            className={classes.input}
             value={this.state.endDate}
             placeholder="11/11/2011"
             onChange={date => this.setDate(date, 'endDate')}
@@ -251,11 +257,11 @@ class ClassEditor extends React.Component {
             format="MM/dd/yyyy"
           />
         </div>
-        <div className="inliner">
+        <div className={classes.inliner}>
           <KeyboardTimePicker
             label={this.state.errors.startTime ? this.state.errors.startTime : 'Start Time'}
             error={getErrorStatus(this.state.errors.startTime)}
-            className="input"
+            className={classes.input}
             placeholder="8:00 AM"
             mask="__:__ _M"
             keyboardIcon={<QueryBuilderIcon />}
@@ -265,7 +271,7 @@ class ClassEditor extends React.Component {
           <KeyboardTimePicker
             label={this.state.errors.endTime ? this.state.errors.endTime : 'End Time'}
             error={getErrorStatus(this.state.errors.endTime)}
-            className="input"
+            className={classes.input}
             placeholder="2:00 PM"
             mask="__:__ _M"
             keyboardIcon={<QueryBuilderIcon />}
@@ -275,7 +281,7 @@ class ClassEditor extends React.Component {
         </div>
         <TextField
           id="locationName"
-          className="input most"
+          className={`${classes.input} ${classes.most}`}
           type="text"
           label="Location Name"
           variant="outlined"
@@ -286,7 +292,7 @@ class ClassEditor extends React.Component {
         />
         <TextField
           id="locationAddress"
-          className="input most"
+          className={`${classes.input} ${classes.most}`}
           type="text"
           label="Location Address"
           variant="outlined"
@@ -295,10 +301,10 @@ class ClassEditor extends React.Component {
           error={getErrorStatus(this.state.errors.locationAddress)}
           helperText={this.state.errors.locationAddress}
         />
-        <div className="inliner">
+        <div className={classes.inliner}>
           <TextField
             id="startAge"
-            className="input"
+            className={classes.input}
             type="text"
             label="Minimum Age"
             variant="outlined"
@@ -308,7 +314,7 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.startAge}
             InputProps={{
               endAdornment: (
-                <InputAdornment className="bold" position="end">
+                <InputAdornment className={classes.bold} position="end">
                   years
                 </InputAdornment>
               )
@@ -316,7 +322,7 @@ class ClassEditor extends React.Component {
           />
           <TextField
             id="endAge"
-            className="input"
+            className={classes.input}
             type="text"
             label="Maximum Age"
             variant="outlined"
@@ -326,17 +332,17 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.endAge}
             InputProps={{
               endAdornment: (
-                <InputAdornment className="bold" position="end">
+                <InputAdornment className={classes.bold} position="end">
                   years
                 </InputAdornment>
               )
             }}
           />
         </div>
-        <div className="inliner">
+        <div className={classes.inliner}>
           <TextField
             id="minStudents"
-            className="input"
+            className={classes.input}
             type="text"
             label="Min Students"
             variant="outlined"
@@ -346,7 +352,7 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.minStudents}
             InputProps={{
               endAdornment: (
-                <InputAdornment className="bold" position="end">
+                <InputAdornment className={classes.bold} position="end">
                   students
                 </InputAdornment>
               )
@@ -354,7 +360,7 @@ class ClassEditor extends React.Component {
           />
           <TextField
             id="maxStudents"
-            className="input"
+            className={classes.input}
             type="text"
             label="Max Students"
             variant="outlined"
@@ -364,15 +370,15 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.maxStudents}
             InputProps={{
               endAdornment: (
-                <InputAdornment className="bold" position="end">
+                <InputAdornment className={classes.bold} position="end">
                   students
                 </InputAdornment>
               )
             }}
           />
         </div>
-        <div className="inliner" style={{ alignItems: 'flex-start' }}>
-          <div className="input most" style={{ marginBottom: 0 }}>
+        <div className={classes.inliner} style={{ alignItems: 'flex-start' }}>
+          <div className={`${classes.input} ${classes.most}`} style={{ marginBottom: 0 }}>
             <FormControlLabel
               value="top"
               control={
@@ -390,7 +396,7 @@ class ClassEditor extends React.Component {
             {this.state.isPrivate && (
               <TextField
                 id="privacyCode"
-                className="input most"
+                className={`${classes.input} ${classes.most}`}
                 style={{ width: '100%' }}
                 type="text"
                 label="Private Registration Code"
@@ -403,7 +409,7 @@ class ClassEditor extends React.Component {
               />
             )}
           </div>
-          <div className="input most" style={{ marginBottom: 0 }}>
+          <div className={`${classes.input} ${classes.most}`} style={{ marginBottom: 0 }}>
             <FormControlLabel
               value="top"
               control={
@@ -421,7 +427,7 @@ class ClassEditor extends React.Component {
             {this.state.hasWaiver && (
               <TextField
                 id="waiverURL"
-                className="input most"
+                className={`${classes.input} ${classes.most}`}
                 style={{ width: '100%' }}
                 type="text"
                 label="URL of online Waiver"
@@ -435,13 +441,13 @@ class ClassEditor extends React.Component {
             )}
           </div>
         </div>
-        <div className="options">
+        <div className={classes.options}>
           <Button onClick={this.props.close}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={this.handleSubmit}>
             {this.props.submitText}
           </Button>
         </div>
-      </Paper>
+      </>
     );
   }
 }
@@ -461,4 +467,69 @@ ClassEditor.defaultProps = {
   close: () => console.log('closing...')
 };
 
-export default ClassEditor;
+const styles = theme => ({
+  input: {
+    marginBottom: 21
+  },
+  most: {
+    width: '70%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
+  },
+  wide: {
+    width: '100%'
+  },
+  inliner: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    '& $input': {
+      width: '45%'
+    },
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      '& $input': {
+        width: '100%'
+      }
+    }
+  },
+  options: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: '40px',
+    '& button': {
+      paddingLeft: 24,
+      paddingRight: 24,
+      margin: '0 10px'
+    }
+  },
+  boldIcon: {
+    '& p': {
+      fontWeight: 700,
+      color: '#757575'
+    }
+  },
+  bold: {
+    '& p': {
+      fontWeight: 'normal',
+      color: 'rgba(0, 0, 0, 0.87)'
+    }
+  },
+  daysOfWeek: {
+    width: '100%',
+    margin: '0',
+    marginBottom: '21px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  }
+});
+
+export default withStyles(styles)(ClassEditor);

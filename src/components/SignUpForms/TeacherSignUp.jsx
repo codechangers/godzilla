@@ -155,7 +155,6 @@ class TeacherSignUp extends React.Component {
           </Styled.FormFieldsRow>
           <Styled.FormFieldsRow firstRow>
             <TextField
-              className="white-label"
               error={getErrorStatus(errors.region)}
               id="address"
               type="text"

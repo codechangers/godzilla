@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
 
 const DeclinedTeacher = ({ accounts }) => (
-  <div className="page-content horiz-center">
-    <h1>
+  <div style={{ margin: 'auto', maxWidth: 600, padding: 12 }}>
+    <Typography variant="h4">
       {`Hello ${
         accounts.parents ? `${accounts.parents.data().fName} ${accounts.parents.data().lName}` : ''
       }`}
-    </h1>
-    <h3 style={{ width: '60%', textAlign: 'left' }}>
+    </Typography>
+    <Typography variant="body1" style={{ marginTop: 18 }}>
       We are sorry to inform you that we have decided to decline your request to become a
       CodeChangers teacher. At CodeChangers we try to enable anyone to change the world by inspiring
       children with the opportunity to explore some of the great things STEM fields have to offer.
@@ -17,8 +18,10 @@ const DeclinedTeacher = ({ accounts }) => (
       great fit. But a perfect with both our teaching techniques, and standards. We wish you the
       best in your exploration of STEM education and encourage you to seek out other opportunities
       in the field.
-    </h3>
-    <h2 style={{ width: '50%', textAlign: 'left', marginTop: '10px' }}>Sincerely, CodeChangers</h2>
+    </Typography>
+    <Typography variant="h6" style={{ marginTop: 12 }}>
+      Sincerely, CodeChangers
+    </Typography>
   </div>
 );
 

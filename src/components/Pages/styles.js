@@ -37,15 +37,16 @@ export const Form = styled.div(
 export const LogoButton = styled.button({
   background: 'none',
   outline: 'none',
+  border: 'none',
   cursor: 'pointer',
+  position: 'absolute',
+  top: 30,
+  left: 64,
   padding: 0
 });
 
 export const LogoText = styled.img({
   maxWidth: 240,
-  position: 'absolute',
-  top: 30,
-  left: 64,
   [breakpoints.down.xs]: {
     width: '60%',
     maxWidth: '789px',

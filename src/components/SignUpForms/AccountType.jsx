@@ -29,7 +29,7 @@ const AccountType = ({ setAccountType, next, width }) => (
       </Typography>
       <Styled.AccountSelectionCards>
         <Card style={{ width: '40%', minWidth: '300px' }}>
-          <CardHeader title="Parent Account" className="small-icon" />
+          <CardHeader title="Parent Account" />
           <CardContent>
             <Typography
               variant="body2"

@@ -153,7 +153,6 @@ class ProfileInterface extends React.Component {
       return this.state.accountData[field] !== undefined ? (
         <TextField
           select
-          className="input"
           value={this.state.accountData[field]}
           onChange={e => {
             const { accountData } = this.state;
@@ -189,7 +188,6 @@ class ProfileInterface extends React.Component {
       return child !== undefined ? (
         <TextField
           select
-          className="input"
           value={child[field]}
           onChange={e => {
             const { children } = this.state;

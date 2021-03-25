@@ -1,9 +1,11 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
+import * as Styled from './styles';
 
 const SettingsInterface = () => (
-  <div className="page-content">
-    <h1 style={{ margin: 0 }}>Settings Interface</h1>
-  </div>
+  <Styled.PageContent>
+    <Typography variant="h4">Settings Interface</Typography>
+  </Styled.PageContent>
 );
 
 export default SettingsInterface;

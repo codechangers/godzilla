@@ -2,23 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
-  Modal,
   Button,
   Card,
   Snackbar,
   SnackbarContent,
   Switch,
-  CircularProgress
+  CircularProgress,
+  Typography,
+  withStyles
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
-import DeleteCard from '../../UI/DeleteCard';
+import Modal from '../../UI/Modal';
 import StripeConnect from '../../UI/StripeConnect';
 import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
+import DeleteModal from '../../Interfaces/interfaceHelpers/DeleteModal';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 
@@ -65,16 +67,24 @@ class ApprovedTeacher extends React.Component {
     abort = () => null;
   }
 
+  shown(cls) {
+    return cls.endDate.seconds * 1000 > Date.now() || this.state.showOldClasses;
+  }
+
   getEmptyPrompt() {
-    return this.state.classes.length <= 0 ? (
-      <Card className="alert-card">
-        <h3>
-          Looks like you don&apos;t have any classes yet.
-          <br />
+    const { classes } = this.props;
+    return this.state.classes.filter(this.shown).length <= 0 ? (
+      <Card className={classes.alertCard}>
+        <Typography variant="h5" style={{ marginBottom: 20, lineHeight: 1.5 }}>
+          Looks like you don&apos;t have any classes yet. <br />
           Add a new class to use the Educator Dashboard.
-        </h3>
+        </Typography>
         {this.state.stripeIsLinked ? (
-          <Button variant="contained" onClick={() => this.setState({ showCreate: true })}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => this.setState({ showCreate: true })}
+          >
             Add a New Class
           </Button>
         ) : null}
@@ -83,18 +93,15 @@ class ApprovedTeacher extends React.Component {
   }
 
   getCrudModal() {
+    const { classes } = this.props;
     if (this.state.showCreate) {
       return (
-        // TODO: Use new UI/Modal component
         <Modal
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
           open={this.state.showCreate}
           onClose={() => this.setState({ showCreate: false })}
-          disableAutoFocus
+          title="Create Modal"
+          description="Create a new class or event"
+          className={classes.editor}
         >
           <ClassEditor
             submit={this.createClass}
@@ -103,43 +110,40 @@ class ApprovedTeacher extends React.Component {
           />
         </Modal>
       );
-    }
-    return (
-      // TODO: Use new UI/Modal component
-      <Modal
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        open={this.state.selected !== null}
-        onClose={() => this.setState({ selected: null })}
-        disableAutoFocus
-      >
-        {this.state.selected.shouldEdit ? (
-          <ClassEditor
-            submit={classData => {
-              this.updateClass(this.state.selected.cls.id, classData);
-              this.setState({ selected: null });
-            }}
-            title="Edit Class Details"
-            submitText="Submit"
-            cls={this.state.selected.cls}
-            close={() => this.setState({ selected: null })}
-          />
-        ) : (
-          <DeleteCard
-            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
-            warning="This will remove the class and all signed up students permanently"
+    } else if (this.state.selected !== null) {
+      return (
+        <>
+          <Modal
+            open={this.state.selected.shouldEdit}
+            onClose={() => this.setState({ selected: null })}
+            title="Edit Modal"
+            description="Edit info for an existing class or event"
+            className={classes.editor}
+          >
+            <ClassEditor
+              submit={classData => {
+                this.updateClass(this.state.selected.cls.id, classData);
+                this.setState({ selected: null });
+              }}
+              title="Edit Class Details"
+              submitText="Submit"
+              cls={this.state.selected.cls}
+              close={() => this.setState({ selected: null })}
+            />
+          </Modal>
+          <DeleteModal
+            obj={{ isSet: !this.state.selected.shouldEdit }}
             onCancel={() => this.setState({ selected: null })}
-            onDelete={() => {
+            onConfirm={() => {
               this.deleteClass(this.state.selected.cls.id);
               this.setState({ selected: null });
             }}
+            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
           />
-        )}
-      </Modal>
-    );
+        </>
+      );
+    }
+    return null;
   }
 
   async fetchClasses(t) {
@@ -208,8 +212,9 @@ class ApprovedTeacher extends React.Component {
 
   render() {
     const { showOldClasses } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="page-content horiz-center">
+      <div className={classes.dashWrapper}>
         <Banner
           name={
             this.props.accounts.parents ? getName(this.props.accounts.parents) : 'Hello Teacher'
@@ -252,20 +257,17 @@ class ApprovedTeacher extends React.Component {
             <CircularProgress style={{ marginBottom: '10px' }} color="primary" />
           )}
         </div>
-        {this.state.classes.map(cls =>
-          cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
-            <ClassInfoCard
-              cls={cls}
-              key={cls.id}
-              openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
-              openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
-              openContacts={() => this.setState({ contactClass: cls })}
-            />
-          ) : null
-        )}
+        {this.state.classes.filter(this.shown).map(cls => (
+          <ClassInfoCard
+            cls={cls}
+            key={cls.id}
+            openUpdate={() => this.setState({ selected: { cls, shouldEdit: true } })}
+            openDelete={() => this.setState({ selected: { cls, shouldEdit: false } })}
+            openContacts={() => this.setState({ contactClass: cls })}
+          />
+        ))}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
         <Snackbar
-          className="stripe-wrapper"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center'
@@ -273,12 +275,13 @@ class ApprovedTeacher extends React.Component {
           open={!this.state.stripeIsLinked}
           autoHideDuration={6000}
           onClose={() => {}}
+          style={{ width: 'calc(100% - 16px)', maxWidth: 600 }}
         >
           <SnackbarContent
-            className="stripe-warning"
             aria-describedby="client-snackbar"
             message={getMessage()}
             action={[<StripeConnect key="stripe_oauth" />]}
+            style={{ width: '100%', backgroundColor: '#ffa000' }}
           />
         </Snackbar>
         <ContactInfo
@@ -296,4 +299,44 @@ ApprovedTeacher.propTypes = {
   user: PropTypes.object.isRequired
 };
 
-export default withRouter(ApprovedTeacher);
+const styles = theme => ({
+  dashWrapper: {
+    width: '100%',
+    maxWidth: 1000,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    padding: '30px 8px'
+  },
+  editor: {
+    maxWidth: '800px',
+    alignItems: 'flex-start'
+  },
+  alertCard: {
+    width: '100%',
+    maxWidth: '600px',
+    padding: 18,
+    boxSizing: 'border-box',
+    alignSelf: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 24,
+    [theme.breakpoints.down('xs')]: {
+      '& br': {
+        display: 'none'
+      }
+    }
+  },
+  stripeWrapper: {
+    width: 'calc(100% - 264px)'
+  },
+  stripeContent: {
+    width: '100%',
+    backgroundColor: '#ffa000'
+  }
+});
+
+export default withStyles(styles)(withRouter(ApprovedTeacher));

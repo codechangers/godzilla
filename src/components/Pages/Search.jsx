@@ -10,7 +10,7 @@ const propTypes = {
 };
 
 const Search = ({ db, user, accounts }) => (
-  <div className="page-wrapper">
+  <div style={{ width: '100%', minHeight: '100vh', backgroundColor: 'var(--background-color)' }}>
     <ClassSearch db={db} user={user} accounts={accounts} />
   </div>
 );

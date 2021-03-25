@@ -105,7 +105,9 @@ const ContactInfo = ({ cls, onClose }) => {
       description="Display or Download contact info for all students in this class."
     >
       <div className={classes.header}>
-        <Typography variant="h5">Contact Info</Typography>
+        <Typography variant="h5" style={{ marginRight: 24 }}>
+          Contact Info
+        </Typography>
         <CSVDownload
           filename={`${cls !== null ? cls.name : 'blank'}-contacts.csv`}
           data={getContactInfo()}
@@ -126,46 +128,51 @@ const ContactInfo = ({ cls, onClose }) => {
           <CircularProgress color="primary" />
         </div>
       ) : (
-        <Table style={{ marginBottom: '20px' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Student Name</TableCell>
-              <TableCell>Parent Name</TableCell>
-              <TableCell>Parent Email</TableCell>
-              <TableCell>Parent Phone</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students.map(s => {
-              const parent =
-                s.parent && Object.keys(parents).includes(s.parent.id)
-                  ? parents[s.parent.id]
-                  : undefined;
-              return parent ? (
-                <TableRow key={s.id}>
-                  <TableCell>
-                    {s.fName} {s.lName}
-                  </TableCell>
-                  <TableCell>
-                    {parent.fName} {parent.lName}
-                  </TableCell>
-                  <TableCell>{parent.email}</TableCell>
-                  <TableCell>{parent.phone}</TableCell>
-                </TableRow>
-              ) : (
-                <TableRow key={s.id}>
-                  <TableCell>
-                    {s.fName} {s.lName}
-                  </TableCell>
-                  <TableCell>Parent Unavailable</TableCell>
-                  <TableCell />
-                  <TableCell />
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <div className={classes.tableWrapper}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Student Name</TableCell>
+                <TableCell>Parent Name</TableCell>
+                <TableCell>Parent Email</TableCell>
+                <TableCell>Parent Phone</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {students.map(s => {
+                const parent =
+                  s.parent && Object.keys(parents).includes(s.parent.id)
+                    ? parents[s.parent.id]
+                    : undefined;
+                return parent ? (
+                  <TableRow key={s.id}>
+                    <TableCell>
+                      {s.fName} {s.lName}
+                    </TableCell>
+                    <TableCell>
+                      {parent.fName} {parent.lName}
+                    </TableCell>
+                    <TableCell>{parent.email}</TableCell>
+                    <TableCell>{parent.phone}</TableCell>
+                  </TableRow>
+                ) : (
+                  <TableRow key={s.id}>
+                    <TableCell>
+                      {s.fName} {s.lName}
+                    </TableCell>
+                    <TableCell>Parent Unavailable</TableCell>
+                    <TableCell />
+                    <TableCell />
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
       )}
+      <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
+        Close
+      </Button>
     </Modal>
   );
 };
@@ -173,7 +180,7 @@ const ContactInfo = ({ cls, onClose }) => {
 ContactInfo.propTypes = propTypes;
 ContactInfo.defaultProps = defaultProps;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   modal: {
     maxWidth: '1000px'
   },
@@ -183,6 +190,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     marginTop: '10px',
     marginBottom: '5px'
   },
@@ -191,7 +199,15 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     margin: '20px 0'
+  },
+  tableWrapper: {
+    width: '100%',
+    overflow: 'scroll'
+  },
+  table: {
+    minWidth: 500,
+    marginBottom: '20px'
   }
-});
+}));
 
 export default ContactInfo;

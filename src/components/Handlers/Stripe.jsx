@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
 import { withRouter, Redirect } from 'react-router-dom';
 import { API_URL } from '../../globals';
 import autoBind from '../../autoBind';
@@ -61,7 +62,18 @@ class StripeHandler extends React.Component {
 
   render() {
     return !this.state.gotAuthToken ? (
-      <div className="stripe-loading-screen">Linking Stripe to your CodeChangers Account...</div>
+      <div
+        style={{
+          width: '100%',
+          minHeight: '100vh',
+          backgroundColor: 'var(--background-color)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Typography variant="h5">Linking Stripe to your CodeChangers Account...</Typography>
+      </div>
     ) : (
       <Redirect to="/login" />
     );

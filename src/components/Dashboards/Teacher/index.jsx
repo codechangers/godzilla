@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { PageWrapper } from '../styles';
 import CurriculumInterface from '../../Interfaces/Curriculum';
-import PaymentInterface from '../../Interfaces/Payment';
+import PaymentsInterface from '../../Interfaces/Payments';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
 import PromoCodesInterface from '../../Interfaces/PromoCodes';
@@ -15,7 +16,7 @@ import TrainingTeacher from './TrainingTeacher';
 const routeToInterface = {
   '/teacher': null,
   '/teacher/curriculum': CurriculumInterface,
-  '/teacher/payments': PaymentInterface,
+  '/teacher/payments': PaymentsInterface,
   '/teacher/profile': ProfileInterface,
   '/teacher/settings': SettingsInterface,
   '/teacher/promo': PromoCodesInterface
@@ -80,14 +81,14 @@ class TeacherDashboard extends React.Component {
     approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
     return user.isSignedIn ? (
-      <div className="page-wrapper">
+      <PageWrapper>
         <SideBar
           names={['Profile', 'Dashboard'].concat(approvedRoutes)}
           baseRoute="/teacher"
           firebase={firebase}
         />
         {this.getInterface() || this.getDashboard()}
-      </div>
+      </PageWrapper>
     ) : (
       <Redirect to="/login" />
     );
