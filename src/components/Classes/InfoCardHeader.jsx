@@ -226,7 +226,7 @@ const styles = theme => ({
       }
     },
     [theme.breakpoints.down('md')]: {
-      marginBottom: 0,
+      marginBottom: 24,
       flexDirection: 'column-reverse',
       '& > img': {
         width: '100%',
@@ -237,7 +237,11 @@ const styles = theme => ({
         width: '100%'
       }
     },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 10
+    },
     [theme.breakpoints.down('xs')]: {
+      marginBottom: 0,
       '& > div': {
         padding: '16px 8px'
       }
@@ -335,7 +339,7 @@ const styles = theme => ({
       display: 'block'
     },
     [theme.breakpoints.down('sm')]: {
-      marginBottom: 0
+      marginBottom: 8
     }
   },
   bottomLine: {
