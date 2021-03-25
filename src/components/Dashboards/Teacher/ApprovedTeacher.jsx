@@ -268,7 +268,6 @@ class ApprovedTeacher extends React.Component {
         ))}
         {this.state.selected !== null || this.state.showCreate ? this.getCrudModal() : null}
         <Snackbar
-          className="stripe-wrapper"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center'
@@ -276,12 +275,13 @@ class ApprovedTeacher extends React.Component {
           open={!this.state.stripeIsLinked}
           autoHideDuration={6000}
           onClose={() => {}}
+          style={{ width: 'calc(100% - 16px)', maxWidth: 600 }}
         >
           <SnackbarContent
-            className="stripe-warning"
             aria-describedby="client-snackbar"
             message={getMessage()}
             action={[<StripeConnect key="stripe_oauth" />]}
+            style={{ width: '100%', backgroundColor: '#ffa000' }}
           />
         </Snackbar>
         <ContactInfo
@@ -329,6 +329,13 @@ const styles = theme => ({
         display: 'none'
       }
     }
+  },
+  stripeWrapper: {
+    width: 'calc(100% - 264px)'
+  },
+  stripeContent: {
+    width: '100%',
+    backgroundColor: '#ffa000'
   }
 });
 
