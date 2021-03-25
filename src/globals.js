@@ -3,7 +3,7 @@ export const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"
 export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/; // eslint-disable-line
 
 export const URL = 'https://new-platform-f1070.web.app';
-export const API_URL = 'https://stripe-release.codechangers.com';
+export const API_URL = process.env.REACT_APP_STRIPE_API;
 
 const bpValues = {
   xs: 0,
