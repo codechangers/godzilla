@@ -166,6 +166,9 @@ const ContactInfo = ({ cls, onClose }) => {
           </TableBody>
         </Table>
       )}
+      <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
+        Close
+      </Button>
     </Modal>
   );
 };

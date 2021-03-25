@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'scroll',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   }
 }));
