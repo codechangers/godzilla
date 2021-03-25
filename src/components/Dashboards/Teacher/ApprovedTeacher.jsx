@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
-  Modal,
   Button,
   Card,
   Snackbar,
@@ -15,11 +14,12 @@ import WarningIcon from '@material-ui/icons/Warning';
 import Banner from '../../UI/Banner';
 import ClassInfoCard from '../../Classes/InfoCard';
 import ClassEditor from '../../Classes/Editor';
-import DeleteCard from '../../UI/DeleteCard';
+import Modal from '../../UI/Modal';
 import StripeConnect from '../../UI/StripeConnect';
 import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../autoBind';
 import { API_URL } from '../../../globals';
+import DeleteModal from '../../Interfaces/interfaceHelpers/DeleteModal';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 
@@ -84,18 +84,15 @@ class ApprovedTeacher extends React.Component {
   }
 
   getCrudModal() {
+    const { classes } = this.props;
     if (this.state.showCreate) {
       return (
-        // TODO: Use new UI/Modal component
         <Modal
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
           open={this.state.showCreate}
           onClose={() => this.setState({ showCreate: false })}
-          disableAutoFocus
+          title="Create Modal"
+          description="Create a new class or event"
+          className={classes.editor}
         >
           <ClassEditor
             submit={this.createClass}
@@ -104,43 +101,40 @@ class ApprovedTeacher extends React.Component {
           />
         </Modal>
       );
-    }
-    return (
-      // TODO: Use new UI/Modal component
-      <Modal
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        open={this.state.selected !== null}
-        onClose={() => this.setState({ selected: null })}
-        disableAutoFocus
-      >
-        {this.state.selected.shouldEdit ? (
-          <ClassEditor
-            submit={classData => {
-              this.updateClass(this.state.selected.cls.id, classData);
-              this.setState({ selected: null });
-            }}
-            title="Edit Class Details"
-            submitText="Submit"
-            cls={this.state.selected.cls}
-            close={() => this.setState({ selected: null })}
-          />
-        ) : (
-          <DeleteCard
-            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
-            warning="This will remove the class and all signed up students permanently"
+    } else if (this.state.selected !== null) {
+      return (
+        <>
+          <Modal
+            open={this.state.selected.shouldEdit}
+            onClose={() => this.setState({ selected: null })}
+            title="Edit Modal"
+            description="Edit info for an existing class or event"
+            className={classes.editor}
+          >
+            <ClassEditor
+              submit={classData => {
+                this.updateClass(this.state.selected.cls.id, classData);
+                this.setState({ selected: null });
+              }}
+              title="Edit Class Details"
+              submitText="Submit"
+              cls={this.state.selected.cls}
+              close={() => this.setState({ selected: null })}
+            />
+          </Modal>
+          <DeleteModal
+            obj={{ isSet: !this.state.selected.shouldEdit }}
             onCancel={() => this.setState({ selected: null })}
-            onDelete={() => {
+            onConfirm={() => {
               this.deleteClass(this.state.selected.cls.id);
               this.setState({ selected: null });
             }}
+            prompt={`Are you sure you want to delete ${this.state.selected.cls.name}?`}
           />
-        )}
-      </Modal>
-    );
+        </>
+      );
+    }
+    return null;
   }
 
   async fetchClasses(t) {
@@ -308,6 +302,10 @@ const styles = {
     alignItems: 'center',
     boxSizing: 'border-box',
     padding: '30px 8px'
+  },
+  editor: {
+    maxWidth: '800px',
+    alignItems: 'flex-start'
   }
 };
 

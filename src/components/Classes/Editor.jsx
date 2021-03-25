@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Paper,
   TextField,
   Checkbox,
   InputAdornment,
@@ -155,7 +154,7 @@ class ClassEditor extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Paper className={classes.paper}>
+      <>
         <Typography variant="h4" style={{ marginBottom: 24 }}>
           {this.props.title}
         </Typography>
@@ -448,7 +447,7 @@ class ClassEditor extends React.Component {
             {this.props.submitText}
           </Button>
         </div>
-      </Paper>
+      </>
     );
   }
 }
@@ -469,19 +468,6 @@ ClassEditor.defaultProps = {
 };
 
 const styles = theme => ({
-  paper: {
-    width: '100%',
-    maxWidth: '800px',
-    padding: '24px',
-    paddingBottom: '8px',
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    overflow: 'scroll',
-    maxHeight: '100%'
-  },
   input: {
     marginBottom: 21
   },
