@@ -1,17 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import NavBar from '../../UI/NavBar';
+import { Typography } from '@material-ui/core';
 
-const AcceptedOrganization = ({ firebase, accounts }) => (
-  <div>
-    <NavBar accounts={accounts} firebase={firebase} />
-    <h1>Welcome to the Accepted Organization Dashboard</h1>
+const AcceptedOrganization = () => (
+  <div style={{ margin: 'auto' }}>
+    <Typography variant="h4">Welcome to the Accepted Organization Dashboard</Typography>
   </div>
 );
-
-AcceptedOrganization.propTypes = {
-  firebase: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
-};
 
 export default AcceptedOrganization;
