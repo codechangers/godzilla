@@ -8,3 +8,5 @@ Code Name: Project Godzilla is a new platform that will allow for anyone to take
 - Add the Prettier VSCode Extension
 - Run `npm install`
 - Run `npm start`
+
+**Note**: You need to configure a `.env` file with firebase credentials. Use the `.env.example` as a reference.
