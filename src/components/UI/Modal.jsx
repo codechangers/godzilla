@@ -9,10 +9,11 @@ const propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   title: PropTypes.string,
-  description: PropTypes.string
+  description: PropTypes.string,
+  noWrapper: PropTypes.bool
 };
 
-const Modal = ({ open, onClose, children, className, title, description }) => {
+const Modal = ({ open, onClose, children, className, title, description, noWrapper }) => {
   const classes = useStyles();
   return (
     <MUIModal
@@ -23,7 +24,7 @@ const Modal = ({ open, onClose, children, className, title, description }) => {
       aria-labelledby={title}
       aria-describedby={description}
     >
-      <Paper className={`${classes.paper} ${className}`}>{children}</Paper>
+      {noWrapper ? children : <Paper className={`${classes.paper} ${className}`}>{children}</Paper>}
     </MUIModal>
   );
 };
@@ -34,7 +35,8 @@ Modal.defaultProps = {
   children: null,
   className: '',
   title: 'Modal',
-  description: 'This is a UI Modal'
+  description: 'This is a UI Modal',
+  noWrapper: false
 };
 
 const useStyles = makeStyles(theme => ({

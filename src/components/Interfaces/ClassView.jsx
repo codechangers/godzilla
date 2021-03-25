@@ -5,8 +5,6 @@ import {
   Button,
   Tabs,
   Tab,
-  Modal,
-  Card,
   Paper,
   Switch,
   Typography,
@@ -16,9 +14,11 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import InfoCardHeader from '../Classes/InfoCardHeader';
+import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
+import DeleteModal from '../Interfaces/interfaceHelpers/DeleteModal';
 import * as Styled from './styles';
 
 let parentListener = () => {};
@@ -238,9 +238,7 @@ class ClassViewInterface extends React.Component {
                           Looks like you haven&apos;t signed up for any classes yet.
                         </Typography>
                         <Button>
-                          <Link className="action" to="/parent/search">
-                            Find one now!
-                          </Link>
+                          <Link to="/parent/search">Find one now!</Link>
                         </Button>
                       </div>
                     </div>
@@ -249,45 +247,28 @@ class ClassViewInterface extends React.Component {
               );
             })
           )}
-          {/* TODO: Use new UI/Modal component */}
           <Modal
-            className={classes.modal}
-            open={this.state.selectedClass !== null || this.state.showKidCreator}
-            onClose={() => this.setState({ selectedClass: null, showKidCreator: false })}
-            disableAutoFocus
+            open={this.state.showKidCreator}
+            onClose={() => this.setState({ showKidCreator: false })}
+            title="Add a Child"
+            description="Add a new Child to your Parent account."
+            noWrapper
           >
-            {this.state.selectedClass === null ? (
-              <ChildInfo
-                firebase={this.props.firebase}
-                db={this.props.db}
-                handleClose={() => this.setState({ showKidCreator: false })}
-                addChildRef={this.addChildRef}
-                title="Add a Child"
-              />
-            ) : (
-              <Card className={classes.deleteCard}>
-                <Typography
-                  variant="h5"
-                  style={{ marginBottom: '12px' }}
-                >{`Are you sure you want to drop ${this.state.selectedClass.name}?`}</Typography>
-                <Typography variant="body2" style={{ marginBottom: '20px' }}>
-                  This will remove your child from this class permanently.
-                </Typography>
-                <div className={classes.options}>
-                  <Button
-                    color="default"
-                    variant="contained"
-                    onClick={() => this.setState({ selectedClass: null })}
-                  >
-                    Cancel
-                  </Button>
-                  <Button color="secondary" variant="contained" onClick={this.removeClass}>
-                    Delete
-                  </Button>
-                </div>
-              </Card>
-            )}
+            <ChildInfo
+              firebase={this.props.firebase}
+              db={this.props.db}
+              handleClose={() => this.setState({ showKidCreator: false })}
+              addChildRef={this.addChildRef}
+              title="Add a Child"
+            />
           </Modal>
+          <DeleteModal
+            obj={{ isSet: this.state.selectedClass !== null }}
+            onCancel={() => this.setState({ selectedClass: null })}
+            onConfirm={this.removeClass}
+            prompt={`Are you sure you want to drop ${this.state.selectedClass?.name || 'class'}?`}
+            del="Drop"
+          />
         </div>
       </Styled.PageContent>
     );
@@ -384,27 +365,6 @@ const styles = theme => ({
     '& div.MuiBox-root': {
       padding: '0'
     }
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '& .MuiPaper-root': {
-      minWidth: '340px',
-      maxHeight: '100%',
-      overflow: 'scroll'
-    }
-  },
-  deleteCard: {
-    width: '50%',
-    minWidth: '350px',
-    outline: 'none',
-    boxSizing: 'border-box',
-    padding: '30px 20px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   options: {
     '& button': {
