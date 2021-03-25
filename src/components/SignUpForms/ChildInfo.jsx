@@ -136,7 +136,6 @@ class ChildInfo extends React.Component {
               type="text"
               label="Child's First Name"
               variant="outlined"
-              className="input"
               helperText={errors.fName}
               value={this.state.fName}
               onChange={this.handleChange}
@@ -147,7 +146,6 @@ class ChildInfo extends React.Component {
               type="text"
               label="Child's Last Name"
               variant="outlined"
-              className="input"
               helperText={errors.lName}
               value={this.state.lName}
               onChange={this.handleChange}
@@ -159,7 +157,6 @@ class ChildInfo extends React.Component {
               id="gender"
               name="gender"
               select
-              className="input"
               label="Child's Gender"
               variant="outlined"
               value={this.state.gender}
@@ -171,7 +168,6 @@ class ChildInfo extends React.Component {
             </TextField>
             <KeyboardDatePicker
               clearable
-              className="birthdate-picker input"
               value={this.state.birthDate}
               placeholder="01/01/2001"
               onChange={date => this.setState({ birthDate: date })}
@@ -185,7 +181,6 @@ class ChildInfo extends React.Component {
               error={getErrorStatus(errors.currentSchool)}
               id="currentSchool"
               type="text"
-              className="input"
               label="Child's Current School"
               variant="outlined"
               helperText={errors.currentSchool}
@@ -199,7 +194,6 @@ class ChildInfo extends React.Component {
               id="currentGrade"
               name="currentGrade"
               select
-              className="input"
               label="Child's Current Grade"
               variant="outlined"
               helperText={errors.currentGrade}
@@ -226,7 +220,6 @@ class ChildInfo extends React.Component {
               id="shirtSize"
               name="shirtSize"
               select
-              className="input"
               label="Child's Shirt Size"
               variant="outlined"
               helperText={errors.shirtSize}
