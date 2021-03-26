@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import { CardElement, injectStripe } from 'react-stripe-elements';
-import ClassTable from '../Classes/ClassTable';
+import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
@@ -93,14 +93,14 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
         .then(res => res.json())
         .then(res => {
           if (res.status === 200) {
-            const children = cls.children || [];
+            const clsChildren = cls.children || [];
             selectedChildren.forEach(child => {
               const classes = child.classes || [];
               classes.push(cls.ref);
               child.ref.update({ classes });
-              children.push(child.ref);
+              clsChildren.push(child.ref);
             });
-            cls.ref.update({ children });
+            cls.ref.update({ children: clsChildren });
             updatePayment({ succeeded: true });
           } else if (res.error) {
             console.log(res.error);
@@ -145,11 +145,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
         return `${promoDoc.code} applied to ${promoDoc.uses} registration${
           promoDoc.uses === 1 ? '' : 's'
         } (redeemed max amount times)`;
-      } else {
-        return `${promoDoc.code} applied to ${registrations} registration${
-          registrations === 1 ? '' : 's'
-        }`;
       }
+      return `${promoDoc.code} applied to ${registrations} registration${
+        registrations === 1 ? '' : 's'
+      }`;
     }
     return '';
   };

@@ -457,7 +457,8 @@ ClassEditor.propTypes = {
   title: PropTypes.string,
   submitText: PropTypes.string,
   cls: PropTypes.object,
-  close: PropTypes.func
+  close: PropTypes.func,
+  classes: PropTypes.object.isRequired
 };
 
 ClassEditor.defaultProps = {

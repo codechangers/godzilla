@@ -100,15 +100,15 @@ class InfoCardHeader extends React.Component {
           </div>
           {children !== null && !preview ? (
             <div className={classes.inliner}>
-              <Typography variant="body1">{`Instructor: ${
-                teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''
-              }`}</Typography>
-              <Typography variant="body1">{`Phone: ${
-                teacher !== null ? teacher.phone : ''
-              }`}</Typography>
-              <Typography variant="body1">{`Email: ${
-                teacher !== null ? teacher.email : ''
-              }`}</Typography>
+              <Typography variant="body1">
+                {`Instructor: ${teacher !== null ? `${teacher.fName} ${teacher.lName}` : ''}`}
+              </Typography>
+              <Typography variant="body1">
+                {`Phone: ${teacher !== null ? teacher.phone : ''}`}
+              </Typography>
+              <Typography variant="body1">
+                {`Email: ${teacher !== null ? teacher.email : ''}`}
+              </Typography>
             </div>
           ) : (
             <div className={`${classes.inliner} ${classes.col}`}>
