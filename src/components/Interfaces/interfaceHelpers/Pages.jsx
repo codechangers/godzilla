@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, Tooltip, Typography, IconButton, makeStyles } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import NavDrawer from '../../UI/NavDrawer';
 
 const propTypes = {
+  width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   homePage: PropTypes.string
 };
@@ -17,7 +19,7 @@ const defaultProps = {
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ pages, homePage }) => {
+const PagesInterface = ({ width, pages, homePage }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
@@ -32,7 +34,7 @@ const PagesInterface = ({ pages, homePage }) => {
   return (
     <div className={classes.wrapper}>
       <AppBar
-        color="transparent"
+        color="secondary"
         position="relative"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: showMenu
@@ -67,7 +69,14 @@ const PagesInterface = ({ pages, homePage }) => {
         onClose={() => setShowMenu(false)}
         current={page}
         items={Object.keys(pages)}
-        onNav={setPage}
+        onNav={
+          isWidthDown('sm', width)
+            ? p => {
+                setPage(p);
+                setShowMenu(false);
+              }
+            : setPage
+        }
         width={drawerWidth}
       />
     </div>
@@ -83,7 +92,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'flex-start'
+    }
   },
   appBar: {
     backgroundColor: 'var(--background-color)',
@@ -106,7 +118,13 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     width: '100%',
-    maxWidth: 1000,
+    maxWidth: 940,
+    [theme.breakpoints.down('md')]: {
+      maxWidth: `calc(100% - ${drawerWidth}px)`
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100%'
+    },
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -129,4 +147,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default PagesInterface;
+export default withWidth()(PagesInterface);
