@@ -17,7 +17,8 @@ import {
   Description,
   MenuBook
 } from '@material-ui/icons';
-import { AppBar, Toolbar, Typography, Fab, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import Logout from './Logout';
@@ -41,7 +42,7 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({ names, baseRoute, location, firebase }) => {
+const SideBar = ({ names, baseRoute, location, firebase, width }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const nameToRoute = {
@@ -69,6 +70,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     return nameToRoute[n] === path;
   };
 
+  const small = isWidthDown('xs', width);
   const classes = useStyles();
 
   return (
@@ -81,20 +83,25 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
         })}
       >
         <Toolbar className={classes.toolBar}>
-          <Logo />
-          <Typography variant="h6" noWrap className={classes.title}>
+          {small ? (
+            <IconButton
+              style={{
+                padding: 8,
+                margin: '0 28px'
+              }}
+              onClick={() => setShowMenu(!showMenu)}
+              aria-label="menu"
+            >
+              <Menu />
+            </IconButton>
+          ) : (
+            <Logo />
+          )}
+          <Typography variant="h5" noWrap className={classes.title}>
             CodeContest
           </Typography>
         </Toolbar>
       </AppBar>
-      <Fab
-        onClick={() => setShowMenu(true)}
-        className={classes.menuToggle}
-        aria-label="menu"
-        size="small"
-      >
-        <Menu />
-      </Fab>
       <div
         id="offclick"
         className={classes.sidebarClickoff}
@@ -110,6 +117,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
             showMenu ? `${classes.sidebarWrapper} ${classes.openSidebar}` : classes.sidebarWrapper
           }
         >
+          {small && <Logo />}
           {names.map(name => {
             const Icon = nameToIcon[name];
             return (
@@ -132,7 +140,8 @@ SideBar.propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired
+  firebase: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired
 };
 
 SideBar.defaultProps = {
@@ -164,6 +173,11 @@ const useStyles = makeStyles(theme => ({
     '& > *': {
       marginBottom: '20px'
     },
+    '& img': {
+      width: '40px',
+      marginRight: '28px',
+      marginLeft: '28px'
+    },
     '& > a': {
       textDecoration: 'none'
     },
@@ -185,7 +199,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   appBar: {
-    backgroundColor: 'var(--background-color)',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     boxShadow: 'none',
     '& img': {
       width: '40px',
@@ -194,6 +208,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   toolBar: {
+    height: 64,
     paddingLeft: 0
   },
   logoutButton: {
@@ -211,18 +226,6 @@ const useStyles = makeStyles(theme => ({
       width: '96px'
     }
   },
-  menuToggle: {
-    display: 'none',
-    [theme.breakpoints.down('xs')]: {
-      display: 'block'
-    },
-    background: 'none',
-    boxShadow: 'none',
-    position: 'absolute',
-    paddingTop: '7px',
-    top: 5,
-    left: 5
-  },
   sidebarClickoff: {
     [theme.breakpoints.down('xs')]: {
       width: '100%',
@@ -236,4 +239,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withRouter(SideBar);
+export default withWidth()(withRouter(SideBar));
