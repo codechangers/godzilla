@@ -17,19 +17,21 @@ const DocumentationInterface = () => {
   const classes = useStyles();
   return (
     <Styled.PageContent className={classes.wrapper}>
-      <nav className={classes.nav}>
-        <div className={classes.navHeader}>
-          <Typography variant="h6">Docs Menu</Typography>
-        </div>
-        {Object.entries(docs).map(([key, value]) => (
-          <button key={key} onClick={() => setPage(value)}>
-            <Typography variant="body1">{key}</Typography>
-          </button>
-        ))}
-      </nav>
       <div className={classes.content}>
         <ReactMarkdown>{content}</ReactMarkdown>
       </div>
+      <nav className={classes.nav}>
+        <Typography className={classes.navHeader} variant="h6">
+          Docs Menu
+        </Typography>
+        <div className={classes.navItems}>
+          {Object.entries(docs).map(([key, value]) => (
+            <button key={key} onClick={() => setPage(value)}>
+              <Typography variant="body1">{key}</Typography>
+            </button>
+          ))}
+        </div>
+      </nav>
     </Styled.PageContent>
   );
 };
@@ -43,30 +45,33 @@ const useStyles = makeStyles({
   },
   content: {
     width: 'calc(100% - 260px)',
-    marginLeft: 260,
+    marginRight: 260,
     boxSizing: 'border-box',
-    padding: '0 0 20px 12px',
-    '& code': {
+    padding: '0 18px 20px 0',
+    '& pre': {
+      paddingBottom: 20,
       maxWidth: '100%',
       overflowX: 'scroll'
     }
   },
   nav: {
-    zIndex: 9,
     width: '260px',
-    height: 'calc(100vh - 40px)',
-    overflowY: 'scroll',
-    boxSizing: 'border-box',
-    padding: '12px 0',
     position: 'fixed',
-    left: 96,
     top: 40,
+    right: 40,
+    backgroundColor: 'rgba(100, 100, 100, 0.1)',
+    borderRadius: 3
+  },
+  navItems: {
+    width: '100%',
+    maxHeight: 'calc(100vh - 40px - 40px - 10px)',
+    overflowY: 'scroll',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    borderRight: '1px solid #2e2e2e',
-    borderLeft: '1px solid #2e2e2e',
+    boxSizing: 'border-box',
+    padding: '6px',
     '& button': {
       background: 'none',
       border: 'none',
@@ -79,15 +84,10 @@ const useStyles = makeStyles({
     }
   },
   navHeader: {
-    zIndex: 10,
-    display: 'block',
-    position: 'fixed',
-    top: 0,
-    left: 96,
-    borderBottom: '1px solid #2e2e2e',
-    width: 260,
-    padding: '8px 0 8px 5px',
-    boxSizing: 'border-box'
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '8px 3px',
+    borderBottom: '1px solid #2e2e2e'
   }
 });
 
