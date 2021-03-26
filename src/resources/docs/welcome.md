@@ -1,6 +1,3 @@
----
-title: Welcome to the Documentation
-subtitle: Navigate through these docs to learn how the implement the CodeChangers io Game Library
-tags: [customize]
-author: jason
----
+# Welcome to the Documentation
+
+### Navigate through these docs to learn how the implement the CodeChangers io Game Library
