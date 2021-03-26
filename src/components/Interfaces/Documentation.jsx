@@ -1,94 +1,114 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, makeStyles } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import NavDrawer from './interfaceHelpers/NavDrawer';
 import docs from '../../resources/docs';
-import * as Styled from './styles';
+
+const drawerWidth = 260;
 
 const DocumentationInterface = () => {
-  const [page, setPage] = useState(docs.welcome);
+  const [showMenu, setShowMenu] = useState(false);
+  const [page, setPage] = useState('welcome');
   const [content, setContent] = useState('# Hello World');
 
   useEffect(() => {
-    fetch(page)
+    fetch(docs[page])
       .then(res => res.text())
       .then(text => setContent(text));
   }, [page]);
 
   const classes = useStyles();
   return (
-    <Styled.PageContent className={classes.wrapper}>
-      <div className={classes.content}>
+    <div className={classes.wrapper}>
+      <AppBar
+        position="relative"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: showMenu
+        })}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap className={classes.title}>
+            {page}
+          </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="showMenu drawer"
+            edge="end"
+            onClick={() => setShowMenu(!showMenu)}
+            className={clsx(showMenu && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: showMenu
+        })}
+      >
         <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
-      <nav className={classes.nav}>
-        <Typography className={classes.navHeader} variant="h6">
-          Docs Menu
-        </Typography>
-        <div className={classes.navItems}>
-          {Object.entries(docs).map(([key, value]) => (
-            <button key={key} onClick={() => setPage(value)}>
-              <Typography variant="body1">{key}</Typography>
-            </button>
-          ))}
-        </div>
-      </nav>
-    </Styled.PageContent>
+      </main>
+      <NavDrawer
+        open={showMenu}
+        onClose={() => setShowMenu(false)}
+        items={Object.keys(docs)}
+        onNav={setPage}
+        width={drawerWidth}
+      />
+    </div>
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
+    width: '100%',
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start'
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    }),
+    marginRight: drawerWidth
+  },
+  title: {
+    flexGrow: 1
   },
   content: {
-    width: 'calc(100% - 260px)',
-    marginRight: 260,
+    width: '100%',
+    maxWidth: 1000,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    marginRight: 0,
+    padding: '20px 12px',
     boxSizing: 'border-box',
-    padding: '0 18px 20px 0',
     '& pre': {
       paddingBottom: 20,
       maxWidth: '100%',
       overflowX: 'scroll'
     }
   },
-  nav: {
-    width: '260px',
-    position: 'fixed',
-    top: 40,
-    right: 40,
-    backgroundColor: 'rgba(100, 100, 100, 0.1)',
-    borderRadius: 3
-  },
-  navItems: {
-    width: '100%',
-    maxHeight: 'calc(100vh - 40px - 40px - 10px)',
-    overflowY: 'scroll',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    boxSizing: 'border-box',
-    padding: '6px',
-    '& button': {
-      background: 'none',
-      border: 'none',
-      outline: 'none',
-      margin: '3px 0',
-      cursor: 'pointer',
-      '& :hover': {
-        textDecoration: 'underline'
-      }
-    }
-  },
-  navHeader: {
-    width: '100%',
-    boxSizing: 'border-box',
-    padding: '8px 3px',
-    borderBottom: '1px solid #2e2e2e'
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    }),
+    marginRight: drawerWidth
   }
-});
+}));
 
 export default DocumentationInterface;
