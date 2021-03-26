@@ -43,7 +43,8 @@ NavDrawer.propTypes = propTypes;
 const useStyles = drawerWidth =>
   makeStyles({
     drawer: {
-      width: drawerWidth
+      width: drawerWidth,
+      backgroundColor: 'var(--background-color)'
     },
     selected: {
       backgroundColor: 'rgba(0, 0, 0, 0.1)'

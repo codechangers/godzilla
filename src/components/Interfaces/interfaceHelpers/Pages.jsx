@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, IconButton, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Tooltip, Typography, IconButton, makeStyles } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
@@ -32,6 +32,7 @@ const PagesInterface = ({ pages, homePage }) => {
   return (
     <div className={classes.wrapper}>
       <AppBar
+        color="transparent"
         position="relative"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: showMenu
@@ -41,15 +42,17 @@ const PagesInterface = ({ pages, homePage }) => {
           <Typography variant="h6" noWrap className={classes.title}>
             {page}
           </Typography>
-          <IconButton
-            color="inherit"
-            aria-label="showMenu drawer"
-            edge="end"
-            onClick={() => setShowMenu(!showMenu)}
-            className={clsx(showMenu && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Tooltip title="Pages Menu" placement="left">
+            <IconButton
+              color="inherit"
+              aria-label="showMenu drawer"
+              edge="end"
+              onClick={() => setShowMenu(!showMenu)}
+              className={clsx(showMenu && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
       <main
@@ -83,6 +86,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   appBar: {
+    backgroundColor: 'var(--background-color)',
+    boxShadow: 'none',
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
