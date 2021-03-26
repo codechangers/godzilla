@@ -7,6 +7,7 @@ import PaymentsInterface from '../../Interfaces/Payments';
 import ProfileInterface from '../../Interfaces/Profile';
 import SettingsInterface from '../../Interfaces/Settings';
 import PromoCodesInterface from '../../Interfaces/PromoCodes';
+import DocumentationInterface from '../../Interfaces/Documentation';
 import SideBar from '../../UI/SideBar';
 import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
@@ -19,7 +20,8 @@ const routeToInterface = {
   '/teacher/payments': PaymentsInterface,
   '/teacher/profile': ProfileInterface,
   '/teacher/settings': SettingsInterface,
-  '/teacher/promo': PromoCodesInterface
+  '/teacher/promo': PromoCodesInterface,
+  '/teacher/docs': DocumentationInterface
 };
 
 let teacherListener = () => {};
@@ -77,7 +79,9 @@ class TeacherDashboard extends React.Component {
 
   render() {
     const { user, firebase, accounts } = this.props;
-    let approvedRoutes = this.isApproved() ? ['Promo Codes', 'Parent Dash'] : ['Parent Dash'];
+    let approvedRoutes = this.isApproved()
+      ? ['Promo Codes', 'Documentation', 'Parent Dash']
+      : ['Parent Dash'];
     approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
     return user.isSignedIn ? (

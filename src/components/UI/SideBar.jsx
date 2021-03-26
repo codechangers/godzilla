@@ -13,7 +13,8 @@ import {
   AccountTree,
   SupervisorAccount,
   School,
-  Assignment
+  Assignment,
+  Description
 } from '@material-ui/icons';
 import { Fab, makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
@@ -30,6 +31,7 @@ const nameToIcon = {
   'Class Search': Search,
   'Promo Codes': CardGiftcard,
   Settings,
+  Documentation: Description,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
   'Admin Dash': SupervisorAccount,
@@ -49,6 +51,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     'Class Search': `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`,
+    Documentation: `${baseRoute}/docs`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
     'Admin Dash': '/admin',
