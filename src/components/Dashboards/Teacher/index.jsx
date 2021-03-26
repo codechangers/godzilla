@@ -48,11 +48,6 @@ class TeacherDashboard extends React.Component {
     teacherListener = () => {};
   }
 
-  isApproved() {
-    const { teacher } = this.state;
-    return teacher && teacher.isVerrified && !teacher.isTraining;
-  }
-
   getInterface() {
     const Interface = routeToInterface[this.props.location.pathname];
     const { firebase, db, user, accounts } = this.props;
@@ -73,6 +68,11 @@ class TeacherDashboard extends React.Component {
       }
     }
     return Dashboard !== null ? <Dashboard {...this.props} /> : null;
+  }
+
+  isApproved() {
+    const { teacher } = this.state;
+    return teacher && teacher.isVerrified && !teacher.isTraining;
   }
 
   render() {

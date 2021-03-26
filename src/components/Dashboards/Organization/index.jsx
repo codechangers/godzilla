@@ -14,10 +14,9 @@ const routeToInterface = {
 };
 
 const OrganizationDashboard = props => {
-  const { user, accounts } = props;
+  const { firebase, db, user, accounts, location } = props;
   const getInterface = () => {
-    const Interface = routeToInterface[props.location.pathname];
-    const { firebase, db, user, accounts } = props;
+    const Interface = routeToInterface[location.pathname];
     return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
   };
   let Dashboard = null;
@@ -31,11 +30,7 @@ const OrganizationDashboard = props => {
   }
   return Dashboard ? (
     <PageWrapper>
-      <SideBar
-        names={['Profile', 'Dashboard']}
-        baseRoute="/organization"
-        firebase={props.firebase}
-      />
+      <SideBar names={['Profile', 'Dashboard']} baseRoute="/organization" firebase={firebase} />
       {getInterface() || <Dashboard {...props} />}
     </PageWrapper>
   ) : (

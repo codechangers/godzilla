@@ -18,7 +18,7 @@ import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import autoBind from '../../autoBind';
-import DeleteModal from '../Interfaces/interfaceHelpers/DeleteModal';
+import DeleteModal from './interfaceHelpers/DeleteModal';
 import * as Styled from './styles';
 
 let parentListener = () => {};
@@ -124,8 +124,8 @@ class ClassViewInterface extends React.Component {
   }
 
   tabRight() {
-    let { tabIndex, children } = this.state;
-    if (tabIndex <= children.length - 2) {
+    let { tabIndex } = this.state;
+    if (tabIndex <= this.state.children.length - 2) {
       tabIndex += 1;
     }
     this.setState({ tabIndex });

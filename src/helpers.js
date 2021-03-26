@@ -112,9 +112,9 @@ export const getOrdinal = int => {
 export const getStatus = account => {
   if (account.isVerrified) {
     return STATUS.ACCEPTED;
-  } else if (account.isDeclined) {
-    return STATUS.DECLINED;
-  } else {
-    return STATUS.PENDING;
   }
+  if (account.isDeclined) {
+    return STATUS.DECLINED;
+  }
+  return STATUS.PENDING;
 };

@@ -67,10 +67,6 @@ class ApprovedTeacher extends React.Component {
     abort = () => null;
   }
 
-  shown(cls) {
-    return cls.endDate.seconds * 1000 > Date.now() || this.state.showOldClasses;
-  }
-
   getEmptyPrompt() {
     const { classes } = this.props;
     return this.state.classes.filter(this.shown).length <= 0 ? (
@@ -110,7 +106,8 @@ class ApprovedTeacher extends React.Component {
           />
         </Modal>
       );
-    } else if (this.state.selected !== null) {
+    }
+    if (this.state.selected !== null) {
       return (
         <>
           <Modal
@@ -144,6 +141,10 @@ class ApprovedTeacher extends React.Component {
       );
     }
     return null;
+  }
+
+  shown(cls) {
+    return cls.endDate.seconds * 1000 > Date.now() || this.state.showOldClasses;
   }
 
   async fetchClasses(t) {
@@ -296,7 +297,8 @@ class ApprovedTeacher extends React.Component {
 ApprovedTeacher.propTypes = {
   accounts: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const styles = theme => ({

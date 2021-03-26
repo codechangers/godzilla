@@ -43,10 +43,10 @@ const InfoModal = ({
     }
   }, [initialValue]);
 
-  const checkInput = input => {
-    let r = input;
-    if (input.includes('<iframe') && input.includes('src="')) {
-      r = input.split('src="')[1].split('"')[0];
+  const checkInput = inp => {
+    let r = inp;
+    if (inp.includes('<iframe') && inp.includes('src="')) {
+      r = inp.split('src="')[1].split('"')[0];
     }
     return r.includes(acceptUrl) ? r : '';
   };

@@ -49,7 +49,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           }
           setIsLoading(false);
         });
-      return;
+      return () => {};
     }
     return db.collection('classes').onSnapshot(classDocs => {
       const classesData = [];

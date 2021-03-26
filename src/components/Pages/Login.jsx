@@ -275,7 +275,7 @@ class Login extends React.Component {
               </form>
             )}
           </div>
-          <div></div>
+          <div />
         </Box>
         <div className={classes.bigPic} id={`students-img${this.state.backgroundImage}`} />
       </div>

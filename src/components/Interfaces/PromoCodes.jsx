@@ -20,15 +20,15 @@ const PromoCodesInterface = ({ user, db }) => {
   const [showOldPromos, setShowOldPromos] = useState(false);
 
   const getPromos = useCallback(
-    teacher => {
-      const promos = [];
-      teacher.promos.forEach(promoRef => {
+    tchr => {
+      const newPromos = [];
+      tchr.promos.forEach(promoRef => {
         promoRef
           .get()
           .then(promoDoc => {
-            promos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
-            if (promos.length === teacher.promos.length) {
-              setPromos(promos.reverse());
+            newPromos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
+            if (newPromos.length === tchr.promos.length) {
+              setPromos(newPromos.reverse());
             }
           })
           .catch(err => console.log(err));
@@ -120,8 +120,8 @@ const PromoCodesInterface = ({ user, db }) => {
           <PromoCard
             key={p.id}
             promoCode={p}
-            onEdit={p => setPromoToEdit({ isSet: true, ...p })}
-            onDelete={p => setPromoToDelete({ isSet: true, ...p })}
+            onEdit={pr => setPromoToEdit({ isSet: true, ...pr })}
+            onDelete={pr => setPromoToDelete({ isSet: true, ...pr })}
             expired={!p.active}
           />
         ))}

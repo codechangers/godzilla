@@ -6,7 +6,6 @@ import AccountRequests from '../Interfaces/AccountRequests';
 import StudentIDs from '../Interfaces/StudentIDs';
 import ProfileInterface from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
-import autoBind from '../../autoBind';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -22,40 +21,25 @@ const routeToInterface = {
   '/admin/profile': ProfileInterface
 };
 
-class AdminDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabIndex: 0,
-      shouldShowSideDrawer: false
-    };
-    this.firebase = this.props.firebase;
-    this.db = this.props.db;
-    autoBind(this);
-  }
-
-  getInterface() {
-    const Interface = routeToInterface[this.props.location.pathname];
-    const { firebase, db, user, accounts } = this.props;
+const AdminDashboard = ({ firebase, db, user, accounts, location }) => {
+  const getInterface = () => {
+    const Interface = routeToInterface[location.pathname];
     return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
-  }
+  };
 
-  render() {
-    const { firebase, user } = this.props;
-    return user.isSignedIn ? (
-      <PageWrapper>
-        <SideBar
-          names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
-          baseRoute="/admin"
-          firebase={firebase}
-        />
-        {this.getInterface()}
-      </PageWrapper>
-    ) : (
-      <Redirect to="/login" />
-    );
-  }
-}
+  return user.isSignedIn ? (
+    <PageWrapper>
+      <SideBar
+        names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
+        baseRoute="/admin"
+        firebase={firebase}
+      />
+      {getInterface()}
+    </PageWrapper>
+  ) : (
+    <Redirect to="/login" />
+  );
+};
 
 AdminDashboard.propTypes = propTypes;
 

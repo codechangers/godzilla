@@ -136,7 +136,9 @@ ClassInfoCard.propTypes = {
   cls: PropTypes.object.isRequired,
   openUpdate: PropTypes.func.isRequired,
   openDelete: PropTypes.func.isRequired,
-  openContacts: PropTypes.func.isRequired
+  openContacts: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired
 };
 
 const styles = theme => ({

@@ -58,7 +58,6 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     } else {
       setState(initialState);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editPromo]);
 
   const handleSubmit = e => {
@@ -83,7 +82,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     }
   };
 
-  const getErrorStatus = error => (error && error.length > 0 ? true : false);
+  const getErrorStatus = error => error && error.length > 0;
 
   const classes = useStyles();
 
