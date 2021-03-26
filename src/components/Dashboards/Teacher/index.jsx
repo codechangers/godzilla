@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from '../styles';
@@ -15,6 +15,14 @@ import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
 
+const propTypes = {
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  firebase: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
+
 const routeToInterface = {
   '/teacher': null,
   '/teacher/curriculum': CurriculumInterface,
@@ -26,41 +34,25 @@ const routeToInterface = {
   '/teacher/tutorials': TutorialsInterface
 };
 
-let teacherListener = () => {};
+const TeacherDashboard = props => {
+  const { accounts, db, firebase, user, location } = props;
+  const [teacher, setTeacher] = useState(null);
 
-class TeacherDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      teacher: null
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.accounts.teachers) {
-      teacherListener = this.props.db
+  useEffect(() => {
+    if (accounts.teachers)
+      return db
         .collection('teachers')
-        .doc(this.props.accounts.teachers.id)
-        .onSnapshot(tDoc => {
-          this.setState({ teacher: tDoc.data() });
-        });
-    }
-  }
+        .doc(accounts.teachers.id)
+        .onSnapshot(tDoc => setTeacher(tDoc.data()));
+    return () => {};
+  }, [db, accounts]);
 
-  componentWillUnmount() {
-    teacherListener();
-    teacherListener = () => {};
-  }
-
-  getInterface() {
-    const Interface = routeToInterface[this.props.location.pathname];
-    const { firebase, db, user, accounts } = this.props;
+  const getInterface = () => {
+    const Interface = routeToInterface[location.pathname];
     return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
-  }
+  };
 
-  getDashboard() {
-    const { user, accounts } = this.props;
-    const { teacher } = this.state;
+  const getDashboard = () => {
     let Dashboard = null;
     if (teacher) {
       if (user.isSignedIn && accounts.teachers) {
@@ -71,42 +63,29 @@ class TeacherDashboard extends React.Component {
         }
       }
     }
-    return Dashboard !== null ? <Dashboard {...this.props} /> : null;
-  }
+    return Dashboard !== null ? <Dashboard {...props} /> : null;
+  };
 
-  isApproved() {
-    const { teacher } = this.state;
-    return teacher && teacher.isVerrified && !teacher.isTraining;
-  }
-
-  render() {
-    const { user, firebase, accounts } = this.props;
-    let approvedRoutes = this.isApproved()
+  let approvedRoutes =
+    teacher && teacher.isVerrified && !teacher.isTraining
       ? ['Promo Codes', 'Docs', 'Tutorials', 'Parent Dash']
       : ['Parent Dash'];
-    approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
+  approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
-    return user.isSignedIn ? (
-      <PageWrapper>
-        <SideBar
-          names={['Profile', 'Dashboard'].concat(approvedRoutes)}
-          baseRoute="/teacher"
-          firebase={firebase}
-        />
-        {this.getInterface() || this.getDashboard()}
-      </PageWrapper>
-    ) : (
-      <Redirect to="/login" />
-    );
-  }
-}
-
-TeacherDashboard.propTypes = {
-  user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  return user.isSignedIn ? (
+    <PageWrapper>
+      <SideBar
+        names={['Profile', 'Dashboard'].concat(approvedRoutes)}
+        baseRoute="/teacher"
+        firebase={firebase}
+      />
+      {getInterface() || getDashboard()}
+    </PageWrapper>
+  ) : (
+    <Redirect to="/login" />
+  );
 };
+
+TeacherDashboard.propTypes = propTypes;
 
 export default TeacherDashboard;
