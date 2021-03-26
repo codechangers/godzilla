@@ -82,7 +82,7 @@ class TeacherDashboard extends React.Component {
   render() {
     const { user, firebase, accounts } = this.props;
     let approvedRoutes = this.isApproved()
-      ? ['Promo Codes', 'Documentation', 'Tutorials', 'Parent Dash']
+      ? ['Promo Codes', 'Docs', 'Tutorials', 'Parent Dash']
       : ['Parent Dash'];
     approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 

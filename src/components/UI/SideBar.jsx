@@ -15,7 +15,7 @@ import {
   School,
   Assignment,
   Description,
-  Directions
+  MenuBook
 } from '@material-ui/icons';
 import { Fab, makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
@@ -32,8 +32,8 @@ const nameToIcon = {
   'Class Search': Search,
   'Promo Codes': CardGiftcard,
   Settings,
-  Documentation: Description,
-  Tutorials: Directions,
+  Docs: Description,
+  Tutorials: MenuBook,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
   'Admin Dash': SupervisorAccount,
@@ -53,7 +53,7 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     'Class Search': `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`,
-    Documentation: `${baseRoute}/docs`,
+    Docs: `${baseRoute}/docs`,
     Tutorials: `${baseRoute}/tutorials`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
