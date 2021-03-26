@@ -7,14 +7,19 @@ import ReactMarkdown from 'react-markdown';
 import NavDrawer from '../../UI/NavDrawer';
 
 const propTypes = {
-  pages: PropTypes.object.isRequired
+  pages: PropTypes.object.isRequired,
+  homePage: PropTypes.string
+};
+
+const defaultProps = {
+  homePage: 'home'
 };
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ pages }) => {
+const PagesInterface = ({ pages, homePage }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [page, setPage] = useState('welcome');
+  const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
 
   useEffect(() => {
@@ -66,6 +71,7 @@ const PagesInterface = ({ pages }) => {
 };
 
 PagesInterface.propTypes = propTypes;
+PagesInterface.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
