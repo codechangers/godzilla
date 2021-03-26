@@ -18,7 +18,7 @@ const NavDrawer = ({ open, onNav, items, width }) => {
       anchor="right"
       open={open}
       classes={{
-        paper: classes.drawerPaper
+        paper: classes.drawer
       }}
     >
       <List>
@@ -37,12 +37,8 @@ NavDrawer.propTypes = propTypes;
 const useStyles = drawerWidth =>
   makeStyles({
     drawer: {
-      width: drawerWidth,
-      flexShrink: 0
-    },
-    drawerPaper: {
       width: drawerWidth
     }
-  });
+  })();
 
 export default NavDrawer;
