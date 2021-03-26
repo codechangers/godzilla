@@ -62,6 +62,7 @@ const PagesInterface = ({ pages, homePage }) => {
       <NavDrawer
         open={showMenu}
         onClose={() => setShowMenu(false)}
+        current={page}
         items={Object.keys(pages)}
         onNav={setPage}
         width={drawerWidth}

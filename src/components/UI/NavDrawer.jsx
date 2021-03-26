@@ -5,11 +5,12 @@ import { Drawer, List, ListItem, ListItemText, makeStyles } from '@material-ui/c
 const propTypes = {
   open: PropTypes.bool.isRequired,
   onNav: PropTypes.func.isRequired,
+  current: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
   width: PropTypes.number.isRequired
 };
 
-const NavDrawer = ({ open, onNav, items, width }) => {
+const NavDrawer = ({ open, onNav, current, items, width }) => {
   const classes = useStyles(width);
   return (
     <Drawer
@@ -23,7 +24,12 @@ const NavDrawer = ({ open, onNav, items, width }) => {
     >
       <List>
         {items.map(item => (
-          <ListItem button key={item} onClick={() => onNav(item)}>
+          <ListItem
+            button
+            key={item}
+            className={current === item ? classes.selected : ''}
+            onClick={() => onNav(item)}
+          >
             <ListItemText primary={item} />
           </ListItem>
         ))}
@@ -38,6 +44,9 @@ const useStyles = drawerWidth =>
   makeStyles({
     drawer: {
       width: drawerWidth
+    },
+    selected: {
+      backgroundColor: 'rgba(0, 0, 0, 0.1)'
     }
   })();
 
