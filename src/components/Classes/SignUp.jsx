@@ -217,10 +217,9 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
                 </ListItemAvatar>
                 <ListItemText primary={`${child.fName} ${child.lName}`} />
                 <Checkbox edge="end" checked={checkToggle(child)} />
-                <Typography
-                  variant="body1"
-                  style={{ marginLeft: 10 }}
-                >{`$${cls.price}`}</Typography>
+                <Typography variant="body1" style={{ marginLeft: 10 }}>
+                  {`$${cls.price}`}
+                </Typography>
               </ListItem>
             ))}
           </List>

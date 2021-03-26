@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import CSVDownload from './CSVDownload';
-import Modal from '../UI/Modal';
+import Modal from './Modal';
 
 const propTypes = {
   cls: PropTypes.object,
@@ -180,7 +180,7 @@ const ContactInfo = ({ cls, onClose }) => {
 ContactInfo.propTypes = propTypes;
 ContactInfo.defaultProps = defaultProps;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   modal: {
     maxWidth: '1000px'
   },
@@ -208,6 +208,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: 500,
     marginBottom: '20px'
   }
-}));
+});
 
 export default ContactInfo;

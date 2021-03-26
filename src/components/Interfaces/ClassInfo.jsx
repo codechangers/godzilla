@@ -293,7 +293,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
                       frameBorder="0"
                       allowFullScreen=""
                       className={classes.maps}
-                    ></iframe>
+                    />
                     <EditButton
                       isEditing={isEditing}
                       title="Update Map"
@@ -371,7 +371,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
                       frameBorder="0"
                       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                    ></iframe>
+                    />
                     <EditButton
                       isEditing={isEditing}
                       title="Update Video"

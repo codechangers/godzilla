@@ -26,7 +26,7 @@ const getDateString = date =>
 
 const getSchedule = cls => {
   const dates = [];
-  let currentDate = getDateFromTimestamp(cls.startDate);
+  const currentDate = getDateFromTimestamp(cls.startDate);
   while (currentDate.getTime() / 1000 <= cls.endDate.seconds) {
     if (cls.daysOfWeek.includes(weekDays[currentDate.getDay()])) {
       dates.push([getDateString(currentDate), currentDate.getTime()]);

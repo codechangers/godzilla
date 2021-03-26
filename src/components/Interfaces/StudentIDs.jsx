@@ -66,7 +66,7 @@ const StudentIDs = ({ db }) => {
             <div className={classes.tableWrapper}>
               <Table>
                 <TableHead>
-                  <StudentInfoRow showLables={true} />
+                  <StudentInfoRow showLables />
                 </TableHead>
                 <TableBody>
                   {!isLoading && students.map((s, i) => <StudentInfoRow key={i} student={s} />)}

@@ -5,10 +5,7 @@ import RequestList from '../UI/Requests/RequestList';
 import TabPanel from '../UI/TabPanel';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired
+  db: PropTypes.object.isRequired
 };
 
 const AccountRequests = ({ db }) => {
