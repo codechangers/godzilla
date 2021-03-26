@@ -17,8 +17,9 @@ import {
   Description,
   MenuBook
 } from '@material-ui/icons';
-import { Fab, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Fab, makeStyles } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
+import clsx from 'clsx';
 import Logout from './Logout';
 import { Logo } from '../Images';
 
@@ -72,6 +73,20 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
 
   return (
     <>
+      <AppBar
+        color="secondary"
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: showMenu
+        })}
+      >
+        <Toolbar className={classes.toolBar}>
+          <Logo />
+          <Typography variant="h6" noWrap className={classes.title}>
+            CodeContest
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Fab
         onClick={() => setShowMenu(true)}
         className={classes.menuToggle}
@@ -95,7 +110,6 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
             showMenu ? `${classes.sidebarWrapper} ${classes.openSidebar}` : classes.sidebarWrapper
           }
         >
-          <Logo />
           {names.map(name => {
             const Icon = nameToIcon[name];
             return (
@@ -134,7 +148,7 @@ const useStyles = makeStyles(theme => ({
     width: '96px',
     height: '100%',
     boxSizing: 'border-box',
-    paddingTop: '40px',
+    paddingTop: '68px',
     margin: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -149,11 +163,6 @@ const useStyles = makeStyles(theme => ({
     },
     '& > *': {
       marginBottom: '20px'
-    },
-    '& > img': {
-      width: '40px',
-      marginRight: '28px',
-      marginLeft: '28px'
     },
     '& > a': {
       textDecoration: 'none'
@@ -174,6 +183,18 @@ const useStyles = makeStyles(theme => ({
     '& > a > div.selected': {
       color: 'rgba(0, 0, 0, 0.87)'
     }
+  },
+  appBar: {
+    backgroundColor: 'var(--background-color)',
+    boxShadow: 'none',
+    '& img': {
+      width: '40px',
+      marginRight: '28px',
+      marginLeft: '28px'
+    }
+  },
+  toolBar: {
+    paddingLeft: 0
   },
   logoutButton: {
     width: '80px',
