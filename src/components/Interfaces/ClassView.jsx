@@ -266,7 +266,6 @@ class ClassViewInterface extends React.Component {
             obj={{ isSet: this.state.selectedClass !== null }}
             onCancel={() => this.setState({ selectedClass: null })}
             onConfirm={this.removeClass}
-            // eslint-disable-next-line
             prompt={`Are you sure you want to drop ${this.state.selectedClass?.name || 'class'}?`}
             del="Drop"
           />
