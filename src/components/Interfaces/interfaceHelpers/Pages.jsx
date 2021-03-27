@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Tooltip, Typography, IconButton, makeStyles } from '@material-ui/core';
+import { Tooltip, IconButton, makeStyles } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import NavDrawer from '../../UI/NavDrawer';
 
 const propTypes = {
+  useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   homePage: PropTypes.string
@@ -19,10 +20,12 @@ const defaultProps = {
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ width, pages, homePage }) => {
+const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
+
+  const classes = useStyles();
 
   useEffect(() => {
     fetch(pages[page])
@@ -30,33 +33,30 @@ const PagesInterface = ({ width, pages, homePage }) => {
       .then(text => setContent(text));
   }, [page]);
 
-  const classes = useStyles();
+  useEffect(
+    () =>
+      useCustomAppBar(
+        page,
+        <Tooltip title="Pages Menu" placement="left">
+          <IconButton
+            color="inherit"
+            aria-label="showMenu drawer"
+            edge="end"
+            onClick={() => setShowMenu(!showMenu)}
+            className={clsx(showMenu && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>,
+        clsx(classes.appBar, {
+          [classes.appBarShift]: showMenu
+        })
+      ),
+    [page, showMenu, classes]
+  );
+
   return (
     <div className={classes.wrapper}>
-      <AppBar
-        color="secondary"
-        position="relative"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: showMenu
-        })}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap className={classes.title}>
-            {page}
-          </Typography>
-          <Tooltip title="Pages Menu" placement="left">
-            <IconButton
-              color="inherit"
-              aria-label="showMenu drawer"
-              edge="end"
-              onClick={() => setShowMenu(!showMenu)}
-              className={clsx(showMenu && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar>
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: showMenu
@@ -112,9 +112,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginRight: drawerWidth
-  },
-  title: {
-    flexGrow: 1
   },
   content: {
     width: '100%',

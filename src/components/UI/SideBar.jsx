@@ -42,7 +42,16 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({ names, baseRoute, location, firebase, width }) => {
+const SideBar = ({
+  names,
+  baseRoute,
+  location,
+  firebase,
+  width,
+  title,
+  children,
+  appBarClassName
+}) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const nameToRoute = {
@@ -75,13 +84,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width }) => {
 
   return (
     <>
-      <AppBar
-        color="secondary"
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: showMenu
-        })}
-      >
+      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, appBarClassName)}>
         <Toolbar className={classes.toolBar}>
           {small ? (
             <IconButton
@@ -98,8 +101,9 @@ const SideBar = ({ names, baseRoute, location, firebase, width }) => {
             <Logo />
           )}
           <Typography variant="h5" noWrap className={classes.title}>
-            CodeContest
+            {title}
           </Typography>
+          {children}
         </Toolbar>
       </AppBar>
       <div
@@ -141,12 +145,18 @@ SideBar.propTypes = {
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
   firebase: PropTypes.object.isRequired,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string.isRequired,
+  title: PropTypes.node,
+  children: PropTypes.node,
+  appBarClassName: PropTypes.string
 };
 
 SideBar.defaultProps = {
   names: [],
-  baseRoute: '/'
+  baseRoute: '/',
+  title: 'CodeContest',
+  children: null,
+  appBarClassName: ''
 };
 
 const useStyles = makeStyles(theme => ({
@@ -210,6 +220,9 @@ const useStyles = makeStyles(theme => ({
   toolBar: {
     height: 64,
     paddingLeft: 0
+  },
+  title: {
+    flexGrow: 1
   },
   logoutButton: {
     width: '80px',

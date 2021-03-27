@@ -37,6 +37,9 @@ const routeToInterface = {
 const TeacherDashboard = props => {
   const { accounts, db, firebase, user, location } = props;
   const [teacher, setTeacher] = useState(null);
+  const [title, setTitle] = useState('CodeContest');
+  const [content, setContent] = useState(null);
+  const [clsname, setClsname] = useState('');
 
   useEffect(() => {
     if (accounts.teachers)
@@ -47,9 +50,19 @@ const TeacherDashboard = props => {
     return () => {};
   }, [db, accounts]);
 
+  const useCustomAppBar = (t, c, n) => {
+    if (t !== title) setTitle(t);
+    if (c !== content) setContent(c);
+    if (n !== clsname) setClsname(n);
+  };
+
+  useEffect(() => useCustomAppBar('CodeContest', null, ''), [location]);
+
   const getInterface = () => {
     const Interface = routeToInterface[location.pathname];
-    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
+    return Interface === null ? null : (
+      <Interface {...{ firebase, db, user, accounts, useCustomAppBar }} />
+    );
   };
 
   const getDashboard = () => {
@@ -63,7 +76,7 @@ const TeacherDashboard = props => {
         }
       }
     }
-    return Dashboard !== null ? <Dashboard {...props} /> : null;
+    return Dashboard !== null ? <Dashboard {...props} useCustomAppBar={useCustomAppBar} /> : null;
   };
 
   let approvedRoutes =
@@ -78,7 +91,11 @@ const TeacherDashboard = props => {
         names={['Profile', 'Dashboard'].concat(approvedRoutes)}
         baseRoute="/teacher"
         firebase={firebase}
-      />
+        title={title}
+        appBarClassName={clsname}
+      >
+        {content}
+      </SideBar>
       {getInterface() || getDashboard()}
     </PageWrapper>
   ) : (
