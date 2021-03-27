@@ -23,14 +23,14 @@ export const ActionButtons = styled.div({
 export const PageContent = styled.div({
   width: '100%',
   boxSizing: 'border-box',
-  padding: '40px 132px 0 132px',
+  padding: '10px 132px 0 132px',
   [breakpoints.down.md]: {
-    padding: '40px 40px 0 40px'
+    padding: '10px 40px 0 40px'
   },
   [breakpoints.down.xs]: {
-    padding: '30px 20px 0 20px'
+    padding: '10px 20px 0 20px'
   },
   '@media (max-width: 340px)': {
-    padding: '30px 0 0 0'
+    padding: '10px 0 0 0'
   }
 });

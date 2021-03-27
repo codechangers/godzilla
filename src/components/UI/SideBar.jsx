@@ -209,7 +209,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   appBar: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: 'var(--background-color)',
     boxShadow: 'none',
     '& img': {
       width: '40px',

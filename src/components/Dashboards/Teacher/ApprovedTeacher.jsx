@@ -310,7 +310,7 @@ const styles = theme => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     boxSizing: 'border-box',
-    padding: '30px 8px'
+    padding: '10px 8px 20px 8px'
   },
   editor: {
     maxWidth: '800px',
