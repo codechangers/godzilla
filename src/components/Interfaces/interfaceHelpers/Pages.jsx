@@ -28,7 +28,11 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    fetch(pages[page])
+    let doc = pages;
+    page.split('.').forEach(stop => {
+      doc = doc[stop];
+    });
+    fetch(doc)
       .then(res => res.text())
       .then(text => setContent(text));
   }, [page]);
@@ -68,7 +72,7 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
         open={showMenu}
         onClose={() => setShowMenu(false)}
         current={page}
-        items={Object.keys(pages)}
+        items={pages}
         onNav={
           isWidthDown('sm', width)
             ? p => {
