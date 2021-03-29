@@ -4,14 +4,12 @@ import addConnectEvent from './docs/addConnectEvent.md';
 import addItemToCharacter from './docs/addItemToCharacter.md';
 import addLocations from './docs/addLocations.md';
 import addResources from './docs/addResources.md';
-import analytics from './docs/analytics.md';
 import attachTo from './docs/attachTo.md';
 import cameraBounds from './docs/cameraBounds.md';
 import cameraFollow from './docs/cameraFollow.md';
 import canSend from './docs/canSend.md';
 import checkBarriers from './docs/checkBarriers.md';
 import checkBounds from './docs/checkBounds.md';
-import comments from './docs/comments.md';
 import connect from './docs/connect.md';
 import createACharacter from './docs/createACharacter.md';
 import createALocation from './docs/createALocation.md';
@@ -43,7 +41,7 @@ import handleAnimations from './docs/handleAnimations.md';
 import handleItemCollision from './docs/handleItemCollision.md';
 import handleLeaderboard from './docs/handleLeaderboard.md';
 import handleLocations from './docs/handleLocations.md';
-import handlecollision from './docs/handlecollision.md';
+import handleCollision from './docs/handleCollision.md';
 import hideItemBar from './docs/hideItemBar.md';
 import keycodes from './docs/keycodes.md';
 import loadImage from './docs/loadImage.md';
@@ -89,14 +87,12 @@ const docs = {
   addItemToCharacter,
   addLocations,
   addResources,
-  analytics,
   attachTo,
   cameraBounds,
   cameraFollow,
   canSend,
   checkBarriers,
   checkBounds,
-  comments,
   connect,
   createACharacter,
   createALocation,
@@ -125,10 +121,10 @@ const docs = {
   getYTowards,
   handleActions,
   handleAnimations,
+  handleCollision,
   handleItemCollision,
   handleLeaderboard,
   handleLocations,
-  handlecollision,
   hideItemBar,
   keycodes,
   loadImage,

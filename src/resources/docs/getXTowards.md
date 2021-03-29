@@ -1,20 +1,27 @@
----
-title: getXTowards()
-tags: [customize]
----
+# getXTowards()
+
 This method will calculate the change in x needed to move a character closer to a point.
+
 ## Parameters
-**character**: `object` - The character you want to rotate. 
 
-**x**: `number` - The x value that you want to move towards. 
+**character**: `object` - The character you want to rotate.
 
-**y**: `number` - The y value that you want to move towards. 
+**x**: `number` - The x value that you want to move towards.
+
+**y**: `number` - The y value that you want to move towards.
+
 ## Returns
-**A Number** If you continue to move the character this amount of x, it will move towards the given point. 
+
+**A Number** If you continue to move the character this amount of x, it will move towards the given point.
+
 ## Usage
-You can use this method once you have a character or resource set up in your game. You should use it along with the getYTowards method in order to move a character towards a certain point. 
+
+You can use this method once you have a character or resource set up in your game. You should use it along with the getYTowards method in order to move a character towards a certain point.
+
 ## Examples
+
 ### 1.
+
 ```
 // File: code/server/rooms/room.js
 onMessage(){

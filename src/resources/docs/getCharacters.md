@@ -1,38 +1,48 @@
----
-title: getCharacters()
-subtitle: 'Listen to Characters on the server. This will get live updates from the server about the characters in the game. When one is created, deleted, or updated!'
-tags: [customize]
-author: jason
----
+# getCharacters()
+
+Listen to Characters on the server. This will get live updates from the server about the characters in the game. When one is created, deleted, or updated!
+
 ## Parameters
-**type**: `string` - The type of characters to get, ie. player, wizards, goblins.<br><br>
-​
-**onAdd**: `function` - Code that is run when a character is added.<br><br>
-​
-**onRemove**: `function` - Code that is run when a character is removed.<br><br>
-​
-**onUpdate**:  `function` - Code that is run when an existing character is updated.
-​
-​
+
+**type**: `string` - The type of characters to get, ie. player, wizards, goblins.
+
+**onAdd**: `function` - Code that is run when a character is added.
+
+**onRemove**: `function` - Code that is run when a character is removed.
+
+**onUpdate**: `function` - Code that is run when an existing character is updated.
+
 ## Returns
+
 **Nothing**
 ​
+
 ## Usage
+
 This method should only be called in the `create` method of the `game.js` file. The callback function `onAdd`, `onRemove`, and `onUpdate` are optional but must be called in the correct order. `onAdd` functions will receive a character `object` and data `object` as parameters:
+
 ```
 function onAdd(character, data) {}
 ```
+
 `onRemove` functions will receive an id `string` as a parameter:
+
 ```
 function onRemove(id) {}
 ```
+
 `onUpdate` functions will receive an id `string`, attribute `string`, and value `object` as parameters:
+
 ```
 function onUpdate(id, attribute, value) {}
 ```
+
 ​
+
 ## Examples
+
 ### Example 1
+
 ```
 // File: code/client/src/game.js
 create() {
@@ -40,7 +50,9 @@ create() {
 	g.getCharacters('goblins');
 }
 ```
+
 ### Example 2
+
 ```
 // File: code/client/src/game.js
 create() {
@@ -57,7 +69,9 @@ create() {
 	g.getCharacters('heros', onAdd, onRemove, onUpdate);
 }
 ```
+
 ### Example 3
+
 ```
 // File: code/client/src/game.js
 create() {

@@ -1,28 +1,34 @@
----
-title: follow()
-tags: [customize]
----
-[ *This is a `room.js` method.*  ] This method will have one type of character or resource follow another type.
+# follow()
+
+This method will have one type of character or resource follow another type.
 ​
+
 ## Parameters
+
 ​
-**type1**:  `string` - The type of character or resource that will be followed, ie. players, wizards, knights.<br><br>
-​
-**type2**:  `string` - The type of character or resources that will follow the type1 character, ie. enemies, pets, resources.<br><br>
-​
-**range**:  `number` - How close the followers can get to the character being followed.<br><br>
-​
-**speed**:  `number` - The rate of speed the followers move at, ie. 0.5 for half speed, 2 for double speed.
-​
+**type1**: `string` - The type of character or resource that will be followed, ie. players, wizards, knights.
+
+**type2**: `string` - The type of character or resources that will follow the type1 character, ie. enemies, pets, resources.
+
+**range**: `number` - How close the followers can get to the character being followed.
+
+**speed**: `number` - The rate of speed the followers move at, ie. 0.5 for half speed, 2 for double speed.
+
 ## Returns
+
 **Nothing**
 ​
+
 ## Usage
+
 ​
 This method should be used in the `onUpdate`. It can be used as long as you have created the characters or resources to use it with. It can be used anytime you need one character or resource to follow another character or resource.
 ​
+
 ## Examples
+
 ### Examples 1
+
 ```
 // File: code/server/rooms/room.js
 onUpdate() {
@@ -30,7 +36,9 @@ onUpdate() {
 	g.follow('players', 'goblins', 50, 0.5);
 }
 ```
+
 ### Examples 2
+
 ```
 // File: code/server/rooms/room.js
 onUpdate() {
