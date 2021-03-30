@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
@@ -32,6 +32,18 @@ const routeToInterface = {
 };
 
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
+  const [title, setTitle] = useState('CodeContest');
+  const [content, setContent] = useState(null);
+  const [clsname, setClsname] = useState('');
+
+  const useCustomAppBar = (t, c, n) => {
+    if (t !== title) setTitle(t);
+    if (c !== content) setContent(c);
+    if (n !== clsname) setClsname(n);
+  };
+
+  useEffect(() => useCustomAppBar('CodeContest', null, ''), [location]);
+
   const getID = () => {
     const path = location.pathname;
     if (path.includes('/parent/signup/') && path.length > 18) {
@@ -44,7 +56,9 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
     const { state, pathname } = location;
     const id = (state && state.signupID) || (state && state.searchId);
     const Interface = routeToInterface[id ? pathname.replace(`/${id}`, '') : pathname];
-    return Interface === null ? null : <Interface {...{ firebase, accounts, db, user }} />;
+    return Interface === null ? null : (
+      <Interface {...{ firebase, accounts, db, user, useCustomAppBar }} />
+    );
   };
 
   const SP = apiKey ? StripeProvider : Fail;
