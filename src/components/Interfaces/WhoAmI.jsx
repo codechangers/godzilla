@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { useChildren } from '../../hooks/children';
 
 const propTypes = {
   setWhoAmI: PropTypes.func.isRequired,
@@ -7,34 +8,16 @@ const propTypes = {
 };
 
 const WhoAmInterface = ({ setWhoAmI, accounts }) => {
-  const [children, setChildren] = useState([]);
-
-  /**
-   * Subscribe to the parent's children.
-   */
-  useEffect(
-    () =>
-      accounts.parents.ref.onSnapshot(async parentDoc => {
-        const childrenRefs = parentDoc.data().children || [];
-        setChildren(
-          await Promise.all(
-            childrenRefs.map(async childRef => {
-              const childDoc = await childRef.get();
-              return { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-            })
-          )
-        );
-      }),
-    [accounts]
-  );
+  const children = useChildren(accounts);
 
   return (
     <div>
       <h1>Hello World</h1>
       {children.map(child => (
-        <p key={child.id}>{child.fName}</p>
+        <button key={child.id} onClick={() => setWhoAmI(child.id)}>
+          {child.fName}
+        </button>
       ))}
-      <button onClick={() => setWhoAmI('bob')}>Bye!</button>
     </div>
   );
 };
