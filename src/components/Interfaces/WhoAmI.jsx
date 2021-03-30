@@ -14,7 +14,7 @@ const WhoAmInterface = ({ setWhoAmI, accounts }) => {
     <div>
       <h1>Hello World</h1>
       {children.map(child => (
-        <button key={child.id} onClick={() => setWhoAmI(child.id)}>
+        <button key={child.id} onClick={() => setWhoAmI(child.ref)}>
           {child.fName}
         </button>
       ))}

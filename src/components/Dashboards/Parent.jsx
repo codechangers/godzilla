@@ -39,7 +39,7 @@ const routeToInterface = {
 const whoAmIRoutes = ['/parent/docs', '/parent/tutorials'];
 
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
-  const [whoAmI, setWhoAmI] = useState('');
+  const [whoAmI, setWhoAmI] = useState(null);
   const [title, setTitle] = useState('CodeContest');
   const [content, setContent] = useState(null);
   const [clsname, setClsname] = useState('');
@@ -65,9 +65,9 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
     const id = (state && state.signupID) || (state && state.searchId);
     const cleanPath = id ? pathname.replace(`/${id}`, '') : pathname;
     let Interface = routeToInterface[cleanPath];
-    if (whoAmIRoutes.includes(cleanPath) && whoAmI === '') Interface = WhoAmInterface;
+    if (whoAmIRoutes.includes(cleanPath) && whoAmI === null) Interface = WhoAmInterface;
     return Interface === null ? null : (
-      <Interface {...{ firebase, accounts, db, user, useCustomAppBar, setWhoAmI }} />
+      <Interface {...{ firebase, accounts, db, user, useCustomAppBar, whoAmI, setWhoAmI }} />
     );
   };
 

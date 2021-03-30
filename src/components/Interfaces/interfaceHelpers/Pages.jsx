@@ -6,24 +6,28 @@ import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import NavDrawer from '../../UI/NavDrawer';
+import { useChild } from '../../../hooks/children';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
-  homePage: PropTypes.string
+  homePage: PropTypes.string,
+  whoAmI: PropTypes.object
 };
 
 const defaultProps = {
-  homePage: 'home'
+  homePage: 'home',
+  whoAmI: null
 };
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
+const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
+  const child = useChild(whoAmI);
 
   const classes = useStyles();
 
@@ -40,7 +44,7 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
   useEffect(
     () =>
       useCustomAppBar(
-        page,
+        child !== null ? page + ` => ${child.fName}` : page,
         <Tooltip title="Pages Menu" placement="left">
           <IconButton
             color="inherit"
