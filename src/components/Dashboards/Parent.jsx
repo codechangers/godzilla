@@ -9,6 +9,8 @@ import ClassInfoInterface from '../Interfaces/ClassInfo';
 import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
+import DocumentationInterface from '../Interfaces/Documentation';
+import TutorialsInterface from '../Interfaces/Tutorials';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -28,7 +30,9 @@ const routeToInterface = {
   '/parent/signup': ClassInfoInterface,
   '/parent/search': ClassSearchInterface,
   '/parent/profile': Profile,
-  '/parent/settings': SettingsInterface
+  '/parent/settings': SettingsInterface,
+  '/parent/docs': DocumentationInterface,
+  '/parent/tutorials': TutorialsInterface
 };
 
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
@@ -68,10 +72,16 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'My Classes', 'Class Search'].concat(approvedRoutes)}
+        names={['Profile', 'My Classes', 'Class Search', 'Docs', 'Tutorials'].concat(
+          approvedRoutes
+        )}
         baseRoute="/parent"
         firebase={firebase}
-      />
+        title={title}
+        appBarClassName={clsname}
+      >
+        {content}
+      </SideBar>
       <SP apiKey={apiKey}>
         <Elements>
           {getInterface() || <ClassViewInterface firebase={firebase} db={db} accounts={accounts} />}
