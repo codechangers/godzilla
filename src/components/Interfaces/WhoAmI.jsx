@@ -16,16 +16,16 @@ const WhoAmInterface = ({ setWhoAmI, accounts }) => {
     () =>
       accounts.parents.ref.onSnapshot(async parentDoc => {
         const childrenRefs = parentDoc.data().children || [];
-        const childrenData = [];
-        await Promise.all(
-          childrenRefs.map(async childRef => {
-            const childDoc = await childRef.get();
-            childrenData.push({ ...childDoc.data(), id: childDoc.id, ref: childDoc.ref });
-          })
+        setChildren(
+          await Promise.all(
+            childrenRefs.map(async childRef => {
+              const childDoc = await childRef.get();
+              return { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
+            })
+          )
         );
-        setChildren(childrenData);
       }),
-    []
+    [accounts]
   );
 
   return (
