@@ -11,6 +11,7 @@ import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import DocumentationInterface from '../Interfaces/Documentation';
 import TutorialsInterface from '../Interfaces/Tutorials';
+import WhoAmInterface from '../Interfaces/WhoAmI';
 
 const propTypes = {
   firebase: PropTypes.object.isRequired,
@@ -35,7 +36,10 @@ const routeToInterface = {
   '/parent/tutorials': TutorialsInterface
 };
 
+const whoAmIRoutes = ['/parent/docs', '/parent/tutorials'];
+
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
+  const [whoAmI, setWhoAmI] = useState('');
   const [title, setTitle] = useState('CodeContest');
   const [content, setContent] = useState(null);
   const [clsname, setClsname] = useState('');
@@ -59,9 +63,11 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
   const getInterface = () => {
     const { state, pathname } = location;
     const id = (state && state.signupID) || (state && state.searchId);
-    const Interface = routeToInterface[id ? pathname.replace(`/${id}`, '') : pathname];
+    const cleanPath = id ? pathname.replace(`/${id}`, '') : pathname;
+    let Interface = routeToInterface[cleanPath];
+    if (whoAmIRoutes.includes(cleanPath) && whoAmI === '') Interface = WhoAmInterface;
     return Interface === null ? null : (
-      <Interface {...{ firebase, accounts, db, user, useCustomAppBar }} />
+      <Interface {...{ firebase, accounts, db, user, useCustomAppBar, setWhoAmI }} />
     );
   };
 
