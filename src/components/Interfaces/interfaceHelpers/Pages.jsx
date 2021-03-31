@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles } from '@material-ui/core';
+import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -48,18 +48,27 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
   useEffect(
     () =>
       useCustomAppBar(
-        child !== null ? page + ` => ${child.fName}` : page,
-        <Tooltip title="Pages Menu" placement="left">
-          <IconButton
-            color="inherit"
-            aria-label="showMenu drawer"
-            edge="end"
-            onClick={() => setShowMenu(!showMenu)}
-            className={clsx(showMenu && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Tooltip>,
+        page,
+        <>
+          {child !== null && (
+            <Tooltip title="Change Profile" placement="bottom">
+              <Button onClick={() => console.log('click')} className={classes.profButton}>
+                {child.fName}
+              </Button>
+            </Tooltip>
+          )}
+          <Tooltip title="Pages Menu" placement="bottom">
+            <IconButton
+              color="inherit"
+              aria-label="showMenu drawer"
+              edge="end"
+              onClick={() => setShowMenu(!showMenu)}
+              className={clsx(showMenu && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        </>,
         clsx(classes.appBar, {
           [classes.appBarShift]: showMenu
         })
@@ -153,6 +162,10 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginRight: drawerWidth
+  },
+  profButton: {
+    marginRight: 20,
+    padding: '6px 16px'
   }
 }));
 
