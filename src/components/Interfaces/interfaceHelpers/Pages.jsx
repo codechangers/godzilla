@@ -111,6 +111,7 @@ const PagesInterface = ({
             : setPage
         }
         width={drawerWidth}
+        locked={child !== null}
       />
       <WhoAmIModal
         open={showProfile}

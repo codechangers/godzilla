@@ -9,11 +9,26 @@ const propTypes = {
   onNav: PropTypes.func.isRequired,
   current: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
-  width: PropTypes.number.isRequired
+  width: PropTypes.number.isRequired,
+  locked: PropTypes.bool,
+  whiteList: PropTypes.arrayOf(PropTypes.string)
 };
 
-const NavDrawer = ({ open, onNav, current, items, width }) => {
+const defaultProps = {
+  locked: false,
+  whiteList: []
+};
+
+const globalWhiteList = ['welcome', 'introduction'];
+
+const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
+
+  const shouldDisable = item => {
+    const unlocked = [...globalWhiteList, ...whiteList];
+    return locked && !unlocked.includes(item);
+  };
+
   return (
     <Drawer
       className={classes.drawer}
@@ -30,6 +45,7 @@ const NavDrawer = ({ open, onNav, current, items, width }) => {
             <ListItem
               button
               key={item}
+              disabled={shouldDisable(item)}
               className={clsx({ [classes.selected]: current === item })}
               onClick={() => onNav(item)}
             >
@@ -43,6 +59,7 @@ const NavDrawer = ({ open, onNav, current, items, width }) => {
               onClick={onNav}
               prefix={`${item}.`}
               current={current}
+              shouldDisable={shouldDisable}
             />
           )
         )}
@@ -52,8 +69,9 @@ const NavDrawer = ({ open, onNav, current, items, width }) => {
 };
 
 NavDrawer.propTypes = propTypes;
+NavDrawer.defaultProps = defaultProps;
 
-const Folder = ({ title, items, prefix, current, onClick }) => {
+const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   return (
@@ -73,6 +91,7 @@ const Folder = ({ title, items, prefix, current, onClick }) => {
               <ListItem
                 button
                 key={item}
+                disabled={shouldDisable(item)}
                 onClick={() => onClick(prefix + item)}
                 className={clsx({ [classes.selected]: current === prefix + item })}
               >
@@ -85,6 +104,7 @@ const Folder = ({ title, items, prefix, current, onClick }) => {
                 items={value}
                 onClick={onClick}
                 prefix={`${prefix}${item}.`}
+                shouldDisable={shouldDisable}
               />
             )
           )}
@@ -98,7 +118,8 @@ Folder.propTypes = {
   items: PropTypes.object.isRequired,
   prefix: PropTypes.string.isRequired,
   current: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  shouldDisable: PropTypes.func.isRequired
 };
 
 const useStyles = drawerWidth =>
