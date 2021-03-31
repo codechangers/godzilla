@@ -6,7 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import NavDrawer from '../../UI/NavDrawer';
-import { useChild } from '../../../hooks/children';
+import { toData } from '../../../helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -27,10 +27,13 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
-  const child = useChild(whoAmI);
-
+  const [child, setChild] = useState(whoAmI);
   const classes = useStyles();
 
+  // Subscribe to child updates.
+  useEffect(() => whoAmI?.ref.onSnapshot(childDoc => setChild(toData(childDoc))), [whoAmI]);
+
+  // Fetch page content.
   useEffect(() => {
     let doc = pages;
     page.split('.').forEach(stop => {
@@ -41,6 +44,7 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
       .then(text => setContent(text));
   }, [page]);
 
+  // Customize AppBar.
   useEffect(
     () =>
       useCustomAppBar(

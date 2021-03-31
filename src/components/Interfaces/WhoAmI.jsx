@@ -21,7 +21,7 @@ const WhoAmInterface = ({ setWhoAmI, accounts }) => {
           <Button
             variant="outlined"
             key={child.id}
-            onClick={() => setWhoAmI(child.ref)}
+            onClick={() => setWhoAmI(child)}
             className={classes.button}
           >
             {child.fName}
