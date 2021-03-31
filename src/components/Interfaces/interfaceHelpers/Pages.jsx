@@ -5,6 +5,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
 
@@ -12,6 +13,8 @@ const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  setWhoAmI: PropTypes.func.isRequired,
   homePage: PropTypes.string,
   whoAmI: PropTypes.object
 };
@@ -23,8 +26,17 @@ const defaultProps = {
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => {
+const PagesInterface = ({
+  width,
+  pages,
+  homePage,
+  useCustomAppBar,
+  whoAmI,
+  setWhoAmI,
+  accounts
+}) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
   const [child, setChild] = useState(whoAmI);
@@ -52,7 +64,7 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
         <>
           {child !== null && (
             <Tooltip title="Change Profile" placement="bottom">
-              <Button onClick={() => console.log('click')} className={classes.profButton}>
+              <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
                 {child.fName}
               </Button>
             </Tooltip>
@@ -73,7 +85,7 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
           [classes.appBarShift]: showMenu
         })
       ),
-    [page, showMenu, classes]
+    [page, showMenu, classes, child]
   );
 
   return (
@@ -99,6 +111,12 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar, whoAmI }) => 
             : setPage
         }
         width={drawerWidth}
+      />
+      <WhoAmIModal
+        open={showProfile}
+        onClose={() => setShowProfile(false)}
+        accounts={accounts}
+        setWhoAmI={setWhoAmI}
       />
     </div>
   );
