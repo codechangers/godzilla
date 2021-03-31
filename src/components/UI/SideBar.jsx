@@ -89,6 +89,7 @@ const SideBar = ({
           {small ? (
             <IconButton
               style={{
+                color: 'white',
                 padding: 8,
                 margin: '0 28px'
               }}
@@ -199,13 +200,13 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: 'rgba(0, 20, 60, 0.6)'
+      color: 'white'
     },
     '& > a > div:hover': {
-      color: 'rgba(0, 0, 0, 0.6)'
+      color: 'lightgrey'
     },
     '& > a > div.selected': {
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: 'white'
     }
   },
   appBar: {
@@ -225,6 +226,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   logoutButton: {
+    color: 'white',
     width: '80px',
     position: 'absolute',
     bottom: '6px',

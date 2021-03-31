@@ -95,7 +95,9 @@ const PromoCodesInterface = ({ user, db }) => {
         paddingBottom: 30
       }}
     >
-      <Typography variant="h3">Promo Codes</Typography>
+      <Typography variant="h3" className="white">
+        Promo Codes
+      </Typography>
       {!showOldPromos ? (
         <Button
           variant="outlined"
@@ -128,6 +130,7 @@ const PromoCodesInterface = ({ user, db }) => {
       {!showOldPromos && (
         <Button
           variant="outlined"
+          className="white"
           style={{ marginTop: 40, marginBottom: 18 }}
           onClick={() => setShowOldPromos(true)}
         >

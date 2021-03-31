@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles.css';
 import { Redirect, withRouter, Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -169,7 +170,7 @@ class Login extends React.Component {
       <div className={classes.pageWrapper}>
         <Box className={classes.leftContent}>
           <LogoText className={classes.logoText} />
-          <div className={classes.loginForm}>
+          <div className={classes.loginForm} id="form">
             <Typography variant="h2" style={{ marginBottom: '40px' }}>
               {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
             </Typography>
@@ -282,7 +283,6 @@ class Login extends React.Component {
     );
   }
 }
-
 Login.propTypes = propTypes;
 
 const styles = theme => ({
@@ -305,7 +305,7 @@ const styles = theme => ({
     width: '45%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
-      padding: '30px 10px'
+      padding: '30px 45px'
     },
     minWidth: '300px',
     height: '100%',

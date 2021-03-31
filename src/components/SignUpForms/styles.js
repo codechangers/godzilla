@@ -6,7 +6,7 @@ export const AccountType = styled.div({
   width: '100%',
   minHeight: '100vh',
   boxSizing: 'border-box',
-  backgroundColor: '#f4f4f4',
+  backgroundColor: '#120d26',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -25,7 +25,7 @@ export const AccountSelectionSection = styled.div({
   width: '100%',
   marginTop: 54,
   marginBottom: 75,
-  backgroundColor: '#f4f4f4'
+  backgroundColor: '#120d26'
 });
 
 export const AccountSelectionCards = styled.div({
@@ -187,7 +187,7 @@ export const ListItem = styled.div({
   backgroundColor: 'white',
   borderRadius: 0,
   '&:nth-child(odd)': {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: '#120d26',
     borderRadius: 4
   },
   '@media (max-width: 420px)': {

@@ -8,7 +8,7 @@ import ParentSignUp from '../SignUpForms/ParentSignUp';
 import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import ThankYou from '../SignUpForms/ThankYou';
-import logoText from '../../assets/images/logoText.svg';
+import logoText from '../../assets/images/logoText.png';
 import autoBind from '../../autoBind';
 
 import * as Styled from './styles';

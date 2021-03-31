@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles.css';
 import { Card, CardHeader, CardContent, Typography, Button } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
@@ -25,7 +26,8 @@ const AccountType = ({ setAccountType, next, width }) => (
   <Styled.AccountType>
     <Styled.AccountSelectionSection>
       <Typography variant="h2" style={getHeaderStyle(width)}>
-        <span>Select the type of</span> <span>Account you need</span>
+        <span className="white">Select the type of </span>
+        <span className="white">Account you need</span>
       </Typography>
       <Styled.AccountSelectionCards>
         <Card style={{ width: '40%', minWidth: '300px' }}>
@@ -83,7 +85,8 @@ const AccountType = ({ setAccountType, next, width }) => (
           next();
         }}
       >
-        <span>Need an Organization Account?</span> <span>Register Here</span>
+        <span className="white">Need an Organization Account? </span>
+        <span className="white"> Register Here</span>
       </Styled.AccountLinkButton>
     </Styled.AccountLinkButtonWrapper>
   </Styled.AccountType>

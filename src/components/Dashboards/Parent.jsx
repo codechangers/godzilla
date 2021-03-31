@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles.css';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import { PageWrapper } from './styles';
@@ -20,9 +21,13 @@ const routeToInterface = {
 };
 
 const Fail = () => (
-  <div style={{ display: 'flex', flexDirection: 'column' }}>
-    <h1 style={{ marginTop: 36 }}>Unable to connect to our payment servers...</h1>
-    <h2 style={{ textAlign: 'center' }}>Please try again later</h2>
+  <div className="white" style={{ display: 'flex', flexDirection: 'column' }}>
+    <h1 className="white" style={{ marginTop: 36 }}>
+      Unable to connect to our payment servers...
+    </h1>
+    <h2 className="white" style={{ textAlign: 'center' }}>
+      Please try again later
+    </h2>
   </div>
 );
 

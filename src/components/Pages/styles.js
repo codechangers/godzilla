@@ -9,7 +9,7 @@ export const SignupWrapper = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   boxSizing: 'border-box',
-  backgroundColor: '#f4f4f4'
+  backgroundColor: '#120d26'
 });
 
 export const Form = styled.div(

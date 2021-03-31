@@ -410,7 +410,7 @@ class ProfileInterface extends React.Component {
     const { classes } = this.props;
     return (
       <Styled.PageContent className={classes.wrapper}>
-        <Typography variant="h3" style={{ textAlign: 'center' }}>
+        <Typography className="white" variant="h3" style={{ textAlign: 'center' }}>
           Edit Your Profile
         </Typography>
         <Paper className={classes.paperListItem}>

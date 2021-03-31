@@ -246,7 +246,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
     </Styled.PageContent>
   ) : (
     <Styled.PageContent>
-      <Typography variant="h3" className={classes.mainHeader}>
+      <Typography variant="h3" className={(classes.mainHeader, 'white')}>
         {foundClass ? 'Class Info' : 'Class not found.'}
       </Typography>
       {isEditing && (
@@ -593,7 +593,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   fill: {
-    background: '#ddd',
+    background: 'white',
     borderRadius: '3px',
     display: 'flex',
     justifyContent: 'center',
@@ -611,6 +611,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px'
   },
   logoFill: {
+    color: 'white',
     width: '90%',
     height: '140px',
     marginBottom: '10px'
@@ -626,6 +627,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   mapsFill: {
+    color: 'white',
     width: '75%',
     height: '250px',
     [theme.breakpoints.down('md')]: {
@@ -660,6 +662,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   youtubeFill: {
+    color: 'white',
     width: '90%',
     height: '350px',
     margin: '10px 0',

@@ -1,0 +1,9 @@
+#form{
+ padding:20px;
+ background-color:white;
+ width: calc(100% - 40px);
+ border-radius:15px;
+}
+.white{
+  color:white!important;
+}

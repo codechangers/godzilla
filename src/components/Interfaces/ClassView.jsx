@@ -155,10 +155,13 @@ class ClassViewInterface extends React.Component {
         <div className={classes.classesContainer}>
           <div className={classes.titleRow}>
             <div style={{ width: '124.58px' }} />
-            <Typography variant="h3">View Your Classes</Typography>
+            <Typography className="white" variant="h3">
+              View Your Classes
+            </Typography>
             {!this.state.showEmpty ? (
               <Button
                 color="primary"
+                className="white"
                 variant="contained"
                 style={{ padding: '6px 26px' }}
                 onClick={() => this.setState({ showKidCreator: true })}
@@ -171,10 +174,12 @@ class ClassViewInterface extends React.Component {
           </div>
           {this.state.showEmpty && (
             <div className={classes.emptyWarning}>
-              <Typography variant="h6">
+              <Typography className="white" variant="h6">
                 Looks like you don&apos;t have any kids registered yet.
               </Typography>
-              <Button onClick={() => this.setState({ showKidCreator: true })}>Add them now!</Button>
+              <Button className="white" onClick={() => this.setState({ showKidCreator: true })}>
+                Add them now!
+              </Button>
             </div>
           )}
           {!this.state.showEmpty && (
@@ -184,7 +189,7 @@ class ClassViewInterface extends React.Component {
                   <ChevronLeft />
                 </IconButton>
                 <Tabs
-                  className={classes.childTabBar}
+                  className={(classes.childTabBar, 'white')}
                   value={this.state.tabIndex}
                   onChange={this.changeTab}
                   indicatorColor="primary"
@@ -198,7 +203,7 @@ class ClassViewInterface extends React.Component {
                 </IconButton>
               </div>
               <div className={classes.expiredToggle}>
-                <p>Show Expired Classes</p>
+                <p className="white">Show Expired Classes</p>
                 <Switch
                   checked={showOldClasses}
                   onChange={() => this.setState({ showOldClasses: !showOldClasses })}
@@ -234,11 +239,13 @@ class ClassViewInterface extends React.Component {
                   (this.state.showOldClasses && child.classesData.length > 0) ? null : (
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                       <div className={classes.emptyWarning}>
-                        <Typography variant="h6">
+                        <Typography className="white" variant="h6">
                           Looks like you haven&apos;t signed up for any classes yet.
                         </Typography>
                         <Button>
-                          <Link to="/parent/search">Find one now!</Link>
+                          <Link to="/parent/search" className="white">
+                            Find one now!
+                          </Link>
                         </Button>
                       </div>
                     </div>
@@ -343,6 +350,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     '& button': {
+      color: 'white',
       height: '30px !important'
     }
   },

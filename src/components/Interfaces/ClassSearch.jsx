@@ -79,7 +79,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   return (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column' }}>
       <div className={classes.headerWrapper}>
-        <Typography variant="h3" className={classes.pageHeader}>
+        <Typography variant="h3" className={(classes.pageHeader, 'white')}>
           Class Search
         </Typography>
         <div className={classes.typesWrapper}>

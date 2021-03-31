@@ -3,7 +3,9 @@ import { Typography } from '@material-ui/core';
 
 const DeclinedOrganization = () => (
   <div style={{ margin: 'auto' }}>
-    <Typography variant="h4">Welcome to the Declined Organization Dashboard</Typography>
+    <Typography className="white" variant="h4">
+      Welcome to the Declined Organization Dashboard
+    </Typography>
   </div>
 );
 
