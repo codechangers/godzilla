@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
+import { Typography } from '@material-ui/core';
 import { PageWrapper } from './styles';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
@@ -102,9 +103,14 @@ ParentDashboard.propTypes = propTypes;
 ParentDashboard.defaultProps = defaultProps;
 
 const Fail = () => (
-  <div style={{ display: 'flex', flexDirection: 'column' }}>
-    <h1 style={{ marginTop: 36 }}>Unable to connect to our payment servers...</h1>
-    <h2 style={{ textAlign: 'center' }}>Please try again later</h2>
+  <div style={{ display: 'flex', flexDirection: 'column', padding: 12 }}>
+    <Typography variant="h4" style={{ marginTop: 36, marginBottom: 18 }}>
+      Server Error!
+    </Typography>
+    <Typography variant="body1" style={{ marginBottom: 18 }}>
+      Sorry, we are currently experiencing some technical difficulties.
+    </Typography>
+    <Typography variant="h5">Please try again later.</Typography>
   </div>
 );
 
