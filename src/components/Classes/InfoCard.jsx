@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper, IconButton, Button, Tooltip, withStyles } from '@material-ui/core';
+import { Paper, IconButton, Button, Tooltip, makeStyles } from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -11,8 +11,88 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { URL } from '../../globals';
 import InfoCardHeader from './InfoCardHeader';
 import CSVDownload from '../UI/CSVDownload';
-import autoBind from '../../autoBind';
 import StudentInfo from './StudentInfo';
+import { useChildren } from '../../hooks/children';
+
+const propTypes = {
+  cls: PropTypes.object.isRequired,
+  openUpdate: PropTypes.func.isRequired,
+  openDelete: PropTypes.func.isRequired,
+  openContacts: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired
+};
+
+const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => {
+  const students = useChildren(cls.children);
+
+  const studentData = () =>
+    students.map(s => ({
+      first_name: s.fName,
+      last_name: s.lName,
+      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
+      password: '12345678'
+    }));
+
+  const classes = useStyles();
+  const small = isWidthUp(width, 'sm');
+
+  return (
+    <Paper className={classes.wrapper}>
+      <InfoCardHeader cls={cls} />
+      <div className={classes.options}>
+        <CopyToClipboard text={`${URL}/search/${cls.id}`}>
+          <Option
+            icon={<LinkIcon />}
+            text="Student Sign Up Link"
+            label="signup-link"
+            small={small}
+          />
+        </CopyToClipboard>
+        <CSVDownload filename={`${cls.name}-students.csv`} data={studentData()}>
+          <Option
+            icon={<DownloadIcon />}
+            text="Download Logins"
+            label="download-logins"
+            small={small}
+          />
+        </CSVDownload>
+        <Option
+          onClick={openContacts}
+          icon={<ContactsIcon />}
+          text="Contact Info"
+          label="contact-info"
+          small={small}
+        />
+        <Option
+          onClick={openUpdate}
+          icon={<EditIcon />}
+          text="Edit Class"
+          label="edit-class"
+          small={small}
+        />
+        <Option
+          onClick={openDelete}
+          icon={<DeleteIcon />}
+          text="Delete Class"
+          label="delete-class"
+          small={small}
+        />
+      </div>
+      <button onClick={() => {}} className={classes.checkOffButton}>
+        Check Off Progress
+      </button>
+      <div className={classes.studWrapper}>
+        <div className={classes.students}>
+          <StudentInfo showLabels />
+          {students.map(student => (
+            <StudentInfo student={student} key={student.id} />
+          ))}
+        </div>
+      </div>
+    </Paper>
+  );
+};
+ClassInfoCard.propTypes = propTypes;
 
 const Option = ({ onClick, icon, text, label, small }) =>
   small ? (
@@ -25,7 +105,6 @@ const Option = ({ onClick, icon, text, label, small }) =>
       {text}
     </Button>
   );
-
 Option.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.node,
@@ -33,7 +112,6 @@ Option.propTypes = {
   label: PropTypes.string,
   small: PropTypes.bool
 };
-
 Option.defaultProps = {
   onClick: () => null,
   icon: null,
@@ -42,109 +120,7 @@ Option.defaultProps = {
   small: false
 };
 
-class ClassInfoCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      students: []
-    };
-    autoBind(this);
-  }
-
-  componentDidMount() {
-    const { children } = this.props.cls;
-    const students = [];
-    children.forEach(childRef => {
-      childRef.get().then(childDoc => {
-        const student = { ...childDoc.data(), id: childDoc.id };
-        students.push(student);
-        if (students.length === children.length) {
-          this.setState({ students });
-        }
-      });
-    });
-  }
-
-  getStudentData() {
-    return this.state.students.map(s => ({
-      first_name: s.fName,
-      last_name: s.lName,
-      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
-      password: '12345678'
-    }));
-  }
-
-  render() {
-    const { classes, cls, openUpdate, openDelete, openContacts, width } = this.props;
-    const small = isWidthUp(width, 'sm');
-    return (
-      <Paper className={classes.wrapper}>
-        <InfoCardHeader cls={cls} />
-        <div className={classes.options}>
-          <CopyToClipboard text={`${URL}/search/${cls.id}`}>
-            <Option
-              icon={<LinkIcon />}
-              text="Student Sign Up Link"
-              label="signup-link"
-              small={small}
-            />
-          </CopyToClipboard>
-          <CSVDownload filename={`${cls.name}-students.csv`} data={this.getStudentData()}>
-            <Option
-              icon={<DownloadIcon />}
-              text="Download Logins"
-              label="download-logins"
-              small={small}
-            />
-          </CSVDownload>
-          <Option
-            onClick={openContacts}
-            icon={<ContactsIcon />}
-            text="Contact Info"
-            label="contact-info"
-            small={small}
-          />
-          <Option
-            onClick={openUpdate}
-            icon={<EditIcon />}
-            text="Edit Class"
-            label="edit-class"
-            small={small}
-          />
-          <Option
-            onClick={openDelete}
-            icon={<DeleteIcon />}
-            text="Delete Class"
-            label="delete-class"
-            small={small}
-          />
-        </div>
-        <button onClick={() => {}} className={classes.checkOffButton}>
-          Check Off Progress
-        </button>
-        <div className={classes.studWrapper}>
-          <div className={classes.students}>
-            <StudentInfo showLabels />
-            {this.state.students.map(student => (
-              <StudentInfo student={student} key={student.id} />
-            ))}
-          </div>
-        </div>
-      </Paper>
-    );
-  }
-}
-
-ClassInfoCard.propTypes = {
-  cls: PropTypes.object.isRequired,
-  openUpdate: PropTypes.func.isRequired,
-  openDelete: PropTypes.func.isRequired,
-  openContacts: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
-  width: PropTypes.string.isRequired
-};
-
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     width: '100%',
     marginBottom: 40,
@@ -195,6 +171,6 @@ const styles = theme => ({
     textDecoration: 'underline',
     marginLeft: 40
   }
-});
+}));
 
-export default withWidth()(withStyles(styles)(ClassInfoCard));
+export default withWidth()(ClassInfoCard);
