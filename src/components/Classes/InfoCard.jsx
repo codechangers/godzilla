@@ -119,6 +119,9 @@ class ClassInfoCard extends React.Component {
             small={small}
           />
         </div>
+        <button onClick={() => {}} className={classes.checkOffButton}>
+          Check Off Progress
+        </button>
         <div className={classes.studWrapper}>
           <div className={classes.students}>
             <StudentInfo showLabels />
@@ -181,6 +184,16 @@ const styles = theme => ({
   students: {
     padding: '0 24px',
     minWidth: 936
+  },
+  checkOffButton: {
+    background: 'none',
+    outline: 'none',
+    border: 'none',
+    padding: 0,
+    fontSize: 14,
+    cursor: 'pointer',
+    textDecoration: 'underline',
+    marginLeft: 40
   }
 });
 
