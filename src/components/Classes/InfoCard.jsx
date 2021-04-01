@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, IconButton, Button, Tooltip, makeStyles } from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
@@ -13,6 +13,7 @@ import InfoCardHeader from './InfoCardHeader';
 import CSVDownload from '../UI/CSVDownload';
 import StudentInfo from './StudentInfo';
 import { useChildren } from '../../hooks/children';
+import CheckOffModal from './CheckOffModal';
 
 const propTypes = {
   cls: PropTypes.object.isRequired,
@@ -23,6 +24,7 @@ const propTypes = {
 };
 
 const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => {
+  const [showCheckOff, setShowCheckOff] = useState(false);
   const students = useChildren(cls.children);
 
   const studentData = () =>
@@ -78,9 +80,10 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
           small={small}
         />
       </div>
-      <button onClick={() => {}} className={classes.checkOffButton}>
+      <button onClick={() => setShowCheckOff(true)} className={classes.checkOffButton}>
         Check Off Progress
       </button>
+      <CheckOffModal open={showCheckOff} onClose={() => setShowCheckOff(false)} />
       <div className={classes.studWrapper}>
         <div className={classes.students}>
           <StudentInfo showLabels />
