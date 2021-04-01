@@ -9,8 +9,8 @@ export const useParentChildren = accounts => {
   useEffect(
     () =>
       accounts.parents.ref.onSnapshot(async parentDoc => {
-        const childrenRefs = parentDoc.data().children || [];
-        setChildren(await getChildren(childrenRefs));
+        const childRefs = parentDoc.data().children || [];
+        setChildren(await getChildren(childRefs));
       }),
     [accounts]
   );
@@ -20,7 +20,7 @@ export const useParentChildren = accounts => {
 /**
  * Get data from childRefs.
  */
-export const useChildren = childrenRefs => {
+export const useChildren = childRefs => {
   const [children, setChildren] = useState([]);
   useEffect(() => {
     /**
@@ -29,10 +29,34 @@ export const useChildren = childrenRefs => {
      * https://github.com/facebook/react/issues/14326#issuecomment-441680293
      */
     async function run() {
-      setChildren(await getChildren(childrenRefs));
+      setChildren(await getChildren(childRefs));
     }
     run();
-  }, [childrenRefs]);
+  }, [childRefs]);
+  return children;
+};
+
+/**
+ * Subscribe to each child reference given.
+ */
+export const useLiveChildren = childRefs => {
+  const [children, setChildren] = useState([]);
+  let subs = [];
+  useEffect(() => {
+    const childrenMap = {};
+    childRefs.forEach(ref => {
+      const sub = ref.onSnapshot(childDoc => {
+        childrenMap[childDoc.id] = toData(childDoc);
+        setChildren(Object.values(childrenMap));
+      });
+      subs.push(sub);
+    });
+    // Cleanup subscriptions.
+    return () => {
+      subs.forEach(sub => sub());
+      subs = [];
+    };
+  }, [childRefs]);
   return children;
 };
 

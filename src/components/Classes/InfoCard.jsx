@@ -83,7 +83,11 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
       <button onClick={() => setShowCheckOff(true)} className={classes.checkOffButton}>
         Check Off Progress
       </button>
-      <CheckOffModal open={showCheckOff} onClose={() => setShowCheckOff(false)} />
+      <CheckOffModal
+        open={showCheckOff}
+        onClose={() => setShowCheckOff(false)}
+        childRefs={cls.children}
+      />
       <div className={classes.studWrapper}>
         <div className={classes.students}>
           <StudentInfo showLabels />
