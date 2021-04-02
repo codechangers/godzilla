@@ -68,8 +68,8 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
           {children.map(child => (
             <ListItem
               button
+              divider
               key={child.id}
-              className={classes.item}
               onClick={() => {
                 select(child);
                 setTabIndex(1);
@@ -124,7 +124,7 @@ const CheckOffItems = ({ title, items, onSwitch, other }) => {
 
   return (
     <List className={classes.list}>
-      <ListItem component="div">
+      <ListItem component="div" divider>
         <ListItemIcon>
           <Tooltip title="Select All" placement="top">
             <Checkbox
@@ -147,7 +147,7 @@ const CheckOffItems = ({ title, items, onSwitch, other }) => {
         </ListItemSecondaryAction>
       </ListItem>
       {items.map(item => (
-        <ListItem button key={item} className={classes.item} onClick={() => handleToggle(item)}>
+        <ListItem button divider key={item} onClick={() => handleToggle(item)}>
           <ListItemIcon>
             <Checkbox
               edge="start"
@@ -187,20 +187,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxWidth: 600,
     marginBottom: 18,
-    padding: 0,
-    borderBottom: '1px solid #f2f2f2'
-  },
-  listHeader: {
-    backgroundColor: theme.palette.background.paper
+    padding: 0
   },
   subHeaderRoot: {
     marginBottom: 0
   },
   subHeader: {
     color: theme.palette.text.primary
-  },
-  item: {
-    borderTop: '1px solid #f2f2f2'
   },
   panel: {
     width: '100%'
