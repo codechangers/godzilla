@@ -27,7 +27,7 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, childRefs }) => {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const [selected, select] = useState(null);
   const children = useLiveChildren(childRefs);
   const classes = useStyles();
@@ -43,7 +43,12 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         {selected !== null && (
           <div className={classes.grow}>
             <Tooltip title="Back" placement="bottom">
-              <IconButton onClick={() => select(null)}>
+              <IconButton
+                onClick={() => {
+                  select(null);
+                  setTabIndex(0);
+                }}
+              >
                 <ArrowBack />
               </IconButton>
             </Tooltip>
@@ -58,34 +63,39 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
           </div>
         )}
       </div>
-      {selected === null ? (
-        <List className={classes.list} style={{ paddingTop: 24 }}>
+      <TabPanel value={tabIndex} index={0} className={classes.panel}>
+        <List className={classes.list}>
           {children.map(child => (
-            <ListItem button key={child.id} className={classes.item} onClick={() => select(child)}>
+            <ListItem
+              button
+              key={child.id}
+              className={classes.item}
+              onClick={() => {
+                select(child);
+                setTabIndex(1);
+              }}
+            >
               <ListItemText primary={`${child.fName} ${child.lName}`} />
             </ListItem>
           ))}
         </List>
-      ) : (
-        <>
-          <TabPanel value={tabIndex} index={0} className={classes.panel}>
-            <CheckOffItems
-              title="Documentation"
-              other="Tutorials"
-              items={Object.keys(docs)}
-              onSwitch={() => setTabIndex(1)}
-            />
-          </TabPanel>
-          <TabPanel value={tabIndex} index={1} className={classes.panel}>
-            <CheckOffItems
-              title="Tutorials"
-              other="Documentation"
-              items={Object.keys(tutorials)}
-              onSwitch={() => setTabIndex(0)}
-            />
-          </TabPanel>
-        </>
-      )}
+      </TabPanel>
+      <TabPanel value={tabIndex} index={1} className={classes.panel}>
+        <CheckOffItems
+          title="Tutorials"
+          other="Documentation"
+          items={Object.keys(tutorials)}
+          onSwitch={() => setTabIndex(2)}
+        />
+      </TabPanel>
+      <TabPanel value={tabIndex} index={2} className={classes.panel}>
+        <CheckOffItems
+          title="Documentation"
+          other="Tutorials"
+          items={Object.keys(docs)}
+          onSwitch={() => setTabIndex(1)}
+        />
+      </TabPanel>
       <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>
