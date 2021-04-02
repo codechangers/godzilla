@@ -11,7 +11,8 @@ import {
   Tab,
   Tabs,
   makeStyles,
-  Checkbox
+  Checkbox,
+  Tooltip
 } from '@material-ui/core';
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
@@ -88,17 +89,25 @@ const CheckOffItems = ({ title, items }) => {
     setChecked(newChecked);
   };
 
+  const toggleAll = () => {
+    if (checked.length === items.length) {
+      setChecked([]);
+    } else setChecked(items);
+  };
+
   return (
     <List className={classes.list}>
-      <ListSubheader classes={{ root: classes.listHeader }} disableGutters>
-        <ListItem className={classes.item} dense>
+      <ListSubheader classes={{ root: classes.listHeader }} disableGutters disableSticky>
+        <ListItem component="div">
           <ListItemIcon>
-            <Checkbox
-              edge="start"
-              checked={checked.length === items.length}
-              tabIndex={-1}
-              disableRipple
-            />
+            <Tooltip title="Select All" placement="top">
+              <Checkbox
+                edge="start"
+                checked={checked.length === items.length}
+                onChange={toggleAll}
+                tabIndex={-1}
+              />
+            </Tooltip>
           </ListItemIcon>
           <ListItemText
             primary={title}
