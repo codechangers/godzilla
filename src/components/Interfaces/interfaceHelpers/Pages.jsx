@@ -14,14 +14,15 @@ const propTypes = {
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  setWhoAmI: PropTypes.func.isRequired,
   homePage: PropTypes.string,
-  whoAmI: PropTypes.object
+  whoAmI: PropTypes.object,
+  setWhoAmI: PropTypes.func
 };
 
 const defaultProps = {
   homePage: 'home',
-  whoAmI: null
+  whoAmI: null,
+  setWhoAmI: () => {}
 };
 
 const drawerWidth = 260;
