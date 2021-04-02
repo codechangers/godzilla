@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem, ListItemText, Collapse } from '@material-ui/core';
+import { List, ListItem, ListItemText, ListItemIcon, Checkbox, Collapse } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import FolderIcon from '@material-ui/icons/Folder';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -9,15 +10,19 @@ const propTypes = {
   prefix: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   shouldDisable: PropTypes.func,
-  current: PropTypes.string
+  current: PropTypes.string,
+  useChecks: PropTypes.bool,
+  checked: PropTypes.func
 };
 
 const defaultProps = {
   shouldDisable: () => {},
-  current: ''
+  current: '',
+  useChecks: false,
+  checked: () => {}
 };
 
-const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
+const Folder = ({ title, items, prefix, current, onClick, shouldDisable, useChecks, checked }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -27,6 +32,11 @@ const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
         onClick={() => setOpen(!open)}
         selected={!open && current.includes(prefix)}
       >
+        {useChecks && (
+          <ListItemIcon>
+            <FolderIcon />
+          </ListItemIcon>
+        )}
         <ListItemText primary={title} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -42,6 +52,16 @@ const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
                 selected={current === prefix + item}
                 onClick={() => onClick(prefix + item)}
               >
+                {useChecks && (
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked(prefix + item)}
+                      tabIndex={-1}
+                      disableRipple
+                    />
+                  </ListItemIcon>
+                )}
                 <ListItemText primary={item} />
               </ListItem>
             ) : (

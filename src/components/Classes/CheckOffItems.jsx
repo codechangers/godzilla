@@ -78,12 +78,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
         typeof value === 'string' ? (
           <ListItem button divider key={item} onClick={() => handleToggle(item)}>
             <ListItemIcon>
-              <Checkbox
-                edge="start"
-                checked={checked.indexOf(item) !== -1}
-                tabIndex={-1}
-                disableRipple
-              />
+              <Checkbox edge="start" checked={checked.includes(item)} tabIndex={-1} disableRipple />
             </ListItemIcon>
             <ListItemText primary={item} />
           </ListItem>
@@ -94,6 +89,8 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
             items={value}
             onClick={handleToggle}
             prefix={`${item}.`}
+            checked={subItem => checked.includes(subItem)}
+            useChecks
           />
         )
       )}
