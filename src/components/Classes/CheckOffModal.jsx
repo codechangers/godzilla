@@ -13,6 +13,7 @@ import {
   IconButton,
   ListItemSecondaryAction
 } from '@material-ui/core';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { ArrowBack, SwapHoriz } from '@material-ui/icons';
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
@@ -81,7 +82,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         </List>
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <CheckOffItems
+        <COItems
           title="Tutorials"
           other="Documentation"
           items={Object.keys(tutorials)}
@@ -89,7 +90,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         />
       </TabPanel>
       <TabPanel value={tabIndex} index={2} className={classes.panel}>
-        <CheckOffItems
+        <COItems
           title="Documentation"
           other="Tutorials"
           items={Object.keys(docs)}
@@ -104,7 +105,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
 };
 CheckOffModal.propTypes = propTypes;
 
-const CheckOffItems = ({ title, items, onSwitch, other }) => {
+const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
   const [checked, setChecked] = useState([]);
   const classes = useStyles();
 
@@ -141,9 +142,17 @@ const CheckOffItems = ({ title, items, onSwitch, other }) => {
           classes={{ root: classes.subHeaderRoot, primary: classes.subHeader }}
         />
         <ListItemSecondaryAction>
-          <Button onClick={onSwitch} startIcon={<SwapHoriz />}>
-            {other}
-          </Button>
+          {isWidthUp('sm', width) ? (
+            <Button onClick={onSwitch} startIcon={<SwapHoriz />}>
+              {other}
+            </Button>
+          ) : (
+            <Tooltip title={other} placement="top">
+              <IconButton onClick={onSwitch}>
+                <SwapHoriz />
+              </IconButton>
+            </Tooltip>
+          )}
         </ListItemSecondaryAction>
       </ListItem>
       {items.map(item => (
@@ -166,12 +175,17 @@ CheckOffItems.propTypes = {
   title: PropTypes.string.isRequired,
   other: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSwitch: PropTypes.func.isRequired
+  onSwitch: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired
 };
+const COItems = withWidth()(CheckOffItems);
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    paddingTop: 0
+    paddingTop: 0,
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 4px 20px 4px'
+    }
   },
   header: {
     margin: '20px 0 0 0',
