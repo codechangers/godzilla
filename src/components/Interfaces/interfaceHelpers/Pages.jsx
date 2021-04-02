@@ -15,12 +15,14 @@ const propTypes = {
   pages: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
   homePage: PropTypes.string,
+  whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func
 };
 
 const defaultProps = {
   homePage: 'home',
+  whiteList: 'none',
   whoAmI: null,
   setWhoAmI: () => {}
 };
@@ -31,6 +33,7 @@ const PagesInterface = ({
   width,
   pages,
   homePage,
+  whiteList,
   useCustomAppBar,
   whoAmI,
   setWhoAmI,
@@ -113,6 +116,7 @@ const PagesInterface = ({
         }
         width={drawerWidth}
         locked={child !== null}
+        whiteList={child[whiteList] || []}
       />
       <WhoAmIModal
         open={showProfile}
