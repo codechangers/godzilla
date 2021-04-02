@@ -29,10 +29,21 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
   const [selected, select] = useState(null);
   const children = useLiveChildren(childRefs);
   const classes = useStyles();
+
+  const close = () => {
+    setTabIndex(0);
+    select(null);
+    onClose();
+  };
+
+  const updateChild = newData => {
+    if (selected !== null) selected.ref.update(newData);
+  };
+
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={close}
       title="Check Off Modal"
       description="Check off the progress of participants as they make their way through the competition."
       className={classes.paper}
@@ -84,6 +95,8 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
           other="Documentation"
           items={tutorials}
           onSwitch={() => setTabIndex(2)}
+          whiteList={selected?.tutorials}
+          onChange={tuts => updateChild({ tutorials: tuts })}
         />
       </TabPanel>
       <TabPanel value={tabIndex} index={2} className={classes.panel}>
@@ -92,9 +105,11 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
           other="Tutorials"
           items={docs}
           onSwitch={() => setTabIndex(1)}
+          whiteList={selected?.docs}
+          onChange={dcs => updateChild({ docs: dcs })}
         />
       </TabPanel>
-      <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
+      <Button onClick={close} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>
     </Modal>

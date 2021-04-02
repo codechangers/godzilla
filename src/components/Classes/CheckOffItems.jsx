@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   List,
@@ -21,12 +21,26 @@ const propTypes = {
   other: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
   onSwitch: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  whiteList: PropTypes.arrayOf(PropTypes.string)
 };
 
-const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
-  const [checked, setChecked] = useState([]);
+const defaultProps = {
+  whiteList: []
+};
+
+const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteList }) => {
   const classes = useStyles();
+  const [checked, setChecked] = useState([]);
+  const setWhiteList = newChecked => {
+    setChecked(newChecked);
+    onChange(newChecked);
+  };
+
+  useEffect(() => {
+    setChecked(whiteList);
+  }, [whiteList]);
 
   const flattenItems = (fItems, prefix = '') => {
     const flattened = [];
@@ -42,8 +56,8 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
 
   const toggleAll = () => {
     if (checked.length === flatItems.length) {
-      setChecked([]);
-    } else setChecked(flatItems);
+      setWhiteList([]);
+    } else setWhiteList(flatItems);
   };
 
   const handleToggle = value => {
@@ -51,7 +65,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
     const newChecked = [...checked];
     if (currentIndex === -1) newChecked.push(value);
     else newChecked.splice(currentIndex, 1);
-    setChecked(newChecked);
+    setWhiteList(newChecked);
   };
 
   return (
@@ -110,6 +124,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
   );
 };
 CheckOffItems.propTypes = propTypes;
+CheckOffItems.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   list: {
