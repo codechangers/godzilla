@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   List,
@@ -28,18 +28,30 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
   const [checked, setChecked] = useState([]);
   const classes = useStyles();
 
+  const flattenItems = (fItems, prefix = '') => {
+    const flattened = [];
+    Object.entries(fItems).forEach(([key, value]) => {
+      const item = prefix + key;
+      if (typeof value === 'string') flattened.push(item);
+      else flattened.push(...flattenItems(value, `${item}.`));
+    });
+    return flattened;
+  };
+
+  const flatItems = useMemo(() => flattenItems(items), [items]);
+
+  const toggleAll = () => {
+    if (checked.length === flatItems.length) {
+      setChecked([]);
+    } else setChecked(flatItems);
+  };
+
   const handleToggle = value => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
     if (currentIndex === -1) newChecked.push(value);
     else newChecked.splice(currentIndex, 1);
     setChecked(newChecked);
-  };
-
-  const toggleAll = () => {
-    if (checked.length === items.length) {
-      setChecked([]);
-    } else setChecked(items);
   };
 
   return (
@@ -49,7 +61,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
           <Tooltip title="Select All" placement="top">
             <Checkbox
               edge="start"
-              checked={checked.length === items.length}
+              checked={checked.length === flatItems.length}
               onChange={toggleAll}
               tabIndex={-1}
             />
