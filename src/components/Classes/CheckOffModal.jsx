@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import {
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Button,
   Typography,
   makeStyles,
-  Checkbox,
   Tooltip,
-  IconButton,
-  ListItemSecondaryAction
+  IconButton
 } from '@material-ui/core';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-import { ArrowBack, SwapHoriz } from '@material-ui/icons';
+import { ArrowBack } from '@material-ui/icons';
+import CheckOffItems from './CheckOffItems';
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import { useLiveChildren } from '../../hooks/children';
@@ -82,7 +79,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         </List>
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <COItems
+        <CheckOffItems
           title="Tutorials"
           other="Documentation"
           items={Object.keys(tutorials)}
@@ -90,7 +87,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         />
       </TabPanel>
       <TabPanel value={tabIndex} index={2} className={classes.panel}>
-        <COItems
+        <CheckOffItems
           title="Documentation"
           other="Tutorials"
           items={Object.keys(docs)}
@@ -104,81 +101,6 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
   );
 };
 CheckOffModal.propTypes = propTypes;
-
-const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
-  const [checked, setChecked] = useState([]);
-  const classes = useStyles();
-
-  const handleToggle = value => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-    if (currentIndex === -1) newChecked.push(value);
-    else newChecked.splice(currentIndex, 1);
-    setChecked(newChecked);
-  };
-
-  const toggleAll = () => {
-    if (checked.length === items.length) {
-      setChecked([]);
-    } else setChecked(items);
-  };
-
-  return (
-    <List className={classes.list}>
-      <ListItem component="div" divider>
-        <ListItemIcon>
-          <Tooltip title="Select All" placement="top">
-            <Checkbox
-              edge="start"
-              checked={checked.length === items.length}
-              onChange={toggleAll}
-              tabIndex={-1}
-            />
-          </Tooltip>
-        </ListItemIcon>
-        <ListItemText
-          primary={title}
-          primaryTypographyProps={{ variant: 'h6' }}
-          classes={{ root: classes.subHeaderRoot, primary: classes.subHeader }}
-        />
-        <ListItemSecondaryAction>
-          {isWidthUp('sm', width) ? (
-            <Button onClick={onSwitch} startIcon={<SwapHoriz />}>
-              {other}
-            </Button>
-          ) : (
-            <Tooltip title={other} placement="top">
-              <IconButton onClick={onSwitch}>
-                <SwapHoriz />
-              </IconButton>
-            </Tooltip>
-          )}
-        </ListItemSecondaryAction>
-      </ListItem>
-      {items.map(item => (
-        <ListItem button divider key={item} onClick={() => handleToggle(item)}>
-          <ListItemIcon>
-            <Checkbox
-              edge="start"
-              checked={checked.indexOf(item) !== -1}
-              tabIndex={-1}
-              disableRipple
-            />
-          </ListItemIcon>
-          <ListItemText primary={item} />
-        </ListItem>
-      ))}
-    </List>
-  );
-};
-CheckOffItems.propTypes = {
-  title: PropTypes.string.isRequired,
-  other: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSwitch: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired
-};
-const COItems = withWidth()(CheckOffItems);
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -202,12 +124,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 600,
     marginBottom: 18,
     padding: 0
-  },
-  subHeaderRoot: {
-    marginBottom: 0
-  },
-  subHeader: {
-    color: theme.palette.text.primary
   },
   panel: {
     width: '100%'
