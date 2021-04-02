@@ -61,10 +61,10 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
             <Tab label="Tutorials" />
           </Tabs>
           <TabPanel value={tabIndex} index={0} className={classes.panel}>
-            <CheckOffItems items={Object.keys(docs)} />
+            <CheckOffItems title="Documentation" items={Object.keys(docs)} />
           </TabPanel>
           <TabPanel value={tabIndex} index={1} className={classes.panel}>
-            <CheckOffItems items={Object.keys(tutorials)} />
+            <CheckOffItems title="Tutorials" items={Object.keys(tutorials)} />
           </TabPanel>
         </>
       )}
@@ -76,7 +76,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
 };
 CheckOffModal.propTypes = propTypes;
 
-const CheckOffItems = ({ items }) => {
+const CheckOffItems = ({ title, items }) => {
   const [checked, setChecked] = useState([]);
   const classes = useStyles();
 
@@ -90,8 +90,22 @@ const CheckOffItems = ({ items }) => {
 
   return (
     <List className={classes.list}>
-      <ListSubheader classes={{ root: classes.listHeader }}>
-        <Typography variant="body1">Sub-Header</Typography>
+      <ListSubheader classes={{ root: classes.listHeader }} disableGutters>
+        <ListItem className={classes.item} dense>
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={checked.length === items.length}
+              tabIndex={-1}
+              disableRipple
+            />
+          </ListItemIcon>
+          <ListItemText
+            primary={title}
+            primaryTypographyProps={{ variant: 'h6' }}
+            classes={{ root: classes.subHeaderRoot, primary: classes.subHeader }}
+          />
+        </ListItem>
       </ListSubheader>
       {items.map(item => (
         <ListItem button key={item} className={classes.item} onClick={() => handleToggle(item)}>
@@ -110,6 +124,7 @@ const CheckOffItems = ({ items }) => {
   );
 };
 CheckOffItems.propTypes = {
+  title: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
@@ -129,6 +144,12 @@ const useStyles = makeStyles(theme => ({
   },
   listHeader: {
     backgroundColor: theme.palette.background.paper
+  },
+  subHeaderRoot: {
+    marginBottom: 0
+  },
+  subHeader: {
+    color: theme.palette.text.primary
   },
   item: {
     borderTop: '1px solid #f2f2f2'
