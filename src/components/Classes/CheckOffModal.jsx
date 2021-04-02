@@ -82,7 +82,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         <CheckOffItems
           title="Tutorials"
           other="Documentation"
-          items={Object.keys(tutorials)}
+          items={tutorials}
           onSwitch={() => setTabIndex(2)}
         />
       </TabPanel>
@@ -90,7 +90,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         <CheckOffItems
           title="Documentation"
           other="Tutorials"
-          items={Object.keys(docs)}
+          items={docs}
           onSwitch={() => setTabIndex(1)}
         />
       </TabPanel>

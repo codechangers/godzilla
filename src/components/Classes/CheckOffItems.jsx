@@ -14,11 +14,12 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { SwapHoriz } from '@material-ui/icons';
+import Folder from '../UI/Folder';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
   other: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  items: PropTypes.object.isRequired,
   onSwitch: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired
 };
@@ -73,19 +74,29 @@ const CheckOffItems = ({ title, items, onSwitch, other, width }) => {
           )}
         </ListItemSecondaryAction>
       </ListItem>
-      {items.map(item => (
-        <ListItem button divider key={item} onClick={() => handleToggle(item)}>
-          <ListItemIcon>
-            <Checkbox
-              edge="start"
-              checked={checked.indexOf(item) !== -1}
-              tabIndex={-1}
-              disableRipple
-            />
-          </ListItemIcon>
-          <ListItemText primary={item} />
-        </ListItem>
-      ))}
+      {Object.entries(items).map(([item, value]) =>
+        typeof value === 'string' ? (
+          <ListItem button divider key={item} onClick={() => handleToggle(item)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={checked.indexOf(item) !== -1}
+                tabIndex={-1}
+                disableRipple
+              />
+            </ListItemIcon>
+            <ListItemText primary={item} />
+          </ListItem>
+        ) : (
+          <Folder
+            key={item}
+            title={item}
+            items={value}
+            onClick={handleToggle}
+            prefix={`${item}.`}
+          />
+        )
+      )}
     </List>
   );
 };

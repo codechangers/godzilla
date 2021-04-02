@@ -7,9 +7,14 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   items: PropTypes.object.isRequired,
   prefix: PropTypes.string.isRequired,
-  current: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  shouldDisable: PropTypes.func.isRequired
+  shouldDisable: PropTypes.func,
+  current: PropTypes.string
+};
+
+const defaultProps = {
+  shouldDisable: () => {},
+  current: ''
 };
 
 const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
@@ -56,5 +61,6 @@ const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
   );
 };
 Folder.propTypes = propTypes;
+Folder.defaultProps = defaultProps;
 
 export default Folder;
