@@ -5,15 +5,15 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   Button,
   Typography,
-  Tab,
-  Tabs,
   makeStyles,
   Checkbox,
-  Tooltip
+  Tooltip,
+  IconButton,
+  ListItemSecondaryAction
 } from '@material-ui/core';
+import { ArrowBack, SwapHoriz } from '@material-ui/icons';
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import { useLiveChildren } from '../../hooks/children';
@@ -27,7 +27,7 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, childRefs }) => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
   const [selected, select] = useState(null);
   const children = useLiveChildren(childRefs);
   const classes = useStyles();
@@ -39,33 +39,50 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       description="Check off the progress of participants as they make their way through the competition."
       className={classes.paper}
     >
-      <Typography variant="h4" className={classes.header}>
-        Check Off Progress
-      </Typography>
+      <div className={classes.header}>
+        {selected !== null && (
+          <div className={classes.grow}>
+            <Tooltip title="Back" placement="bottom">
+              <IconButton onClick={() => select(null)}>
+                <ArrowBack />
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
+        <Typography variant="h4" className={classes.headerText}>
+          {selected === null ? 'Check Off Progress' : `${selected.fName} ${selected.lName}`}
+        </Typography>
+        {selected !== null && (
+          <div className={classes.grow}>
+            <div style={{ width: 48 }} />
+          </div>
+        )}
+      </div>
       {selected === null ? (
-        <List className={classes.list}>
+        <List className={classes.list} style={{ paddingTop: 24 }}>
           {children.map(child => (
-            <ListItem
-              button
-              key={child.id}
-              className={classes.item}
-              onClick={() => select(child.fName)}
-            >
+            <ListItem button key={child.id} className={classes.item} onClick={() => select(child)}>
               <ListItemText primary={`${child.fName} ${child.lName}`} />
             </ListItem>
           ))}
         </List>
       ) : (
         <>
-          <Tabs value={tabIndex} onChange={(_, v) => setTabIndex(v)} indicatorColor="primary">
-            <Tab label="Docs" />
-            <Tab label="Tutorials" />
-          </Tabs>
           <TabPanel value={tabIndex} index={0} className={classes.panel}>
-            <CheckOffItems title="Documentation" items={Object.keys(docs)} />
+            <CheckOffItems
+              title="Documentation"
+              other="Tutorials"
+              items={Object.keys(docs)}
+              onSwitch={() => setTabIndex(1)}
+            />
           </TabPanel>
           <TabPanel value={tabIndex} index={1} className={classes.panel}>
-            <CheckOffItems title="Tutorials" items={Object.keys(tutorials)} />
+            <CheckOffItems
+              title="Tutorials"
+              other="Documentation"
+              items={Object.keys(tutorials)}
+              onSwitch={() => setTabIndex(0)}
+            />
           </TabPanel>
         </>
       )}
@@ -77,7 +94,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
 };
 CheckOffModal.propTypes = propTypes;
 
-const CheckOffItems = ({ title, items }) => {
+const CheckOffItems = ({ title, items, onSwitch, other }) => {
   const [checked, setChecked] = useState([]);
   const classes = useStyles();
 
@@ -97,25 +114,28 @@ const CheckOffItems = ({ title, items }) => {
 
   return (
     <List className={classes.list}>
-      <ListSubheader classes={{ root: classes.listHeader }} disableGutters disableSticky>
-        <ListItem component="div">
-          <ListItemIcon>
-            <Tooltip title="Select All" placement="top">
-              <Checkbox
-                edge="start"
-                checked={checked.length === items.length}
-                onChange={toggleAll}
-                tabIndex={-1}
-              />
-            </Tooltip>
-          </ListItemIcon>
-          <ListItemText
-            primary={title}
-            primaryTypographyProps={{ variant: 'h6' }}
-            classes={{ root: classes.subHeaderRoot, primary: classes.subHeader }}
-          />
-        </ListItem>
-      </ListSubheader>
+      <ListItem component="div">
+        <ListItemIcon>
+          <Tooltip title="Select All" placement="top">
+            <Checkbox
+              edge="start"
+              checked={checked.length === items.length}
+              onChange={toggleAll}
+              tabIndex={-1}
+            />
+          </Tooltip>
+        </ListItemIcon>
+        <ListItemText
+          primary={title}
+          primaryTypographyProps={{ variant: 'h6' }}
+          classes={{ root: classes.subHeaderRoot, primary: classes.subHeader }}
+        />
+        <ListItemSecondaryAction>
+          <Button onClick={onSwitch} startIcon={<SwapHoriz />}>
+            {other}
+          </Button>
+        </ListItemSecondaryAction>
+      </ListItem>
       {items.map(item => (
         <ListItem button key={item} className={classes.item} onClick={() => handleToggle(item)}>
           <ListItemIcon>
@@ -134,7 +154,9 @@ const CheckOffItems = ({ title, items }) => {
 };
 CheckOffItems.propTypes = {
   title: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired
+  other: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onSwitch: PropTypes.func.isRequired
 };
 
 const useStyles = makeStyles(theme => ({
@@ -142,12 +164,19 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 0
   },
   header: {
-    margin: '20px 0'
+    margin: '20px 0 0 0',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  grow: {
+    flexGrow: 1
   },
   list: {
     width: '100%',
     maxWidth: 600,
-    margin: '18px 0',
+    marginBottom: 18,
     padding: 0,
     borderBottom: '1px solid #f2f2f2'
   },
