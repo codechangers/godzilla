@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   Button,
   Typography,
   Tab,
@@ -15,6 +16,8 @@ import {
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import { useLiveChildren } from '../../hooks/children';
+import docs from '../../resources/docs';
+import tutorials from '../../resources/tutorials';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -33,8 +36,11 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       onClose={onClose}
       title="Check Off Modal"
       description="Check off the progress of participants as they make their way through the competition."
+      className={classes.paper}
     >
-      <Typography variant="h4">Check Off Progress</Typography>
+      <Typography variant="h4" className={classes.header}>
+        Check Off Progress
+      </Typography>
       {selected === null ? (
         <List className={classes.list}>
           {children.map(child => (
@@ -55,10 +61,10 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
             <Tab label="Tutorials" />
           </Tabs>
           <TabPanel value={tabIndex} index={0} className={classes.panel}>
-            <CheckOffItems items={['test', 'ing']} />
+            <CheckOffItems items={Object.keys(docs)} />
           </TabPanel>
           <TabPanel value={tabIndex} index={1} className={classes.panel}>
-            <Typography variant="h6">Tutorials</Typography>
+            <CheckOffItems items={Object.keys(tutorials)} />
           </TabPanel>
         </>
       )}
@@ -84,6 +90,9 @@ const CheckOffItems = ({ items }) => {
 
   return (
     <List className={classes.list}>
+      <ListSubheader classes={{ root: classes.listHeader }}>
+        <Typography variant="body1">Sub-Header</Typography>
+      </ListSubheader>
       {items.map(item => (
         <ListItem button key={item} className={classes.item} onClick={() => handleToggle(item)}>
           <ListItemIcon>
@@ -104,7 +113,13 @@ CheckOffItems.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  paper: {
+    paddingTop: 0
+  },
+  header: {
+    margin: '20px 0'
+  },
   list: {
     width: '100%',
     maxWidth: 600,
@@ -112,12 +127,15 @@ const useStyles = makeStyles({
     padding: 0,
     borderBottom: '1px solid #f2f2f2'
   },
+  listHeader: {
+    backgroundColor: theme.palette.background.paper
+  },
   item: {
     borderTop: '1px solid #f2f2f2'
   },
   panel: {
     width: '100%'
   }
-});
+}));
 
 export default CheckOffModal;
