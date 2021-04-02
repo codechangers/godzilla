@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem, ListItemText, Button, Typography, makeStyles } from '@material-ui/core';
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  Typography,
+  Tab,
+  Tabs,
+  makeStyles,
+  Checkbox
+} from '@material-ui/core';
 import Modal from '../UI/Modal';
+import TabPanel from '../UI/TabPanel';
 import { useLiveChildren } from '../../hooks/children';
 
 const propTypes = {
@@ -11,6 +23,8 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, childRefs }) => {
+  const [tabIndex, setTabIndex] = useState(0);
+  const [selected, select] = useState(null);
   const children = useLiveChildren(childRefs);
   const classes = useStyles();
   return (
@@ -21,18 +35,33 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       description="Check off the progress of participants as they make their way through the competition."
     >
       <Typography variant="h4">Check Off Progress</Typography>
-      <List className={classes.list}>
-        {children.map(child => (
-          <ListItem
-            button
-            key={child.id}
-            className={classes.item}
-            onClick={() => console.log(child.fName)}
-          >
-            <ListItemText primary={`${child.fName} ${child.lName}`} />
-          </ListItem>
-        ))}
-      </List>
+      {selected === null ? (
+        <List className={classes.list}>
+          {children.map(child => (
+            <ListItem
+              button
+              key={child.id}
+              className={classes.item}
+              onClick={() => select(child.fName)}
+            >
+              <ListItemText primary={`${child.fName} ${child.lName}`} />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <>
+          <Tabs value={tabIndex} onChange={(_, v) => setTabIndex(v)} indicatorColor="primary">
+            <Tab label="Docs" />
+            <Tab label="Tutorials" />
+          </Tabs>
+          <TabPanel value={tabIndex} index={0} className={classes.panel}>
+            <CheckOffItems items={['test', 'ing']} />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={1} className={classes.panel}>
+            <Typography variant="h6">Tutorials</Typography>
+          </TabPanel>
+        </>
+      )}
       <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>
@@ -40,6 +69,40 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
   );
 };
 CheckOffModal.propTypes = propTypes;
+
+const CheckOffItems = ({ items }) => {
+  const [checked, setChecked] = useState([]);
+  const classes = useStyles();
+
+  const handleToggle = value => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+    if (currentIndex === -1) newChecked.push(value);
+    else newChecked.splice(currentIndex, 1);
+    setChecked(newChecked);
+  };
+
+  return (
+    <List className={classes.list}>
+      {items.map(item => (
+        <ListItem button key={item} className={classes.item} onClick={() => handleToggle(item)}>
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={checked.indexOf(item) !== -1}
+              tabIndex={-1}
+              disableRipple
+            />
+          </ListItemIcon>
+          <ListItemText primary={item} />
+        </ListItem>
+      ))}
+    </List>
+  );
+};
+CheckOffItems.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.string).isRequired
+};
 
 const useStyles = makeStyles({
   list: {
@@ -51,6 +114,9 @@ const useStyles = makeStyles({
   },
   item: {
     borderTop: '1px solid #f2f2f2'
+  },
+  panel: {
+    width: '100%'
   }
 });
 
