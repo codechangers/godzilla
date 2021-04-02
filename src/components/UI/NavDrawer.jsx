@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, ListItemText, Collapse, makeStyles } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import clsx from 'clsx';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -44,9 +43,10 @@ const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) =>
           typeof value === 'string' ? (
             <ListItem
               button
+              divider
               key={item}
               disabled={shouldDisable(item)}
-              className={clsx({ [classes.selected]: current === item })}
+              selected={current === item}
               onClick={() => onNav(item)}
             >
               <ListItemText primary={item} />
@@ -73,13 +73,13 @@ NavDrawer.defaultProps = defaultProps;
 
 const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
   return (
     <>
       <ListItem
         button
+        divider
         onClick={() => setOpen(!open)}
-        className={clsx({ [classes.selected]: !open && current.includes(prefix) })}
+        selected={!open && current.includes(prefix)}
       >
         <ListItemText primary={title} />
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -90,10 +90,11 @@ const Folder = ({ title, items, prefix, current, onClick, shouldDisable }) => {
             typeof value === 'string' ? (
               <ListItem
                 button
+                divider
                 key={item}
                 disabled={shouldDisable(item)}
+                selected={current === prefix + item}
                 onClick={() => onClick(prefix + item)}
-                className={clsx({ [classes.selected]: current === prefix + item })}
               >
                 <ListItemText primary={item} />
               </ListItem>
@@ -127,9 +128,6 @@ const useStyles = drawerWidth =>
     drawer: {
       width: drawerWidth,
       backgroundColor: 'var(--background-color)'
-    },
-    selected: {
-      backgroundColor: 'rgba(0, 0, 0, 0.1)'
     }
   })();
 
