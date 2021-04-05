@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
@@ -13,7 +13,6 @@ import { toData } from '../../../helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
@@ -35,7 +34,6 @@ const remarkPlugins = [gfm];
 const drawerWidth = 260;
 
 const PagesInterface = ({
-  location,
   width,
   pages,
   homePage,
@@ -50,6 +48,8 @@ const PagesInterface = ({
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
   const [child, setChild] = useState(whoAmI);
+  const location = useLocation();
+  const history = useHistory();
   const classes = useStyles();
 
   // Set page from url params.
@@ -105,6 +105,8 @@ const PagesInterface = ({
     [page, showMenu, classes, child]
   );
 
+  const setUrlPage = p => history.push(`?page=${p}`);
+
   /* eslint-disable */
   const mdRenderers = {
     heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
@@ -154,10 +156,10 @@ const PagesInterface = ({
         onNav={
           isWidthDown('sm', width)
             ? p => {
-                setPage(p);
+                setUrlPage(p);
                 setShowMenu(false);
               }
-            : setPage
+            : setUrlPage
         }
         width={drawerWidth}
         locked={child !== null}
@@ -259,4 +261,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withWidth()(withRouter(PagesInterface));
+export default withWidth()(PagesInterface);

@@ -18,7 +18,7 @@ const defaultProps = {
   whiteList: []
 };
 
-const globalWhiteList = ['welcome', 'introduction'];
+const globalWhiteList = ['welcome', 'start'];
 
 const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
