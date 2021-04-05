@@ -161,13 +161,18 @@ const Markdown = ({ pages, page }) => {
 
   // Fetch page content.
   useEffect(() => {
+    const controller = new AbortController();
     let doc = pages;
     page.split('.').forEach(stop => {
       doc = doc[stop];
     });
-    fetch(doc)
+    fetch(doc, { signal: controller.signal })
       .then(res => res.text())
-      .then(text => setContent(text));
+      .then(text => setContent(text))
+      .catch(err => {
+        if (!(err instanceof DOMException)) console.error(err);
+      });
+    return () => controller.abort();
   }, [page]);
 
   const fromInclude = value =>
