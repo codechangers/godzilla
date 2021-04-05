@@ -5,6 +5,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
@@ -26,6 +27,8 @@ const defaultProps = {
   whoAmI: null,
   setWhoAmI: () => {}
 };
+
+const remarkPlugins = [gfm];
 
 const drawerWidth = 260;
 
@@ -99,7 +102,7 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <ReactMarkdown allowDangerousHtml linkTarget="_blank">
+        <ReactMarkdown allowDangerousHtml linkTarget="_blank" plugins={remarkPlugins}>
           {content}
         </ReactMarkdown>
       </main>
