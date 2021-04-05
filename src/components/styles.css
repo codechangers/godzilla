@@ -7,3 +7,48 @@
 .white{
   color:white!important;
 }
+.page{
+  color: white;
+  padding:50px;
+  padding-top:100px;
+}
+.page > div > div > div{
+  padding: 20px;
+}
+.form-header{
+  font-size:50px;
+}
+.page > div > div > div > p{
+  font-size: 20px;
+}
+.link{
+  background-color: red;
+    border-radius: 42%;
+    color: white;
+    text-decoration: none;
+    padding: 6px;
+    margin: 10px;
+}
+.navbar{
+  display:flex;
+  position:fixed;
+  background-color:black;
+  height:90px;
+  width:100%;
+}
+.nav-left{
+  width:50%;
+}
+.nav-right{
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  width:50%;
+}
+.nav-right > a{
+  display:flex;
+  align-items:center;
+  color:white;
+  text-decoration:none;
+  height:100px;
+}
