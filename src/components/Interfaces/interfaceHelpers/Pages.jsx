@@ -10,6 +10,7 @@ import gfm from 'remark-gfm';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
+import { resolveImg } from '../../../resources/images';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -110,6 +111,10 @@ const PagesInterface = ({
   /* eslint-disable */
   const mdRenderers = {
     heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
+    image: ({ src, alt }) => {
+      if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
+      return <img src={src} alt={alt} />;
+    },
     link: ({ href, target, children }) => {
       if (href.startsWith('/docs/'))
         return (
