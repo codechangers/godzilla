@@ -14,7 +14,6 @@
     "date-fns": "^2.0.0-beta.3",
     "dotenv": "^8.0.0",
     "firebase": "^7.15.4",
-    "google-map-react": "^1.1.6",
     "lodash": "^4.17.13",
     "lodash.template": "^4.5.0",
     "prop-types": "^15.7.2",

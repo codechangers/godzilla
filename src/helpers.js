@@ -118,3 +118,5 @@ export const getStatus = account => {
   }
   return STATUS.PENDING;
 };
+
+export const toData = doc => ({ ...doc.data(), id: doc.id, ref: doc.ref });

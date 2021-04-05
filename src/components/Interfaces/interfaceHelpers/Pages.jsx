@@ -1,32 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles } from '@material-ui/core';
+import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
+import { toData } from '../../../helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
-  homePage: PropTypes.string
+  accounts: PropTypes.object.isRequired,
+  homePage: PropTypes.string,
+  whiteList: PropTypes.string,
+  whoAmI: PropTypes.object,
+  setWhoAmI: PropTypes.func
 };
 
 const defaultProps = {
-  homePage: 'home'
+  homePage: 'home',
+  whiteList: 'none',
+  whoAmI: null,
+  setWhoAmI: () => {}
 };
 
 const drawerWidth = 260;
 
-const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
+const PagesInterface = ({
+  width,
+  pages,
+  homePage,
+  whiteList,
+  useCustomAppBar,
+  whoAmI,
+  setWhoAmI,
+  accounts
+}) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [page, setPage] = useState(homePage);
   const [content, setContent] = useState('# Hello World');
-
+  const [child, setChild] = useState(whoAmI);
   const classes = useStyles();
 
+  // Subscribe to child updates.
+  useEffect(() => whoAmI?.ref.onSnapshot(childDoc => setChild(toData(childDoc))), [whoAmI]);
+
+  // Fetch page content.
   useEffect(() => {
     let doc = pages;
     page.split('.').forEach(stop => {
@@ -37,26 +60,36 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
       .then(text => setContent(text));
   }, [page]);
 
+  // Customize AppBar.
   useEffect(
     () =>
       useCustomAppBar(
         page,
-        <Tooltip title="Pages Menu" placement="left">
-          <IconButton
-            color="inherit"
-            aria-label="showMenu drawer"
-            edge="end"
-            onClick={() => setShowMenu(!showMenu)}
-            className={clsx(showMenu && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Tooltip>,
+        <>
+          {child !== null && (
+            <Tooltip title="Change Profile" placement="bottom">
+              <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
+                {child.fName}
+              </Button>
+            </Tooltip>
+          )}
+          <Tooltip title="Pages Menu" placement="bottom">
+            <IconButton
+              color="inherit"
+              aria-label="showMenu drawer"
+              edge="end"
+              onClick={() => setShowMenu(!showMenu)}
+              className={clsx(showMenu && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        </>,
         clsx(classes.appBar, {
           [classes.appBarShift]: showMenu
         })
       ),
-    [page, showMenu, classes]
+    [page, showMenu, classes, child]
   );
 
   return (
@@ -82,6 +115,14 @@ const PagesInterface = ({ width, pages, homePage, useCustomAppBar }) => {
             : setPage
         }
         width={drawerWidth}
+        locked={child !== null}
+        whiteList={child[whiteList] || []}
+      />
+      <WhoAmIModal
+        open={showProfile}
+        onClose={() => setShowProfile(false)}
+        accounts={accounts}
+        setWhoAmI={setWhoAmI}
       />
     </div>
   );
@@ -145,6 +186,10 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginRight: drawerWidth
+  },
+  profButton: {
+    marginRight: 20,
+    padding: '6px 16px'
   }
 }));
 
