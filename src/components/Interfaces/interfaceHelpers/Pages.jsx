@@ -116,7 +116,7 @@ const PagesInterface = ({
         }
         width={drawerWidth}
         locked={child !== null}
-        whiteList={child[whiteList] || []}
+        whiteList={child !== null ? child[whiteList] : []}
       />
       <WhoAmIModal
         open={showProfile}
