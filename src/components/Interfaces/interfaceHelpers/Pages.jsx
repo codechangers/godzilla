@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
+import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
@@ -26,6 +27,8 @@ const defaultProps = {
   whoAmI: null,
   setWhoAmI: () => {}
 };
+
+const remarkPlugins = [gfm];
 
 const drawerWidth = 260;
 
@@ -92,6 +95,12 @@ const PagesInterface = ({
     [page, showMenu, classes, child]
   );
 
+  /* eslint-disable */
+  const mdRenderers = {
+    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>
+  };
+  /* eslint-enable */
+
   return (
     <div className={classes.wrapper}>
       <main
@@ -99,7 +108,14 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown
+          allowDangerousHtml
+          linkTarget="_blank"
+          plugins={remarkPlugins}
+          renderers={mdRenderers}
+        >
+          {content}
+        </ReactMarkdown>
       </main>
       <NavDrawer
         open={showMenu}
@@ -116,7 +132,7 @@ const PagesInterface = ({
         }
         width={drawerWidth}
         locked={child !== null}
-        whiteList={child[whiteList] || []}
+        whiteList={child !== null ? child[whiteList] : []}
       />
       <WhoAmIModal
         open={showProfile}

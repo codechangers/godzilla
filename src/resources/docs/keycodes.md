@@ -2,8 +2,6 @@
 
 Here is a reference guide on how to implement different keys into your game.
 
-# **TODO:** Add a Table Plugin...
-
 | Key Name       | Key Code                | Symbol |
 | -------------- | ----------------------- | ------ |
 | a              | keyCodes.A              |
