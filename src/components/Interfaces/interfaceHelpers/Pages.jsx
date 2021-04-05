@@ -47,7 +47,6 @@ const PagesInterface = ({
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [page, setPage] = useState(homePage);
-  const [content, setContent] = useState('# Hello World');
   const [child, setChild] = useState(whoAmI);
   const location = useLocation();
   const history = useHistory();
@@ -62,17 +61,6 @@ const PagesInterface = ({
 
   // Subscribe to child updates.
   useEffect(() => whoAmI?.ref.onSnapshot(childDoc => setChild(toData(childDoc))), [whoAmI]);
-
-  // Fetch page content.
-  useEffect(() => {
-    let doc = pages;
-    page.split('.').forEach(stop => {
-      doc = doc[stop];
-    });
-    fetch(doc)
-      .then(res => res.text())
-      .then(text => setContent(text));
-  }, [page]);
 
   // Customize AppBar.
   useEffect(
@@ -108,35 +96,6 @@ const PagesInterface = ({
 
   const setUrlPage = p => history.push(`?page=${p}`);
 
-  /* eslint-disable */
-  const mdRenderers = {
-    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
-    image: ({ src, alt }) => {
-      if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
-      return <img src={src} alt={alt} />;
-    },
-    link: ({ href, target, children }) => {
-      if (href.startsWith('/docs/'))
-        return (
-          <PageLink type="docs" href={href}>
-            {children}
-          </PageLink>
-        );
-      if (href.startsWith('/tutorials/'))
-        return (
-          <PageLink type="tutorials" href={href}>
-            {children}
-          </PageLink>
-        );
-      return (
-        <a href={href} target={target} rel="noopener norefferer">
-          {children}
-        </a>
-      );
-    }
-  };
-  /* eslint-enable */
-
   return (
     <div className={classes.wrapper}>
       <main
@@ -144,14 +103,7 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <ReactMarkdown
-          allowDangerousHtml
-          linkTarget="_blank"
-          plugins={remarkPlugins}
-          renderers={mdRenderers}
-        >
-          {content}
-        </ReactMarkdown>
+        <Markdown pages={pages} page={page} />
       </main>
       <NavDrawer
         open={showMenu}
@@ -202,6 +154,79 @@ PageLink.propTypes = {
   type: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired
+};
+
+const Markdown = ({ pages, page }) => {
+  const [content, setContent] = useState('# Hello World');
+
+  // Fetch page content.
+  useEffect(() => {
+    let doc = pages;
+    page.split('.').forEach(stop => {
+      doc = doc[stop];
+    });
+    fetch(doc)
+      .then(res => res.text())
+      .then(text => setContent(text));
+  }, [page]);
+
+  const fromInclude = value =>
+    value
+      .replace('{% include ', '')
+      .replace('.md %}', '')
+      .replace(/\//g, '.');
+
+  /* eslint-disable */
+  const mdRenderers = {
+    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
+    text: ({ value }) => {
+      if (value.startsWith('{% include') && value.endsWith('%}'))
+        return <Markdown page={fromInclude(value)} pages={pages} />;
+      return value;
+    },
+    paragraph: ({ children }) => {
+      return children;
+    },
+    image: ({ src, alt }) => {
+      if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
+      return <img src={src} alt={alt} />;
+    },
+    link: ({ href, target, children }) => {
+      if (href.startsWith('/docs/'))
+        return (
+          <PageLink type="docs" href={href}>
+            {children}
+          </PageLink>
+        );
+      if (href.startsWith('/tutorials/'))
+        return (
+          <PageLink type="tutorials" href={href}>
+            {children}
+          </PageLink>
+        );
+      return (
+        <a href={href} target={target} rel="noopener norefferer">
+          {children}
+        </a>
+      );
+    }
+  };
+  /* eslint-enable */
+
+  return (
+    <ReactMarkdown
+      allowDangerousHtml
+      linkTarget="_blank"
+      plugins={remarkPlugins}
+      renderers={mdRenderers}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+};
+Markdown.propTypes = {
+  pages: PropTypes.object.isRequired,
+  page: PropTypes.string.isRequired
 };
 
 const useStyles = makeStyles(theme => ({

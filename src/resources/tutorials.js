@@ -19,6 +19,7 @@ import connectionsHelp from './tutorials/blocks/connectionsHelp.md';
 import gameBoundsAndBackground from './tutorials/blocks/gameBoundsAndBackground.md';
 import howToCollide from './tutorials/blocks/howToCollide.md';
 import loginAndHowToPlay from './tutorials/blocks/loginAndHowToPlay.md';
+import movingForward from './tutorials/blocks/movingForward.md';
 import newCharacterSet from './tutorials/blocks/newCharacterSet.md';
 import newLocationsSet from './tutorials/blocks/newLocationsSet.md';
 import setupItems from './tutorials/blocks/setupItems.md';
@@ -82,6 +83,7 @@ const blocks = {
   gameBoundsAndBackground,
   howToCollide,
   loginAndHowToPlay,
+  movingForward,
   newCharacterSet,
   newLocationsSet,
   setupItems,
