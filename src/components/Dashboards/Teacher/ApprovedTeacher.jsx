@@ -235,7 +235,7 @@ class ApprovedTeacher extends React.Component {
             fontSize: '0.75rem'
           }}
         >
-          <p>Show Expired Classes</p>
+          <p className="white">Show Expired Classes</p>
           <Switch
             checked={showOldClasses}
             onChange={() => this.setState({ showOldClasses: !showOldClasses })}

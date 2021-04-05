@@ -194,7 +194,7 @@ const styles = theme => ({
       '& > img': {
         width: '100%',
         maxWidth: '100%',
-        height: '120px'
+        height: '250px'
       },
       '& > div': {
         width: '100%'
@@ -231,7 +231,7 @@ const styles = theme => ({
       '& > img': {
         width: '100%',
         maxWidth: '100%',
-        height: '120px'
+        height: '250px'
       },
       '& > div': {
         width: '100%'

@@ -83,7 +83,7 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
           Class Search
         </Typography>
         <div className={classes.typesWrapper}>
-          <p>Filter by:</p>
+          <p className="white">Filter by:</p>
           <div className={classes.types}>
             {Object.keys(programTypeToText).map(programType => (
               <button

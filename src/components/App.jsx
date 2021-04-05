@@ -5,6 +5,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import Login from './Pages/Login';
+import Help from './Pages/Help';
 import SignUp from './Pages/SignUp';
 import Search from './Pages/Search';
 import AdminDashboard from './Dashboards/Admin';
@@ -23,6 +24,7 @@ let authSubscription = () => {};
 const pathToComponent = {
   '/': Login,
   '/login': Login,
+  '/help': Help,
   '/signup': SignUp,
   '/search': Search,
   '/parent': ParentDashboard,

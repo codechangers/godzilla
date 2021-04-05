@@ -74,6 +74,7 @@ NavDrawer.defaultProps = defaultProps;
 const useStyles = drawerWidth =>
   makeStyles({
     drawer: {
+      color: 'lightgrey',
       width: drawerWidth,
       backgroundColor: 'var(--background-color)'
     }

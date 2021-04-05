@@ -281,6 +281,12 @@ const useStyles = makeStyles(theme => ({
       paddingBottom: 20,
       maxWidth: '100%',
       overflowX: 'scroll'
+    },
+    '& h1, h2, h3, h4, h5, p, code, span, li': {
+      color: 'lightgrey'
+    },
+    '& a': {
+      color: 'white'
     }
   },
   contentShift: {
