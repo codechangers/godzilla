@@ -99,7 +99,9 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown allowDangerousHtml linkTarget="_blank">
+          {content}
+        </ReactMarkdown>
       </main>
       <NavDrawer
         open={showMenu}
