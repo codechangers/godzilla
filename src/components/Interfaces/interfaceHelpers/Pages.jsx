@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
+import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -95,6 +95,12 @@ const PagesInterface = ({
     [page, showMenu, classes, child]
   );
 
+  /* eslint-disable */
+  const mdRenderers = {
+    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>
+  };
+  /* eslint-enable */
+
   return (
     <div className={classes.wrapper}>
       <main
@@ -102,7 +108,12 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <ReactMarkdown allowDangerousHtml linkTarget="_blank" plugins={remarkPlugins}>
+        <ReactMarkdown
+          allowDangerousHtml
+          linkTarget="_blank"
+          plugins={remarkPlugins}
+          renderers={mdRenderers}
+        >
           {content}
         </ReactMarkdown>
       </main>
