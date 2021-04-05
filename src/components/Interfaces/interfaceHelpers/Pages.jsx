@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
@@ -12,6 +13,7 @@ import { toData } from '../../../helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
@@ -33,6 +35,7 @@ const remarkPlugins = [gfm];
 const drawerWidth = 260;
 
 const PagesInterface = ({
+  location,
   width,
   pages,
   homePage,
@@ -48,6 +51,13 @@ const PagesInterface = ({
   const [content, setContent] = useState('# Hello World');
   const [child, setChild] = useState(whoAmI);
   const classes = useStyles();
+
+  // Set page from url params.
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const newPage = params.get('page');
+    if (newPage) setPage(newPage);
+  }, [location.search]);
 
   // Subscribe to child updates.
   useEffect(() => whoAmI?.ref.onSnapshot(childDoc => setChild(toData(childDoc))), [whoAmI]);
@@ -99,10 +109,18 @@ const PagesInterface = ({
   const mdRenderers = {
     heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
     link: ({ href, target, children }) => {
-      const docsLink = '/docs/';
-      const tutsLink = '/tutorials/';
-      if (href.startsWith(docsLink)) return <a href="#">I'm a doc....</a>;
-      if (href.startsWith(tutsLink)) return <a href="#">I'm a tut...</a>;
+      if (href.startsWith('/docs/'))
+        return (
+          <PageLink type="docs" href={href}>
+            {children}
+          </PageLink>
+        );
+      if (href.startsWith('/tutorials/'))
+        return (
+          <PageLink type="tutorials" href={href}>
+            {children}
+          </PageLink>
+        );
       return (
         <a href={href} target={target} rel="noopener norefferer">
           {children}
@@ -157,6 +175,27 @@ const PagesInterface = ({
 
 PagesInterface.propTypes = propTypes;
 PagesInterface.defaultProps = defaultProps;
+
+const PageLink = ({ type, href, children }) => {
+  const pref = l => l.pathname.split('/')[1];
+  const page = t => href.replace(t, '').replace(/\//g, '.');
+  const clean = p => (p[p.length - 1] === '.' ? p.slice(0, p.length - 1) : p);
+  return (
+    <Link
+      to={location => ({
+        pathname: `/${pref(location)}/${type}`,
+        search: `?page=${clean(page('/' + type + '/'))}`
+      })}
+    >
+      {children}
+    </Link>
+  );
+};
+PageLink.propTypes = {
+  type: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired
+};
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -220,4 +259,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withWidth()(PagesInterface);
+export default withWidth()(withRouter(PagesInterface));
