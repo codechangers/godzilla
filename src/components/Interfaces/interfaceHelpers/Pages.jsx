@@ -97,7 +97,18 @@ const PagesInterface = ({
 
   /* eslint-disable */
   const mdRenderers = {
-    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>
+    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
+    link: ({ href, target, children }) => {
+      const docsLink = '/docs/';
+      const tutsLink = '/tutorials/';
+      if (href.startsWith(docsLink)) return <a href="#">I'm a doc....</a>;
+      if (href.startsWith(tutsLink)) return <a href="#">I'm a tut...</a>;
+      return (
+        <a href={href} target={target} rel="noopener norefferer">
+          {children}
+        </a>
+      );
+    }
   };
   /* eslint-enable */
 
