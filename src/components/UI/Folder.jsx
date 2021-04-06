@@ -42,39 +42,41 @@ const Folder = ({ title, items, prefix, current, onClick, shouldDisable, useChec
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {Object.entries(items).map(([item, value]) =>
-            typeof value === 'string' ? (
-              <ListItem
-                button
-                divider
-                key={item}
-                disabled={shouldDisable(item)}
-                selected={current === prefix + item}
-                onClick={() => onClick(prefix + item)}
-              >
-                {useChecks && (
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked={checked(prefix + item)}
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                )}
-                <ListItemText primary={item} />
-              </ListItem>
-            ) : (
-              <Folder
-                key={item}
-                title={item}
-                items={value}
-                onClick={onClick}
-                prefix={`${prefix}${item}.`}
-                shouldDisable={shouldDisable}
-              />
-            )
-          )}
+          {Object.entries(items)
+            .filter(([item, value]) => !shouldDisable(prefix + item, value))
+            .map(([item, value]) =>
+              typeof value === 'string' ? (
+                <ListItem
+                  button
+                  divider
+                  key={item}
+                  disabled={shouldDisable(prefix + item)}
+                  selected={current === prefix + item}
+                  onClick={() => onClick(prefix + item)}
+                >
+                  {useChecks && (
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={checked(prefix + item)}
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={item} />
+                </ListItem>
+              ) : (
+                <Folder
+                  key={item}
+                  title={item}
+                  items={value}
+                  onClick={onClick}
+                  prefix={`${prefix}${item}.`}
+                  shouldDisable={shouldDisable}
+                />
+              )
+            )}
         </List>
       </Collapse>
     </>

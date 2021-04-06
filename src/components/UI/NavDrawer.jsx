@@ -23,9 +23,13 @@ const globalWhiteList = ['welcome', 'start'];
 const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
 
-  const shouldDisable = item => {
+  const shouldDisable = (item, value = '') => {
     const unlocked = [...globalWhiteList, ...whiteList];
-    return locked && !unlocked.includes(item);
+    if (typeof value === 'string') return locked && !unlocked.includes(item);
+    const subUnlocks = Object.entries(value).filter(
+      ([key, val]) => !shouldDisable(`${item}.${key}`, val)
+    );
+    return subUnlocks.length === 0;
   };
 
   return (
@@ -39,30 +43,32 @@ const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) =>
       }}
     >
       <List>
-        {Object.entries(items).map(([item, value]) =>
-          typeof value === 'string' ? (
-            <ListItem
-              button
-              divider
-              key={item}
-              disabled={shouldDisable(item)}
-              selected={current === item}
-              onClick={() => onNav(item)}
-            >
-              <ListItemText primary={item} />
-            </ListItem>
-          ) : (
-            <Folder
-              key={item}
-              title={item}
-              items={value}
-              onClick={onNav}
-              prefix={`${item}.`}
-              current={current}
-              shouldDisable={shouldDisable}
-            />
-          )
-        )}
+        {Object.entries(items)
+          .filter(([item, value]) => !shouldDisable(item, value))
+          .map(([item, value]) =>
+            typeof value === 'string' ? (
+              <ListItem
+                button
+                divider
+                key={item}
+                disabled={shouldDisable(item)}
+                selected={current === item}
+                onClick={() => onNav(item)}
+              >
+                <ListItemText primary={item} />
+              </ListItem>
+            ) : (
+              <Folder
+                key={item}
+                title={item}
+                items={value}
+                onClick={onNav}
+                prefix={`${item}.`}
+                current={current}
+                shouldDisable={shouldDisable}
+              />
+            )
+          )}
       </List>
     </Drawer>
   );
