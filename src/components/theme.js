@@ -14,6 +14,7 @@ import { breakpoints } from '../globals';
 export default createMuiTheme({
   // Color Palette
   palette: {
+    type: 'dark',
     primary: {
       light: '#00AFEF',
       main: '#a240b5',
