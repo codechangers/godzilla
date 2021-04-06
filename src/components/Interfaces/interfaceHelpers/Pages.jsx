@@ -408,13 +408,23 @@ const useStyles = makeStyles(theme => ({
       color: 'var(--yellow-color)',
       fontSize: '120%',
       fontWeight: 600
-    }
+    },
+    '& h1,h2,h3,h4,h5,h6': {
+      margin: '12px 0'
+    },
+    '& h1': { fontSize: '4rem' },
+    '& h2': { fontSize: '3rem' },
+    '& h3': { fontSize: '2.5rem' },
+    '& h4': { fontSize: '2rem' },
+    '& h5': { fontSize: '1.8rem' },
+    '& h6': { fontSize: '1.5rem' }
   },
   p: {
     fontSize: '1.2rem',
-    margin: '5px 0'
+    margin: '16px 0'
   },
   codeBlock: {
+    padding: '12px 0',
     '& code': { fontSize: '100%' }
   },
   codeBlockHeader: {
