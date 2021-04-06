@@ -199,13 +199,13 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: 'white'
+      color: 'rgba(255, 255, 255, 0.8)'
     },
     '& > a > div:hover': {
-      color: 'lightgrey'
+      color: 'rgba(200, 200, 200, 0.8)'
     },
     '& > a > div.selected': {
-      color: 'white'
+      color: '#fff'
     }
   },
   appBar: {
