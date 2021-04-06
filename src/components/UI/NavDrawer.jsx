@@ -42,8 +42,12 @@ const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) =>
               key={item}
               selected={current === item}
               onClick={() => onNav(item)}
+              style={{ textOverflow: 'elipsis' }}
             >
-              <ListItemText primary={item} />
+              <ListItemText
+                primary={item}
+                style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}
+              />
             </ListItem>
           ) : (
             <Folder

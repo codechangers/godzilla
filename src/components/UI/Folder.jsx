@@ -29,13 +29,14 @@ const Folder = ({ title, items, prefix, current, onClick, useChecks, checked }) 
         divider
         onClick={() => setOpen(!open)}
         selected={!open && current.includes(prefix)}
+        style={{ textOverflow: 'elipsis' }}
       >
         {useChecks && (
           <ListItemIcon>
             <FolderIcon />
           </ListItemIcon>
         )}
-        <ListItemText primary={title} />
+        <ListItemText primary={title} style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -59,7 +60,10 @@ const Folder = ({ title, items, prefix, current, onClick, useChecks, checked }) 
                     />
                   </ListItemIcon>
                 )}
-                <ListItemText primary={item} />
+                <ListItemText
+                  primary={item}
+                  style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}
+                />
               </ListItem>
             ) : (
               <Folder
