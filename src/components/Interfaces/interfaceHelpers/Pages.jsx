@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 import gfm from 'remark-gfm';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
@@ -33,6 +38,8 @@ const defaultProps = {
 const remarkPlugins = [gfm];
 
 const drawerWidth = 260;
+
+SyntaxHighlighter.registerLanguage('javascript', js);
 
 const PagesInterface = ({
   width,
@@ -156,6 +163,47 @@ PageLink.propTypes = {
   children: PropTypes.node.isRequired
 };
 
+const CodeBlock = ({ code, lang }) => (
+  <>
+    <div
+      style={{
+        maxWidth: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: '0.3em 0.3em 0 0',
+        backgroundColor: 'rgb(29, 31, 33)',
+        marginTop: 12,
+        padding: '6px 18px',
+        borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
+      }}
+    >
+      <Typography variant="body1">Code Block</Typography>
+      <CopyToClipboard text={code}>
+        <Button startIcon={<CopyIcon />}>Copy Code</Button>
+      </CopyToClipboard>
+    </div>
+    <SyntaxHighlighter
+      language={lang}
+      style={atomDark}
+      customStyle={{
+        paddingBottom: 20,
+        maxWidth: '100%',
+        overflowX: 'scroll',
+        borderRadius: '0 0 0.3em 0.3em',
+        margin: 0,
+        marginBottom: 12
+      }}
+    >
+      {code}
+    </SyntaxHighlighter>
+  </>
+);
+CodeBlock.propTypes = {
+  code: PropTypes.node.isRequired,
+  lang: PropTypes.string.isRequired
+};
+
 const Markdown = ({ pages, page }) => {
   const [content, setContent] = useState('# Hello World');
 
@@ -189,9 +237,8 @@ const Markdown = ({ pages, page }) => {
         return <Markdown page={fromInclude(value)} pages={pages} />;
       return value;
     },
-    paragraph: ({ children }) => {
-      return children;
-    },
+    code: ({ value, language }) => <CodeBlock code={value} lang={language} />,
+    paragraph: ({ children }) => children,
     image: ({ src, alt }) => {
       if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
       return <img src={src} alt={alt} />;
@@ -277,11 +324,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: 0,
     padding: '20px 12px',
     boxSizing: 'border-box',
-    '& pre': {
-      paddingBottom: 20,
-      maxWidth: '100%',
-      overflowX: 'scroll'
-    },
     '& h1, h2, h3, h4, h5, p, code, span, li': {
       color: 'lightgrey'
     },
