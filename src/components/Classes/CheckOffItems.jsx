@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   List,
@@ -15,6 +15,7 @@ import {
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { SwapHoriz } from '@material-ui/icons';
 import Folder from '../UI/Folder';
+import { useFlatItems } from '../../hooks/items';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -42,17 +43,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
     setChecked(whiteList);
   }, [whiteList]);
 
-  const flattenItems = (fItems, prefix = '') => {
-    const flattened = [];
-    Object.entries(fItems).forEach(([key, value]) => {
-      const item = prefix + key;
-      if (typeof value === 'string') flattened.push(item);
-      else flattened.push(...flattenItems(value, `${item}.`));
-    });
-    return flattened;
-  };
-
-  const flatItems = useMemo(() => flattenItems(items), [items]);
+  const flatItems = useFlatItems(items);
 
   const toggleAll = () => {
     if (checked.length === flatItems.length) {

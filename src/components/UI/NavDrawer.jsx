@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Folder from './Folder';
+import { useUnlockedItems } from '../../hooks/items';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -18,27 +19,9 @@ const defaultProps = {
   whiteList: []
 };
 
-const globalWhiteList = ['welcome', 'start'];
-
 const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
-
-  const checkItems = (check, value, prefix = '') => {
-    const newValue = {};
-    Object.entries(value).forEach(([key, val]) => {
-      if (typeof val === 'string' && check(prefix + key)) newValue[key] = val;
-      else if (typeof val !== 'string') {
-        const nextUp = checkItems(check, val, `${prefix}${key}.`);
-        if (Object.keys(nextUp).length > 0) newValue[key] = nextUp;
-      }
-    });
-    return newValue;
-  };
-
-  const unlockedItems = useMemo(() => {
-    const unlocked = [...globalWhiteList, ...whiteList];
-    return checkItems(i => locked && unlocked.includes(i), items);
-  }, [items, locked, whiteList]);
+  const unlockedItems = useUnlockedItems(items, locked, whiteList);
 
   return (
     <Drawer
