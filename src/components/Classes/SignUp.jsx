@@ -245,7 +245,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
                 className={classes.cardInfo}
                 style={invalidPayment ? { border: '1px solid red' } : null}
               >
-                <CardElement />
+                <CardElement style={{ base: { color: '#fafafa' } }} />
               </div>
             </>
           )}

@@ -17,7 +17,7 @@ const propTypes = {
 
 const HeadTableCell = withStyles({
   head: {
-    backgroundColor: 'rgba(224, 224, 224, 1)'
+    backgroundColor: 'rgba(31, 31, 31, 0.5)'
   }
 })(TableCell);
 
@@ -60,8 +60,10 @@ const useStyles = makeStyles({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    borderLeft: '1px solid rgba(224, 224, 224, 1)',
-    borderRight: '1px solid rgba(224, 224, 224, 1)',
+    border: '1px solid rgba(31, 31, 31, 0.5)',
+    '& *': {
+      borderBottom: 'none'
+    },
     margin: '14px 0',
     overflowX: 'scroll'
   }
