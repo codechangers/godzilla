@@ -86,6 +86,7 @@ class InfoCardHeader extends React.Component {
                   border: 'none',
                   padding: 0,
                   fontSize: 'inherit',
+                  color: 'inherit',
                   cursor: 'pointer'
                 }}
               >
@@ -304,7 +305,6 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     '& h6': {
-      color: 'rgba(0,0,0,0.6)',
       fontSize: '14px',
       lineHeight: '24px',
       fontWeight: 500,
@@ -313,7 +313,6 @@ const styles = theme => ({
     '& p': {
       width: '108px',
       textAlign: 'left',
-      color: 'rgba(0,0,0,0.6)',
       fontSize: '10px',
       lineHeight: '16px',
       fontWeight: 500,

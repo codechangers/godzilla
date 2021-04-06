@@ -4,6 +4,7 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
+  Typography,
   Button,
   Card,
   CardHeader,
@@ -238,16 +239,17 @@ class GenericSignUp extends React.Component {
             </Styled.FormFieldsRow>
             <Styled.CheckboxRow>
               <FormControlLabel control={this.getCheckBox()} label="Okay to receive texts" />
-              <p
+              <Typography
+                variant="body2"
+                color="textSecondary"
                 style={{
                   margin: '-8px 0 0 32px',
                   paddingBottom: '8px',
-                  fontSize: '0.75rem',
-                  color: 'rgba(0, 0, 0, 0.5)'
+                  fontSize: '0.75rem'
                 }}
               >
                 Subscribe to stay updated with new programs and offers
-              </p>
+              </Typography>
             </Styled.CheckboxRow>
             {accountType === 'parent' ? (
               <Styled.FormFieldsRow firstRow>

@@ -238,7 +238,9 @@ class ClassViewInterface extends React.Component {
                           Looks like you haven&apos;t signed up for any classes yet.
                         </Typography>
                         <Button>
-                          <Link to="/parent/search">Find one now!</Link>
+                          <Link to="/parent/search" style={{ color: 'inherit' }}>
+                            Find one now!
+                          </Link>
                         </Button>
                       </div>
                     </div>
