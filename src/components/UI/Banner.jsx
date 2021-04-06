@@ -7,7 +7,7 @@ const Banner = ({ onClick, buttonText, stripeIsLinked }) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.upper}>
-        <Typography variant="h3" className={(classes.header, 'white')}>
+        <Typography variant="h3" className={classes.header}>
           Educator Dashboard
         </Typography>
         <Button

@@ -79,11 +79,11 @@ const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
   return (
     <Styled.PageContent style={{ display: 'flex', flexDirection: 'column' }}>
       <div className={classes.headerWrapper}>
-        <Typography variant="h3" className={(classes.pageHeader, 'white')}>
+        <Typography variant="h3" className={classes.pageHeader}>
           Class Search
         </Typography>
         <div className={classes.typesWrapper}>
-          <p className="white">Filter by:</p>
+          <p>Filter by:</p>
           <div className={classes.types}>
             {Object.keys(programTypeToText).map(programType => (
               <button

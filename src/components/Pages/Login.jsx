@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles.css';
 import { Redirect, withRouter, Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -170,7 +169,7 @@ class Login extends React.Component {
       <div className={classes.pageWrapper}>
         <Box className={classes.leftContent}>
           <LogoText className={classes.logoText} />
-          <div className={classes.loginForm} id="form">
+          <div className={classes.loginForm}>
             <Typography variant="h2" style={{ marginBottom: '40px' }}>
               {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
             </Typography>

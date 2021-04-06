@@ -89,7 +89,6 @@ const SideBar = ({
           {small ? (
             <IconButton
               style={{
-                color: 'white',
                 padding: 8,
                 margin: '0 28px'
               }}

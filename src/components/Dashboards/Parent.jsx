@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import '../styles.css';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import { Typography } from '@material-ui/core';

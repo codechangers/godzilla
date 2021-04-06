@@ -411,12 +411,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: 0,
     padding: '20px 12px',
     boxSizing: 'border-box',
-    '& h1, h2, h3, h4, h5, p, code, span, li': {
-      color: 'lightgrey'
-    },
-    '& a': {
-      color: 'white'
-    }
+    color: 'white'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {

@@ -246,7 +246,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
     </Styled.PageContent>
   ) : (
     <Styled.PageContent>
-      <Typography variant="h3" className={(classes.mainHeader, 'white')}>
+      <Typography variant="h3" className={classes.mainHeader}>
         {foundClass ? 'Class Info' : 'Class not found.'}
       </Typography>
       {isEditing && (

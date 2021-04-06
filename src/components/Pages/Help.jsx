@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles.css';
 import 'firebase/auth';
 import autoBind from '../../autoBind';
 

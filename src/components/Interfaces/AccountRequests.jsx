@@ -53,12 +53,12 @@ const AccountRequests = ({ db }) => {
   const classes = useStyles();
   return (
     <div className={classes.reqsWrapper}>
-      <Typography variant="h2" className={(classes.header, 'white')}>
+      <Typography variant="h2" className={classes.header}>
         Account Requests
       </Typography>
       <Tabs value={tabIndex} onChange={(_, v) => setTabIndex(v)} indicatorColor="primary">
-        <Tab className="white" label="Teacher Requests" />
-        <Tab className="white" label="Organization Requests" />
+        <Tab label="Teacher Requests" />
+        <Tab label="Organization Requests" />
       </Tabs>
       <TabPanel value={tabIndex} index={0} className={classes.panel}>
         <RequestList reqs={teacherReqs} loading={loadingTeachers} />

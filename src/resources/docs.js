@@ -38,10 +38,10 @@ import getXTowards from './docs/getXTowards.md';
 import getYTowards from './docs/getYTowards.md';
 import handleActions from './docs/handleActions.md';
 import handleAnimations from './docs/handleAnimations.md';
+import handleCollision from './docs/handleCollision.md';
 import handleItemCollision from './docs/handleItemCollision.md';
 import handleLeaderboard from './docs/handleLeaderboard.md';
 import handleLocations from './docs/handleLocations.md';
-
 import hideItemBar from './docs/hideItemBar.md';
 import keycodes from './docs/keycodes.md';
 import loadImage from './docs/loadImage.md';
@@ -121,6 +121,7 @@ const docs = {
   getYTowards,
   handleActions,
   handleAnimations,
+  handleCollision,
   handleItemCollision,
   handleLeaderboard,
   handleLocations,
