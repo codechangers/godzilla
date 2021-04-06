@@ -175,6 +175,7 @@ PageLink.propTypes = {
 };
 
 const CodeBlock = ({ code, lang }) => {
+  const classes = useStyles();
   const firstLine = code.split('\n')[0];
   const hasFileName = firstLine.startsWith('// File: ');
   const fileName = firstLine.replace('// File: ', '');
@@ -184,20 +185,8 @@ const CodeBlock = ({ code, lang }) => {
       .slice(1, c.length - 1)
       .join('\n');
   return (
-    <>
-      <div
-        style={{
-          maxWidth: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderRadius: '0.3em 0.3em 0 0',
-          backgroundColor: 'rgb(29, 31, 33)',
-          marginTop: 12,
-          padding: '6px 18px',
-          borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
-        }}
-      >
+    <div className={classes.codeBlock}>
+      <div className={classes.codeBlockHeader}>
         <Typography
           variant="body1"
           style={{
@@ -226,7 +215,7 @@ const CodeBlock = ({ code, lang }) => {
       >
         {hasFileName ? removeFirstLine(code) : code}
       </SyntaxHighlighter>
-    </>
+    </div>
   );
 };
 CodeBlock.propTypes = {
@@ -236,6 +225,7 @@ CodeBlock.propTypes = {
 CodeBlock.defaultProps = { lang: 'javascript' };
 
 const Markdown = ({ pages, page }) => {
+  const classes = useStyles();
   const [content, setContent] = useState('# Hello World');
 
   // Fetch page content.
@@ -271,7 +261,7 @@ const Markdown = ({ pages, page }) => {
       return value;
     },
     code: ({ value, language }) => <CodeBlock code={value} lang={language} />,
-    paragraph: ({ children }) => children,
+    paragraph: ({ children }) => <div className={classes.p}>{children}</div>,
     image: ({ src, alt }) => {
       if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
       return <img src={src} alt={alt} />;
@@ -411,7 +401,32 @@ const useStyles = makeStyles(theme => ({
     marginRight: 0,
     padding: '20px 12px',
     boxSizing: 'border-box',
-    color: 'white'
+    '& a': {
+      color: 'var(--pink-color)'
+    },
+    '& code': {
+      color: 'var(--yellow-color)',
+      fontSize: '120%',
+      fontWeight: 600
+    }
+  },
+  p: {
+    fontSize: '1.2rem',
+    margin: '5px 0'
+  },
+  codeBlock: {
+    '& code': { fontSize: '100%' }
+  },
+  codeBlockHeader: {
+    maxWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: '0.3em 0.3em 0 0',
+    backgroundColor: 'rgb(29, 31, 33)',
+    marginTop: 12,
+    padding: '6px 18px',
+    borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {

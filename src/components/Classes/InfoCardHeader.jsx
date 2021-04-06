@@ -11,11 +11,11 @@ import ScheduleModal from '../UI/ScheduleModal';
 const SignUpsProgress = withStyles({
   root: {
     height: 6,
-    backgroundColor: '#E0F4FD',
+    backgroundColor: '#a4a4a4',
     borderRadius: 8
   },
   bar: {
-    backgroundColor: '#00AFEF'
+    backgroundColor: 'var(--yellow-color)'
   }
 })(LinearProgress);
 
