@@ -22,6 +22,7 @@ body {
 /**** Background Images ****/
 #background1-img {
   background-image: url('../images/background1.png');
+  background-position: top center;
 }
 #students-img0,
 #students-img1,
