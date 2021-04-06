@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -17,6 +17,7 @@ import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
 import { resolveImg } from '../../../resources/images';
+import { useFlatUnlockedItems } from '../../../hooks/items';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -112,6 +113,13 @@ const PagesInterface = ({
         })}
       >
         <Markdown pages={pages} page={page} />
+        <NavButtons
+          onNav={setUrlPage}
+          current={page}
+          items={pages}
+          locked={child !== null}
+          whiteList={child !== null ? child[whiteList] : []}
+        />
       </main>
       <NavDrawer
         open={showMenu}
@@ -302,6 +310,42 @@ const Markdown = ({ pages, page }) => {
 Markdown.propTypes = {
   pages: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired
+};
+
+const NavButtons = ({ current, items, locked, whiteList, onNav }) => {
+  const flatUnlocks = useFlatUnlockedItems(items, locked, whiteList);
+
+  const nextPage = useMemo(() => {
+    const i = flatUnlocks.indexOf(current);
+    return i < flatUnlocks.length - 1 ? flatUnlocks[i + 1] : '';
+  }, [current, flatUnlocks]);
+
+  const prevPage = useMemo(() => {
+    const i = flatUnlocks.indexOf(current);
+    return i > 0 ? flatUnlocks[i - 1] : '';
+  }, [current, flatUnlocks]);
+
+  return (
+    <div>
+      <Button onClick={() => onNav(prevPage)} disabled={prevPage === ''}>
+        Prev
+      </Button>
+      <Button onClick={() => onNav(nextPage)} disabled={nextPage === ''}>
+        Next
+      </Button>
+    </div>
+  );
+};
+NavButtons.propTypes = {
+  onNav: PropTypes.func.isRequired,
+  current: PropTypes.string.isRequired,
+  items: PropTypes.object.isRequired,
+  locked: PropTypes.bool,
+  whiteList: PropTypes.arrayOf(PropTypes.string)
+};
+NavButtons.defaultProps = {
+  locked: false,
+  whiteList: []
 };
 
 const useStyles = makeStyles(theme => ({
