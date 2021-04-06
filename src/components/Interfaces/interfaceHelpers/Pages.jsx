@@ -5,6 +5,8 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import FolderIcon from '@material-ui/icons/FolderOutlined';
+import NextIcon from '@material-ui/icons/NavigateNext';
+import PrevIcon from '@material-ui/icons/NavigateBefore';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
@@ -326,11 +328,29 @@ const NavButtons = ({ current, items, locked, whiteList, onNav }) => {
   }, [current, flatUnlocks]);
 
   return (
-    <div>
-      <Button onClick={() => onNav(prevPage)} disabled={prevPage === ''}>
+    <div
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16
+      }}
+    >
+      <Button
+        variant="outlined"
+        onClick={() => onNav(prevPage)}
+        disabled={prevPage === ''}
+        startIcon={<PrevIcon />}
+      >
         Prev
       </Button>
-      <Button onClick={() => onNav(nextPage)} disabled={nextPage === ''}>
+      <Button
+        variant="outlined"
+        onClick={() => onNav(nextPage)}
+        disabled={nextPage === ''}
+        endIcon={<NextIcon />}
+      >
         Next
       </Button>
     </div>
