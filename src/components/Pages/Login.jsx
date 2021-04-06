@@ -171,7 +171,7 @@ class Login extends React.Component {
           <LogoText className={classes.logoText} />
           <div className={classes.loginForm}>
             <Typography variant="h2" style={{ marginBottom: '40px' }}>
-              {this.state.forgotPassword ? 'Enter email to reset Password' : 'Sign In'}
+              {this.state.forgotPassword ? 'Forgot Password' : 'Sign In'}
             </Typography>
             {this.state.forgotPassword ? (
               <form
@@ -339,6 +339,7 @@ const styles = theme => ({
     }
   },
   linkButton: {
+    color: 'inherit',
     border: 'none',
     outline: 'none',
     background: 'none',
