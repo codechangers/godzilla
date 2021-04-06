@@ -4,6 +4,7 @@ import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-u
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+import FolderIcon from '@material-ui/icons/FolderOutlined';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
@@ -163,42 +164,61 @@ PageLink.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-const CodeBlock = ({ code, lang }) => (
-  <>
-    <div
-      style={{
-        maxWidth: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: '0.3em 0.3em 0 0',
-        backgroundColor: 'rgb(29, 31, 33)',
-        marginTop: 12,
-        padding: '6px 18px',
-        borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
-      }}
-    >
-      <Typography variant="body1">Code Block</Typography>
-      <CopyToClipboard text={code}>
-        <Button startIcon={<CopyIcon />}>Copy Code</Button>
-      </CopyToClipboard>
-    </div>
-    <SyntaxHighlighter
-      language={lang || 'javascript'}
-      style={atomDark}
-      customStyle={{
-        paddingBottom: 20,
-        maxWidth: '100%',
-        overflowX: 'scroll',
-        borderRadius: '0 0 0.3em 0.3em',
-        margin: 0,
-        marginBottom: 12
-      }}
-    >
-      {code}
-    </SyntaxHighlighter>
-  </>
-);
+const CodeBlock = ({ code, lang }) => {
+  const firstLine = code.split('\n')[0];
+  const hasFileName = firstLine.startsWith('// File: ');
+  const fileName = firstLine.replace('// File: ', '');
+  const removeFirstLine = c =>
+    c
+      .split('\n')
+      .slice(1, c.length - 1)
+      .join('\n');
+  return (
+    <>
+      <div
+        style={{
+          maxWidth: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: '0.3em 0.3em 0 0',
+          backgroundColor: 'rgb(29, 31, 33)',
+          marginTop: 12,
+          padding: '6px 18px',
+          borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
+        }}
+      >
+        <Typography
+          variant="body1"
+          style={{
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          {hasFileName && <FolderIcon style={{ marginRight: 12 }} />}
+          {hasFileName ? fileName : 'Code Block'}
+        </Typography>
+        <CopyToClipboard text={code}>
+          <Button startIcon={<CopyIcon />}>Copy Code</Button>
+        </CopyToClipboard>
+      </div>
+      <SyntaxHighlighter
+        language={lang || 'javascript'}
+        style={atomDark}
+        customStyle={{
+          paddingBottom: 20,
+          maxWidth: '100%',
+          overflowX: 'scroll',
+          borderRadius: '0 0 0.3em 0.3em',
+          margin: 0,
+          marginBottom: 12
+        }}
+      >
+        {hasFileName ? removeFirstLine(code) : code}
+      </SyntaxHighlighter>
+    </>
+  );
+};
 CodeBlock.propTypes = {
   code: PropTypes.node.isRequired,
   lang: PropTypes.string
