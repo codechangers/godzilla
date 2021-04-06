@@ -201,14 +201,17 @@ const CodeBlock = ({ code, lang }) => (
 );
 CodeBlock.propTypes = {
   code: PropTypes.node.isRequired,
-  lang: PropTypes.string.isRequired
+  lang: PropTypes.string
 };
+CodeBlock.defaultProps = { lang: 'javascript' };
 
 const Markdown = ({ pages, page }) => {
   const [content, setContent] = useState('# Hello World');
 
   // Fetch page content.
   useEffect(() => {
+    setContent('');
+    window.scrollTo(0, 0);
     const controller = new AbortController();
     let doc = pages;
     page.split('.').forEach(stop => {
