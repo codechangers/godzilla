@@ -184,7 +184,7 @@ const CodeBlock = ({ code, lang }) => (
       </CopyToClipboard>
     </div>
     <SyntaxHighlighter
-      language={lang}
+      language={lang || 'javascript'}
       style={atomDark}
       customStyle={{
         paddingBottom: 20,
