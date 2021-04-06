@@ -518,7 +518,7 @@ const styles = theme => ({
   bold: {
     '& p': {
       fontWeight: 'normal',
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: 'rgba(255, 255, 255, 0.87)'
     }
   },
   daysOfWeek: {

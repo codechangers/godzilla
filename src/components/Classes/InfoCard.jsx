@@ -174,6 +174,7 @@ const useStyles = makeStyles(theme => ({
     border: 'none',
     padding: 0,
     fontSize: 14,
+    color: 'inherit',
     cursor: 'pointer',
     textDecoration: 'underline',
     marginLeft: 40

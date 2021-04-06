@@ -22,6 +22,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import SendIcon from '@material-ui/icons/Send';
+import clsx from 'clsx';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
@@ -407,7 +408,10 @@ const ClassInfoInterface = ({ location, db, user }) => {
                 Important Information
               </Typography>
               {classInfo.faqs.map((faq, i) => (
-                <ExpansionPanel key={faq.q} className={classes.faqPanel}>
+                <ExpansionPanel
+                  key={faq.q}
+                  className={clsx(classes.faqPanel, classes.faqPanelOutline)}
+                >
                   <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -454,7 +458,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
               ))}
               {isEditing ? (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   className={classes.faqPanel}
                   style={{ borderRadius: 0, marginTop: 1 }}
                   onClick={() => setEditFAQ([{ q: '', a: '', new: true }, -1])}
@@ -593,7 +597,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   fill: {
-    background: 'white',
+    background: 'var(--background-color)',
     borderRadius: '3px',
     display: 'flex',
     justifyContent: 'center',
@@ -640,11 +644,11 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'normal',
     lineHeight: '40px',
     letterSpacing: '0.25px',
-    color: 'rgba(0,0,0,0.87)'
+    color: 'inherit'
   },
   aboutInput: {
     width: '100%',
-    color: 'rgba(0,0,0,0.87)',
+    color: 'inherit',
     fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.5px',
@@ -672,10 +676,14 @@ const useStyles = makeStyles(theme => ({
   },
   faqPanel: {
     width: '80%',
-    backgroundColor: '#f0f0f0',
     [theme.breakpoints.down('sm')]: {
       width: '98%'
     }
+  },
+  faqPanelOutline: {
+    boxSizing: 'border-box',
+    border: '1px solid rgba(255, 255, 255, 0.23)',
+    boxShadow: 'none'
   },
   faqHeader: {
     marginBottom: '20px',
