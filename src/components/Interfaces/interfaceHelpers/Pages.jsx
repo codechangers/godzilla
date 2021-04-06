@@ -412,7 +412,7 @@ const useStyles = makeStyles(theme => ({
     '& h1,h2,h3,h4,h5,h6': {
       margin: '12px 0'
     },
-    '& h1': { fontSize: '4rem' },
+    '& h1': { fontSize: '4rem', color: 'var(--blue-color)' },
     '& h2': { fontSize: '3rem' },
     '& h3': { fontSize: '2.5rem' },
     '& h4': { fontSize: '2rem' },

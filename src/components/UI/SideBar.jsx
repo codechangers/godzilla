@@ -105,6 +105,7 @@ const SideBar = ({
           </Typography>
           {children}
         </Toolbar>
+        <div className={classes.appBarBorder} />
       </AppBar>
       <div
         id="offclick"
@@ -121,19 +122,22 @@ const SideBar = ({
             showMenu ? `${classes.sidebarWrapper} ${classes.openSidebar}` : classes.sidebarWrapper
           }
         >
-          {small && <Logo />}
-          {names.map(name => {
-            const Icon = nameToIcon[name];
-            return (
-              <Link to={nameToRoute[name]} key={name} onClick={() => setShowMenu(false)}>
-                <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
-                  <Icon />
-                  {name}
-                </div>
-              </Link>
-            );
-          })}
-          <Logout firebase={firebase} className={classes.logoutButton} />
+          <div className={classes.sidebarContent}>
+            {small && <Logo />}
+            {names.map(name => {
+              const Icon = nameToIcon[name];
+              return (
+                <Link to={nameToRoute[name]} key={name} onClick={() => setShowMenu(false)}>
+                  <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
+                    <Icon />
+                    {name}
+                  </div>
+                </Link>
+              );
+            })}
+            <Logout firebase={firebase} className={classes.logoutButton} />
+          </div>
+          <div className={classes.sidebarBorder} />
         </div>
       </div>
     </>
@@ -164,7 +168,19 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     top: 0,
     left: 0,
+    zIndex: 10,
     width: '96px',
+    height: '100%',
+    overflow: 'hidden',
+    transition: 'width 300ms ease',
+    backgroundColor: 'var(--background-color)',
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      width: 0
+    }
+  },
+  sidebarContent: {
+    width: 'calc(100% - 1px)',
     height: '100%',
     boxSizing: 'border-box',
     paddingTop: '68px',
@@ -173,13 +189,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    backgroundColor: 'var(--background-color)',
-    overflow: 'hidden',
-    transition: 'width 300ms ease',
-    zIndex: 10,
-    [theme.breakpoints.down('xs')]: {
-      width: 0
-    },
     '& > *': {
       marginBottom: '20px'
     },
@@ -208,6 +217,13 @@ const useStyles = makeStyles(theme => ({
       color: '#fff'
     }
   },
+  sidebarBorder: {
+    display: 'block',
+    alignSelf: 'flex-end',
+    width: 1,
+    height: 'calc(100% - 64px)',
+    background: 'rgba(255, 255, 255, 0.12)'
+  },
   appBar: {
     backgroundColor: 'var(--background-color)',
     boxShadow: 'none',
@@ -215,6 +231,15 @@ const useStyles = makeStyles(theme => ({
       width: '40px',
       marginRight: '28px',
       marginLeft: '28px'
+    }
+  },
+  appBarBorder: {
+    alignSelf: 'flex-end',
+    width: 'calc(100% - 96px + 1px)',
+    background: 'rgba(255, 255, 255, 0.12)',
+    height: 1,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
     }
   },
   toolBar: {

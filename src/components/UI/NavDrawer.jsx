@@ -69,7 +69,8 @@ const useStyles = drawerWidth =>
     drawer: {
       color: 'lightgrey',
       width: drawerWidth,
-      backgroundColor: 'var(--background-color)'
+      backgroundColor: 'var(--background-color)',
+      paddingTop: '4px'
     }
   })();
 
