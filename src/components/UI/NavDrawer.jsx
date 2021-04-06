@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Folder from './Folder';
@@ -23,14 +23,22 @@ const globalWhiteList = ['welcome', 'start'];
 const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
 
-  const shouldDisable = (item, value = '') => {
-    const unlocked = [...globalWhiteList, ...whiteList];
-    if (typeof value === 'string') return locked && !unlocked.includes(item);
-    const subUnlocks = Object.entries(value).filter(
-      ([key, val]) => !shouldDisable(`${item}.${key}`, val)
-    );
-    return subUnlocks.length === 0;
+  const checkItems = (check, value, prefix = '') => {
+    const newValue = {};
+    Object.entries(value).forEach(([key, val]) => {
+      if (typeof val === 'string' && check(prefix + key)) newValue[key] = val;
+      else if (typeof val !== 'string') {
+        const nextUp = checkItems(check, val, `${prefix}${key}.`);
+        if (Object.keys(nextUp).length > 0) newValue[key] = nextUp;
+      }
+    });
+    return newValue;
   };
+
+  const unlockedItems = useMemo(() => {
+    const unlocked = [...globalWhiteList, ...whiteList];
+    return checkItems(i => locked && unlocked.includes(i), items);
+  }, [items, locked, whiteList]);
 
   return (
     <Drawer
@@ -43,32 +51,28 @@ const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) =>
       }}
     >
       <List>
-        {Object.entries(items)
-          .filter(([item, value]) => !shouldDisable(item, value))
-          .map(([item, value]) =>
-            typeof value === 'string' ? (
-              <ListItem
-                button
-                divider
-                key={item}
-                disabled={shouldDisable(item)}
-                selected={current === item}
-                onClick={() => onNav(item)}
-              >
-                <ListItemText primary={item} />
-              </ListItem>
-            ) : (
-              <Folder
-                key={item}
-                title={item}
-                items={value}
-                onClick={onNav}
-                prefix={`${item}.`}
-                current={current}
-                shouldDisable={shouldDisable}
-              />
-            )
-          )}
+        {Object.entries(unlockedItems).map(([item, value]) =>
+          typeof value === 'string' ? (
+            <ListItem
+              button
+              divider
+              key={item}
+              selected={current === item}
+              onClick={() => onNav(item)}
+            >
+              <ListItemText primary={item} />
+            </ListItem>
+          ) : (
+            <Folder
+              key={item}
+              title={item}
+              items={value}
+              onClick={onNav}
+              prefix={`${item}.`}
+              current={current}
+            />
+          )
+        )}
       </List>
     </Drawer>
   );
