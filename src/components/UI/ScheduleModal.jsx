@@ -86,9 +86,8 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start'
   },
   scheduleLine: {
-    margin: '0 30px',
-    backgroundColor: 'rgba(200, 200, 200, 0.3)',
-    border: '3px solid #fff',
+    margin: '2px 30px',
+    border: '1px solid rgba(200, 200, 200, 0.3)',
     boxSizing: 'border-box',
     padding: '10px 20px',
     borderRadius: '6px',
