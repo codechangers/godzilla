@@ -324,6 +324,7 @@ const NavButtons = ({ current, items, locked, whiteList, onNav }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        boxSizing: 'border-box',
         padding: 16
       }}
     >
