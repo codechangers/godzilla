@@ -211,7 +211,7 @@ const CodeBlock = ({ code, lang }) => {
 
   const parseAnims = currentCode => {
     // eslint-disable-next-line
-    let before, next, cd, after, oldCode, newCode, extra;
+    let before, next, cd, after, oldCode, newCode, extras;
     const cmds = COMMANDS;
     let insertIndex = -1;
     let cmdCase = -1; // 0: Replace; 1: Remove; 2: Add;
@@ -222,7 +222,7 @@ const CodeBlock = ({ code, lang }) => {
     ) {
       // Replace Case
       const all = currentCode.split(cmds.startRemove);
-      extra = all.slice(2);
+      extras = all.slice(2);
       [before, next] = all;
       [cd, after] = next.split(cmds.endAdd);
       [oldCode, newCode] = cd.split(cmds.replace);
@@ -235,7 +235,7 @@ const CodeBlock = ({ code, lang }) => {
     ) {
       // Remove Case
       const all = currentCode.split(cmds.startRemove);
-      extra = all.slice(2);
+      extras = all.slice(2);
       [before, next] = all;
       [oldCode, after] = next.split(cmds.endRemove);
       insertIndex = currentCode.indexOf(cmds.startRemove);
@@ -247,7 +247,7 @@ const CodeBlock = ({ code, lang }) => {
     ) {
       // Add Case
       const all = currentCode.split(cmds.startAdd);
-      extra = all.slice(2);
+      extras = all.slice(2);
       [before, next] = all;
       [newCode, after] = next.split(cmds.endAdd);
       insertIndex = currentCode.indexOf(cmds.startAdd);
@@ -255,9 +255,16 @@ const CodeBlock = ({ code, lang }) => {
       cmdCase = 2;
     }
     const extraCmds = [cmds.startRemove, cmds.startRemove, cmds.startAdd];
-    const extras = [];
-    extra.forEach(e => extras.push(...parseAnims(extraCmds[cmdCase] + e)));
-    return [{ currentCode, insertIndex, oldCode, newCode }, ...extras];
+    const doubleCheckCmds = [cmds.startAdd, cmds.startAdd, cmds.startRemove];
+    const parsedExtras = [];
+    extras = extras || [];
+    extras.forEach(e => {
+      const moreExtras = (extraCmds[cmdCase] + e).split(doubleCheckCmds[cmdCase]);
+      moreExtras.forEach((me, i) => {
+        parsedExtras.push(...parseAnims(i !== 0 ? doubleCheckCmds[cmdCase] + me : me));
+      });
+    });
+    return [{ currentCode, insertIndex, oldCode, newCode }, ...parsedExtras];
   };
 
   const animateCode = (
@@ -305,7 +312,7 @@ const CodeBlock = ({ code, lang }) => {
               .map(
                 a =>
                   a.currentCode.slice(0, a.insertIndex) +
-                  a.aNewCode +
+                  (a.aNewCode || '') +
                   a.currentCode.slice(a.insertIndex)
               )
               .join('')
@@ -317,7 +324,7 @@ const CodeBlock = ({ code, lang }) => {
               .map(
                 a =>
                   a.currentCode.slice(0, a.insertIndex) +
-                  a.oldCode +
+                  (a.oldCode || '') +
                   a.currentCode.slice(a.insertIndex)
               )
               .join('')
