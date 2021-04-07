@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -15,7 +15,6 @@ import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 import gfm from 'remark-gfm';
-import Typed from 'typed.js';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
@@ -175,91 +174,114 @@ PageLink.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-const Typing = ({ code }) => {
-  const codeSpan = useRef(null);
-  useEffect(() => {
-    const typed = new Typed(codeSpan.current, {
-      bindInputFocusEvents: true,
-      strings: ['', code],
-      typeSpeed: 50,
-      backSpeed: 40
-    });
-    return () => typed.destroy();
-  }, [codeSpan, code]);
-  return (
-    <pre
-      style={{
-        color: 'rgb(197, 200, 198)',
-        textShadow: 'rgba(0, 0, 0, 0.3) 0px 1px',
-        fontFamily: 'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
-        direction: 'ltr',
-        textAlign: 'left',
-        whiteSpace: 'pre',
-        wordSpacing: 'normal',
-        wordBreak: 'normal',
-        lineHeight: '1.5',
-        tabSize: '2',
-        hyphens: 'none',
-        padding: '0 12px',
-        margin: '0px',
-        borderRadius: '0px',
-        background: 'rgb(29, 31, 33)',
-        maxWidth: '100%'
-      }}
-    >
-      <code
-        style={{
-          color: 'rgb(197, 200, 198)',
-          textShadow: 'rgba(0, 0, 0, 0.3) 0px 1px',
-          fontFamily: 'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
-          direction: 'ltr',
-          textAlign: 'left',
-          whiteSpace: 'pre',
-          wordSpacing: 'normal',
-          wordBreak: 'normal',
-          lineHeight: '1.5',
-          tabSize: '2',
-          hyphens: 'none'
-        }}
-      >
-        <span style={{ whiteSpace: 'pre' }} ref={codeSpan} />
-      </code>
-    </pre>
-  );
+const COMMANDS = {
+  // fileName works on the first line only.
+  fileName: '// File: ',
+  startRemove: '/*{*/',
+  endRemove: '/*}*/',
+  // Use replace to abbreviate back to back endRemove and startAdd.
+  replace: '/*}[*/',
+  startAdd: '/*[*/',
+  endAdd: '/*]*/'
 };
-Typing.propTypes = { code: PropTypes.string.isRequired };
 
 const CodeBlock = ({ code, lang }) => {
   const classes = useStyles();
-  const firstLine = useMemo(() => code.split('\n')[0], [code]);
-  const hasFileName = firstLine.startsWith('// File: ');
-  const fileName = firstLine.replace('// File: ', '');
+  const [cleanCode, setCleanCode] = useState('');
+  const defaultTitle = 'Code Block';
+  const [title, setTitle] = useState(defaultTitle);
+
+  useEffect(() => {
+    let currentCode = code;
+    const cmds = COMMANDS;
+    // Handle fileName comment.
+    const firstLine = currentCode.split('\n')[0];
+    const hasFileName = firstLine.startsWith(cmds.fileName);
+    const fileName = firstLine.replace(cmds.fileName, '');
+    if (hasFileName) {
+      setTitle(fileName);
+      currentCode = removeFirstLine(currentCode);
+    } else setTitle(defaultTitle);
+    // Handle replace, remove, add comments.
+    const idxs = {
+      sr: code.indexOf(cmds.startRemove),
+      er: code.indexOf(cmds.endRemove),
+      re: code.indexOf(cmds.replace),
+      sa: code.indexOf(cmds.startAdd),
+      ea: code.indexOf(cmds.endAdd)
+    };
+    let insertIndex = -1;
+    let newCode = '';
+    let oldCode = '';
+    if (idxs.sr !== -1 && idxs.re !== -1 && idxs.ea !== -1) {
+      // Replace Case
+      const [before, next] = currentCode.split(cmds.startRemove);
+      const [cd, after] = next.split(cmds.endAdd);
+      const [oc, nc] = cd.split(cmds.replace);
+      currentCode = before + after;
+      insertIndex = before.length;
+      oldCode = oc;
+      newCode = nc;
+    } else if (idxs.sr !== -1 && idxs.er !== -1) {
+      // Remove Case
+      const [before, next] = currentCode.split(cmds.startRemove);
+      const [oc, after] = next.split(cmds.endRemove);
+      currentCode = before + after;
+      insertIndex = idxs.sr;
+      oldCode = oc;
+    } else if (idxs.sa !== -1 && idxs.ea !== -1) {
+      // Add Case
+      const [before, next] = currentCode.split(cmds.startAdd);
+      const [nc, after] = next.split(cmds.endAdd);
+      currentCode = before + after;
+      insertIndex = idxs.sa;
+      newCode = nc;
+    } else {
+      setCleanCode(currentCode);
+    }
+    console.log(insertIndex);
+    if (insertIndex !== -1) animateCode(currentCode, insertIndex, oldCode, newCode);
+  }, [code]);
+
+  const animateCode = (
+    currentCode,
+    insertIndex,
+    oldCode,
+    newCode,
+    oldIndex = -1,
+    newIndex = -1
+  ) => {
+    const before = currentCode.substr(0, insertIndex);
+    const after = currentCode.substr(insertIndex, currentCode.length);
+    const speed = 100;
+    if (oldCode !== '') {
+      const oi = oldIndex === -1 ? oldCode.length : oldIndex;
+      setCleanCode(before + oldCode.slice(0, oi) + after);
+      if (oi - 1 < 0)
+        setTimeout(() => animateCode(currentCode, insertIndex, '', newCode, -1, newIndex), speed);
+      else
+        setTimeout(
+          () => animateCode(currentCode, insertIndex, oldCode, newCode, oi - 1, newIndex),
+          speed
+        );
+    } else if (newCode !== '') {
+      const ni = newIndex === -1 ? 0 : newIndex;
+      setCleanCode(before + newCode.slice(0, ni) + after);
+      if (ni + 1 > newCode.length)
+        setTimeout(() => animateCode(currentCode, insertIndex, oldCode, '', oldIndex, -1), speed);
+      else
+        setTimeout(
+          () => animateCode(currentCode, insertIndex, oldCode, newCode, oldIndex, ni + 1),
+          speed
+        );
+    }
+  };
 
   const removeFirstLine = c =>
     c
       .split('\n')
       .slice(1, c.length - 1)
       .join('\n');
-
-  const insertTyping = c => {
-    const sDelim = '\n/*[*/';
-    const eDelim = '/*]*/\n';
-    const start = c.indexOf(sDelim);
-    const end = c.indexOf(eDelim);
-    if (start !== -1 && end !== -1) {
-      const [before, nextC] = c.split(sDelim);
-      const [codeToType, after] = nextC.split(eDelim);
-
-      return (
-        <>
-          {highlight(before)}
-          <Typing code={codeToType} />
-          {highlight(after)}
-        </>
-      );
-    }
-    return highlight(c);
-  };
 
   const highlight = c => (
     <SyntaxHighlighter
@@ -286,16 +308,14 @@ const CodeBlock = ({ code, lang }) => {
             alignItems: 'center'
           }}
         >
-          {hasFileName && <FolderIcon style={{ marginRight: 12 }} />}
-          {hasFileName ? fileName : 'Code Block'}
+          {title !== defaultTitle && <FolderIcon style={{ marginRight: 12 }} />}
+          {title}
         </Typography>
         <CopyToClipboard text={code}>
           <Button startIcon={<CopyIcon />}>Copy Code</Button>
         </CopyToClipboard>
       </div>
-      <div className={classes.codeBlockText}>
-        {insertTyping(hasFileName ? removeFirstLine(code) : code)}
-      </div>
+      <div className={classes.codeBlockText}>{highlight(cleanCode)}</div>
     </div>
   );
 };
