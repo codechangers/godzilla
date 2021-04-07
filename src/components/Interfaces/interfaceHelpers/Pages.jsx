@@ -251,12 +251,12 @@ const CodeBlock = ({ code, lang }) => {
       [newCode, after] = next.split(cmds.endAdd);
       insertIndex = currentCode.indexOf(cmds.startAdd);
       currentCode = before + after;
-      if (extras.length === 0) {
-        extras = [after];
-        cleanExtras = true;
-        currentCode = before;
-      }
       cmdCase = 2;
+    }
+    if (extras && extras.length === 0) {
+      extras = [after];
+      cleanExtras = true;
+      currentCode = before;
     }
     const extraCmds = [cmds.startRemove, cmds.startRemove, cmds.startAdd];
     const doubleCheckCmds = [cmds.startAdd, cmds.startAdd, cmds.startRemove];
