@@ -26,7 +26,8 @@
     "react-scripts": "^4.0.3",
     "react-stripe-elements": "^4.0.1",
     "react-syntax-highlighter": "^15.4.3",
-    "remark-gfm": "^1.0.0"
+    "remark-gfm": "^1.0.0",
+    "typed.js": "^2.0.12"
   },
   "scripts": {
     "start": "react-app-rewired -r dotenv/config start",

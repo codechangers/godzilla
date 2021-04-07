@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -15,6 +15,7 @@ import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 import gfm from 'remark-gfm';
+import Typed from 'typed.js';
 import WhoAmIModal from './WhoAmIModal';
 import NavDrawer from '../../UI/NavDrawer';
 import { toData } from '../../../helpers';
@@ -174,16 +175,107 @@ PageLink.propTypes = {
   children: PropTypes.node.isRequired
 };
 
+const Typing = ({ code }) => {
+  const codeSpan = useRef(null);
+  useEffect(() => {
+    const typed = new Typed(codeSpan.current, {
+      bindInputFocusEvents: true,
+      strings: ['', code],
+      typeSpeed: 50,
+      backSpeed: 40
+    });
+    return () => typed.destroy();
+  }, [codeSpan, code]);
+  return (
+    <pre
+      style={{
+        color: 'rgb(197, 200, 198)',
+        textShadow: 'rgba(0, 0, 0, 0.3) 0px 1px',
+        fontFamily: 'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
+        direction: 'ltr',
+        textAlign: 'left',
+        whiteSpace: 'pre',
+        wordSpacing: 'normal',
+        wordBreak: 'normal',
+        lineHeight: '1.5',
+        tabSize: '2',
+        hyphens: 'none',
+        padding: '0 12px',
+        margin: '0px',
+        borderRadius: '0px',
+        background: 'rgb(29, 31, 33)',
+        maxWidth: '100%'
+      }}
+    >
+      <code
+        style={{
+          color: 'rgb(197, 200, 198)',
+          textShadow: 'rgba(0, 0, 0, 0.3) 0px 1px',
+          fontFamily: 'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
+          direction: 'ltr',
+          textAlign: 'left',
+          whiteSpace: 'pre',
+          wordSpacing: 'normal',
+          wordBreak: 'normal',
+          lineHeight: '1.5',
+          tabSize: '2',
+          hyphens: 'none'
+        }}
+      >
+        <span style={{ whiteSpace: 'pre' }} ref={codeSpan} />
+      </code>
+    </pre>
+  );
+};
+Typing.propTypes = { code: PropTypes.string.isRequired };
+
 const CodeBlock = ({ code, lang }) => {
   const classes = useStyles();
-  const firstLine = code.split('\n')[0];
+  const firstLine = useMemo(() => code.split('\n')[0], [code]);
   const hasFileName = firstLine.startsWith('// File: ');
   const fileName = firstLine.replace('// File: ', '');
+
   const removeFirstLine = c =>
     c
       .split('\n')
       .slice(1, c.length - 1)
       .join('\n');
+
+  const insertTyping = c => {
+    const sDelim = '\n/*[*/';
+    const eDelim = '/*]*/\n';
+    const start = c.indexOf(sDelim);
+    const end = c.indexOf(eDelim);
+    if (start !== -1 && end !== -1) {
+      const [before, nextC] = c.split(sDelim);
+      const [codeToType, after] = nextC.split(eDelim);
+
+      return (
+        <>
+          {highlight(before)}
+          <Typing code={codeToType} />
+          {highlight(after)}
+        </>
+      );
+    }
+    return highlight(c);
+  };
+
+  const highlight = c => (
+    <SyntaxHighlighter
+      language={lang || 'javascript'}
+      style={atomDark}
+      customStyle={{
+        borderRadius: '0',
+        margin: 0,
+        padding: '0 12px',
+        tabSize: '2'
+      }}
+    >
+      {c}
+    </SyntaxHighlighter>
+  );
+
   return (
     <div className={classes.codeBlock}>
       <div className={classes.codeBlockHeader}>
@@ -201,20 +293,9 @@ const CodeBlock = ({ code, lang }) => {
           <Button startIcon={<CopyIcon />}>Copy Code</Button>
         </CopyToClipboard>
       </div>
-      <SyntaxHighlighter
-        language={lang || 'javascript'}
-        style={atomDark}
-        customStyle={{
-          paddingBottom: 20,
-          maxWidth: '100%',
-          overflowX: 'scroll',
-          borderRadius: '0 0 0.3em 0.3em',
-          margin: 0,
-          marginBottom: 12
-        }}
-      >
-        {hasFileName ? removeFirstLine(code) : code}
-      </SyntaxHighlighter>
+      <div className={classes.codeBlockText}>
+        {insertTyping(hasFileName ? removeFirstLine(code) : code)}
+      </div>
     </div>
   );
 };
@@ -438,6 +519,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: 12,
     padding: '6px 18px',
     borderBottom: 'solid rgba(255, 255, 255, 0.1) 2px'
+  },
+  codeBlockText: {
+    maxWidth: '100%',
+    boxSizing: 'border-box',
+    padding: '12px 0',
+    backgroundColor: 'rgb(29, 31, 33)',
+    borderRadius: '0 0 0.3em 0.3em'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
