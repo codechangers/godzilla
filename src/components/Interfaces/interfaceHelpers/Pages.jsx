@@ -256,7 +256,9 @@ const CodeBlock = ({ code, lang }) => {
     lastUpdate = null,
     animIndex = 0,
     oldIndex = -1,
-    newIndex = -1
+    newIndex = -1,
+    moreBefore = '',
+    moreAfter = ''
   ) => {
     const anim = animations[animIndex];
     const { currentCode, insertIndex, oldCode, newCode } = anim;
@@ -265,8 +267,8 @@ const CodeBlock = ({ code, lang }) => {
     lastUpdate = lastUpdate || now;
     const dt = now - lastUpdate;
     if (dt >= speed) {
-      const before = currentCode.substr(0, insertIndex);
-      const after = currentCode.substr(insertIndex, currentCode.length);
+      const before = moreBefore + currentCode.substr(0, insertIndex);
+      const after = currentCode.substr(insertIndex, currentCode.length) + moreAfter;
       if (oldCode !== '') {
         // Delete a single character from the oldCode.
         nextFrame = true;
@@ -279,15 +281,50 @@ const CodeBlock = ({ code, lang }) => {
         nextFrame = true;
         const ni = newIndex === -1 ? 0 : newIndex;
         setCleanCode(before + newCode.slice(0, ni) + after);
-        if (ni + 1 > newCode.length) anim.newCode = '';
-        else newIndex = ni + 1;
+        if (ni + 1 > newCode.length) {
+          anim.aNewCode = anim.newCode;
+          anim.newCode = '';
+        } else newIndex = ni + 1;
       }
     }
     animations[animIndex] = anim;
-    const continueAnim = (ai = animIndex) =>
+    const continueAnim = (ai = animIndex) => {
+      const moreBef =
+        ai > 0
+          ? animations
+              .slice(0, ai)
+              .map(
+                a =>
+                  a.currentCode.slice(0, a.insertIndex) +
+                  a.aNewCode +
+                  a.currentCode.slice(a.insertIndex)
+              )
+              .join('')
+          : '';
+      const moreAf =
+        ai < animations.length
+          ? animations
+              .slice(ai + 1, animIndex.length)
+              .map(
+                a =>
+                  a.currentCode.slice(0, a.insertIndex) +
+                  a.oldCode +
+                  a.currentCode.slice(a.insertIndex)
+              )
+              .join('')
+          : '';
       requestAnimationFrame(() =>
-        animateCode(animations, nextFrame ? Date.now() : lastUpdate, ai, oldIndex, newIndex)
+        animateCode(
+          animations,
+          nextFrame ? Date.now() : lastUpdate,
+          ai,
+          ai === animIndex ? oldIndex : -1,
+          ai === animIndex ? newIndex : -1,
+          moreBef,
+          moreAf
+        )
       );
+    };
     if (nextFrame || dt < speed) continueAnim();
     else if (animIndex + 1 < animations.length) continueAnim(animIndex + 1);
   };
