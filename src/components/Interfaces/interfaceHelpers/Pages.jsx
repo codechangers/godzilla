@@ -215,8 +215,13 @@ const CodeBlock = ({ code, lang }) => {
     const cmds = COMMANDS;
     let insertIndex = -1;
     let cmdCase = -1; // 0: Replace; 1: Remove; 2: Add;
+    let cleanExtras = false;
+    const addIndex = currentCode.indexOf(cmds.startAdd);
+    const remIndex = currentCode.indexOf(cmds.startRemove);
+    const addFirst = addIndex !== -1 && remIndex !== -1 && addIndex < remIndex;
     if (
-      currentCode.indexOf(cmds.startRemove) !== -1 &&
+      !addFirst &&
+      remIndex !== -1 &&
       currentCode.indexOf(cmds.replace) !== -1 &&
       currentCode.indexOf(cmds.endAdd) !== -1
     ) {
@@ -229,10 +234,7 @@ const CodeBlock = ({ code, lang }) => {
       currentCode = before + after;
       insertIndex = before.length;
       cmdCase = 0;
-    } else if (
-      currentCode.indexOf(cmds.startRemove) !== -1 &&
-      currentCode.indexOf(cmds.endRemove) !== -1
-    ) {
+    } else if (!addFirst && remIndex !== -1 && currentCode.indexOf(cmds.endRemove) !== -1) {
       // Remove Case
       const all = currentCode.split(cmds.startRemove);
       extras = all.slice(2);
@@ -241,10 +243,7 @@ const CodeBlock = ({ code, lang }) => {
       insertIndex = currentCode.indexOf(cmds.startRemove);
       currentCode = before + after;
       cmdCase = 1;
-    } else if (
-      currentCode.indexOf(cmds.startAdd) !== -1 &&
-      currentCode.indexOf(cmds.endAdd) !== -1
-    ) {
+    } else if (addIndex !== -1 && currentCode.indexOf(cmds.endAdd) !== -1) {
       // Add Case
       const all = currentCode.split(cmds.startAdd);
       extras = all.slice(2);
@@ -252,6 +251,11 @@ const CodeBlock = ({ code, lang }) => {
       [newCode, after] = next.split(cmds.endAdd);
       insertIndex = currentCode.indexOf(cmds.startAdd);
       currentCode = before + after;
+      if (extras.length === 0) {
+        extras = [after];
+        cleanExtras = true;
+        currentCode = before;
+      }
       cmdCase = 2;
     }
     const extraCmds = [cmds.startRemove, cmds.startRemove, cmds.startAdd];
@@ -259,7 +263,7 @@ const CodeBlock = ({ code, lang }) => {
     const parsedExtras = [];
     extras = extras || [];
     extras.forEach(e => {
-      const moreExtras = (extraCmds[cmdCase] + e).split(doubleCheckCmds[cmdCase]);
+      const moreExtras = (cleanExtras ? e : extraCmds[cmdCase] + e).split(doubleCheckCmds[cmdCase]);
       moreExtras.forEach((me, i) => {
         parsedExtras.push(...parseAnims(i !== 0 ? doubleCheckCmds[cmdCase] + me : me));
       });
