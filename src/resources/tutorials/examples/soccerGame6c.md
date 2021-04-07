@@ -1,7 +1,12 @@
+# 6. Adding Kicking
+
+Step (3/4) To add Kicking to your game. 
+
 ##### 3. In `room.js`, add come code so that the balls move inside the `onUpdate(dt)` function.
 
-{% capture code %}
-		const friction = (dv) => dv > -0.01 && dv < 0.01 ? 0 : dv - dv / 6000;
+```
+// File: code/server/rooms/room.js
+const friction = (dv) => dv > -0.01 && dv < 0.01 ? 0 : dv - dv / 6000;
 	g.getAllCharacters('soccerBalls', (ball) => {
 		g.move(ball, 'x', ball.dx);
 		g.move(ball, 'y', ball.dy);
@@ -12,5 +17,4 @@
 		ball.dx = bounceX * friction(ball.dx);
 		ball.dy = bounceY * friction(ball.dy);
 	});
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```

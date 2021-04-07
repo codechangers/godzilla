@@ -1,13 +1,10 @@
----
-title: Add Goals
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
+# 4. Add Goals
+
+Step (1/8) To create goals for your game
 
 ##### 1. In `game.js`, Add `addCharacters` to add a new character for the Soccer Goal.
 
-{% capture code %}
-	g.addCharacters('goals', 0.6);
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```
+// File: code/client/src/game.js
+g.addCharacters('goals', 0.6);
+```

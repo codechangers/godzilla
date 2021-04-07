@@ -1,6 +1,10 @@
+# 7. Add Scoring A Goal
+
+Step (3/5) To add scoring to your game. 
+
 ##### 3. In `room.js`, Add this code to know who kicked the ball last.
 
-{% capture code %}
-		ball.kicker = player.id;
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```
+// File: code/server/rooms/room.js
+	ball.kicker = player.id;
+```

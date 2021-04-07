@@ -1,6 +1,11 @@
+# 5. Add Soccer Balls
+
+Step (6/6) To add Soccer Balls into your game.
+
 ##### 6. In `room.js`, Add `addABall` function so it adds a ball for every two players.
 
-{% capture code %}
+```
+// File: code/server/rooms/room.js
 	addABall() {
 	const playersPerBall = 2;
 	const numOf = (t) => Object.keys(this.state[t]).length;
@@ -15,5 +20,4 @@
 			});
 	}
 }
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```

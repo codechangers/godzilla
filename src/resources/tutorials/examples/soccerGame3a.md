@@ -1,9 +1,6 @@
----
-title: Add More Characters
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
+# 3. Add More Characters
+
+Step (1/5) To add more characters to your game
 
 ##### 1. Upload all of our character images ([Need Help?](/tutorials/images/)).
 

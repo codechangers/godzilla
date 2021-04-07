@@ -67,31 +67,101 @@ import runGame7c from './tutorials/examples/runGame7c.md';
 import runGame7d from './tutorials/examples/runGame7d.md';
 import runGame8 from './tutorials/examples/runGame8.md';
 // Soccer Game
-import soccerGame0 from './tutorials/examples/soccerGame.md';
 import soccerGame1 from './tutorials/examples/soccerGame1.md';
-import soccerGame2 from './tutorials/examples/soccerGame2.md';
-import soccerGame3 from './tutorials/examples/soccerGame3.md';
-import soccerGame4 from './tutorials/examples/soccerGame4.md';
-import soccerGame5 from './tutorials/examples/soccerGame5.md';
-import soccerGame6 from './tutorials/examples/soccerGame6.md';
-import soccerGame7 from './tutorials/examples/soccerGame7.md';
-import soccerGame8 from './tutorials/examples/soccerGame8.md';
-import soccerGame9 from './tutorials/examples/soccerGame9.md';
+import soccerGame2a from './tutorials/examples/soccerGame2a.md';
+import soccerGame2b from './tutorials/examples/soccerGame2b.md';
+import soccerGame2c from './tutorials/examples/soccerGame2c.md';
+import soccerGame2d from './tutorials/examples/soccerGame2d.md';
+import soccerGame3a from './tutorials/examples/soccerGame3a.md';
+import soccerGame3b from './tutorials/examples/soccerGame3b.md';
+import soccerGame3c from './tutorials/examples/soccerGame3c.md';
+import soccerGame3d from './tutorials/examples/soccerGame3d.md';
+import soccerGame3e from './tutorials/examples/soccerGame3e.md';
+import soccerGame3f from './tutorials/examples/soccerGame3f.md';
+import soccerGame4a from './tutorials/examples/soccerGame4a.md';
+import soccerGame4b from './tutorials/examples/soccerGame4b.md';
+import soccerGame4c from './tutorials/examples/soccerGame4c.md';
+import soccerGame4d from './tutorials/examples/soccerGame4d.md';
+import soccerGame4e from './tutorials/examples/soccerGame4e.md';
+import soccerGame4f from './tutorials/examples/soccerGame4f.md';
+import soccerGame4g from './tutorials/examples/soccerGame4g.md';
+import soccerGame4h from './tutorials/examples/soccerGame4h.md';
+import soccerGame4i from './tutorials/examples/soccerGame4i.md';
+import soccerGame5a from './tutorials/examples/soccerGame5a.md';
+import soccerGame5b from './tutorials/examples/soccerGame5b.md';
+import soccerGame5c from './tutorials/examples/soccerGame5c.md';
+import soccerGame5d from './tutorials/examples/soccerGame5d.md';
+import soccerGame5e from './tutorials/examples/soccerGame5e.md';
+import soccerGame5f from './tutorials/examples/soccerGame5f.md';
+import soccerGame5g from './tutorials/examples/soccerGame5g.md';
+import soccerGame6a from './tutorials/examples/soccerGame6a.md';
+import soccerGame6b from './tutorials/examples/soccerGame6b.md';
+import soccerGame6c from './tutorials/examples/soccerGame6c.md';
+import soccerGame6d from './tutorials/examples/soccerGame6d.md';
+import soccerGame6e from './tutorials/examples/soccerGame6e.md';
+import soccerGame7a from './tutorials/examples/soccerGame7a.md';
+import soccerGame7b from './tutorials/examples/soccerGame7b.md';
+import soccerGame7c from './tutorials/examples/soccerGame7c.md';
+import soccerGame7d from './tutorials/examples/soccerGame7d.md';
+import soccerGame7e from './tutorials/examples/soccerGame7e.md';
+import soccerGame7f from './tutorials/examples/soccerGame7f.md';
+import soccerGame8a from './tutorials/examples/soccerGame8a.md';
+import soccerGame8b from './tutorials/examples/soccerGame8b.md';
+import soccerGame8c from './tutorials/examples/soccerGame8c.md';
+import soccerGame8d from './tutorials/examples/soccerGame8d.md';
+import soccerGame9a from './tutorials/examples/soccerGame9a.md';
+import soccerGame9b from './tutorials/examples/soccerGame9b.md';
+import soccerGame9c from './tutorials/examples/soccerGame9c.md';
+import soccerGame9d from './tutorials/examples/soccerGame9d.md';
+import soccerGame9e from './tutorials/examples/soccerGame9e.md';
+import soccerGame9f from './tutorials/examples/soccerGame9f.md';
+import soccerGame9g from './tutorials/examples/soccerGame9g.md';
+import soccerGame9h from './tutorials/examples/soccerGame9h.md';
 import soccerGame10 from './tutorials/examples/soccerGame10.md';
 // Zombie Game
-import zombieGame0 from './tutorials/examples/zombieGame.md';
 import zombieGame1 from './tutorials/examples/zombieGame1.md';
-import zombieGame2 from './tutorials/examples/zombieGame2.md';
-import zombieGame3 from './tutorials/examples/zombieGame3.md';
-import zombieGame4 from './tutorials/examples/zombieGame4.md';
-import zombieGame5 from './tutorials/examples/zombieGame5.md';
-import zombieGame6 from './tutorials/examples/zombieGame6.md';
-import zombieGame7 from './tutorials/examples/zombieGame7.md';
-import zombieGame8 from './tutorials/examples/zombieGame8.md';
-import zombieGame9 from './tutorials/examples/zombieGame9.md';
-import zombieGame10 from './tutorials/examples/zombieGame10.md';
-import zombieGame11 from './tutorials/examples/zombieGame11.md';
-import zombieGame12 from './tutorials/examples/zombieGame12.md';
+import zombieGame2a from './tutorials/examples/zombieGame2a.md';
+import zombieGame2b from './tutorials/examples/zombieGame2b.md';
+import zombieGame2c from './tutorials/examples/zombieGame2c.md';
+import zombieGame2d from './tutorials/examples/zombieGame2d.md';
+import zombieGame2e from './tutorials/examples/zombieGame2e.md';
+import zombieGame3a from './tutorials/examples/zombieGame3a.md';
+import zombieGame3b from './tutorials/examples/zombieGame3b.md';
+import zombieGame4a from './tutorials/examples/zombieGame4a.md';
+import zombieGame4b from './tutorials/examples/zombieGame4b.md';
+import zombieGame4c from './tutorials/examples/zombieGame4c.md';
+import zombieGame4d from './tutorials/examples/zombieGame4d.md';
+import zombieGame4e from './tutorials/examples/zombieGame4e.md';
+import zombieGame4f from './tutorials/examples/zombieGame4f.md';
+import zombieGame4g from './tutorials/examples/zombieGame4g.md';
+import zombieGame5a from './tutorials/examples/zombieGame5a.md';
+import zombieGame5b from './tutorials/examples/zombieGame5b.md';
+import zombieGame5c from './tutorials/examples/zombieGame5c.md';
+import zombieGame6a from './tutorials/examples/zombieGame6a.md';
+import zombieGame6b from './tutorials/examples/zombieGame6b.md';
+import zombieGame6c from './tutorials/examples/zombieGame6c.md';
+import zombieGame6d from './tutorials/examples/zombieGame6d.md';
+import zombieGame6e from './tutorials/examples/zombieGame6e.md';
+import zombieGame6f from './tutorials/examples/zombieGame6f.md';
+import zombieGame6g from './tutorials/examples/zombieGame6g.md';
+import zombieGame6h from './tutorials/examples/zombieGame6h.md';
+import zombieGame6i from './tutorials/examples/zombieGame6i.md';
+import zombieGame6j from './tutorials/examples/zombieGame6j.md';
+import zombieGame7a from './tutorials/examples/zombieGame7a.md';
+import zombieGame7b from './tutorials/examples/zombieGame7b.md';
+import zombieGame7c from './tutorials/examples/zombieGame7c.md';
+import zombieGame7d from './tutorials/examples/zombieGame7d.md';
+import zombieGame8a from './tutorials/examples/zombieGame8a.md';
+import zombieGame8b from './tutorials/examples/zombieGame8b.md';
+import zombieGame8c from './tutorials/examples/zombieGame8c.md';
+import zombieGame9a from './tutorials/examples/zombieGame9a.md';
+import zombieGame9b from './tutorials/examples/zombieGame9b.md';
+import zombieGame10a from './tutorials/examples/zombieGame10a.md';
+import zombieGame10b from './tutorials/examples/zombieGame10b.md';
+import zombieGame10c from './tutorials/examples/zombieGame10c.md';
+import zombieGame11a from './tutorials/examples/zombieGame11a.md';
+import zombieGame11b from './tutorials/examples/zombieGame11b.md';
+import zombieGame12a from './tutorials/examples/zombieGame12a.md';
 
 const blocks = {
   addAStore,
@@ -156,33 +226,103 @@ const runGame = {
 };
 
 const soccerGame = {
-  soccerGame0,
   soccerGame1,
-  soccerGame2,
-  soccerGame3,
-  soccerGame4,
-  soccerGame5,
-  soccerGame6,
-  soccerGame7,
-  soccerGame8,
-  soccerGame9,
+  soccerGame2a,
+  soccerGame2b,
+  soccerGame2c,
+  soccerGame2d,
+  soccerGame3a,
+  soccerGame3b,
+  soccerGame3c,
+  soccerGame3d,
+  soccerGame3e,
+  soccerGame3f,
+  soccerGame4a,
+  soccerGame4b,
+  soccerGame4c,
+  soccerGame4d,
+  soccerGame4e,
+  soccerGame4f,
+  soccerGame4g,
+  soccerGame4h,
+  soccerGame4i,
+  soccerGame5a,
+  soccerGame5b,
+  soccerGame5c,
+  soccerGame5d,
+  soccerGame5e,
+  soccerGame5f,
+  soccerGame5g,
+  soccerGame6a,
+  soccerGame6b,
+  soccerGame6c,
+  soccerGame6d,
+  soccerGame6e,
+  soccerGame7a,
+  soccerGame7b,
+  soccerGame7c,
+  soccerGame7d,
+  soccerGame7e,
+  soccerGame7f,
+  soccerGame8a,
+  soccerGame8b,
+  soccerGame8c,
+  soccerGame8d,
+  soccerGame9a,
+  soccerGame9b,
+  soccerGame9c,
+  soccerGame9d,
+  soccerGame9e,
+  soccerGame9f,
+  soccerGame9g,
+  soccerGame9h,
   soccerGame10
 };
 
 const zombieGame = {
-  zombieGame0,
   zombieGame1,
-  zombieGame2,
-  zombieGame3,
-  zombieGame4,
-  zombieGame5,
-  zombieGame6,
-  zombieGame7,
-  zombieGame8,
-  zombieGame9,
-  zombieGame10,
-  zombieGame11,
-  zombieGame12
+  zombieGame2a,
+  zombieGame2b,
+  zombieGame2c,
+  zombieGame2d,
+  zombieGame2e,
+  zombieGame3a,
+  zombieGame3b,
+  zombieGame4a,
+  zombieGame4b,
+  zombieGame4c,
+  zombieGame4d,
+  zombieGame4e,
+  zombieGame4f,
+  zombieGame4g,
+  zombieGame5a,
+  zombieGame5b,
+  zombieGame5c,
+  zombieGame6a,
+  zombieGame6b,
+  zombieGame6c,
+  zombieGame6d,
+  zombieGame6e,
+  zombieGame6f,
+  zombieGame6g,
+  zombieGame6h,
+  zombieGame6i,
+  zombieGame6j,
+  zombieGame7a,
+  zombieGame7b,
+  zombieGame7c,
+  zombieGame7d,
+  zombieGame8a,
+  zombieGame8b,
+  zombieGame8c,
+  zombieGame9a,
+  zombieGame9b,
+  zombieGame10a,
+  zombieGame10b,
+  zombieGame10c,
+  zombieGame11a,
+  zombieGame11b,
+  zombieGame12a
 };
 
 const tutorials = {

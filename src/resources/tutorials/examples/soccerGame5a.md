@@ -1,11 +1,8 @@
----
-title: Add Soccer Balls
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
+# 5. Add Soccer Balls
 
-##### 2. Upload the new image for the Soccer Ball to the Assets folder in Repl.
+Step (1/6) To add Soccer Balls into your game.
+
+##### 1. Upload the new image for the Soccer Ball to the Assets folder in Repl.
 1. Find the downloaded images. [Need help?](/tutorials/downloads/)
 2. Open the asset folder in repl, click: `code > client > asset`
 <img src="/uploads/resources/repl-asset.png" max-width="200">

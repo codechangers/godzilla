@@ -1,6 +1,10 @@
-##### 3. In `game.js`, Add `addCharacters` function to add the soccer balls.
+# 5. Add Soccer Balls
 
-{% capture code %}
-	g.addCharacters('soccerBalls', 0.2);
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+Step (3/6) To add Soccer Balls into your game.
+
+##### 2. In `game.js`, Add `addCharacters` function to add the soccer balls.
+
+```
+// File: code/client/src/game.js
+g.addCharacters('soccerBalls', 0.2);
+```

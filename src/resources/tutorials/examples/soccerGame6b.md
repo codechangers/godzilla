@@ -1,7 +1,11 @@
+# 6. Adding Kicking
+
+Step (2/4) To add Kicking to your game. 
+
 ##### 2. In `room.js`, add a `dx` and `dy`.
 
-{% capture code %}
+```
+// File: code/server/rooms/room.js
 	dx: 0,
 	dy: 0,
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```

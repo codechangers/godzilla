@@ -1,10 +1,14 @@
+# 4. Add Goals
+
+Step (4/8) To create goals for your game
+
 ##### 4. In `game.js`, Add the players depth.
 
-{% capture code %}
+```
+// File: code/client/src/game.js
 		player.sprite.depth = 5;
 		if (player.id === g.myId()) {
 			g.cameraFollow(player.sprite);
 		}
 	});
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```

@@ -1,9 +1,7 @@
----
-title: Add Blocks
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
+# 8. Add Blocks
+
+Step (1/3) To add blocks to your game. 
+
 ##### 1. Upload an block images to the Assets folder in Repl
 
 1. Find the downloaded images. [Need help?](/tutorials/downloads/)

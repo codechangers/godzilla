@@ -1,15 +1,13 @@
----
-title: Add Scoring A Goal
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
+# 7. Add Scoring A Goal
+
+Step (1/5) To add scoring to your game. 
 
 ##### 1. In `room.js`, Add data to the players.
-{% capture code %}
-	g.createACharacter('players', client.sessionId,
+
+```
+// File: code/server/rooms/room.js
+g.createACharacter('players', client.sessionId,
 		{ ...data, x, y, score: 0, lives: 3, block3s: 0, block5s: 0 });
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```
 
 > **This data sets your players lives that they start with, and blocks that they start with.**

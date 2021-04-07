@@ -1,10 +1,8 @@
----
-title: Add a Background
-subtitle: Learn how to create an awesome online soccer game!
-tags: [customize]
-author: jason
----
-#### Find an Image for the Background of your game
+# 2. Add a Background
+
+Step (1/3) To create a background for your game. 
+
+First, find or create an image that you want to use and download it to your computer. 
 
 ##### 1. Upload an Image to Repl
 
