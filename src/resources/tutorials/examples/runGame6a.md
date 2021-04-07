@@ -5,6 +5,11 @@ tags: [customize]
 ---
 #### 1. Go to the `room.js` file and put a `setupCharacters` _function_ in the `onInit` _function_.
 
+```
+// File: code/client/src/game.js
+g.addLocations('safeZone');
+```
+
 {% capture code %}
 g.setupCharacters("team");
 {% endcapture %}
@@ -13,6 +18,11 @@ g.setupCharacters("team");
 <hr class="uk-margin-medium">
 
 #### 2. In the `game.js` file we need to put an `addCharacters` _function_ in the `init` _function_.
+
+```
+// File: code/client/src/game.js
+g.addLocations('safeZone');
+```
 
 {% capture code %}
 g.addCharacters("team")
@@ -23,6 +33,11 @@ g.addCharacters("team")
 
 #### 3. In `game.js`, Add a `getCharacters` function in the create _function_.
 
+```
+// File: code/client/src/game.js
+g.addLocations('safeZone');
+```
+
 {% capture code %}
 g.getCharacters("team")
 {% endcapture %}
@@ -32,6 +47,11 @@ g.getCharacters("team")
 
 #### 4. Go into our `room.js` file in the onInit function and use a `createACharacter` _function_ to create our team character.
 
+```
+// File: code/client/src/game.js
+g.addLocations('safeZone');
+```
+
 {% capture code %}
 g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });
 {% endcapture %}
@@ -40,6 +60,11 @@ g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', sco
 <hr class="uk-margin-medium">
 
 #### 5. In the `room.js` file in the `onInit` function in the third `createALocation` function that we wrote, we'll tell the score to up, and the difficulty to increase.
+
+```
+// File: code/client/src/game.js
+g.addLocations('safeZone');
+```
 
 {% capture code %}
 let team = g.getACharacter('team',  'team')
