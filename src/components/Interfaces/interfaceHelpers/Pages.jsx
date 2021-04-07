@@ -216,38 +216,47 @@ const CodeBlock = ({ code, lang }) => {
     let insertIndex = -1;
     let cmdCase = -1; // 0: Replace; 1: Remove; 2: Add;
     if (
-      code.indexOf(cmds.startRemove) !== -1 &&
-      code.indexOf(cmds.replace) !== -1 &&
-      code.indexOf(cmds.endAdd) !== -1
+      currentCode.indexOf(cmds.startRemove) !== -1 &&
+      currentCode.indexOf(cmds.replace) !== -1 &&
+      currentCode.indexOf(cmds.endAdd) !== -1
     ) {
       // Replace Case
-      [before, next, extra] = currentCode.split(cmds.startRemove);
+      const all = currentCode.split(cmds.startRemove);
+      extra = all.slice(2);
+      [before, next] = all;
       [cd, after] = next.split(cmds.endAdd);
       [oldCode, newCode] = cd.split(cmds.replace);
       currentCode = before + after;
       insertIndex = before.length;
       cmdCase = 0;
-    } else if (code.indexOf(cmds.startRemove) !== -1 && code.indexOf(cmds.endRemove) !== -1) {
+    } else if (
+      currentCode.indexOf(cmds.startRemove) !== -1 &&
+      currentCode.indexOf(cmds.endRemove) !== -1
+    ) {
       // Remove Case
-      [before, next, extra] = currentCode.split(cmds.startRemove);
+      const all = currentCode.split(cmds.startRemove);
+      extra = all.slice(2);
+      [before, next] = all;
       [oldCode, after] = next.split(cmds.endRemove);
-      insertIndex = code.indexOf(cmds.startRemove);
+      insertIndex = currentCode.indexOf(cmds.startRemove);
       currentCode = before + after;
       cmdCase = 1;
-    } else if (code.indexOf(cmds.startAdd) !== -1 && code.indexOf(cmds.endAdd) !== -1) {
+    } else if (
+      currentCode.indexOf(cmds.startAdd) !== -1 &&
+      currentCode.indexOf(cmds.endAdd) !== -1
+    ) {
       // Add Case
-      [before, next, extra] = currentCode.split(cmds.startAdd);
+      const all = currentCode.split(cmds.startAdd);
+      extra = all.slice(2);
+      [before, next] = all;
       [newCode, after] = next.split(cmds.endAdd);
-      insertIndex = code.indexOf(cmds.startAdd);
+      insertIndex = currentCode.indexOf(cmds.startAdd);
       currentCode = before + after;
       cmdCase = 2;
     }
-    let extras = [];
     const extraCmds = [cmds.startRemove, cmds.startRemove, cmds.startAdd];
-    if (extra) {
-      extra = extraCmds[cmdCase] + extra;
-      extras = parseAnims(extra);
-    }
+    const extras = [];
+    extra.forEach(e => extras.push(...parseAnims(extraCmds[cmdCase] + e)));
     return [{ currentCode, insertIndex, oldCode, newCode }, ...extras];
   };
 
@@ -269,21 +278,21 @@ const CodeBlock = ({ code, lang }) => {
     if (dt >= speed) {
       const before = moreBefore + currentCode.substr(0, insertIndex);
       const after = currentCode.substr(insertIndex, currentCode.length) + moreAfter;
-      if (oldCode !== '') {
+      if (oldCode !== undefined) {
         // Delete a single character from the oldCode.
         nextFrame = true;
         const oi = oldIndex === -1 ? oldCode.length : oldIndex;
         setCleanCode(before + oldCode.slice(0, oi) + after);
-        if (oi - 1 < 0) anim.oldCode = '';
+        if (oi - 1 < 0) anim.oldCode = undefined;
         else oldIndex = oi - 1;
-      } else if (newCode !== '') {
+      } else if (newCode !== undefined) {
         // Add a single character from the newCode.
         nextFrame = true;
         const ni = newIndex === -1 ? 0 : newIndex;
         setCleanCode(before + newCode.slice(0, ni) + after);
         if (ni + 1 > newCode.length) {
           anim.aNewCode = anim.newCode;
-          anim.newCode = '';
+          anim.newCode = undefined;
         } else newIndex = ni + 1;
       }
     }
