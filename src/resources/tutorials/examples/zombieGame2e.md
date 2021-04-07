@@ -1,6 +1,8 @@
-##### 4. In `room.js`, Add `setBounds()` inside the `onInit()` function to set the boundaries of the game.
+# 1 Add a Background
+ (Step 5/5)
 
-{% capture code %}
-	g.setBounds(2000, 2000);
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/server/rooms/room.js" %}
+> **Make sure that you write it after your `setup` _function_ or else it will break your game. You can change the numbers to make the bounds whatever size you want.**
+
+<hr class="uk-margin-medium">
+
+> **Download your zip, and [upload it](/tutorials/uploadtoserver/) to [blobbert.io](https://blobbert.io/), and you should have a background!**

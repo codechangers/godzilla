@@ -1,6 +1,9 @@
-###### 3. In `game.js`, Add `getCharacters()` function in the `create()` function.
+# 1 Add Zombies
+ (Step 4/7)
 
-{% capture code %}
-	g.getCharacters('zombies');
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+##### 4. In `game.js`, Add `getCharacters()` function in the `create()` function.
+
+``` javascript
+// File: code/client/src/game.js
+g.getCharacters('zombies');
+```

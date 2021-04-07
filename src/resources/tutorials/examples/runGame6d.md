@@ -1,7 +1,7 @@
 # 6. Set up Scoring
  (Step 4/5) To Set up a scoring system.
 
-#### 4. Go into our `room.js` file in the onInit function and use a `createACharacter` _function_ to create our team character.
+##### 4. Go into our `room.js` file in the onInit function and use a `createACharacter` _function_ to create our team character.
 
 ```
 // File: code/server/rooms/room.js

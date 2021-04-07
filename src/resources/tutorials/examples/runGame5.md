@@ -1,7 +1,7 @@
 # Set up Name Tags
 subtitle: (Step 1/1) Set up name tags.
 
-#### 1. Go into our `room.js` file and add an `attachTo` _function_  in our onJoin _function_ right after our `createACharacter` _function_.
+##### 1. Go into our `room.js` file and add an `attachTo` _function_  in our onJoin _function_ right after our `createACharacter` _function_.
 
 ```
 // File: code/server/rooms/room.js

@@ -1,8 +1,11 @@
+# 1 Setup Bullets
+ (Step 5/10)
+
 ##### 5. In `room.js`, Create `onMessage()`method to get our bullets to shoot.
 
-{% capture code %}
-			click: () => {
+``` javascript
+// File: code/server/rooms/room.js
+		click: () => {
 
-		},
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/server/rooms/room.js" %}
+	},
+```

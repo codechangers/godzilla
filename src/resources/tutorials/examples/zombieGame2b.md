@@ -1,7 +1,9 @@
+# 1 Add a Background
+ (Step 2/5)
 
 ##### 2. In `game.js`, Go into the `preload()` _function_ in `game.js` and add a new image named after the new character set.
 
-{% capture code %}
+``` javascript
+// File: code/client/src/game.js
 g.loadImage('grass', 'grass.png');
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/client/src/game.js" %}
+```

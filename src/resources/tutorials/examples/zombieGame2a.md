@@ -1,10 +1,5 @@
----
-title: Add a Background
-subtitle: Learn how to make a super cool zombie game
-tags: [customize]
-author: jason
----
-#### Find an Image for the Background of your game
+# 1 Add a Background
+ (Step 1/5)
 
 ##### 1. Upload an Image to Repl
 

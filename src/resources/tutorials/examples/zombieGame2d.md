@@ -1,6 +1,11 @@
+# 1 Add a Background
+ (Step 4/5)
+
 ##### 4. In `room.js`, Add `setBounds()` inside the `onInit()` function to set the boundaries of the game.
 
-{% capture code %}
-	g.setBounds(2000, 2000);
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/server/rooms/room.js" %}
+``` javascript
+// File: code/server/rooms/room.js
+g.setBounds(2000, 2000);
+```
+
+> **Make sure that you write it after your `setup` _function_ or else it will break your game. You can change the numbers to make the bounds whatever size you want.**

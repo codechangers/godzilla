@@ -1,7 +1,7 @@
 # 4. Set Up Safe Zones
 (Step 5/5) To Set up safe zones and an end zone.
 
-#### 5. Go into our `onUpdate` _function_ in the `room.js` file and add a `getAllCharacters` _function_ and a `handleLocations` _function_.
+##### 5. Go into our `onUpdate` _function_ in the `room.js` file and add a `getAllCharacters` _function_ and a `handleLocations` _function_.
 
 ```
 // File: code/server/rooms/room.js

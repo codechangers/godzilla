@@ -1,6 +1,9 @@
+# 1 Setup Bullets
+ (Step 4/10)
+
 ##### 4. In `room.js`, Create a `setupCharacters()` function inside the `onInit()` function to set them up on the server.
 
-{% capture code %}
-	g.setupCharacters('bullets');
-{% endcapture %}
-{% include code.html copyable=true code=code lang="javascript" file="code/server/rooms/room.js" %}
+``` javascript
+// File: code/server/rooms/room.js
+g.setupCharacters('bullets');
+```

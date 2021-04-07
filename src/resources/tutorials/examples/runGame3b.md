@@ -2,7 +2,7 @@
 # 3. Add Enemy Movement
  (Step 2/2) To Learn how to make enemies move and recognize collision.
 
-#### 2. In the `onUpdate` function in our `room.js` file we put a `getAllCharacters`  _function_. (for our callback function we will set up some if else statements for the movement.
+##### 2. In the `onUpdate` function in our `room.js` file we put a `getAllCharacters`  _function_. (for our callback function we will set up some if else statements for the movement.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5mYBdR03rE4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 

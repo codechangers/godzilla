@@ -1,7 +1,7 @@
 # 6. Set up Scoring
  (Step 5/5) To Set up a scoring system.
 
-#### 5. In the `room.js` file in the `onInit` function in the third `createALocation` function that we wrote, we'll tell the score to up, and the difficulty to increase.
+##### 5. In the `room.js` file in the `onInit` function in the third `createALocation` function that we wrote, we'll tell the score to up, and the difficulty to increase.
 
 ```
 // File: code/server/rooms/room.js
