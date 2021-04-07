@@ -205,48 +205,61 @@ const CodeBlock = ({ code, lang }) => {
     } else setTitle(defaultTitle);
     // Handle replace, remove, add comments.
     const parsed = parseAnims(currentCode);
-    if (parsed.insertIndex !== -1) animateCode(parsed, Date.now() - speed);
+    if (parsed.length > 0 && parsed[0].insertIndex !== -1) animateCode(parsed, Date.now() - speed);
     else setCleanCode(currentCode);
   }, [code]);
 
   const parseAnims = currentCode => {
     // eslint-disable-next-line
-    let before, next, cd, after, oldCode, newCode;
+    let before, next, cd, after, oldCode, newCode, extra;
     const cmds = COMMANDS;
     let insertIndex = -1;
+    let cmdCase = -1; // 0: Replace; 1: Remove; 2: Add;
     if (
       code.indexOf(cmds.startRemove) !== -1 &&
       code.indexOf(cmds.replace) !== -1 &&
       code.indexOf(cmds.endAdd) !== -1
     ) {
       // Replace Case
-      [before, next] = currentCode.split(cmds.startRemove);
+      [before, next, extra] = currentCode.split(cmds.startRemove);
       [cd, after] = next.split(cmds.endAdd);
       [oldCode, newCode] = cd.split(cmds.replace);
       currentCode = before + after;
       insertIndex = before.length;
+      cmdCase = 0;
     } else if (code.indexOf(cmds.startRemove) !== -1 && code.indexOf(cmds.endRemove) !== -1) {
       // Remove Case
-      [before, next] = currentCode.split(cmds.startRemove);
+      [before, next, extra] = currentCode.split(cmds.startRemove);
       [oldCode, after] = next.split(cmds.endRemove);
       insertIndex = code.indexOf(cmds.startRemove);
       currentCode = before + after;
+      cmdCase = 1;
     } else if (code.indexOf(cmds.startAdd) !== -1 && code.indexOf(cmds.endAdd) !== -1) {
       // Add Case
-      [before, next] = currentCode.split(cmds.startAdd);
+      [before, next, extra] = currentCode.split(cmds.startAdd);
       [newCode, after] = next.split(cmds.endAdd);
       insertIndex = code.indexOf(cmds.startAdd);
       currentCode = before + after;
+      cmdCase = 2;
     }
-    return { currentCode, insertIndex, oldCode, newCode };
+    let extras = [];
+    const extraCmds = [cmds.startRemove, cmds.startRemove, cmds.startAdd];
+    if (extra) {
+      extra = extraCmds[cmdCase] + extra;
+      extras = parseAnims(extra);
+    }
+    return [{ currentCode, insertIndex, oldCode, newCode }, ...extras];
   };
 
   const animateCode = (
-    { currentCode, insertIndex, oldCode, newCode },
+    animations,
     lastUpdate = null,
+    animIndex = 0,
     oldIndex = -1,
     newIndex = -1
   ) => {
+    const anim = animations[animIndex];
+    const { currentCode, insertIndex, oldCode, newCode } = anim;
     let nextFrame = false;
     const now = Date.now();
     lastUpdate = lastUpdate || now;
@@ -259,26 +272,24 @@ const CodeBlock = ({ code, lang }) => {
         nextFrame = true;
         const oi = oldIndex === -1 ? oldCode.length : oldIndex;
         setCleanCode(before + oldCode.slice(0, oi) + after);
-        if (oi - 1 < 0) oldCode = '';
+        if (oi - 1 < 0) anim.oldCode = '';
         else oldIndex = oi - 1;
       } else if (newCode !== '') {
         // Add a single character from the newCode.
         nextFrame = true;
         const ni = newIndex === -1 ? 0 : newIndex;
         setCleanCode(before + newCode.slice(0, ni) + after);
-        if (ni + 1 > newCode.length) newCode = '';
+        if (ni + 1 > newCode.length) anim.newCode = '';
         else newIndex = ni + 1;
       }
     }
-    if (nextFrame || dt < speed)
+    animations[animIndex] = anim;
+    const continueAnim = (ai = animIndex) =>
       requestAnimationFrame(() =>
-        animateCode(
-          { currentCode, insertIndex, oldCode, newCode },
-          nextFrame ? Date.now() : lastUpdate,
-          oldIndex,
-          newIndex
-        )
+        animateCode(animations, nextFrame ? Date.now() : lastUpdate, ai, oldIndex, newIndex)
       );
+    if (nextFrame || dt < speed) continueAnim();
+    else if (animIndex + 1 < animations.length) continueAnim(animIndex + 1);
   };
 
   const removeFirstLine = c =>

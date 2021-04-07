@@ -5,6 +5,7 @@ Navigate through these docs to learn how the implement the CodeChangers IO Game 
 ```javascript
 // File: test.js
 preload() {
-  g.loadImage('players', /*{*/'horse.png'/*}[*/'test.png'/*]*/);
+  g.loadImage('players', /*{*/'logo.png'/*}[*/'hero.png'/*]*/);
+  g.loadImage('enemies', /*{*/'badGuy.png'/*}[*/'zombie.png'/*]*/);
 }
 ```
