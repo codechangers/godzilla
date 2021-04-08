@@ -9,7 +9,7 @@ We have three Templates that you can choose from to build your game.
 Play the games below to decide which one you would like to build.
 
 1) Run Game: [http://runner.blobbert.io/](http://runner.blobbert.io/)
-![Running Game Gif](/images/Running-Game)
+![Running Game Gif](/images/runninggame)
 
 2) Soccer Game: [http://soccer.blobbert.io/](http://soccer.blobbert.io/)
 ![Blobbert Game Gif](/images/Blobbert-Game)

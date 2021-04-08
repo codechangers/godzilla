@@ -11,10 +11,15 @@ g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
 	g.deleteACharacter('bullets', bullet.id);
 });
 // End Copy
-/*[*/g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1);
+	g.handleAnimations('bullets');/*[*/
+	g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
 	g.deleteACharacter('zombies', zombie.id);
 	g.deleteACharacter('bullets', bullet.id);
 });/*]*/
+  }
+
 ```
 
 Now you should have working bullets that can kill the zombies when you shoot!

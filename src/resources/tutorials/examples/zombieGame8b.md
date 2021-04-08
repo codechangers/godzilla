@@ -10,6 +10,9 @@ mousemove: () => {
 	player.rotation = g.getRotationTowards(player, data.x, data.y); 
 },
 // End Copy
+	g.getYTowards(newCharacter, data.x, data.y) * 500, 2000);
+	setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), 2000);
+},
 /*[*/mousemove: () => {
 	player.rotation = g.getRotationTowards(player, data.x, data.y); 
 },/*]*/

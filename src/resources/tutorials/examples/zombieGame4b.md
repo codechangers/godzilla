@@ -8,5 +8,10 @@
 // Copy
 g.setupCharacters('zombies', 0.5);
 // End Copy
-/*[*/g.setupCharacters('zombies', 0.5);/*]*/
+onInit() {
+	g.setup(this);
+	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+	g.setupCharacters('players');/*[*/
+	g.setupCharacters('zombies', 0.5);/*]*/
+}
 ```

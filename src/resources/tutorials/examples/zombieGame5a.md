@@ -16,13 +16,18 @@ g.attachTo('players', client.sessionId, {
 	filled: 100
 });
 // End Copy
-/*[*/g.attachTo('players', client.sessionId, {  
-	name: 'healthBar',
-	x: -50,
-	y: 40,
-	width: 100,
-	height: 10,
-	type: 'bar',
-	filled: 100
-});/*]*/
+onJoin(client, data) {
+	const x = Math.floor(Math.random() * GAME_WIDTH);
+	const y = Math.floor(Math.random() * GAME_HEIGHT);
+	g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });/*[*/
+	g.attachTo('players', client.sessionId, {  
+		name: 'healthBar',
+		x: -50,
+		y: 40,
+		width: 100,
+		height: 10,
+		type: 'bar',
+		filled: 100
+	});/*]*/
+}
 ```

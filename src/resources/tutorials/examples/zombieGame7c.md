@@ -8,5 +8,8 @@
 // Copy
 g.createACharacter('players', client.sessionId, { x: 200, y: 200, score: 0, ...data });
 // End Copy
-/*[*/g.createACharacter('players', client.sessionId, { x: 200, y: 200, score: 0, ...data });/*]*/
+click: () => {
+	const index = g.nextCharacterId('bullets');
+	/*{*/g.createACharacter('bullets', index, { x: player.x, y: player.y }); /*}[*/g.createACharacter('players', client.sessionId, { x: 200, y: 200, score: 0, ...data });/*]*/
 ```
+

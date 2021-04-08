@@ -8,5 +8,9 @@
 // Copy
 g.loadImage('zombies', 'zombie.png');
 // End Copy
-/*[*/g.loadImage('zombies', 'zombie.png');/*]*/
+preload() {
+	g.loadImage('players', 'logo.png');
+	g.loadImage('grass', 'grass.png');/*[*/
+	g.loadImage('zombies', 'zombie.png');/*]*/
+}
 ```

@@ -31,12 +31,12 @@ This will show up immediately after you create your game. It should take somewhe
 This is the first error you will usually see, this just means your game is still being built on the server. If a few minutes has gone by, then you can assume that there is an error in your code that does not cause the server to crash.
 
 #### 502
-![Running Game Gif](/images/502)
+![Running Game Gif](/images/error1)
 
 You will usually see this after the game is being built, but before it's active on your url, you should only see this error for a couple of seconds. Refresh a couple times and it should be fixed. If you see this error for an extended period of time, it usually means there is an error in your code. You can restart your game on blobbert.io to double check if it is a code error. You will be able to tell, because if your game crashes again, then it is most likely a code error.
 
 #### 504
-![Running Game Gif](/images/504)
+![Running Game Gif](/images/error2)
 
 If you see this, contact us immediately, this means that there is an error with the io platform and it is an easy fix!
 

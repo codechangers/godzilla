@@ -7,6 +7,7 @@ import cannotGet from './images/cannotGet.png';
 import error1 from './images/502.png';
 import error2 from './images/504.png';
 import replAsset from './images/replAsset.png';
+import runninggame from './images/Running-Game.gif';
 
 const images = {
   fork,
@@ -17,7 +18,8 @@ const images = {
   cannotGet,
   error1,
   error2,
-  replAsset
+  replAsset,
+  runninggame
 };
 
 export const resolveImg = imgPath => images[imgPath.replace('/images/', '')] || '#';

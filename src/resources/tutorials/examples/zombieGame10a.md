@@ -21,7 +21,11 @@ g.getCharacters('players',
 		g.handleLeaderboard('players', 'Scoreboard');
 	});
 // End Copy
-	/*[*/g.getCharacters('players',
+/*{*/g.getCharacters('players', (player) => {
+      if (player.id === g.myId()) {
+        g.cameraFollow(player.sprite);
+      }
+    });/*}[*/g.getCharacters('players',
 	(player) => {
 		g.handleLeaderboard('players', 'Scoreboard');
 		if (player.id === g.myId()) {

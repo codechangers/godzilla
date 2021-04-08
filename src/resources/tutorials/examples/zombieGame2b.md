@@ -8,5 +8,11 @@
 // Copy
 g.loadImage('grass', 'grass.png');
 // End Copy
-/*[*/g.loadImage('grass', 'grass.png');/*]*/
+preload() {
+	g.loadImage('players', 'logo.png');/*[*/
+	g.loadImage('grass', 'grass.png');/*]*/
+}
+
 ```
+
+> **After you paste this code into your project, make sure to change the name, and file name to fit match the image name you uploaded into the Asset Folder.**
