@@ -7,13 +7,8 @@ Step (2/4) To add Kicking to your game.
 ```javascript
 // File: code/server/rooms/room.js
 // Copy
-<<<<<<< HEAD
-	dx: 0,
-	dy: 0,
-=======
 dx: 0,
 dy: 0,
->>>>>>> fa7d7d93150f6a5493d35bea168bbdb1a0bdc6e8
 // End Copy
 addABall() {
 	const playersPerBall = 2;

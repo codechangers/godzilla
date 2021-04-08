@@ -7,14 +7,11 @@ Step (5/5) To add scoring to your game.
 ```javascript
 // File: code/client/src/game.js
 // Copy
-<<<<<<< HEAD
-=======
 g.getCharacters('players', (player) => {
 	player.sprite.depth = 5;
 	if (player.id === g.myId()) {
 		g.cameraFollow(player.sprite);
 	}
->>>>>>> fa7d7d93150f6a5493d35bea168bbdb1a0bdc6e8
 },
 () => {},
 (id, attr, value) => {

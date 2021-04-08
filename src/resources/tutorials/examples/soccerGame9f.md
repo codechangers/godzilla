@@ -7,17 +7,6 @@ Step (6/7) To be able to place blocks in your game.
 ```javascript
 // File: code/client/src/game.js
 // Copy
-<<<<<<< HEAD
-	placeBlock: ({ x, y }) => {
-		if (player.block5s > 0) {
-			g.createACharacter('blocks', g.nextCharacterId('blocks'),
-				{x, y, health: 5, spriteName: 'block5'});
-		} else if (player.block3s > 0) {
-			g.createACharacter('blocks', g.nextCharacterId('blocks'),
-				{x, y, health: 3, spriteName: 'block3'});
-		}
-	},
-=======
 placeBlock: ({ x, y }) => {
 	if (player.block5s > 0) {
 		g.createACharacter('blocks', g.nextCharacterId('blocks'),
@@ -27,7 +16,6 @@ placeBlock: ({ x, y }) => {
 			{x, y, health: 3, spriteName: 'block3'});
 	}
 },
->>>>>>> fa7d7d93150f6a5493d35bea168bbdb1a0bdc6e8
 // End Copy
 	const actions = {
 		moveUp: () => g.move(player, 'y', -speed),
