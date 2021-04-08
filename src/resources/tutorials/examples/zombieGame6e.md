@@ -1,7 +1,7 @@
 # 1 Setup Bullets
  (Step 5/10)
 
-##### 5. In `room.js`, Create `onMessage()`method to get our bullets to shoot.
+##### 5. In `room.js`, Create a `click` action in the `onMessage()` function.
 
 ``` javascript
 // File: code/server/rooms/room.js
@@ -10,7 +10,15 @@ click: () => {
 
 	},
 // End Copy
-		/*[*/click: () => {
+const actions = {
+	moveUp: () => g.move(player, 'y', -speed),
+	moveDown: () => g.move(player, 'y', speed),
+	moveLeft: () => g.move(player, 'x', -speed),
+	moveRight: () => g.move(player, 'x', speed),/*[*/
+	click: () => {
 
 	},/*]*/
+};
+g.handleActions(actions, data);
+		
 ```

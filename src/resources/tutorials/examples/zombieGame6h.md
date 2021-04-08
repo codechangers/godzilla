@@ -1,12 +1,15 @@
 # 1 Setup Bullets
  (Step 8/10)
 
-##### 8. In `room.js`, add the `handleAnimations()` function in the `onUpdate()` function for our bullets.
+##### 8. In `room.js`, add the `handleAnimations()` function in the `onUpdate()` function.
 
 ``` javascript
 // File: code/server/rooms/room.js
 // Copy
 g.handleAnimations('bullets');
 // End Copy
-	/*[*/g.handleAnimations('bullets');/*]*/
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1);/*[*/
+	g.handleAnimations('bullets');/*]*/
+}
 ```

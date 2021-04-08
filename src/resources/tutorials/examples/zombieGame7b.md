@@ -14,11 +14,18 @@ g.attachTo('players', client.sessionId, {
 	text: data.name
 });
 // End Copy
-/*[*/g.attachTo('players', client.sessionId, {  
-	name: 'nameTag',
-	x: -50,
-	y: -60,
-	type: 'text',
-	text: data.name
-});/*]*/
+		height: 10,
+		type: 'bar',
+		filled: 100
+	});/*[*/
+	g.attachTo('players', client.sessionId, {  
+		name: 'nameTag',
+		x: -50,
+		y: -60,
+		type: 'text',
+		text: data.name
+	});/*]*/
+}
+
 ```
+> **Make sure to add the NameTag after the healthBar code at the bottom of the `onJoin()` function.**

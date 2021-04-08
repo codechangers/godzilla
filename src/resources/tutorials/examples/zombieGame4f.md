@@ -7,7 +7,10 @@
 // Copy
 g.follow('players', 'zombies', 1, 0.1);
 // End Copy
-/*[*/g.follow('players', 'zombies', 1, 0.1);/*]*/
+onUpdate(dt) {
+	/*[*/g.follow('players', 'zombies', 1, 0.1);/*]*/
+}
+
 ```
 
 > **You can change the numbers to change the distance the zombies will come to your character, and the speed of the zombies.**

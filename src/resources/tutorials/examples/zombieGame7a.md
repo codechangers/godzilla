@@ -8,5 +8,7 @@
 // Copy
 g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');
 // End Copy
-/*[*/g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');/*]*/
+create() {
+	g.setupKeys(keys);
+	/*{*/g.useLoginScreen((name) => g.connect({ name }));/*}[*/g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');/*]*/
 ```

@@ -12,9 +12,13 @@ g.handleCollision('players', 'zombies', (player) => {
 	}
 });
 // End Copy
-/*[*/g.handleCollision('players', 'zombies', (player) => {
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1);/*[*/
+	g.handleCollision('players', 'zombies', (player) => {
 	if (player.healthBar.filled > 0) {
 		player.healthBar.filled -= 0.1;
 	}
 });/*]*/
+}
+
 ```

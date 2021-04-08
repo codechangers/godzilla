@@ -8,5 +8,11 @@
 // Copy
 g.getCharacters('zombies');
 // End Copy
-/*[*/g.getCharacters('zombies');/*]*/
+g.getCharacters('players', (player) => {
+	if (player.id === g.myId()) {
+		g.cameraFollow(player.sprite);
+	}
+});
+g.drawBackground( 'background',  3,  500,  2000 );/*[*/
+g.getCharacters('zombies');/*]*/
 ```

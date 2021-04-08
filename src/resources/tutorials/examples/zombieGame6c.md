@@ -8,5 +8,7 @@
 // Copy
 g.getCharacters('bullets');
 // End Copy
-/*[*/g.getCharacters('bullets');/*]*/
+	g.drawBackground( 'background',  3,  500,  2000 );
+	g.getCharacters('zombies');/*[*/
+	g.getCharacters('bullets');/*]*/
 ```

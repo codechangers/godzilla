@@ -8,5 +8,9 @@
 // Copy
 g.setupCharacters('bullets');
 // End Copy
-/*[*/g.setupCharacters('bullets');/*]*/
+onInit() {
+	g.setup(this);
+	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+	g.setupCharacters('players');/*[*/
+	g.setupCharacters('bullets');/*]*/
 ```
