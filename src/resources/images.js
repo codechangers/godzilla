@@ -16,7 +16,9 @@ import vctrPNG from './images/vctr-png.png';
 import vctrSize from './images/vctr-size.png';
 import vctrDownload from './images/vctr-download.png';
 import replAsset from './images/replAsset.png';
-import runninggame from './images/Running-Game.gif';
+import runningGame from './images/Running-Game.gif';
+import soccerGame from './images/Blobbert-Game.gif';
+import zombieGame from './images/Zombie-Game.gif';
 
 const images = {
   fork,
@@ -27,7 +29,9 @@ const images = {
   cannotGet,
   error1,
   error2,
-  runninggame,
+  runningGame,
+  soccerGame,
+  zombieGame,
   saveImageAs,
   paDownload,
   paPngGif,
