@@ -17,7 +17,7 @@
 Now you are all set up and ready to code. Repl.it has a "run" button at the top, for smaller projects that works great, for complex projects like this that won't work. Don't worry we will teach you how to see your project in action but don't worry if you hit `run` in repl.it and nothing happens.
 
 5. **Code Download:**
-   - On [repl.it](https://repl.it/@codechangers/io-template) open the _Files_ tab.
+   - On [replit.com](https://replit.com) open the _Files_ tab.
    - Click the menu button (tripple dots) and then _Download as zip_.
 
 ![Menu Button -> Download as zip](https://files.macuyler.com/img/github/CodeChangers/io/download-as-zip.png)
