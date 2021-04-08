@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles, Button, Typography } from '@material-ui/core';
+import {
+  Tooltip,
+  IconButton,
+  makeStyles,
+  Button,
+  Typography,
+  CircularProgress
+} from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import MenuIcon from '@material-ui/icons/Menu';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
@@ -55,6 +62,7 @@ const PagesInterface = ({
   setWhoAmI,
   accounts
 }) => {
+  const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [page, setPage] = useState(homePage);
@@ -114,14 +122,16 @@ const PagesInterface = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <Markdown pages={pages} page={page} />
-        <NavButtons
-          onNav={setUrlPage}
-          current={page}
-          items={pages}
-          locked={child !== null}
-          whiteList={child !== null ? child[whiteList] : []}
-        />
+        <Markdown pages={pages} page={page} useLoading={[loading, setLoading]} />
+        {!loading && (
+          <NavButtons
+            onNav={setUrlPage}
+            current={page}
+            items={pages}
+            locked={child !== null}
+            whiteList={child !== null ? child[whiteList] : []}
+          />
+        )}
       </main>
       <NavDrawer
         open={showMenu}
@@ -408,13 +418,15 @@ CodeBlock.propTypes = {
 };
 CodeBlock.defaultProps = { lang: 'javascript' };
 
-const Markdown = ({ pages, page }) => {
+const Markdown = ({ pages, page, useLoading }) => {
   const classes = useStyles();
   const [content, setContent] = useState('# Hello World');
+  const [loading, setLoading] = useLoading;
 
   // Fetch page content.
   useEffect(() => {
     setContent('');
+    setLoading(true);
     window.scrollTo(0, 0);
     const controller = new AbortController();
     let doc = pages;
@@ -423,7 +435,10 @@ const Markdown = ({ pages, page }) => {
     });
     fetch(doc, { signal: controller.signal })
       .then(res => res.text())
-      .then(text => setContent(text))
+      .then(text => {
+        setContent(text);
+        setLoading(false);
+      })
       .catch(err => {
         if (!(err instanceof DOMException)) console.error(err);
       });
@@ -472,7 +487,11 @@ const Markdown = ({ pages, page }) => {
   };
   /* eslint-enable */
 
-  return (
+  return loading ? (
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <CircularProgress />
+    </div>
+  ) : (
     <ReactMarkdown
       allowDangerousHtml
       linkTarget="_blank"
@@ -485,7 +504,8 @@ const Markdown = ({ pages, page }) => {
 };
 Markdown.propTypes = {
   pages: PropTypes.object.isRequired,
-  page: PropTypes.string.isRequired
+  page: PropTypes.string.isRequired,
+  useLoading: PropTypes.array.isRequired
 };
 
 const NavButtons = ({ current, items, locked, whiteList, onNav }) => {
