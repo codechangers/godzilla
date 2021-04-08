@@ -5,7 +5,7 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RudU-cO2vvU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-```
+```javascript
 // File: code/server/rooms/room.js
 // Copy 
 g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });

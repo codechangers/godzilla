@@ -5,12 +5,15 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Tqm1HhXyGBI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-```
+```javascript
 // File: code/server/rooms/room.js
 // Copy 
 g.setupLocations('safeZone');
 // End Copy
+    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
 /*[*/g.setupLocations('safeZone');/*]*/
+    g.setupCharacters('players');
+    g.setupCharacters('enemy');
 ```
 
 <hr class="uk-margin-medium">

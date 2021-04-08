@@ -5,7 +5,7 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BD4Gdtoz7-I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-```
+```javascript
 // File: code/client/src/game.js
 // Copy 
 g.addLocations('safeZone');
