@@ -18,7 +18,7 @@ g.setupCharacters('team');
     g.setupCharacters('team');/*]*/
     g.setupCharacters('enemy');
     for (let i = 0; i < 15; i++) {
-        g.createACharacter('enemy', g.nexCharacterId('enemy'), {
+        g.createACharacter('enemy', g.nextCharacterId('enemy'), {
             x: Math.floor(Math.random() * 500) + 1,
             y: Math.floor(Math.random() * 1900) + 1,
         });
