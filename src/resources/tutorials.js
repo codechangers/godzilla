@@ -17,6 +17,7 @@ import additionalInputs from './tutorials/blocks/additionalInputs.md';
 import allAboutAnimations from './tutorials/blocks/allAboutAnimations.md';
 import connectionsHelp from './tutorials/blocks/connectionsHelp.md';
 import gameBoundsAndBackground from './tutorials/blocks/gameBoundsAndBackground.md';
+import gettingStarted from './tutorials/blocks/gettingStarted.md';
 import howToCollide from './tutorials/blocks/howToCollide.md';
 import loginAndHowToPlay from './tutorials/blocks/loginAndHowToPlay.md';
 import movingForward from './tutorials/blocks/movingForward.md';
@@ -82,7 +83,8 @@ import soccerGame4c from './tutorials/examples/soccerGame4c.md';
 import soccerGame4d from './tutorials/examples/soccerGame4d.md';
 import soccerGame4e from './tutorials/examples/soccerGame4e.md';
 import soccerGame4f from './tutorials/examples/soccerGame4f.md';
-import soccerGame4g from './tutorials/examples/soccerGame4g.md';
+import soccerGame4g1 from './tutorials/examples/soccerGame4g1.md';
+import soccerGame4g2 from './tutorials/examples/soccerGame4g2.md';
 import soccerGame4h from './tutorials/examples/soccerGame4h.md';
 import soccerGame4i from './tutorials/examples/soccerGame4i.md';
 import soccerGame5a from './tutorials/examples/soccerGame5a.md';
@@ -168,6 +170,7 @@ const blocks = {
   allAboutAnimations,
   connectionsHelp,
   gameBoundsAndBackground,
+  gettingStarted,
   howToCollide,
   loginAndHowToPlay,
   movingForward,
@@ -239,7 +242,8 @@ const soccerGame = {
   soccerGame4d,
   soccerGame4e,
   soccerGame4f,
-  soccerGame4g,
+  soccerGame4g1,
+  soccerGame4g2,
   soccerGame4h,
   soccerGame4i,
   soccerGame5a,

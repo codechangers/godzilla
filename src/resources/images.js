@@ -6,6 +6,7 @@ import building from './images/building.png';
 import cannotGet from './images/cannotGet.png';
 import error1 from './images/502.png';
 import error2 from './images/504.png';
+import replAsset from './images/replAsset.png';
 
 const images = {
   fork,
@@ -15,7 +16,8 @@ const images = {
   building,
   cannotGet,
   error1,
-  error2
+  error2,
+  replAsset
 };
 
 export const resolveImg = imgPath => images[imgPath.replace('/images/', '')] || '#';
