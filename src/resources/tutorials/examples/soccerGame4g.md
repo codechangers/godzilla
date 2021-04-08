@@ -6,7 +6,7 @@ Step (7/8) To create goals for your game
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.createACharacter('goals', client.sessionId, { x, y });
 // End Copy
 /*[*/g.createACharacter('goals', client.sessionId, { x, y });/*]*/

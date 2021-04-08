@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });
 // End Copy
     g.setupCharacters("team");

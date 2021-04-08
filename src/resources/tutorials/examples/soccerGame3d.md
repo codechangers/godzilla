@@ -6,7 +6,7 @@ Step (4/5) To add more characters to your game
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.usePlayerSelectScreen({
 		blobbert: 'circle1.png',
 		grunch: 'circle2.png',

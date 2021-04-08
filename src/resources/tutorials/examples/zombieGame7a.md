@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/client/src/game.js
+// Copy
 g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');
+// End Copy
+/*[*/g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');/*]*/
 ```

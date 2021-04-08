@@ -6,7 +6,7 @@ Step (2/7) To be able to place blocks in your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 	g.loadImage('block1', 'block1.png');
 	g.loadImage('block2', 'block2.png');
 	g.loadImage('block3', 'block3.png');

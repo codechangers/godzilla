@@ -5,9 +5,16 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.handleCollision('players', 'zombies', (player) => {
 	if (player.healthBar.filled > 0) {
 		player.healthBar.filled -= 0.1;
 	}
 });
+// End Copy
+/*[*/g.handleCollision('players', 'zombies', (player) => {
+	if (player.healthBar.filled > 0) {
+		player.healthBar.filled -= 0.1;
+	}
+});/*]*/
 ```

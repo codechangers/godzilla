@@ -5,11 +5,18 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 setInterval(() => g.createACharacter('zombies',
 	g.nextCharacterId('zombies'), {
 		x: Math.floor((Math.random() * 2000) + 1),
 		y: Math.floor((Math.random() * 2000) + 1)
 	}), 2500);
+// End Copy
+/*[*/setInterval(() => g.createACharacter('zombies',
+	g.nextCharacterId('zombies'), {
+		x: Math.floor((Math.random() * 2000) + 1),
+		y: Math.floor((Math.random() * 2000) + 1)
+	}), 2500);/*]*/
 ```
 
 > **The number at the end will determine how long to wait until it spawns another zombie, and the two 2000 numbers are the bounds for where the zombies should spawn.**

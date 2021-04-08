@@ -5,6 +5,7 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.attachTo('players', client.sessionId, {  
 	name: 'healthBar',
 	x: -50,
@@ -14,4 +15,14 @@ g.attachTo('players', client.sessionId, {
 	type: 'bar',
 	filled: 100
 });
+// End Copy
+/*[*/g.attachTo('players', client.sessionId, {  
+	name: 'healthBar',
+	x: -50,
+	y: 40,
+	width: 100,
+	height: 10,
+	type: 'bar',
+	filled: 100
+});/*]*/
 ```

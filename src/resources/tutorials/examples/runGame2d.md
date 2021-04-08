@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.getCharacters("enemy");
 // End Copy
         g.cameraFollow(player.sprite);

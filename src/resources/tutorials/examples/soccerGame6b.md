@@ -6,7 +6,7 @@ Step (2/4) To add Kicking to your game.
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 	dx: 0,
 	dy: 0,
 // End Copy

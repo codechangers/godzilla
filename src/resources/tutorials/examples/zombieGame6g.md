@@ -6,7 +6,12 @@ Now there is only two more things we need to do to make our bullets shoot, first
 
 ``` javascript
 // File: code/client/src/game.js
+// Copy
 click(x, y) {  
 	g.sendAction('click', {x, y});
 }
+// End Copy
+/*[*/click(x, y) {  
+	g.sendAction('click', {x, y});
+}/*]*/
 ```

@@ -6,7 +6,7 @@ Step (5/5) To add scoring to your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 },
 	() => {},
 	(id, attr, value) => {

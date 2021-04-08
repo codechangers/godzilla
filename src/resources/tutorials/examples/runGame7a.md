@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 const speed = player.speed;
 // End Copy
 /*[*/const speed = player.speed;/*]*/

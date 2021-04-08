@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.getAllCharacters('players', player =>  { player.safe =  false  });
 g.handleLocations('safeZone',  'players');
 // End Copy

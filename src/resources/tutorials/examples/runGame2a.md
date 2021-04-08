@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.loadImage('enemy',  'enemy.png');
 // End Copy
 g.loadImage('background',  'background.png');

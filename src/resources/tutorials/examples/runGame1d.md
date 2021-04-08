@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });
 // End Copy
 /*[*/g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });/*]*/

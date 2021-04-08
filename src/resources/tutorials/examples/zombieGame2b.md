@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/client/src/game.js
+// Copy
 g.loadImage('grass', 'grass.png');
+// End Copy
+/*[*/g.loadImage('grass', 'grass.png');/*]*/
 ```

@@ -6,7 +6,7 @@ Step (3/7) To be able to place blocks in your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.getCharacters('blocks');
 // End Copy
 /*[*/g.getCharacters('blocks');/*]*/

@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1940, width:  670, height:  100  },  '6cdc00', player =>  {
 	player.safe =  true;
 });

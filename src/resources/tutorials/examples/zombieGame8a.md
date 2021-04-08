@@ -9,6 +9,9 @@ In `game.js`, add the `sendAction()` function into the `mousemove` method.
 
 ```javascript
 // File: code/client/src/game.js
-	g.sendAction('mousemove', {x, y});
+// Copy
+g.sendAction('mousemove', {x, y});
+// End Copy
+	/*[*/g.sendAction('mousemove', {x, y});/*]*/
 }
 ```

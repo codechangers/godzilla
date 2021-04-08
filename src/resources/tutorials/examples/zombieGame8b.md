@@ -5,9 +5,14 @@
 
 ```javascript
 // File: code/server/rooms/room.js
+// Copy
 mousemove: () => {
 	player.rotation = g.getRotationTowards(player, data.x, data.y); 
 },
+// End Copy
+/*[*/mousemove: () => {
+	player.rotation = g.getRotationTowards(player, data.x, data.y); 
+},/*]*/
 ```
 
 Inside of the brackets in our `mousemove` action has the code to change the rotation of our player to follow the mouse.

@@ -5,11 +5,18 @@
 
 ``` javascript
 // File: code/client/src/game.js
-	g.getCharacters('players', (player) => {
+// Copy
+g.getCharacters('players', (player) => {
 	if (player.id === g.myId()) {
 		g.cameraFollow(player.sprite);
 	}
 });
+// End Copy
+	/*[*/g.getCharacters('players', (player) => {
+	if (player.id === g.myId()) {
+		g.cameraFollow(player.sprite);
+	}
+});/*]*/
 ```
 
 > **Make sure that you **don't** write a new [getCharacters](/docs/getCharacters/) _function_, just change the one you already had for `'players'`.**

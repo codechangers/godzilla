@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.createACharacter('players', client.sessionId, { x: 200, y: 200, score: 0, ...data });
+// End Copy
+/*[*/g.createACharacter('players', client.sessionId, { x: 200, y: 200, score: 0, ...data });/*]*/
 ```

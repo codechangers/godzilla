@@ -6,7 +6,7 @@ Step (3/4) To add Kicking to your game.
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 const friction = (dv) => dv > -0.01 && dv < 0.01 ? 0 : dv - dv / 6000;
 	g.getAllCharacters('soccerBalls', (ball) => {
 		g.move(ball, 'x', ball.dx);

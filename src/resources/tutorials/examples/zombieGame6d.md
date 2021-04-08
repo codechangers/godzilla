@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.setupCharacters('bullets');
+// End Copy
+/*[*/g.setupCharacters('bullets');/*]*/
 ```

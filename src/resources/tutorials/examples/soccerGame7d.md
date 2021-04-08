@@ -6,7 +6,7 @@ Step (4/5) To add scoring to your game.
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.handleCollision('goals', 'soccerBalls', (goal, ball) => {
 		if (ball.kicker !== goal.id) {
 			g.getACharacter('players', ball.kicker).score += 1;

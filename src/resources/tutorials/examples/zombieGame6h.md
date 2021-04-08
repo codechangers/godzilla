@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
-	g.handleAnimations('bullets');
+// Copy
+g.handleAnimations('bullets');
+// End Copy
+	/*[*/g.handleAnimations('bullets');/*]*/
 ```

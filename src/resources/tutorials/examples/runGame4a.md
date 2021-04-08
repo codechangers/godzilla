@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.addLocations('safeZone');
 // End Copy
     g.setSize(GAME_WIDTH, GAME_HEIGHT);

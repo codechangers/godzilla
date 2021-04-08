@@ -5,5 +5,9 @@
 
 ``` javascript
 // File: code/client/src/game.js
+// Copy
 g.drawBackground('grass', 1, 2000, 2000);
+// End Copy
+
+/*[*/g.drawBackground('grass', 1, 2000, 2000);/*]*/
 ```

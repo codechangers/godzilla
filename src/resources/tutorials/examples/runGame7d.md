@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 setTimeout(function  ()  { g.handleCollision('players',  'players',  (player1)  =>  {  if  (player1.speed ==  0)  { player1.speed =  5, player1.spriteName =  'players'  }  })  },  500);
 // End Copy
   onUpdate(dt) {

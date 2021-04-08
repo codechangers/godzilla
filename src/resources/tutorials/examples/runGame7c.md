@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.handleCollision('players',  'enemy',  (player)  =>  {
 	if  (player.safe ==  false)  {
 		player.spriteName =  "grave";

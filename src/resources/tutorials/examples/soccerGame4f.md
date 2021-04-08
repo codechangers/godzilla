@@ -6,7 +6,7 @@ Step (6/8) To create goals for your game
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.setupCharacters('goals');
 // End Copy
 /*[*/g.setupCharacters('goals');/*]*/

@@ -6,7 +6,7 @@ Step (5/6) To add Soccer Balls into your game.
 
 ```
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.setupCharacters('soccerBalls');
 // End Copy
 /*[*/g.setupCharacters('soccerBalls');/*]*/

@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.getCharacters("team");
 // End Copy
 g.getLocations('safeZone');

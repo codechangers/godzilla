@@ -5,10 +5,16 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
 	g.deleteACharacter('zombies', zombie.id);
 	g.deleteACharacter('bullets', bullet.id);
 });
+// End Copy
+/*[*/g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
+	g.deleteACharacter('zombies', zombie.id);
+	g.deleteACharacter('bullets', bullet.id);
+});/*]*/
 ```
 
 Now you should have working bullets that can kill the zombies when you shoot!

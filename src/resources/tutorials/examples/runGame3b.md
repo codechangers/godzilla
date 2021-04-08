@@ -8,7 +8,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.getAllCharacters('enemy', (enemy, i) => {
 	if (enemy.x <= 575 && enemy.right == true) {
 		g.move(enemy, 'x', .01 * i + .1);

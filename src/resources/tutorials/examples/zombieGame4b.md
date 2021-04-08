@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.setupCharacters('zombies', 0.5);
+// End Copy
+/*[*/g.setupCharacters('zombies', 0.5);/*]*/
 ```

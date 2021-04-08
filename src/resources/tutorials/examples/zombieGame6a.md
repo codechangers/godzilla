@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/client/src/game.js
-	g.addCharacters('bullets', 0.5);
+// Copy
+g.addCharacters('bullets', 0.5);
+// End Copy
+/*[*/g.addCharacters('bullets', 0.5);/*]*/
 ```

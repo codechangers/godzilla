@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.getLocations('safeZone');
 // End Copy
       // Add Store Items here!

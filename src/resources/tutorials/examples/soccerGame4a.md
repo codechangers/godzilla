@@ -6,7 +6,7 @@ Step (1/8) To create goals for your game
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.addCharacters('goals', 0.6);
 // End Copy
 /*[*/g.addCharacters('goals', 0.6);/*]*/

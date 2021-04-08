@@ -5,5 +5,8 @@
 
 ``` javascript
 // File: code/client/src/game.js
+// Copy
 g.getCharacters('zombies');
+// End Copy
+/*[*/g.getCharacters('zombies');/*]*/
 ```

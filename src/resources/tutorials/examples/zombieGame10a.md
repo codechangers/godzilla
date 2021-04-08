@@ -5,7 +5,8 @@
 
 ``` javascript
 // File: code/client/src/game.js
-	g.getCharacters('players',
+// Copy
+g.getCharacters('players',
 	(player) => {
 		g.handleLeaderboard('players', 'Scoreboard');
 		if (player.id === g.myId()) {
@@ -19,4 +20,19 @@
 			}
 		g.handleLeaderboard('players', 'Scoreboard');
 	});
+// End Copy
+	/*[*/g.getCharacters('players',
+	(player) => {
+		g.handleLeaderboard('players', 'Scoreboard');
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}},
+	(player) => g.handleLeaderboard('players', 'Scoreboard'),
+	(id, attr, value) => {
+		if (attr == 'filled' && id == 'filled' &&
+			value <= 1 && player.id === g.myId()) {
+				location.reload();
+			}
+		g.handleLeaderboard('players', 'Scoreboard');
+	});/*]*/
 ```

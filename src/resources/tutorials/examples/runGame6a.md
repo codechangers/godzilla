@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.setupCharacters("team");
 // End Copy
     g.setBounds(GAME_WIDTH, GAME_HEIGHT);

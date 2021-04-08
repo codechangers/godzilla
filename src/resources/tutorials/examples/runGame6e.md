@@ -5,7 +5,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 let team = g.getACharacter('team',  'team')
 team.score +=  1
 g.getAllCharacters('enemy', enemy =>  { g.deleteACharacter('enemy', enemy.id)  })

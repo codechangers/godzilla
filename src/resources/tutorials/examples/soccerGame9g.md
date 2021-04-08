@@ -6,7 +6,7 @@ Step (7/7) To be able to place blocks in your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 	g.handleCollision('soccerBalls', 'blocks', (ball, block) => {
 		ball.dx = g.getXTowards(block, ball.x, ball.y);
 		ball.dy = g.getYTowards(block, ball.x, ball.y);

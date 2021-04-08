@@ -1,14 +1,10 @@
----
-title: Upload to the Blobbert.io
-subtitle: Navigate through these docs to learn how the implement the CodeChangers io Game Library
-tags: [customize]
-author: jason
----
-In order to see your project in action and to test it out you need to upload it to a server.
+# Upload to the Blobbert.io
 
-We built a website to help you upload your code. You can access the website at [Blobbert.io](https://blobbert.io){:target="_blank"}
+##### In order to see your project in action and to test it out you need to upload it to a server.
 
-1. Create an account at [Blobbert.io](https://blobbert.io){:target="_blank"}
+We built a website to help you upload your code. You can access the website at [Blobbert.io](https://blobbert.io)
+
+1. Create an account at [Blobbert.io](https://blobbert.io)
 
 2. Click `New Game`
 
@@ -24,26 +20,23 @@ We built a website to help you upload your code. You can access the website at [
 6. Here are the error codes that you will commonly find and here is how you should respond:
 
 #### Game Not Found
-
-<img src="/uploads/resources/building.png" max-width="300">
+![Running Game Gif](/images/building)
 
 This will show up immediately after you create your game. It should take somewhere from 10 - 15 minutes for this to go away. After 15 minutes have passed, if this error is still present you should ask for help.
 
 #### Cannot GET /
 
-<img src="/uploads/resources/cannotGet.png" max-width="300">
+![Running Game Gif](/images/cannotGet)
 
 This is the first error you will usually see, this just means your game is still being built on the server. If a few minutes has gone by, then you can assume that there is an error in your code that does not cause the server to crash.
 
 #### 502
-
-<img src="/uploads/resources/502.png" max-width="300">
+![Running Game Gif](/images/502)
 
 You will usually see this after the game is being built, but before it's active on your url, you should only see this error for a couple of seconds. Refresh a couple times and it should be fixed. If you see this error for an extended period of time, it usually means there is an error in your code. You can restart your game on blobbert.io to double check if it is a code error. You will be able to tell, because if your game crashes again, then it is most likely a code error.
 
 #### 504
-
-<img src="/uploads/resources/504.png" max-width="300">
+![Running Game Gif](/images/504)
 
 If you see this, contact us immediately, this means that there is an error with the io platform and it is an easy fix!
 

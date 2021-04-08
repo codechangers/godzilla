@@ -6,7 +6,7 @@ Step (5/5) To add more characters to your game
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.useLoginScreen((name, spriteName) => g.connect({ name, spriteName }));
 // End Copy
 /*[*/g.useLoginScreen((name, spriteName) => g.connect({ name, spriteName }));/*]*/

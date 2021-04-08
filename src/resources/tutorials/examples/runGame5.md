@@ -5,7 +5,7 @@ subtitle: (Step 1/1) Set up name tags.
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.attachTo('players', client.sessionId,  {
 	name:  'nameTag',
 	x:  -50,

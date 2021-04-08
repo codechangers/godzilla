@@ -5,10 +5,16 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.follow('players', 'zombies', 1, 0.1,
 	(player, zombie) => {
 		zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
 	});
+// End Copy
+/*[*/g.follow('players', 'zombies', 1, 0.1,
+	(player, zombie) => {
+		zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
+	});/*]*/
 ```
 
 We should now have a fully functioning game! Customize it and change or add whatever you like!

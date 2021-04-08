@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/client/src/game.js
-// Copy 
+// Copy
 g.addCharacters("enemy", .5);
 // End Copy
 g.addCharacters('players', 0.5);

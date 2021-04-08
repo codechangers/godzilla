@@ -6,7 +6,7 @@ Step (3/6) To add Soccer Balls into your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 	g.loadImage('soccerBalls', 'ball.png');
 // End Copy
 	/*[*/g.loadImage('soccerBalls', 'ball.png');/*]*/

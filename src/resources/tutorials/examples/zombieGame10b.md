@@ -5,7 +5,10 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
+// Copy
 g.getACharacter('players', bullet.playerId).score += 100;
+// End Copy
+/*[*/g.getACharacter('players', bullet.playerId).score += 100;/*]*/
 ```
 
 Now the scoreboard should be set up and our game is almost finished!

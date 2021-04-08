@@ -5,7 +5,12 @@
 
 ``` javascript
 // File: code/server/rooms/room.js
-		click: () => {
+// Copy
+click: () => {
 
 	},
+// End Copy
+		/*[*/click: () => {
+
+	},/*]*/
 ```

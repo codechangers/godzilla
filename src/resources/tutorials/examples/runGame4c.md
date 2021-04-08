@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 g.setupLocations('safeZone');
 // End Copy
     g.setBounds(GAME_WIDTH, GAME_HEIGHT);

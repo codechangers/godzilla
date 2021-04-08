@@ -7,7 +7,7 @@
 
 ```javascript
 // File: code/server/rooms/room.js
-// Copy 
+// Copy
 const GAME_WIDTH = 600;
 // End Copy
 const GAME_WIDTH = /*{*/1000/*}*/ /*[*/600/*]*/;

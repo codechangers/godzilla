@@ -8,8 +8,8 @@ Typing is super easy with this new custom plugin!
 
 **Options:**
 
-- Start adding new code: `/*[*/`
-- Stop adding new code: `/*]*/`
+- Start adding new code: /*[*/
+- Stop adding new code: /*]*/
 - Start removing old code: `/*{*/`
 - Stop removing old code: `/*}*/`
 - Replace conjunction: `/*}[*/`

@@ -6,7 +6,7 @@ Step (2/3) To add blocks to your game.
 
 ```
 // File: code/client/src/game.js
-// Copy 
+// Copy
 		new g.StoreItem('block3.png', '3 Block', 'Points', 3, 'buy3'),
 		new g.StoreItem('block5.png', '5 Block', 'Points', 4, 'buy5'),
 // End Copy
