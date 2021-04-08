@@ -7,5 +7,10 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.addCharacters("enemy", .5);
+// End Copy
+g.addCharacters('players', 0.5);
+/*[*/g.addCharacters("enemy", .5);/*]*/
+}
 ```

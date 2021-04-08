@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import Login from './Pages/Login';
 import Help from './Pages/Help';
+import Teachers from './Pages/Teachers';
 import SignUp from './Pages/SignUp';
 import Search from './Pages/Search';
 import AdminDashboard from './Dashboards/Admin';
@@ -25,6 +26,7 @@ const pathToComponent = {
   '/': Login,
   '/login': Login,
   '/help': Help,
+  '/teachers': Teachers,
   '/signup': SignUp,
   '/search': Search,
   '/parent': ParentDashboard,

@@ -6,6 +6,7 @@ Step (6/6) To add Soccer Balls into your game.
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 	addABall() {
 	const playersPerBall = 2;
 	const numOf = (t) => Object.keys(this.state[t]).length;
@@ -20,4 +21,19 @@ Step (6/6) To add Soccer Balls into your game.
 			});
 	}
 }
+// End Copy
+	/*[*/addABall() {
+	const playersPerBall = 2;
+	const numOf = (t) => Object.keys(this.state[t]).length;
+	if (
+		numOf('players') % playersPerBall === 0 &&
+		numOf('soccerBalls') < numOf('players') / playersPerBall
+	) {
+		g.createACharacter('soccerBalls',
+			g.nextCharacterId('soccerBalls'), {
+				x: GAME_WIDTH / 2,
+				y: GAME_HEIGHT / 2,
+			});
+	}
+}/*]*/
 ```

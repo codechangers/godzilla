@@ -5,7 +5,10 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.loadImage('grave',  'Grave.png');
+// End Copy
+/*[*/g.loadImage('grave',  'Grave.png');/*]*/
 ```
 
 <hr class="uk-margin-medium">

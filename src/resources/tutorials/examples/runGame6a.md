@@ -5,7 +5,10 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.setupCharacters("team");
+// End Copy
+/*[*/g.setupCharacters("team");/*]*/
 ```
 
 <hr class="uk-margin-medium">

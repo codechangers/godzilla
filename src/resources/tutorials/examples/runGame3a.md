@@ -8,10 +8,20 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.handleCollision('players',  'enemy',  (player)  =>  {
 	if (player.safe === false) {
 		player.x =  270;
 		player.y =  1980;
 	}
 });
+// End Copy
+onUpdate(dt) {
+/*[*/g.handleCollision('players',  'enemy',  (player)  =>  {
+	if (player.safe === false) {
+		player.x =  270;
+		player.y =  1980;
+	}
+});/*]*/
+}
 ```

@@ -7,6 +7,12 @@
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 let i;
 for  (i =  0; i <  15; i++)  { g.createACharacter('enemy', g.nextCharacterId('enemy'),  { x: Math.floor((Math.random()  *  500)  +  1), y: Math.floor((Math.random()  *  1900)  +  1)  })  }
+// End Copy
+  g.setupCharacters('enemy');
+/*[*/let i;
+for  (i =  0; i <  15; i++)  { g.createACharacter('enemy', g.nextCharacterId('enemy'),  { x: Math.floor((Math.random()  *  500)  +  1), y: Math.floor((Math.random()  *  1900)  +  1)  })  }/*]*/
+  }
 ```

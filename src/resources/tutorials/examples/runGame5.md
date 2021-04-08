@@ -5,6 +5,7 @@ subtitle: (Step 1/1) Set up name tags.
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.attachTo('players', client.sessionId,  {
 	name:  'nameTag',
 	x:  -50,
@@ -12,6 +13,14 @@ g.attachTo('players', client.sessionId,  {
 	type:  'text',
 	text: data.name
 });
+// End Copy
+/*[*/g.attachTo('players', client.sessionId,  {
+	name:  'nameTag',
+	x:  -50,
+	y:  -60,
+	type:  'text',
+	text: data.name
+});/*]*/
 ```
 
 You can change where the name tag is created by changing the x and y values.

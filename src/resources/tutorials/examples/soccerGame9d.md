@@ -6,7 +6,12 @@ Step (4/7) To be able to place blocks in your game.
 
 ```
 // File: code/client/src/game.js
+// Copy 
 if (g.canSend()) {
 		g.sendAction('placeBlock', {x, y});
 	}
+// End Copy
+/*[*/if (g.canSend()) {
+		g.sendAction('placeBlock', {x, y});
+	}/*]*/
 ```

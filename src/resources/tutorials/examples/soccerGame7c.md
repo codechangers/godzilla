@@ -6,5 +6,8 @@ Step (3/5) To add scoring to your game.
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 	ball.kicker = player.id;
+// End Copy
+	/*[*/ball.kicker = player.id;/*]*/
 ```

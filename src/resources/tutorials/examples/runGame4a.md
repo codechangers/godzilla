@@ -7,5 +7,11 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.addLocations('safeZone');
+// End Copy
+    g.setSize(GAME_WIDTH, GAME_HEIGHT);
+/*[*/g.addLocations('safeZone');/*]*/
+    g.addCharacters('players', 0.5);
+    g.addCharacters("enemy", .5);
 ```

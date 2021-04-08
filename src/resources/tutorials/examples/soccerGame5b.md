@@ -6,5 +6,8 @@ Step (3/6) To add Soccer Balls into your game.
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.addCharacters('soccerBalls', 0.2);
+// End Copy
+/*[*/g.addCharacters('soccerBalls', 0.2);/*]*/
 ```

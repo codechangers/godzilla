@@ -1,12 +1,15 @@
 # 1 Add a Background
- (Step 4/6) To learn how to add a background to your game!
+ (Step 6/6) To learn how to add a background to your game!
 
-##### 4. In `game.js`, Delete `cameraBounds` method
-In `game.js`, **delete** the `cameraBounds()` method.
+##### 6. In `room.js`, Change the numbers in our `createACharacter `function in our `onJoin` function in the `room.js` file and add a couple new variables.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MZolDaJH0wg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RudU-cO2vvU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
 ```
-// File: code/client/src/game.js 
-g.cameraBounds()
+// File: code/server/rooms/room.js
+// Copy 
+g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });
+// End Copy
+/*[*/g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });/*]*/
 ```
+Make sure that you don't add a new createACharacter function! Just update the one that's already there. 

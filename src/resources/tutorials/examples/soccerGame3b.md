@@ -6,5 +6,8 @@ Step (2/5) To add more characters to your game
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.loadImage('players', 'circle1.png');
+// End Copy
+/*[*/g.loadImage('players', 'circle1.png');/*]*/
 ```

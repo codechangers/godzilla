@@ -8,6 +8,7 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.getAllCharacters('enemy', (enemy, i) => {
 	if (enemy.x <= 575 && enemy.right == true) {
 		g.move(enemy, 'x', .01 * i + .1);
@@ -20,4 +21,19 @@ g.getAllCharacters('enemy', (enemy, i) => {
 		enemy.right = true;
 	}
 });
+// End Copy
+ onUpdate(dt) {
+/*[*/g.getAllCharacters('enemy', (enemy, i) => {
+	if (enemy.x <= 575 && enemy.right == true) {
+		g.move(enemy, 'x', .01 * i + .1);
+	}
+	else if (enemy.x >= 25) {
+		enemy.right = false;
+		g.move(enemy, 'x', -.01 * i - .1);
+	}
+	else {
+		enemy.right = true;
+	}
+});/*]*/
+   g.handleCollision('players',  'enemy',  (player)  =>  {
 ```

@@ -7,5 +7,11 @@
 
 ```
 // File: code/client/src/game.js 
+// Copy 
 g.loadImage('background',  'background.png');
+// End Copy
+preload() {
+    g.loadImage('players', 'logo.png');
+/*[*/g.loadImage('background',  'background.png');/*]*/
+}
 ```

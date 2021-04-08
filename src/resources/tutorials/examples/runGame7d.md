@@ -5,7 +5,10 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 setTimeout(function  ()  { g.handleCollision('players',  'players',  (player1)  =>  {  if  (player1.speed ==  0)  { player1.speed =  5, player1.spriteName =  'players'  }  })  },  500);
+// End Copy
+/*[*/setTimeout(function  ()  { g.handleCollision('players',  'players',  (player1)  =>  {  if  (player1.speed ==  0)  { player1.speed =  5, player1.spriteName =  'players'  }  })  },  500);/*]*/
 ```
 
 And we should now have a fully functioning game! Feel free to customize it and change or add whatever you like!

@@ -7,5 +7,10 @@
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.setupCharacters('enemy');
+// End Copy
+g.setupCharacters('players');
+/*[*/g.setupCharacters('enemy');/*]*/
+}
 ```

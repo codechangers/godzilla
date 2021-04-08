@@ -6,11 +6,18 @@ Step (3/5) To add more characters to your game
 
 ```
 // File: code/client/src/game.js
+// Copy 
 	g.loadImage('blobbert', 'circle1.png');
 	g.loadImage('grunch', 'circle2.png');
 	g.loadImage('neon', 'circle3.png');
 	g.loadImage('nimbo', 'circle4.png');
 	g.loadImage('tangles', 'circle5.png');
+// End Copy
+	/*[*/g.loadImage('blobbert', 'circle1.png');
+	g.loadImage('grunch', 'circle2.png');
+	g.loadImage('neon', 'circle3.png');
+	g.loadImage('nimbo', 'circle4.png');
+	g.loadImage('tangles', 'circle5.png');/*]*/
 ```
 
 > **You can change the names of the characters to whatever you want, they don't have to be named blobbert, grunch, etc**

@@ -7,9 +7,10 @@
 
 ```
 // File: code/server/rooms/room.js
-/*[*/
+// Copy 
 g.setupLocations('safeZone');
-/*]*/
+// End Copy
+/*[*/g.setupLocations('safeZone');/*]*/
 ```
 
 <hr class="uk-margin-medium">

@@ -5,6 +5,9 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.getCharacters("team");
+// End Copy
+/*[*/g.getCharacters("team");/*]*/
 ```
 <hr class="uk-margin-medium">

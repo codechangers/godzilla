@@ -41,8 +41,6 @@ import runGame1a from './tutorials/examples/runGame1a.md';
 import runGame1b from './tutorials/examples/runGame1b.md';
 import runGame1c from './tutorials/examples/runGame1c.md';
 import runGame1d from './tutorials/examples/runGame1d.md';
-import runGame1e from './tutorials/examples/runGame1e.md';
-import runGame1f from './tutorials/examples/runGame1f.md';
 import runGame2a from './tutorials/examples/runGame2a.md';
 import runGame2b from './tutorials/examples/runGame2b.md';
 import runGame2c from './tutorials/examples/runGame2c.md';
@@ -198,8 +196,6 @@ const runGame = {
   runGame1b,
   runGame1c,
   runGame1d,
-  runGame1e,
-  runGame1f,
   runGame2a,
   runGame2b,
   runGame2c,

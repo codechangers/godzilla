@@ -6,8 +6,12 @@ Step (1/5) To add scoring to your game.
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.createACharacter('players', client.sessionId,
 		{ ...data, x, y, score: 0, lives: 3, block3s: 0, block5s: 0 });
+// End Copy
+/*[*/g.createACharacter('players', client.sessionId,
+		{ ...data, x, y, score: 0, lives: 3, block3s: 0, block5s: 0 });/*]*/
 ```
 
 > **This data sets your players lives that they start with, and blocks that they start with.**

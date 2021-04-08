@@ -6,5 +6,8 @@ Step (5/7) To be able to place blocks in your game.
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.setupCharacters('blocks');
+// End Copy
+/*[*/g.setupCharacters('blocks');/*]*/
 ```

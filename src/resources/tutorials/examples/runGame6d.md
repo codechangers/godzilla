@@ -5,7 +5,10 @@
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });
+// End Copy
+/*[*/g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });/*]*/
 ```
 
 <hr class="uk-margin-medium">

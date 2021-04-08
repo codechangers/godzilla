@@ -7,5 +7,12 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.getCharacters("enemy");
+// End Copy
+        g.cameraFollow(player.sprite);
+      }
+    });
+/*[*/g.getCharacters("enemy");/*]*/
+   g.drawBackground( 'background',  3,  500,  2000 );
 ```

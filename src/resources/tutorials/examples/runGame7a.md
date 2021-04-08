@@ -5,7 +5,10 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 const speed = player.speed;
+// End Copy
+/*[*/const speed = player.speed;/*]*/
 ```
 
 <hr class="uk-margin-medium">

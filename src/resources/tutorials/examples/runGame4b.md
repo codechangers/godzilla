@@ -7,5 +7,8 @@
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.getLocations('safeZone');
+// End Copy
+/*[*/g.getLocations('safeZone');/*]*/
 ```

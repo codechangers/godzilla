@@ -6,9 +6,16 @@ Step (4/8) To create goals for your game
 
 ```
 // File: code/client/src/game.js
+// Copy 
 		player.sprite.depth = 5;
 		if (player.id === g.myId()) {
 			g.cameraFollow(player.sprite);
 		}
 	});
+// End Copy
+		/*[*/player.sprite.depth = 5;
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});/*]*/
 ```

@@ -6,5 +6,8 @@ Step (2/5) To add scoring to your game.
 
 ```
 // File: code/server/rooms/room.js
-	kicker: '',
+// Copy 
+kicker: '',
+// End Copy
+	/*[*/kicker: '',/*]*/
 ```

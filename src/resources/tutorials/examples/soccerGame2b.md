@@ -6,5 +6,8 @@ Step (2/3) To create a background for your game.
 
 ```
 // File: code/client/src/game.js
+// Copy 
 g.loadImage('background', 'grass.jpg');
+// End Copy
+/*[*/g.loadImage('background', 'grass.jpg');/*]*/
 ```

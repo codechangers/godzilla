@@ -6,5 +6,8 @@ Step (8/8) To create goals for your game
 
 ```
 // File: code/server/rooms/room.js
+// Copy 
 g.deleteACharacter('goals', client.sessionId);
+// End Copy
+/*[*/g.deleteACharacter('goals', client.sessionId);/*]*/
 ```

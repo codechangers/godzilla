@@ -6,10 +6,18 @@ Step (5/5) To add scoring to your game.
 
 ```
 // File: code/client/src/game.js
+// Copy 
 },
 	() => {},
 	(id, attr, value) => {
 		if (id === g.myId() && attr === 'lives' && value <= 0) {
 			location.reload();
 		}
+// End Copy
+/*[*/},
+	() => {},
+	(id, attr, value) => {
+		if (id === g.myId() && attr === 'lives' && value <= 0) {
+			location.reload();
+		}/*]*/
 ```
