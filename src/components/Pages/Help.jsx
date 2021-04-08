@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     minHeight: '100vh',
     margin: 'auto',
     boxSizing: 'border-box',
-    padding: '20px 8px',
+    padding: '20px 8px 60px 8px',
     '& h2': { margin: '14px 0' },
     '& h3': { margin: '12px 0 ' },
     '& p': { margin: '10px 0' },
