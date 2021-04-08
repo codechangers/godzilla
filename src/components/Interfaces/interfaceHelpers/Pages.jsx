@@ -177,6 +177,8 @@ PageLink.propTypes = {
 const COMMANDS = {
   // fileName works on the first line only.
   fileName: '// File: ',
+  startCopy: '// Copy\n',
+  endCopy: '// End Copy\n',
   startRemove: '/*{*/',
   endRemove: '/*}*/',
   // Use replace to abbreviate back to back endRemove and startAdd.
@@ -188,6 +190,7 @@ const COMMANDS = {
 const CodeBlock = ({ code, lang }) => {
   const classes = useStyles();
   const [cleanCode, setCleanCode] = useState('');
+  const [copyCode, setCopyCode] = useState('');
   const defaultTitle = 'Code Block';
   const [title, setTitle] = useState(defaultTitle);
   const speed = 100;
@@ -203,6 +206,14 @@ const CodeBlock = ({ code, lang }) => {
       setTitle(fileName);
       currentCode = removeFirstLine(currentCode);
     } else setTitle(defaultTitle);
+    // Handle copy comment.
+    const startCopy = currentCode.indexOf(cmds.startCopy);
+    const endCopy = currentCode.indexOf(cmds.endCopy);
+    if (startCopy !== -1 && endCopy !== -1) {
+      const toCopy = currentCode.substr(startCopy, endCopy).replace(cmds.startCopy, '');
+      setCopyCode(toCopy);
+      currentCode = currentCode.replace(cmds.startCopy + toCopy + cmds.endCopy, '');
+    } else setCopyCode(currentCode);
     // Handle replace, remove, add comments.
     const parsed = parseAnims(currentCode);
     if (parsed.length > 0 && parsed[0].insertIndex !== -1) animateCode(parsed, Date.now() - speed);
@@ -383,7 +394,7 @@ const CodeBlock = ({ code, lang }) => {
           {title !== defaultTitle && <FolderIcon style={{ marginRight: 12 }} />}
           {title}
         </Typography>
-        <CopyToClipboard text={code}>
+        <CopyToClipboard text={copyCode}>
           <Button startIcon={<CopyIcon />}>Copy Code</Button>
         </CopyToClipboard>
       </div>
