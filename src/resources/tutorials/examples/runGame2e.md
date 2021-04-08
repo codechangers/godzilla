@@ -1,4 +1,5 @@
 # 2. Create Enemies
+
 (Step 5/5) To Learn how to add enenies into your game.
 
 ##### 5. In the `room.js` _file_ in the `onInit` _function_. We’re going to put a `createACharacter` function in a for loop.
@@ -8,11 +9,23 @@
 ```javascript
 // File: code/server/rooms/room.js
 // Copy
-let i;
-for  (i =  0; i <  15; i++)  { g.createACharacter('enemy', g.nextCharacterId('enemy'),  { x: Math.floor((Math.random()  *  500)  +  1), y: Math.floor((Math.random()  *  1900)  +  1)  })  }
+for (let i = 0; i < 15; i++) {
+  g.createACharacter('enemy', g.nexCharacterId('enemy'), {
+    x: Math.floor(Math.random() * 500) + 1,
+    y: Math.floor(Math.random() * 1900) + 1,
+  });
+}
 // End Copy
-  g.setupCharacters('enemy');
-/*[*/let i;
-for  (i =  0; i <  15; i++)  { g.createACharacter('enemy', g.nextCharacterId('enemy'),  { x: Math.floor((Math.random()  *  500)  +  1), y: Math.floor((Math.random()  *  1900)  +  1)  })  }/*]*/
-  }
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
+  g.setupCharacters('enemy');/*[*/
+  for (let i = 0; i < 15; i++) {
+    g.createACharacter('enemy', g.nexCharacterId('enemy'), {
+      x: Math.floor(Math.random() * 500) + 1,
+      y: Math.floor(Math.random() * 1900) + 1,
+    });
+  }/*]*/
+}
 ```

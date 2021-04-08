@@ -37,7 +37,6 @@ import horseGame8 from './tutorials/examples/horseGame8.md';
 import runGame1a from './tutorials/examples/runGame1a.md';
 import runGame1b from './tutorials/examples/runGame1b.md';
 import runGame1c from './tutorials/examples/runGame1c.md';
-import runGame1d from './tutorials/examples/runGame1d.md';
 import runGame2a from './tutorials/examples/runGame2a.md';
 import runGame2b from './tutorials/examples/runGame2b.md';
 import runGame2c from './tutorials/examples/runGame2c.md';
@@ -191,10 +190,9 @@ const horseGame = {
 };
 
 const runGame = {
-  '1) Runner': runGame1b,
-  '2) Runner': runGame1c,
-  '3) Runner': runGame1a,
-  '4) Runner': runGame1d,
+  '1) Runner': runGame1a,
+  '2) Runner': runGame1b,
+  '3) Runner': runGame1c,
   '5) Runner': runGame2a,
   '6) Runner': runGame2b,
   '7) Runner': runGame2c,

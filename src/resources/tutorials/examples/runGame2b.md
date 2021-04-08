@@ -1,4 +1,5 @@
 # 2. Create Enemies
+
 (Step 2/5) To Learn how to add enenies into your game.
 
 ##### 2. In the `room.js` file we need to put a `setupCharacters` _function_ in the `onInit` function.
@@ -10,7 +11,10 @@
 // Copy
 g.setupCharacters('enemy');
 // End Copy
-g.setupCharacters('players');
-/*[*/g.setupCharacters('enemy');/*]*/
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');/*[*/
+  g.setupCharacters('enemy');/*]*/
 }
 ```

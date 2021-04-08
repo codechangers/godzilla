@@ -6,10 +6,14 @@
 ```javascript
 // File: code/client/src/game.js
 // Copy
-g.getCharacters("team");
+g.getCharacters('team');
 // End Copy
-g.getLocations('safeZone');
-/*[*/g.getCharacters("team");/*]*/
-g.getCharacters('players', (player) => {
+  g.getCharacters('players', player => {
+    if (player.id === g.myId()) {
+      g.cameraFollow(player.sprite);
+    }
+  });
+  g.getCharacters('enemy');/*[*/
+  g.getCharacters('team');/*]*/
+  g.drawBackground('background', 3, 500, 2000);
 ```
-<hr class="uk-margin-medium">

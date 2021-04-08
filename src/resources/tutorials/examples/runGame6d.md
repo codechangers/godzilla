@@ -6,11 +6,21 @@
 ```javascript
 // File: code/server/rooms/room.js
 // Copy
-g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });
+g.createACharacter('team', 'team', { x: 10000, y: 10000, name: 'Level', score: 1 });
 // End Copy
-    g.setupCharacters("team");
-/*[*/g.createACharacter('team',  'team',  { x:  10000, y:  10000, name:  'Level', score:  1  });/*]*/
-    g.setupLocations('safeZone');
+    [0, 1000, 1940].forEach(y => {
+        g.createALocation('safeZone', g.nextLocationId('safeZone'),
+            { x: -47, y, width: 670, height: 1000 },
+            '6cdc00', player => { player.safe = true });
+    });
+    g.setupCharacters('players');
+    g.setupCharacters('team');
+    g.setupCharacters('enemy');/*[*/
+    g.createACharacter('team', 'team', { x: 10000, y: 10000, name: 'Level', score: 1 });/*]*/
+    for (let i = 0; i < 15; i++) {
+        g.createACharacter('enemy', g.nexCharacterId('enemy'), {
+            x: Math.floor(Math.random() * 500) + 1,
+            y: Math.floor(Math.random() * 1900) + 1,
+        });
+    }
 ```
-
-<hr class="uk-margin-medium">

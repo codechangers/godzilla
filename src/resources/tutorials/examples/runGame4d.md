@@ -1,4 +1,5 @@
 # 4. Set Up Safe Zones
+
 (Step 4/5) To Set up safe zones and an end zone.
 
 ##### 4. In `room.js`, Use 3 `createLocations` _functions_ right **under** the `setupLocations` _function_ that we just wrote, to create three different locations on the map.
@@ -8,27 +9,21 @@
 ```javascript
 // File: code/server/rooms/room.js
 // Copy
-g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1940, width:  670, height:  100  },  '6cdc00', player =>  {
-	player.safe =  true;
-});
-g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1000, width:  670, height:  100  },  '6cdc00', player =>  {
-	player.safe =  true;
-});
-g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  0, width:  670, height:  100  },  '6cdc00', player =>  {
-g.getAllCharacters('players', player =>  { player.x =  270, player.y =  1990, player.spriteName =  'players'  });
+[0, 1000, 1940].forEach(y => {
+    g.createALocation('safeZone', g.nextLocationId('safeZone'),
+        { x: -47, y, width: 670, height: 1000 },
+        '6cdc00', player => { player.safe = true });
 });
 // End Copy
+onInit() {
+    g.setup(this);
     g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-    g.setupLocations('safeZone');
-/*[*/g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1940, width:  670, height:  100  },  '6cdc00', player =>  {
-	player.safe =  true;
-});
-g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1000, width:  670, height:  100  },  '6cdc00', player =>  {
-	player.safe =  true;
-});
-g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  0, width:  670, height:  100  },  '6cdc00', player =>  {
-g.getAllCharacters('players', player =>  { player.x =  270, player.y =  1990, player.spriteName =  'players'  });
-});/*]*/
+    g.setupLocations('safeZone');/*[*/
+    [0, 1000, 1940].forEach(y => {
+        g.createALocation('safeZone', g.nextLocationId('safeZone'),
+            { x: -47, y, width: 670, height: 1000 },
+            '6cdc00', player => { player.safe = true });
+    });/*]*/
     g.setupCharacters('players');
     g.setupCharacters('enemy');
 ```

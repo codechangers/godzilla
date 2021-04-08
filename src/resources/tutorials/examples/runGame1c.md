@@ -1,5 +1,6 @@
 # 1 Add a Background
- (Step 5/6) To learn how to add a background to your game!
+
+(Step 3/3) To learn how to add a background to your game!
 
 ##### 5. In `room.js`, Change the game width in the top of the file from 2000 to 600.
 
@@ -10,5 +11,6 @@
 // Copy
 const GAME_WIDTH = 600;
 // End Copy
-const GAME_WIDTH = /*{*/1000/*}*/ /*[*/600/*]*/;
+const GAME_WIDTH = /*{*/2000/*}*//*[*/600/*]*/;
+const GAME_HEIGHT = 2000;
 ```

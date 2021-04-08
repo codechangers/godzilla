@@ -1,4 +1,5 @@
 # 4. Set Up Safe Zones
+
 (Step 3/5) To Set up safe zones and an end zone.
 
 ##### 3. In `room.js` file in our `onInit` _function_ we'll use a `setupLocations` _function_ **above** our `setupCharacters` _functions_
@@ -10,10 +11,17 @@
 // Copy
 g.setupLocations('safeZone');
 // End Copy
-    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-/*[*/g.setupLocations('safeZone');/*]*/
+onInit() {
+    g.setup(this);
+    g.setBounds(GAME_WIDTH, GAME_HEIGHT);/*[*/
+    g.setupLocations('safeZone');/*]*/
     g.setupCharacters('players');
     g.setupCharacters('enemy');
+    for (let i = 0; i < 15; i++) {
+        g.createACharacter('enemy', g.nexCharacterId('enemy'), {
+            x: Math.floor(Math.random() * 500) + 1,
+            y: Math.floor(Math.random() * 1900) + 1,
+        });
+    }
+}
 ```
-
-<hr class="uk-margin-medium">

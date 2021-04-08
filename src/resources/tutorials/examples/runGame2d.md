@@ -1,4 +1,5 @@
 # 2. Create Enemies
+
 (Step 4/5) To Learn how to add enenies into your game.
 
 ##### 4. In `game.js`, Add a `getCharacters` function in the `create` function.
@@ -8,11 +9,13 @@
 ```javascript
 // File: code/client/src/game.js
 // Copy
-g.getCharacters("enemy");
+g.getCharacters('enemy');
 // End Copy
-        g.cameraFollow(player.sprite);
-      }
-    });
-/*[*/g.getCharacters("enemy");/*]*/
-   g.drawBackground( 'background',  3,  500,  2000 );
+  g.getCharacters('players', player => {
+    if (player.id === g.myId()) {
+      g.cameraFollow(player.sprite);
+    }
+  });/*[*/
+  g.getCharacters('enemy');/*]*/
+  g.drawBackground('background', 3, 500, 2000);
 ```
