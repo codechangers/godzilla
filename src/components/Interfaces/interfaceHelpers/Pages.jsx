@@ -462,7 +462,7 @@ const Markdown = ({ pages, page, useLoading }) => {
     heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
     text: ({ value }) => {
       if (value.startsWith('{% include') && value.endsWith('%}'))
-        return <Markdown page={fromInclude(value)} pages={pages} />;
+        return <Markdown page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />;
       return value;
     },
     code: ({ value, language }) => <CodeBlock code={value} lang={language} />,
