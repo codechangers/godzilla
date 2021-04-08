@@ -1,9 +1,6 @@
----
-title: Welcome to CodeContest
-subtitle: Navigate through these docs to learn how the implement the CodeChangers io Game Library
-tags: [customize]
-author: jason
----
+# Welcome to CodeContest
+
+Navigate through these docs to learn how the implement the CodeChangers io Game Library
 
 ## Get Your Game Set Up
 
@@ -42,4 +39,4 @@ Use the Documentation to make fine tuned adjustments:
 
 ## Submit Your Game
 
-- [Submit your game!](https://forms.gle/pLGXfZFjoeFzsmwe8)
+- [Submit your game!](https://forms.gle/nXaNFdn9TZUTyCAd9)
