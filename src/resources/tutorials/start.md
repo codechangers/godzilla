@@ -4,13 +4,9 @@ Navigate through these docs to learn how the implement the CodeChangers io Game 
 
 ## Get Your Game Set Up
 
-1. [Create A Repl Account](/tutorials/setup1)
-2. [Download Your Repl Project](/tutorials/setup2)
-3. [Upload Your Code to Blobbert.io](/tutorials/uploadtoserver)
-
-## Pick A Game To Build
-
-1. [Pick an Example Game](/tutorials/pickagame/)
+1. [Fork Project in Repl](/tutorials/2\)%20Fork%20Project%20in%20Repl)
+2. [Setup Server](/tutorials/3\)%20Setup%20Server)
+3. [Pick a Game](/tutorials/4\)%20Pick%20a%20Game)
 
 ## Continue Customizing Your Game
 
