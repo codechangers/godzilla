@@ -1,11 +1,7 @@
 // Global
-import downloadfromrepl from './tutorials/downloadfromrepl.md';
 import downloads from './tutorials/downloads.md';
 import images from './tutorials/images.md';
-import introduction from './tutorials/introduction.md';
 import pickagame from './tutorials/pickagame.md';
-import setup from './tutorials/setup.md';
-import setup1 from './tutorials/setup1.md';
 import setup2 from './tutorials/setup2.md';
 import splitScreen from './tutorials/splitScreen.md';
 import start from './tutorials/start.md';
@@ -328,20 +324,16 @@ const zombieGame = {
 const tutorials = {
   '1) Full Day Overview': start,
   '2) Fork Project in Repl': setup2,
-  '3) Pick a Game': pickagame,
-  '4) Setup Server': uploadtoserver,
+  '3) Setup Server': uploadtoserver,
+  '4) Pick a Game': pickagame,
   'Horse Game Tutorial': horseGame,
   'Run Game Tutorial': runGame,
   'Soccer Game Tutorial': soccerGame,
   'Zombie Game Tutorial': zombieGame,
   blocks,
-  downloadfromrepl,
   downloads,
   images,
-  splitScreen,
-  introduction,
-  setup,
-  setup1
+  splitScreen
 };
 
 export default tutorials;
