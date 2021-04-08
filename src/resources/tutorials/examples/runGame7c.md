@@ -3,7 +3,7 @@
 
 ##### 3. Change our `handleCollision` _function_ for players and enemies in the `onUpdate` _function_ in the `room.js` file.
 
-```
+```javascript
 // File: code/client/src/game.js
 // Copy 
 g.handleCollision('players',  'enemy',  (player)  =>  {
@@ -23,6 +23,10 @@ g.handleCollision('players',  'enemy',  (player)  =>  {
 	}
 });
 // End Copy
+	    else {
+		    enemy.right = true;
+	    }
+    });
 /*[*/g.handleCollision('players',  'enemy',  (player)  =>  {
 	if  (player.safe ==  false)  {
 		player.spriteName =  "grave";
@@ -39,6 +43,11 @@ g.handleCollision('players',  'enemy',  (player)  =>  {
 	}
 	}
 });/*]*/
-```
+   
+  }
 
+  onLeave(client) {
+    g.deleteACharacter('players', client.sessionId);
+```
+Make sure that you don't add another handle collision function, just replace the old one with this new one.
 <hr class="uk-margin-medium">

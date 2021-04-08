@@ -5,7 +5,7 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EjEw4HeAMdM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-```
+```javascript
 // File: code/server/rooms/room.js
 // Copy 
 g.setupCharacters('enemy');

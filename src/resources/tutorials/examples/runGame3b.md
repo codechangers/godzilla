@@ -6,7 +6,7 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5mYBdR03rE4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-```
+```javascript
 // File: code/client/src/game.js
 // Copy 
 g.getAllCharacters('enemy', (enemy, i) => {

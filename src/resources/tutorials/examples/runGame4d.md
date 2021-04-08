@@ -5,7 +5,7 @@
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BD4Gdtoz7-I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-```
+```javascript
 // File: code/server/rooms/room.js
 // Copy 
 g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1940, width:  670, height:  100  },  '6cdc00', player =>  {
@@ -18,6 +18,8 @@ g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  0, w
 g.getAllCharacters('players', player =>  { player.x =  270, player.y =  1990, player.spriteName =  'players'  });
 });
 // End Copy
+    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+    g.setupLocations('safeZone');
 /*[*/g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1940, width:  670, height:  100  },  '6cdc00', player =>  {
 	player.safe =  true;
 });
@@ -27,4 +29,6 @@ g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  1000
 g.createALocation('safeZone', g.nextLocationId('safeZone'),  { x:  -47, y:  0, width:  670, height:  100  },  '6cdc00', player =>  {
 g.getAllCharacters('players', player =>  { player.x =  270, player.y =  1990, player.spriteName =  'players'  });
 });/*]*/
+    g.setupCharacters('players');
+    g.setupCharacters('enemy');
 ```
