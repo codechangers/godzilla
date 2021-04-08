@@ -87,6 +87,12 @@ const PagesInterface = ({
       useCustomAppBar(
         page,
         <>
+          <Link to="/teachers" className={classes.navLink}>
+            Teachers
+          </Link>
+          <Link to="/help" className={classes.navLink}>
+            Help!
+          </Link>
           {child !== null && (
             <Tooltip title="Change Profile" placement="bottom">
               <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
@@ -581,6 +587,14 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     })
+  },
+  navLink: {
+    color: 'inherit',
+    textDecoration: 'none',
+    margin: '0 14px',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
