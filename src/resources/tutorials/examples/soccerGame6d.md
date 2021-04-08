@@ -7,17 +7,10 @@ Step (4/4) To add Kicking to your game.
 ```javascript
 // File: code/server/rooms/room.js
 // Copy
-<<<<<<< HEAD
-	g.handleCollision('players', 'soccerBalls', (player, ball) => {
-		ball.dx = g.getXTowards(player, ball.x, ball.y);
-		ball.dy = g.getYTowards(player, ball.x, ball.y);
-	});
-=======
 g.handleCollision('players', 'soccerBalls', (player, ball) => {
   ball.dx = g.getXTowards(player, ball.x, ball.y);
   ball.dy = g.getYTowards(player, ball.x, ball.y);
 });
->>>>>>> fa7d7d93150f6a5493d35bea168bbdb1a0bdc6e8
 // End Copy
 onUpdate(dt) {
 	const friction = dv => (dv > -0.01 && dv < 0.01 ? 0 : dv - dv / 6000);

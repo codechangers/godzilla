@@ -637,7 +637,7 @@ const useStyles = makeStyles(theme => ({
     '& h4': { fontSize: '2rem' },
     '& h5': { fontSize: '1.8rem' },
     '& h6': { fontSize: '1.5rem' },
-    '& img': { margin: 10, maxHeight: 500, display: 'block', alignSelf: 'center' }
+    '& img': { margin: 10, maxHeight: 500, maxWidth: '100%', display: 'block', alignSelf: 'center' }
   },
   p: {
     fontSize: '1.2rem',

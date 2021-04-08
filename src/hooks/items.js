@@ -1,6 +1,15 @@
 import { useMemo } from 'react';
 
-const globalWhiteList = ['welcome', 'start'];
+const globalWhiteList = [
+  'welcome',
+  '1) Full Day Overview',
+  '2) Fork Project in Repl',
+  '3) Setup Server',
+  '4) Pick a Game',
+  'downloads',
+  'images',
+  'splitScreen'
+];
 
 const checkItems = (unlocked, value, prefix = '') => {
   const newValue = {};
