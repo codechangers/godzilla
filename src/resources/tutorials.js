@@ -37,28 +37,35 @@ import horseGame8 from './tutorials/examples/horseGame8.md';
 import runGame1a from './tutorials/examples/runGame1a.md';
 import runGame1b from './tutorials/examples/runGame1b.md';
 import runGame1c from './tutorials/examples/runGame1c.md';
+import runGame1d from './tutorials/examples/runGame1d.md';
 import runGame2a from './tutorials/examples/runGame2a.md';
 import runGame2b from './tutorials/examples/runGame2b.md';
 import runGame2c from './tutorials/examples/runGame2c.md';
 import runGame2d from './tutorials/examples/runGame2d.md';
 import runGame2e from './tutorials/examples/runGame2e.md';
+import runGame2f from './tutorials/examples/runGame2f.md';
 import runGame3a from './tutorials/examples/runGame3a.md';
 import runGame3b from './tutorials/examples/runGame3b.md';
+import runGame3c from './tutorials/examples/runGame3c.md';
 import runGame4a from './tutorials/examples/runGame4a.md';
 import runGame4b from './tutorials/examples/runGame4b.md';
 import runGame4c from './tutorials/examples/runGame4c.md';
 import runGame4d from './tutorials/examples/runGame4d.md';
 import runGame4e from './tutorials/examples/runGame4e.md';
+import runGame4f from './tutorials/examples/runGame4f.md';
 import runGame5 from './tutorials/examples/runGame5.md';
+import runGame5b from './tutorials/examples/runGame5b.md';
 import runGame6a from './tutorials/examples/runGame6a.md';
 import runGame6b from './tutorials/examples/runGame6b.md';
 import runGame6c from './tutorials/examples/runGame6c.md';
 import runGame6d from './tutorials/examples/runGame6d.md';
 import runGame6e from './tutorials/examples/runGame6e.md';
+import runGame6f from './tutorials/examples/runGame6f.md';
 import runGame7a from './tutorials/examples/runGame7a.md';
 import runGame7b from './tutorials/examples/runGame7b.md';
 import runGame7c from './tutorials/examples/runGame7c.md';
 import runGame7d from './tutorials/examples/runGame7d.md';
+import runGame7e from './tutorials/examples/runGame7e.md';
 import runGame8 from './tutorials/examples/runGame8.md';
 // Soccer Game
 import soccerGame1 from './tutorials/examples/soccerGame1.md';
@@ -191,29 +198,36 @@ const runGame = {
   '1) Runner': runGame1a,
   '2) Runner': runGame1b,
   '3) Runner': runGame1c,
+  '4) Runner': runGame1d,
   '5) Runner': runGame2a,
   '6) Runner': runGame2b,
   '7) Runner': runGame2c,
   '8) Runner': runGame2d,
   '9) Runner': runGame2e,
-  '10) Runner': runGame3a,
-  '11) Runner': runGame3b,
-  '12) Runner': runGame4a,
-  '13) Runner': runGame4b,
-  '14) Runner': runGame4c,
-  '15) Runner': runGame4d,
-  '16) Runner': runGame4e,
-  '17) Runner': runGame5,
-  '18) Runner': runGame6a,
-  '19) Runner': runGame6b,
-  '20) Runner': runGame6c,
-  '21) Runner': runGame6d,
-  '22) Runner': runGame6e,
-  '23) Runner': runGame7a,
-  '24) Runner': runGame7b,
-  '25) Runner': runGame7c,
-  '26) Runner': runGame7d,
-  '27) Runner': runGame8
+  '10) Runner': runGame2f,
+  '11) Runner': runGame3a,
+  '12) Runner': runGame3b,
+  '13) Runner': runGame3c,
+  '14) Runner': runGame4a,
+  '15) Runner': runGame4b,
+  '16) Runner': runGame4c,
+  '17) Runner': runGame4d,
+  '18) Runner': runGame4e,
+  '19) Runner': runGame4f,
+  '20) Runner': runGame5,
+  '21) Runner': runGame5b,
+  '22) Runner': runGame6a,
+  '23) Runner': runGame6b,
+  '24) Runner': runGame6c,
+  '25) Runner': runGame6d,
+  '26) Runner': runGame6e,
+  '27) Runner': runGame6f,
+  '28) Runner': runGame7a,
+  '29) Runner': runGame7b,
+  '30) Runner': runGame7c,
+  '31) Runner': runGame7d,
+  '32) Runner': runGame7e,
+  '33) Runner': runGame8
 };
 
 const soccerGame = {
