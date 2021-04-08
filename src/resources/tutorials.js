@@ -17,6 +17,7 @@ import additionalInputs from './tutorials/blocks/additionalInputs.md';
 import allAboutAnimations from './tutorials/blocks/allAboutAnimations.md';
 import connectionsHelp from './tutorials/blocks/connectionsHelp.md';
 import gameBoundsAndBackground from './tutorials/blocks/gameBoundsAndBackground.md';
+import gettingStarted from './tutorials/blocks/gettingStarted.md';
 import howToCollide from './tutorials/blocks/howToCollide.md';
 import loginAndHowToPlay from './tutorials/blocks/loginAndHowToPlay.md';
 import movingForward from './tutorials/blocks/movingForward.md';
@@ -82,7 +83,8 @@ import soccerGame4c from './tutorials/examples/soccerGame4c.md';
 import soccerGame4d from './tutorials/examples/soccerGame4d.md';
 import soccerGame4e from './tutorials/examples/soccerGame4e.md';
 import soccerGame4f from './tutorials/examples/soccerGame4f.md';
-import soccerGame4g from './tutorials/examples/soccerGame4g.md';
+import soccerGame4g1 from './tutorials/examples/soccerGame4g1.md';
+import soccerGame4g2 from './tutorials/examples/soccerGame4g2.md';
 import soccerGame4h from './tutorials/examples/soccerGame4h.md';
 import soccerGame4i from './tutorials/examples/soccerGame4i.md';
 import soccerGame5a from './tutorials/examples/soccerGame5a.md';
@@ -168,6 +170,7 @@ const blocks = {
   allAboutAnimations,
   connectionsHelp,
   gameBoundsAndBackground,
+  gettingStarted,
   howToCollide,
   loginAndHowToPlay,
   movingForward,
@@ -239,40 +242,41 @@ const soccerGame = {
   '15) Soccer': soccerGame4d,
   '16) Soccer': soccerGame4e,
   '17) Soccer': soccerGame4f,
-  '18) Soccer': soccerGame4g,
-  '19) Soccer': soccerGame4h,
-  '20) Soccer': soccerGame4i,
-  '21) Soccer': soccerGame5a,
-  '22) Soccer': soccerGame5b,
-  '23) Soccer': soccerGame5c,
-  '24) Soccer': soccerGame5d,
-  '25) Soccer': soccerGame5e,
-  '26) Soccer': soccerGame5f,
-  '27) Soccer': soccerGame5g,
-  '28) Soccer': soccerGame6a,
-  '29) Soccer': soccerGame6b,
-  '30) Soccer': soccerGame6c,
-  '31) Soccer': soccerGame6d,
-  '32) Soccer': soccerGame6e,
-  '33) Soccer': soccerGame7a,
-  '34) Soccer': soccerGame7b,
-  '35) Soccer': soccerGame7c,
-  '36) Soccer': soccerGame7d,
-  '37) Soccer': soccerGame7e,
-  '38) Soccer': soccerGame7f,
-  '39) Soccer': soccerGame8a,
-  '40) Soccer': soccerGame8b,
-  '41) Soccer': soccerGame8c,
-  '42) Soccer': soccerGame8d,
-  '43) Soccer': soccerGame9a,
-  '44) Soccer': soccerGame9b,
-  '45) Soccer': soccerGame9c,
-  '46) Soccer': soccerGame9d,
-  '47) Soccer': soccerGame9e,
-  '48) Soccer': soccerGame9f,
-  '49) Soccer': soccerGame9g,
-  '50) Soccer': soccerGame9h,
-  '51) Soccer': soccerGame10
+  '18) Soccer': soccerGame4g1,
+  '19) Soccer': soccerGame4g2,
+  '20) Soccer': soccerGame4h,
+  '21) Soccer': soccerGame4i,
+  '22) Soccer': soccerGame5a,
+  '23) Soccer': soccerGame5b,
+  '24) Soccer': soccerGame5c,
+  '25) Soccer': soccerGame5d,
+  '26) Soccer': soccerGame5e,
+  '27) Soccer': soccerGame5f,
+  '28) Soccer': soccerGame5g,
+  '29) Soccer': soccerGame6a,
+  '30) Soccer': soccerGame6b,
+  '31) Soccer': soccerGame6c,
+  '32) Soccer': soccerGame6d,
+  '33) Soccer': soccerGame6e,
+  '34) Soccer': soccerGame7a,
+  '35) Soccer': soccerGame7b,
+  '36) Soccer': soccerGame7c,
+  '37) Soccer': soccerGame7d,
+  '38) Soccer': soccerGame7e,
+  '39) Soccer': soccerGame7f,
+  '40) Soccer': soccerGame8a,
+  '41) Soccer': soccerGame8b,
+  '42) Soccer': soccerGame8c,
+  '43) Soccer': soccerGame8d,
+  '44) Soccer': soccerGame9a,
+  '45) Soccer': soccerGame9b,
+  '46) Soccer': soccerGame9c,
+  '47) Soccer': soccerGame9d,
+  '48) Soccer': soccerGame9e,
+  '49) Soccer': soccerGame9f,
+  '50) Soccer': soccerGame9g,
+  '51) Soccer': soccerGame9h,
+  '52) Soccer': soccerGame10
 };
 
 const zombieGame = {
