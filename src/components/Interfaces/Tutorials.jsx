@@ -1,9 +1,9 @@
 import React from 'react';
-import PagesInterface from './interfaceHelpers/Pages';
+import MarkdownFiles from '../Markdown/Files';
 import tutorials from '../../resources/tutorials';
 
 const TutorialsInterface = props => (
-  <PagesInterface
+  <MarkdownFiles
     pages={tutorials}
     homePage="1) Full Day Overview"
     whiteList="tutorials"
