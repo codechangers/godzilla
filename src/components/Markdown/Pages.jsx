@@ -31,7 +31,7 @@ const defaultProps = {
 
 const drawerWidth = 260;
 
-const MarkdownFiles = ({
+const MarkdownPages = ({
   width,
   pages,
   homePage,
@@ -144,8 +144,8 @@ const MarkdownFiles = ({
     </div>
   );
 };
-MarkdownFiles.propTypes = propTypes;
-MarkdownFiles.defaultProps = defaultProps;
+MarkdownPages.propTypes = propTypes;
+MarkdownPages.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -230,4 +230,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withWidth()(MarkdownFiles);
+export default withWidth()(MarkdownPages);
