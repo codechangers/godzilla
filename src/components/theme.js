@@ -15,15 +15,23 @@ export default createMuiTheme({
   // Color Palette
   palette: {
     type: 'dark',
+    // RGB: 1 0.486rep 1
+    // Red:   148 + 20 + 20
+    // Green:  72 + 10 +  9
+    // Blue:  148 + 20 + 20
     primary: {
-      light: '#00AFEF',
-      main: '#a240b5',
-      dark: '#000000'
+      light: '#BC5BBC',
+      main: '#A852A8',
+      dark: '#944894'
     },
+    // RGB: 1 0.38431373 0.64705882
+    // Red:   255 +  0 +  0
+    // Green:  98 +  8 +  7
+    // Blue:  165 + 13 + 13
     secondary: {
-      light: '#00AFEF',
-      main: '#a240b5',
-      dark: '#0070B6'
+      light: '#FF71BF',
+      main: '#FF6AB2',
+      dark: '#FF62A5'
     },
     error: red,
     contrastThreshold: 3,
