@@ -20,7 +20,9 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
   const [content, setContent] = useState('# Hello World');
   const [loading, setLoading] = useLoading;
 
-  // Fetch page content.
+  /**
+   * Fetch the current page content.
+   */
   useEffect(() => {
     setContent('');
     setLoading(true);
@@ -42,53 +44,80 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
     return () => controller.abort();
   }, [page]);
 
+  /**
+   * Get the page name from an include statement.
+   */
   const fromInclude = value =>
     value
       .replace('{% include ', '')
       .replace('.md %}', '')
       .replace(/\//g, '.');
 
-  /* eslint-disable */
-  const mdRenderers = {
-    heading: ({ level, children }) => <Typography variant={`h${level}`}>{children}</Typography>,
-    text: ({ value }) => {
-      if (value.startsWith('{% include') && value.endsWith('%}'))
-        return (
-          <MarkdownRenderer
-            page={fromInclude(value)}
-            pages={pages}
-            useLoading={[false, () => {}]}
-          />
-        );
-      return value;
-    },
-    code: ({ value, language }) => <CodeBlock code={value} lang={language} />,
-    paragraph: ({ children }) => <div className={classes.p}>{children}</div>,
-    image: ({ src, alt }) => {
-      if (src.startsWith('/images/')) return <img src={resolveImg(src)} alt={alt} />;
-      return <img src={src} alt={alt} />;
-    },
-    link: ({ href, target, children }) => {
-      if (href.startsWith('/docs/'))
-        return (
-          <MarkdownLink type="docs" href={href}>
-            {children}
-          </MarkdownLink>
-        );
-      if (href.startsWith('/tutorials/'))
-        return (
-          <MarkdownLink type="tutorials" href={href}>
-            {children}
-          </MarkdownLink>
-        );
+  /**
+   * Render custom headings using material-ui Typography.
+   */
+  const heading = ({ level, children }) => (
+    <Typography variant={`h${level}`}>{children}</Typography>
+  );
+  heading.propTypes = { level: PropTypes.number.isRequired, children: PropTypes.node.isRequired };
+
+  /**
+   * Render custom text that allows for the use of Jekyll like file includes.
+   */
+  const text = ({ value }) =>
+    value.startsWith('{% include') && value.endsWith('%}') ? (
+      <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
+    ) : (
+      value
+    );
+  text.propTypes = { value: PropTypes.node.isRequired };
+
+  /**
+   * Render custom code blocks for multiline code.
+   */
+  const code = ({ value, language }) => <CodeBlock code={value} lang={language} />;
+  code.propTypes = { value: PropTypes.node.isRequired, language: PropTypes.string.isRequired };
+
+  /**
+   * Render custom paragraphs as divs.
+   * This is because includes cannot be a child of a paragraph tag.
+   */
+  const paragraph = ({ children }) => <div className={classes.p}>{children}</div>;
+  paragraph.propTypes = { children: PropTypes.node.isRequired };
+
+  /**
+   * Render custom images that allow for local files to be accessed.
+   */
+  const image = ({ src, alt }) =>
+    src.startsWith('/images/') ? (
+      <img src={resolveImg(src)} alt={alt} />
+    ) : (
+      <img src={src} alt={alt} />
+    );
+  image.propTypes = { src: PropTypes.node.isRequired, alt: PropTypes.string.isRequired };
+
+  /**
+   * Render custom links that allow for routing via react-router.
+   */
+  const link = ({ href, target, children }) => {
+    if (href.startsWith('/docs/'))
       return (
-        <a href={href} target={target} rel="noopener norefferer">
+        <MarkdownLink type="docs" href={href}>
           {children}
-        </a>
+        </MarkdownLink>
       );
-    }
+    if (href.startsWith('/tutorials/'))
+      return (
+        <MarkdownLink type="tutorials" href={href}>
+          {children}
+        </MarkdownLink>
+      );
+    return (
+      <a href={href} target={target} rel="noopener norefferer">
+        {children}
+      </a>
+    );
   };
-  /* eslint-enable */
 
   return loading ? (
     <div className={classes.loading}>
@@ -99,7 +128,7 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
       allowDangerousHtml
       linkTarget="_blank"
       plugins={remarkPlugins}
-      renderers={mdRenderers}
+      renderers={{ heading, text, code, paragraph, image, link }}
     >
       {content}
     </ReactMarkdown>
