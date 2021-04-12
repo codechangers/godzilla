@@ -226,6 +226,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     backgroundColor: 'var(--background-color)',
+    color: theme.palette.text.primary,
     boxShadow: 'none',
     '& img': {
       width: '40px',
