@@ -30,6 +30,11 @@ const COMMANDS = {
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 
+/**
+ * TODO: Refactor animation logic.
+ * It should parse out all marking comments first and then chain together a list of animations to run.
+ * It currently recursively searches for comments one by one, which leads to cryptic behavior.
+ */
 const CodeBlock = ({ code, lang }) => {
   const classes = useStyles();
   const [cleanCode, setCleanCode] = useState('');
