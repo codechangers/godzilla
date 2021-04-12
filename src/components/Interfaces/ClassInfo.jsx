@@ -147,7 +147,7 @@ const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
           </Tooltip>
         );
       }
-      useCustomAppBar(`CodeContest${isEditing ? ' Admin' : ''}`, button);
+      useCustomAppBar(isEditing ? 'Editing Info' : 'CodeContest', button);
     }
   }, [isOwner, isEditing, width]);
 
