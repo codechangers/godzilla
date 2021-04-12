@@ -13,7 +13,6 @@ import {
   InputBase,
   IconButton,
   Tooltip,
-  Fab,
   TextField
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -30,118 +29,10 @@ import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 
 const propTypes = {
+  useCustomAppBar: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
-};
-
-const Fill = ({ className, prompt, isEditing, onClick }) => {
-  const classes = useStyles();
-  return (
-    isEditing && (
-      <div className={`${className} ${classes.fill}`}>
-        <Button onClick={onClick}>
-          <AddIcon />
-          {prompt}
-        </Button>
-      </div>
-    )
-  );
-};
-
-Fill.propTypes = {
-  className: PropTypes.string.isRequired,
-  prompt: PropTypes.string.isRequired,
-  isEditing: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
-};
-
-const EditButton = ({ isEditing, title, onClick }) =>
-  isEditing && (
-    <Tooltip title={title} aria-label={title} placement="top" arrow>
-      <IconButton
-        edge="end"
-        size="small"
-        style={{
-          margin: '2px 0 0 -32px',
-          backgroundColor: 'rgba(190, 190, 190, 0.7)'
-        }}
-        onClick={onClick}
-      >
-        <EditIcon />
-      </IconButton>
-    </Tooltip>
-  );
-
-EditButton.propTypes = {
-  isEditing: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
-};
-
-const SignUpButton = ({ cls, onClick, className, inputCode, setInputCode }) => {
-  const [tempCode, setTempCode] = useState('');
-  const [error, setError] = useState('');
-
-  const classes = useStyles();
-  return cls.isPrivate && inputCode !== cls.privacyCode ? (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        if (tempCode === cls.privacyCode) {
-          setInputCode(tempCode);
-          setError('');
-        } else {
-          setError('Invalid Code!');
-        }
-      }}
-      className={classes.registrationCode}
-      style={error.length > 0 ? { marginBottom: 0 } : {}}
-    >
-      <TextField
-        label="Registration Code"
-        error={error.length > 0}
-        helperText={error}
-        onChange={e => setTempCode(e.target.value)}
-        className={classes.registrationCodeInput}
-      />
-      <Tooltip title="Use Code" placement="top">
-        <IconButton
-          style={
-            error.length > 0 ? { marginLeft: '10px' } : { marginLeft: '10px', marginTop: '12px' }
-          }
-          aria-label="Use Code"
-          size="small"
-          color="primary"
-          type="submit"
-        >
-          <SendIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
-    </form>
-  ) : (
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={cls.children.length >= cls.maxStudents}
-      className={className}
-      onClick={onClick}
-    >
-      Sign Up!
-    </Button>
-  );
-};
-
-SignUpButton.propTypes = {
-  cls: PropTypes.object.isRequired,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  inputCode: PropTypes.string.isRequired,
-  setInputCode: PropTypes.func.isRequired
-};
-SignUpButton.defaultProps = {
-  onClick: () => {},
-  className: ''
 };
 
 const modalPropSets = {
@@ -176,7 +67,7 @@ const defaultClassInfo = {
   faqs: []
 };
 
-const ClassInfoInterface = ({ location, db, user }) => {
+const ClassInfoInterface = ({ location, db, user, useCustomAppBar }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -218,6 +109,32 @@ const ClassInfoInterface = ({ location, db, user }) => {
     // eslint-disable-next-line
   }, [location, db]);
 
+  useEffect(() => {
+    if (isOwner) {
+      useCustomAppBar(
+        `CodeContest${isEditing ? ' Admin' : ''}`,
+        isEditing ? (
+          <Button
+            variant="contained"
+            onClick={() => setIsEditing(false)}
+            startIcon={<VisibilityIcon />}
+          >
+            View Preview
+          </Button>
+        ) : (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => setIsEditing(true)}
+            startIcon={<EditIcon />}
+          >
+            Edit Info
+          </Button>
+        )
+      );
+    }
+  }, [isOwner, isEditing]);
+
   const getClassInfo = () => {
     setIsLoading(true);
     cls.ref
@@ -253,7 +170,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
       {isEditing && (
         <div className={classes.editButtons}>
           <Button onClick={getClassInfo}>Revert Changes</Button>
-          <Button color="primary" variant="outlined" onClick={saveClassInfo}>
+          <Button color="secondary" variant="outlined" onClick={saveClassInfo}>
             Save Changes
           </Button>
         </div>
@@ -519,28 +436,116 @@ const ClassInfoInterface = ({ location, db, user }) => {
         faq={editFAQ[0] || undefined}
         index={editFAQ[1]}
       />
-      {isOwner &&
-        (isEditing ? (
-          <Fab variant="extended" className={classes.fab} onClick={() => setIsEditing(false)}>
-            <VisibilityIcon style={{ marginRight: '5px' }} />
-            View Preview
-          </Fab>
-        ) : (
-          <Fab
-            color="secondary"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => setIsEditing(true)}
-          >
-            <EditIcon style={{ marginRight: '5px' }} />
-            Edit Info
-          </Fab>
-        ))}
     </Styled.PageContent>
   );
 };
-
 ClassInfoInterface.propTypes = propTypes;
+
+const Fill = ({ className, prompt, isEditing, onClick }) => {
+  const classes = useStyles();
+  return (
+    isEditing && (
+      <div className={`${className} ${classes.fill}`}>
+        <Button onClick={onClick}>
+          <AddIcon />
+          {prompt}
+        </Button>
+      </div>
+    )
+  );
+};
+Fill.propTypes = {
+  className: PropTypes.string.isRequired,
+  prompt: PropTypes.string.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+const EditButton = ({ isEditing, title, onClick }) =>
+  isEditing && (
+    <Tooltip title={title} aria-label={title} placement="top" arrow>
+      <IconButton
+        edge="end"
+        size="small"
+        style={{
+          margin: '2px 0 0 -32px',
+          backgroundColor: 'rgba(190, 190, 190, 0.7)'
+        }}
+        onClick={onClick}
+      >
+        <EditIcon />
+      </IconButton>
+    </Tooltip>
+  );
+EditButton.propTypes = {
+  isEditing: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+const SignUpButton = ({ cls, onClick, className, inputCode, setInputCode }) => {
+  const [tempCode, setTempCode] = useState('');
+  const [error, setError] = useState('');
+
+  const classes = useStyles();
+  return cls.isPrivate && inputCode !== cls.privacyCode ? (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        if (tempCode === cls.privacyCode) {
+          setInputCode(tempCode);
+          setError('');
+        } else {
+          setError('Invalid Code!');
+        }
+      }}
+      className={classes.registrationCode}
+      style={error.length > 0 ? { marginBottom: 0 } : {}}
+    >
+      <TextField
+        label="Registration Code"
+        error={error.length > 0}
+        helperText={error}
+        onChange={e => setTempCode(e.target.value)}
+        className={classes.registrationCodeInput}
+      />
+      <Tooltip title="Use Code" placement="top">
+        <IconButton
+          style={
+            error.length > 0 ? { marginLeft: '10px' } : { marginLeft: '10px', marginTop: '12px' }
+          }
+          aria-label="Use Code"
+          size="small"
+          color="primary"
+          type="submit"
+        >
+          <SendIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+    </form>
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      disabled={cls.children.length >= cls.maxStudents}
+      className={className}
+      onClick={onClick}
+    >
+      Sign Up!
+    </Button>
+  );
+};
+SignUpButton.propTypes = {
+  cls: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  inputCode: PropTypes.string.isRequired,
+  setInputCode: PropTypes.func.isRequired
+};
+SignUpButton.defaultProps = {
+  onClick: () => {},
+  className: ''
+};
 
 const useStyles = makeStyles(theme => ({
   mainHeader: {
@@ -743,19 +748,6 @@ const useStyles = makeStyles(theme => ({
     },
     '& button': {
       marginLeft: '8px'
-    }
-  },
-  fab: {
-    position: 'fixed',
-    top: '20px',
-    right: '140px',
-    [theme.breakpoints.down('md')]: {
-      right: '60px'
-    },
-    [theme.breakpoints.down('sm')]: {
-      right: '10px',
-      top: 'auto',
-      bottom: '10px'
     }
   },
   registrationCode: {
