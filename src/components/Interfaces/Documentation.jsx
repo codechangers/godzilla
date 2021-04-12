@@ -1,9 +1,9 @@
 import React from 'react';
-import PagesInterface from './interfaceHelpers/Pages';
+import MarkdownPages from '../Markdown/Pages';
 import docs from '../../resources/docs';
 
 const DocumentationInterface = props => (
-  <PagesInterface pages={docs} homePage="welcome" whiteList="docs" {...props} />
+  <MarkdownPages pages={docs} homePage="welcome" whiteList="docs" {...props} />
 );
 
 export default DocumentationInterface;
