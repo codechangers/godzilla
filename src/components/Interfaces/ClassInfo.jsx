@@ -15,6 +15,7 @@ import {
   Tooltip,
   TextField
 } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
@@ -29,6 +30,7 @@ import ClassSignUp from '../Classes/SignUp';
 import * as Styled from './styles';
 
 const propTypes = {
+  width: PropTypes.string.isRequired,
   useCustomAppBar: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   db: PropTypes.object.isRequired,
@@ -67,7 +69,7 @@ const defaultClassInfo = {
   faqs: []
 };
 
-const ClassInfoInterface = ({ location, db, user, useCustomAppBar }) => {
+const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,29 +113,43 @@ const ClassInfoInterface = ({ location, db, user, useCustomAppBar }) => {
 
   useEffect(() => {
     if (isOwner) {
-      useCustomAppBar(
-        `CodeContest${isEditing ? ' Admin' : ''}`,
-        isEditing ? (
-          <Button
-            variant="contained"
-            onClick={() => setIsEditing(false)}
-            startIcon={<VisibilityIcon />}
-          >
-            View Preview
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => setIsEditing(true)}
-            startIcon={<EditIcon />}
-          >
-            Edit Info
-          </Button>
-        )
+      let button = isEditing ? (
+        <Button
+          variant="contained"
+          onClick={() => setIsEditing(false)}
+          startIcon={<VisibilityIcon />}
+        >
+          View Preview
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => setIsEditing(true)}
+          startIcon={<EditIcon />}
+        >
+          Edit Info
+        </Button>
       );
+      if (isWidthDown('xs', width)) {
+        // Use Icon buttons with Tooltips on mobile.
+        button = isEditing ? (
+          <Tooltip title="View Preview" placement="bottom">
+            <IconButton onClick={() => setIsEditing(false)}>
+              <VisibilityIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Edit Info" placement="bottom">
+            <IconButton color="primary" onClick={() => setIsEditing(true)}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+        );
+      }
+      useCustomAppBar(`CodeContest${isEditing ? ' Admin' : ''}`, button);
     }
-  }, [isOwner, isEditing]);
+  }, [isOwner, isEditing, width]);
 
   const getClassInfo = () => {
     setIsLoading(true);
@@ -764,4 +780,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withRouter(ClassInfoInterface);
+export default withWidth()(withRouter(ClassInfoInterface));
