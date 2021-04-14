@@ -209,11 +209,27 @@ const useStyles = makeStyles(theme => ({
     '& h1,h2,h3,h4,h5,h6': {
       margin: '12px 0'
     },
-    '& h1': { fontSize: '4rem', color: 'var(--blue-color)' },
-    '& h2': { fontSize: '3rem' },
-    '& h3': { fontSize: '2.5rem' },
-    '& h4': { fontSize: '2rem' },
-    '& h5': { fontSize: '1.8rem' },
+    '& h1': {
+      fontSize: '4rem',
+      color: 'var(--blue-color)',
+      [theme.breakpoints.down('xs')]: { fontSize: '2.5rem', lineHeight: '50px' }
+    },
+    '& h2': {
+      fontSize: '3rem',
+      [theme.breakpoints.down('xs')]: { fontSize: '2.2rem', lineHeight: '40px' }
+    },
+    '& h3': {
+      fontSize: '2.5rem',
+      [theme.breakpoints.down('xs')]: { fontSize: '2rem', lineHeight: '36px' }
+    },
+    '& h4': {
+      fontSize: '2rem',
+      [theme.breakpoints.down('xs')]: { fontSize: '1.8rem', lineHeight: '34px' }
+    },
+    '& h5': {
+      fontSize: '1.8rem',
+      [theme.breakpoints.down('xs')]: { fontSize: '1.6rem', lineHeight: '30px' }
+    },
     '& h6': { fontSize: '1.5rem' },
     '& img': { margin: 10, maxHeight: 500, maxWidth: '100%', display: 'block', alignSelf: 'center' }
   },
