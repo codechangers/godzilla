@@ -105,7 +105,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
   return (
     <>
       <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
-        <Toolbar className={classes.toolBar}>
+        <div className={classes.toolBarWrapper}>
           {small ? (
             <IconButton
               style={{
@@ -121,26 +121,28 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
           ) : (
             <Logo />
           )}
-          <Typography variant="h5" noWrap className={classes.title}>
-            {title}
-          </Typography>
-          {small && wrap ? (
-            <Collapse
-              in={showMenu}
-              timeout="auto"
-              unmountOnExit
-              classes={{
-                wrapperInner: classes.secondaryInner,
-                container: classes.secondaryContainer
-              }}
-            >
-              {content}
-            </Collapse>
-          ) : (
-            content
-          )}
-          {action}
-        </Toolbar>
+          <Toolbar className={classes.toolBar}>
+            <Typography variant="h5" noWrap className={classes.title}>
+              {title}
+            </Typography>
+            {small && wrap ? (
+              <Collapse
+                in={showMenu}
+                timeout="auto"
+                unmountOnExit
+                classes={{
+                  wrapperInner: classes.secondaryInner,
+                  container: classes.secondaryContainer
+                }}
+              >
+                {content}
+              </Collapse>
+            ) : (
+              content
+            )}
+            {action}
+          </Toolbar>
+        </div>
         <div className={classes.appBarBorder} />
       </AppBar>
       <div
@@ -253,6 +255,13 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '28px'
     }
   },
+  rightOfAppBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    boxSizing: 'border-box'
+  },
   appBarBorder: {
     alignSelf: 'flex-end',
     width: 'calc(100% - 96px + 1px)',
@@ -277,9 +286,22 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  toolBar: {
+  toolBarWrapper: {
+    width: '100%',
     height: 64,
-    paddingLeft: 0
+    display: 'flex',
+    alignItems: 'center'
+  },
+  toolBar: {
+    height: '100%',
+    paddingLeft: 0,
+    overflow: 'hidden',
+    width: '100%',
+    maxWidth: 'calc(100% - 96px)',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
+    }
   },
   title: {
     flexGrow: 1
