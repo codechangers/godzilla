@@ -113,7 +113,7 @@ const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
 
   useEffect(() => {
     if (isOwner) {
-      let button = isEditing ? (
+      let action = isEditing ? (
         <Button
           variant="contained"
           onClick={() => setIsEditing(false)}
@@ -133,7 +133,7 @@ const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
       );
       if (isWidthDown('xs', width)) {
         // Use Icon buttons with Tooltips on mobile.
-        button = isEditing ? (
+        action = isEditing ? (
           <Tooltip title="View Preview" placement="bottom">
             <IconButton onClick={() => setIsEditing(false)}>
               <VisibilityIcon />
@@ -147,7 +147,7 @@ const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
           </Tooltip>
         );
       }
-      useCustomAppBar(isEditing ? 'Editing Info' : 'CodeContest', button);
+      useCustomAppBar({ title: isEditing ? 'Editing Info' : 'Code Contest', action });
     }
   }, [isOwner, isEditing, width]);
 

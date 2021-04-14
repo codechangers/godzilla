@@ -63,39 +63,44 @@ const MarkdownPages = ({
   // Customize AppBar.
   useEffect(
     () =>
-      useCustomAppBar(
-        page,
-        <>
-          <Link to="/teachers" className={classes.navLink}>
-            Teachers
-          </Link>
-          <Link to="/help" className={classes.navLink}>
-            Help!
-          </Link>
-          {child !== null && (
-            <Tooltip title="Change Profile" placement="bottom">
-              <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
-                {child.fName}
-              </Button>
-            </Tooltip>
-          )}
-        </>,
-        <Tooltip title="Pages Menu" placement="bottom">
-          <IconButton
-            color="inherit"
-            aria-label="showMenu drawer"
-            edge="end"
-            onClick={() => setShowMenu(!showMenu)}
-            className={clsx(showMenu && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Tooltip>,
-        clsx(classes.appBar, {
+      useCustomAppBar({
+        title: page,
+        wrap: true,
+        content: (
+          <>
+            <Link to="/teachers" className={classes.navLink}>
+              Teachers
+            </Link>
+            <Link to="/help" className={classes.navLink}>
+              Help!
+            </Link>
+            {child !== null && (
+              <Tooltip title="Change Profile" placement="bottom">
+                <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
+                  {child.fName}
+                </Button>
+              </Tooltip>
+            )}
+          </>
+        ),
+        action: (
+          <Tooltip title="Pages Menu" placement="bottom">
+            <IconButton
+              color="inherit"
+              aria-label="showMenu drawer"
+              edge="end"
+              onClick={() => setShowMenu(!showMenu)}
+              className={clsx(showMenu && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        ),
+        clsname: clsx(classes.appBar, {
           [classes.appBarShift]: showMenu,
           [classes.hidePrimary]: showMenu
         })
-      ),
+      }),
     [page, showMenu, classes, child]
   );
 

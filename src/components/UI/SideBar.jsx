@@ -30,20 +30,27 @@ const propTypes = {
   baseRoute: PropTypes.string,
   firebase: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
-  title: PropTypes.node,
-  children: PropTypes.node,
-  appBarClassName: PropTypes.string,
-  appBarAction: PropTypes.node
+  appBarConfig: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.node,
+    action: PropTypes.node,
+    clsname: PropTypes.string,
+    wrap: PropTypes.bool
+  })
 };
 
 const defaultProps = {
   names: [],
   baseRoute: '/',
-  title: 'CodeContest',
-  children: null,
-  appBarClassName: '',
-  appBarAction: null
+  appBarConfig: {
+    title: 'Code Contest',
+    content: null,
+    action: null,
+    clsname: '',
+    wrap: false
+  }
 };
+const defaultABC = defaultProps.appBarConfig;
 
 const nameToIcon = {
   Dashboard,
@@ -63,17 +70,8 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({
-  names,
-  baseRoute,
-  location,
-  firebase,
-  width,
-  title,
-  children,
-  appBarClassName,
-  appBarAction
-}) => {
+const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) => {
+  const { title, content, action, clsname, wrap } = { ...defaultABC, ...appBarConfig };
   const [showMenu, setShowMenu] = useState(false);
 
   const nameToRoute = {
@@ -106,7 +104,7 @@ const SideBar = ({
 
   return (
     <>
-      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, appBarClassName)}>
+      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
         <Toolbar className={classes.toolBar}>
           {small ? (
             <IconButton
@@ -126,7 +124,7 @@ const SideBar = ({
           <Typography variant="h5" noWrap className={classes.title}>
             {title}
           </Typography>
-          {small ? (
+          {small && wrap ? (
             <Collapse
               in={showMenu}
               timeout="auto"
@@ -136,12 +134,12 @@ const SideBar = ({
                 container: classes.secondaryContainer
               }}
             >
-              {children}
+              {content}
             </Collapse>
           ) : (
-            children
+            content
           )}
-          {appBarAction}
+          {action}
         </Toolbar>
         <div className={classes.appBarBorder} />
       </AppBar>
