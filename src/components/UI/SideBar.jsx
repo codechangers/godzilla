@@ -17,7 +17,7 @@ import {
   Description,
   MenuBook
 } from '@material-ui/icons';
-import { AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
@@ -103,7 +103,21 @@ const SideBar = ({
           <Typography variant="h5" noWrap className={classes.title}>
             {title}
           </Typography>
-          {children}
+          {small ? (
+            <Collapse
+              in={showMenu}
+              timeout="auto"
+              unmountOnExit
+              classes={{
+                wrapperInner: classes.secondaryInner,
+                container: classes.secondaryContainer
+              }}
+            >
+              {children}
+            </Collapse>
+          ) : (
+            children
+          )}
         </Toolbar>
         <div className={classes.appBarBorder} />
       </AppBar>
@@ -242,6 +256,21 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     }
+  },
+  secondaryContainer: {
+    width: 'calc(100% - 95px)',
+    position: 'fixed',
+    top: 64,
+    left: 95
+  },
+  secondaryInner: {
+    backgroundColor: 'var(--background-color)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRight: 'none',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   toolBar: {
     height: 64,
