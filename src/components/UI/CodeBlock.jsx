@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Button, Typography } from '@material-ui/core';
+import { makeStyles, Button, Typography, Tooltip, IconButton } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import FolderIcon from '@material-ui/icons/FolderOutlined';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -9,6 +10,7 @@ import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 
 const propTypes = {
+  width: PropTypes.string.isRequired,
   code: PropTypes.node.isRequired,
   lang: PropTypes.string
 };
@@ -35,7 +37,7 @@ SyntaxHighlighter.registerLanguage('javascript', js);
  * It should parse out all marking comments first and then chain together a list of animations to run.
  * It currently recursively searches for comments one by one, which leads to cryptic behavior.
  */
-const CodeBlock = ({ code, lang }) => {
+const CodeBlock = ({ code, lang, width }) => {
   const classes = useStyles();
   const [cleanCode, setCleanCode] = useState('');
   const [copyCode, setCopyCode] = useState('');
@@ -253,9 +255,19 @@ const CodeBlock = ({ code, lang }) => {
             {title}
           </span>
         </Typography>
-        <CopyToClipboard text={copyCode}>
-          <Button startIcon={<CopyIcon />}>Copy Code</Button>
-        </CopyToClipboard>
+        {isWidthDown('xs', width) ? (
+          <Tooltip title="Copy Code" placement="top">
+            <CopyToClipboard text={copyCode}>
+              <IconButton color="secondary">
+                <CopyIcon />
+              </IconButton>
+            </CopyToClipboard>
+          </Tooltip>
+        ) : (
+          <CopyToClipboard text={copyCode}>
+            <Button startIcon={<CopyIcon />}>Copy Code</Button>
+          </CopyToClipboard>
+        )}
       </div>
       <div className={classes.codeBlockText}>{highlight(cleanCode)}</div>
     </div>
@@ -289,4 +301,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default CodeBlock;
+export default withWidth()(CodeBlock);
