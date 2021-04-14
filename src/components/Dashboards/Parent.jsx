@@ -45,7 +45,7 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
   // Custom Action Bar Init
   const [cab, setCAB] = useState({});
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
-  useEffect(() => useCustomAppBar({}), [location]);
+  useEffect(() => setCAB({}), [location]);
 
   const getID = () => {
     const path = location.pathname;

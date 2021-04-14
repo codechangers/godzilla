@@ -41,7 +41,7 @@ const TeacherDashboard = props => {
   // Custom Action Bar Init
   const [cab, setCAB] = useState({});
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
-  useEffect(() => useCustomAppBar({}), [location]);
+  useEffect(() => setCAB({}), [location]);
 
   useEffect(() => {
     if (accounts.teachers)
