@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button, makeStyles } from '@material-ui/core';
+import { Typography, Button, makeStyles, CircularProgress } from '@material-ui/core';
 import { useParentChildren } from '../../hooks/children';
 
 const propTypes = {
@@ -9,25 +9,29 @@ const propTypes = {
 };
 
 const WhoAmInterface = ({ setWhoAmI, accounts }) => {
-  const children = useParentChildren(accounts);
+  const [children, loading] = useParentChildren(accounts);
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
       <Typography variant="h4" style={{ marginBottom: 20 }}>
         Select your Profile
       </Typography>
-      <div className={classes.profiles}>
-        {children.map(child => (
-          <Button
-            variant="outlined"
-            key={child.id}
-            onClick={() => setWhoAmI(child)}
-            className={classes.button}
-          >
-            {child.fName}
-          </Button>
-        ))}
-      </div>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div className={classes.profiles}>
+          {children.map(child => (
+            <Button
+              variant="outlined"
+              key={child.id}
+              onClick={() => setWhoAmI(child)}
+              className={classes.button}
+            >
+              {child.fName}
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

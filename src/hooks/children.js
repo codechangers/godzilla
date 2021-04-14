@@ -6,15 +6,18 @@ import { toData } from '../helpers';
  */
 export const useParentChildren = accounts => {
   const [children, setChildren] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(
     () =>
       accounts.parents.ref.onSnapshot(async parentDoc => {
+        setLoading(true);
         const childRefs = parentDoc.data().children || [];
         setChildren(await getChildren(childRefs));
+        setLoading(false);
       }),
     [accounts]
   );
-  return children;
+  return [children, loading];
 };
 
 /**
