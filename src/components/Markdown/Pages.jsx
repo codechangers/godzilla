@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
+import {
+  Tooltip,
+  IconButton,
+  makeStyles,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AccountCircle, Help, School, Menu } from '@material-ui/icons';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
@@ -76,12 +85,41 @@ const MarkdownPages = ({
             </Link>
             {child !== null && (
               <Tooltip title="Change Profile" placement="bottom">
-                <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setShowProfile(true)}
+                  className={classes.profButton}
+                  startIcon={<AccountCircle />}
+                >
                   {child.fName}
                 </Button>
               </Tooltip>
             )}
           </>
+        ),
+        wrappedContent: (
+          <List className={classes.linksList}>
+            <ListItem divider button onClick={() => history.push('/teachers')}>
+              <ListItemIcon>
+                <School />
+              </ListItemIcon>
+              <ListItemText primary="Teachers" />
+            </ListItem>
+            <ListItem divider={child !== null} button onClick={() => history.push('/help')}>
+              <ListItemIcon>
+                <Help />
+              </ListItemIcon>
+              <ListItemText primary="Help!" />
+            </ListItem>
+            {child !== null && (
+              <ListItem button onClick={() => setShowProfile(true)}>
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText primary={child.fName} />
+              </ListItem>
+            )}
+          </List>
         ),
         action: (
           <Tooltip title="Pages Menu" placement="bottom">
@@ -92,7 +130,7 @@ const MarkdownPages = ({
               onClick={() => setShowMenu(!showMenu)}
               className={clsx(showMenu && classes.hide)}
             >
-              <MenuIcon />
+              <Menu />
             </IconButton>
           </Tooltip>
         ),
@@ -186,6 +224,10 @@ const useStyles = makeStyles(theme => ({
       textDecoration: 'underline'
     }
   },
+  linksList: {
+    width: '100%',
+    padding: 0
+  },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['margin', 'width'], {
@@ -261,6 +303,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: drawerWidth
   },
   profButton: {
+    flexShrink: 0,
     marginRight: 20,
     padding: '6px 16px'
   },

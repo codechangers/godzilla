@@ -35,7 +35,8 @@ const propTypes = {
     content: PropTypes.node,
     action: PropTypes.node,
     clsname: PropTypes.string,
-    wrap: PropTypes.bool
+    wrap: PropTypes.bool,
+    wrappedContent: PropTypes.node
   })
 };
 
@@ -47,7 +48,8 @@ const defaultProps = {
     content: null,
     action: null,
     clsname: '',
-    wrap: false
+    wrap: false,
+    wrappedContent: null
   }
 };
 const defaultABC = defaultProps.appBarConfig;
@@ -71,7 +73,10 @@ const nameToIcon = {
 };
 
 const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) => {
-  const { title, content, action, clsname, wrap } = { ...defaultABC, ...appBarConfig };
+  const { title, content, action, clsname, wrap, wrappedContent } = {
+    ...defaultABC,
+    ...appBarConfig
+  };
   const [showMenu, setShowMenu] = useState(false);
 
   const nameToRoute = {
@@ -135,7 +140,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
                   container: classes.secondaryContainer
                 }}
               >
-                {content}
+                {wrappedContent || content}
               </Collapse>
             ) : (
               content
