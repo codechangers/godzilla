@@ -238,7 +238,8 @@ const useStyles = makeStyles(theme => ({
       display: 'block',
       alignSelf: 'center'
     },
-    '& iframe': { maxWidth: '100%' }
+    '& > span': { width: '100%', display: 'flex', justifyContent: 'center' },
+    '& iframe': { maxWidth: '100%', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 3 }
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
