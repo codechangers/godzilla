@@ -79,20 +79,21 @@ const MarkdownPages = ({
               </Button>
             </Tooltip>
           )}
-          <Tooltip title="Pages Menu" placement="bottom">
-            <IconButton
-              color="inherit"
-              aria-label="showMenu drawer"
-              edge="end"
-              onClick={() => setShowMenu(!showMenu)}
-              className={clsx(showMenu && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Tooltip>
         </>,
+        <Tooltip title="Pages Menu" placement="bottom">
+          <IconButton
+            color="inherit"
+            aria-label="showMenu drawer"
+            edge="end"
+            onClick={() => setShowMenu(!showMenu)}
+            className={clsx(showMenu && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>,
         clsx(classes.appBar, {
-          [classes.appBarShift]: showMenu
+          [classes.appBarShift]: showMenu,
+          [classes.hidePrimary]: showMenu
         })
       ),
     [page, showMenu, classes, child]
@@ -164,7 +165,13 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    '& #menu-primary': {
+      transition: theme.transitions.create(['margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    }
   },
   navLink: {
     color: 'inherit',
@@ -251,6 +258,13 @@ const useStyles = makeStyles(theme => ({
   profButton: {
     marginRight: 20,
     padding: '6px 16px'
+  },
+  hidePrimary: {
+    '& #menu-primary': {
+      [`@media only screen and (max-width: ${drawerWidth + 96 + 48}px)`]: {
+        marginLeft: '-96px !important'
+      }
+    }
   }
 }));
 

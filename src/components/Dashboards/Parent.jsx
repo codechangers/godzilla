@@ -43,15 +43,17 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
   const [whoAmI, setWhoAmI] = useState(null);
   const [title, setTitle] = useState('CodeContest');
   const [content, setContent] = useState(null);
+  const [action, setAction] = useState(null);
   const [clsname, setClsname] = useState('');
 
-  const useCustomAppBar = (t, c, n) => {
+  const useCustomAppBar = (t, c, a, n) => {
     if (t !== title) setTitle(t);
     if (c !== content) setContent(c);
+    if (a !== action) setAction(a);
     if (n !== clsname) setClsname(n);
   };
 
-  useEffect(() => useCustomAppBar('CodeContest', null, ''), [location]);
+  useEffect(() => useCustomAppBar('CodeContest', null, null, ''), [location]);
 
   const getID = () => {
     const path = location.pathname;
@@ -86,6 +88,7 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
         firebase={firebase}
         title={title}
         appBarClassName={clsname}
+        appBarAction={action}
       >
         {content}
       </SideBar>

@@ -24,6 +24,27 @@ import clsx from 'clsx';
 import Logout from './Logout';
 import { Logo } from '../Images';
 
+const propTypes = {
+  location: PropTypes.object.isRequired,
+  names: PropTypes.arrayOf(PropTypes.string),
+  baseRoute: PropTypes.string,
+  firebase: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired,
+  title: PropTypes.node,
+  children: PropTypes.node,
+  appBarClassName: PropTypes.string,
+  appBarAction: PropTypes.node
+};
+
+const defaultProps = {
+  names: [],
+  baseRoute: '/',
+  title: 'CodeContest',
+  children: null,
+  appBarClassName: '',
+  appBarAction: null
+};
+
 const nameToIcon = {
   Dashboard,
   Curriculum: ImportContacts,
@@ -50,7 +71,8 @@ const SideBar = ({
   width,
   title,
   children,
-  appBarClassName
+  appBarClassName,
+  appBarAction
 }) => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -94,6 +116,7 @@ const SideBar = ({
               }}
               onClick={() => setShowMenu(!showMenu)}
               aria-label="menu"
+              id="menu-primary"
             >
               <Menu />
             </IconButton>
@@ -118,6 +141,7 @@ const SideBar = ({
           ) : (
             children
           )}
+          {appBarAction}
         </Toolbar>
         <div className={classes.appBarBorder} />
       </AppBar>
@@ -157,25 +181,8 @@ const SideBar = ({
     </>
   );
 };
-
-SideBar.propTypes = {
-  location: PropTypes.object.isRequired,
-  names: PropTypes.arrayOf(PropTypes.string),
-  baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired,
-  width: PropTypes.string.isRequired,
-  title: PropTypes.node,
-  children: PropTypes.node,
-  appBarClassName: PropTypes.string
-};
-
-SideBar.defaultProps = {
-  names: [],
-  baseRoute: '/',
-  title: 'CodeContest',
-  children: null,
-  appBarClassName: ''
-};
+SideBar.propTypes = propTypes;
+SideBar.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   sidebarWrapper: {
