@@ -178,7 +178,9 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
                 </Link>
               );
             })}
-            <Logout firebase={firebase} className={classes.logoutButton} />
+            <div className={classes.sideBarBottom}>
+              <Logout firebase={firebase} className={classes.logoutButton} />
+            </div>
           </div>
           <div className={classes.sidebarBorder} />
         </div>
@@ -215,6 +217,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
+    flexShrink: 0,
+    overflowY: 'scroll',
     '& > *': {
       marginBottom: '20px'
     },
@@ -311,16 +315,15 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1
   },
+  sideBarBottom: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
+  },
   logoutButton: {
     color: 'white',
-    width: '80px',
-    position: 'absolute',
-    bottom: '6px',
-    right: '8px',
-    left: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: '80px'
   },
   openSidebar: {
     [theme.breakpoints.down('xs')]: {
