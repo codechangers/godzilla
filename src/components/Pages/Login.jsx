@@ -304,7 +304,7 @@ const styles = theme => ({
     width: '45%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
-      padding: '30px 45px'
+      padding: '30px 18px'
     },
     minWidth: '300px',
     height: '100%',

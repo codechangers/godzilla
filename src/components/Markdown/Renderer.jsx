@@ -140,7 +140,9 @@ const useStyles = makeStyles({
   loading: { width: '100%', display: 'flex', justifyContent: 'center' },
   p: {
     fontSize: '1.2rem',
-    margin: '16px 0'
+    margin: '16px 0',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   }
 });
 

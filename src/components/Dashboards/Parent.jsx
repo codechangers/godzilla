@@ -41,17 +41,11 @@ const whoAmIRoutes = ['/parent/docs', '/parent/tutorials'];
 
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
   const [whoAmI, setWhoAmI] = useState(null);
-  const [title, setTitle] = useState('CodeContest');
-  const [content, setContent] = useState(null);
-  const [clsname, setClsname] = useState('');
 
-  const useCustomAppBar = (t, c, n) => {
-    if (t !== title) setTitle(t);
-    if (c !== content) setContent(c);
-    if (n !== clsname) setClsname(n);
-  };
-
-  useEffect(() => useCustomAppBar('CodeContest', null, ''), [location]);
+  // Custom Action Bar Init
+  const [cab, setCAB] = useState({});
+  const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
+  useEffect(() => setCAB({}), [location]);
 
   const getID = () => {
     const path = location.pathname;
@@ -84,11 +78,8 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
         )}
         baseRoute="/parent"
         firebase={firebase}
-        title={title}
-        appBarClassName={clsname}
-      >
-        {content}
-      </SideBar>
+        appBarConfig={cab}
+      />
       <SP apiKey={apiKey}>
         <Elements>
           {getInterface() || <ClassViewInterface firebase={firebase} db={db} accounts={accounts} />}

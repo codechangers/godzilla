@@ -16,14 +16,14 @@ export default createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      light: '#00AFEF',
-      main: '#a240b5',
-      dark: '#000000'
+      light: '#BC5BBC',
+      main: '#A852A8',
+      dark: '#944894'
     },
     secondary: {
-      light: '#00AFEF',
-      main: '#a240b5',
-      dark: '#0070B6'
+      light: '#FF71BF',
+      main: '#FF6AB2',
+      dark: '#FF62A5'
     },
     error: red,
     contrastThreshold: 3,

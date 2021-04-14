@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, IconButton, makeStyles, Button } from '@material-ui/core';
+import {
+  Tooltip,
+  IconButton,
+  makeStyles,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AccountCircle, Help, School, Menu } from '@material-ui/icons';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
@@ -63,22 +72,56 @@ const MarkdownPages = ({
   // Customize AppBar.
   useEffect(
     () =>
-      useCustomAppBar(
-        page,
-        <>
-          <Link to="/teachers" className={classes.navLink}>
-            Teachers
-          </Link>
-          <Link to="/help" className={classes.navLink}>
-            Help!
-          </Link>
-          {child !== null && (
-            <Tooltip title="Change Profile" placement="bottom">
-              <Button onClick={() => setShowProfile(true)} className={classes.profButton}>
-                {child.fName}
-              </Button>
-            </Tooltip>
-          )}
+      useCustomAppBar({
+        title: page,
+        wrap: true,
+        content: (
+          <>
+            <Link to="/teachers" className={classes.navLink}>
+              Teachers
+            </Link>
+            <Link to="/help" className={classes.navLink}>
+              Help!
+            </Link>
+            {child !== null && (
+              <Tooltip title="Change Profile" placement="bottom">
+                <Button
+                  variant="outlined"
+                  onClick={() => setShowProfile(true)}
+                  className={classes.profButton}
+                  startIcon={<AccountCircle />}
+                >
+                  {child.fName}
+                </Button>
+              </Tooltip>
+            )}
+          </>
+        ),
+        wrappedContent: (
+          <List className={classes.linksList}>
+            <ListItem divider button onClick={() => history.push('/teachers')}>
+              <ListItemIcon>
+                <School />
+              </ListItemIcon>
+              <ListItemText primary="Teachers" />
+            </ListItem>
+            <ListItem divider={child !== null} button onClick={() => history.push('/help')}>
+              <ListItemIcon>
+                <Help />
+              </ListItemIcon>
+              <ListItemText primary="Help!" />
+            </ListItem>
+            {child !== null && (
+              <ListItem button onClick={() => setShowProfile(true)}>
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText primary={child.fName} />
+              </ListItem>
+            )}
+          </List>
+        ),
+        action: (
           <Tooltip title="Pages Menu" placement="bottom">
             <IconButton
               color="inherit"
@@ -87,14 +130,15 @@ const MarkdownPages = ({
               onClick={() => setShowMenu(!showMenu)}
               className={clsx(showMenu && classes.hide)}
             >
-              <MenuIcon />
+              <Menu />
             </IconButton>
           </Tooltip>
-        </>,
-        clsx(classes.appBar, {
-          [classes.appBarShift]: showMenu
+        ),
+        clsname: clsx(classes.appBar, {
+          [classes.appBarShift]: showMenu,
+          [classes.hidePrimary]: showMenu
         })
-      ),
+      }),
     [page, showMenu, classes, child]
   );
 
@@ -164,7 +208,13 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    '& #menu-primary': {
+      transition: theme.transitions.create(['margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    }
   },
   navLink: {
     color: 'inherit',
@@ -173,6 +223,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       textDecoration: 'underline'
     }
+  },
+  linksList: {
+    width: '100%',
+    padding: 0
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -209,13 +263,42 @@ const useStyles = makeStyles(theme => ({
     '& h1,h2,h3,h4,h5,h6': {
       margin: '12px 0'
     },
-    '& h1': { fontSize: '4rem', color: 'var(--blue-color)' },
-    '& h2': { fontSize: '3rem' },
-    '& h3': { fontSize: '2.5rem' },
-    '& h4': { fontSize: '2rem' },
-    '& h5': { fontSize: '1.8rem' },
-    '& h6': { fontSize: '1.5rem' },
-    '& img': { margin: 10, maxHeight: 500, maxWidth: '100%', display: 'block', alignSelf: 'center' }
+    '& h1': {
+      fontSize: '4rem',
+      lineHeight: '70px',
+      color: 'var(--blue-color)',
+      [theme.breakpoints.down('xs')]: { fontSize: '2.5rem', lineHeight: '50px' }
+    },
+    '& h2': {
+      fontSize: '3rem',
+      lineHeight: '60px',
+      [theme.breakpoints.down('xs')]: { fontSize: '2.2rem', lineHeight: '40px' }
+    },
+    '& h3': {
+      fontSize: '2.5rem',
+      lineHeight: '50px',
+      [theme.breakpoints.down('xs')]: { fontSize: '2rem', lineHeight: '36px' }
+    },
+    '& h4': {
+      fontSize: '2rem',
+      lineHeight: '36px',
+      [theme.breakpoints.down('xs')]: { fontSize: '1.8rem', lineHeight: '34px' }
+    },
+    '& h5': {
+      fontSize: '1.8rem',
+      lineHeight: '34px',
+      [theme.breakpoints.down('xs')]: { fontSize: '1.6rem', lineHeight: '30px' }
+    },
+    '& h6': { fontSize: '1.5rem', lineHeight: '30px' },
+    '& img': {
+      margin: 10,
+      maxHeight: 500,
+      maxWidth: '100%',
+      display: 'block',
+      alignSelf: 'center'
+    },
+    '& > span': { width: '100%', display: 'flex', justifyContent: 'center' },
+    '& iframe': { maxWidth: '100%', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 3 }
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -225,8 +308,16 @@ const useStyles = makeStyles(theme => ({
     marginRight: drawerWidth
   },
   profButton: {
+    flexShrink: 0,
     marginRight: 20,
     padding: '6px 16px'
+  },
+  hidePrimary: {
+    '& #menu-primary': {
+      [`@media only screen and (max-width: ${drawerWidth + 96 + 48}px)`]: {
+        marginLeft: '-96px !important'
+      }
+    }
   }
 }));
 

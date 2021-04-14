@@ -17,12 +17,42 @@ import {
   Description,
   MenuBook
 } from '@material-ui/icons';
-import { AppBar, Toolbar, Typography, makeStyles, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import Logout from './Logout';
 import { Logo } from '../Images';
+
+const propTypes = {
+  location: PropTypes.object.isRequired,
+  names: PropTypes.arrayOf(PropTypes.string),
+  baseRoute: PropTypes.string,
+  firebase: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired,
+  appBarConfig: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.node,
+    action: PropTypes.node,
+    clsname: PropTypes.string,
+    wrap: PropTypes.bool,
+    wrappedContent: PropTypes.node
+  })
+};
+
+const defaultProps = {
+  names: [],
+  baseRoute: '/',
+  appBarConfig: {
+    title: 'Code Contest',
+    content: null,
+    action: null,
+    clsname: '',
+    wrap: false,
+    wrappedContent: null
+  }
+};
+const defaultABC = defaultProps.appBarConfig;
 
 const nameToIcon = {
   Dashboard,
@@ -42,16 +72,11 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({
-  names,
-  baseRoute,
-  location,
-  firebase,
-  width,
-  title,
-  children,
-  appBarClassName
-}) => {
+const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) => {
+  const { title, content, action, clsname, wrap, wrappedContent } = {
+    ...defaultABC,
+    ...appBarConfig
+  };
   const [showMenu, setShowMenu] = useState(false);
 
   const nameToRoute = {
@@ -84,8 +109,8 @@ const SideBar = ({
 
   return (
     <>
-      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, appBarClassName)}>
-        <Toolbar className={classes.toolBar}>
+      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
+        <div className={classes.toolBarWrapper}>
           {small ? (
             <IconButton
               style={{
@@ -94,17 +119,35 @@ const SideBar = ({
               }}
               onClick={() => setShowMenu(!showMenu)}
               aria-label="menu"
+              id="menu-primary"
             >
               <Menu />
             </IconButton>
           ) : (
             <Logo />
           )}
-          <Typography variant="h5" noWrap className={classes.title}>
-            {title}
-          </Typography>
-          {children}
-        </Toolbar>
+          <Toolbar className={classes.toolBar}>
+            <Typography variant="h5" noWrap className={classes.title}>
+              {title}
+            </Typography>
+            {small && wrap ? (
+              <Collapse
+                in={showMenu}
+                timeout="auto"
+                unmountOnExit
+                classes={{
+                  wrapperInner: classes.secondaryInner,
+                  container: classes.secondaryContainer
+                }}
+              >
+                {wrappedContent || content}
+              </Collapse>
+            ) : (
+              content
+            )}
+            {action}
+          </Toolbar>
+        </div>
         <div className={classes.appBarBorder} />
       </AppBar>
       <div
@@ -135,7 +178,9 @@ const SideBar = ({
                 </Link>
               );
             })}
-            <Logout firebase={firebase} className={classes.logoutButton} />
+            <div className={classes.sideBarBottom}>
+              <Logout firebase={firebase} className={classes.logoutButton} />
+            </div>
           </div>
           <div className={classes.sidebarBorder} />
         </div>
@@ -143,25 +188,8 @@ const SideBar = ({
     </>
   );
 };
-
-SideBar.propTypes = {
-  location: PropTypes.object.isRequired,
-  names: PropTypes.arrayOf(PropTypes.string),
-  baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired,
-  width: PropTypes.string.isRequired,
-  title: PropTypes.node,
-  children: PropTypes.node,
-  appBarClassName: PropTypes.string
-};
-
-SideBar.defaultProps = {
-  names: [],
-  baseRoute: '/',
-  title: 'CodeContest',
-  children: null,
-  appBarClassName: ''
-};
+SideBar.propTypes = propTypes;
+SideBar.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   sidebarWrapper: {
@@ -189,6 +217,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
+    flexShrink: 0,
+    overflowY: 'scroll',
     '& > *': {
       marginBottom: '20px'
     },
@@ -226,12 +256,20 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     backgroundColor: 'var(--background-color)',
+    color: theme.palette.text.primary,
     boxShadow: 'none',
     '& img': {
       width: '40px',
       marginRight: '28px',
       marginLeft: '28px'
     }
+  },
+  rightOfAppBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    boxSizing: 'border-box'
   },
   appBarBorder: {
     alignSelf: 'flex-end',
@@ -242,23 +280,50 @@ const useStyles = makeStyles(theme => ({
       width: '100%'
     }
   },
-  toolBar: {
+  secondaryContainer: {
+    width: 'calc(100% - 95px)',
+    position: 'fixed',
+    top: 64,
+    left: 95
+  },
+  secondaryInner: {
+    backgroundColor: 'var(--background-color)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRight: 'none',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  toolBarWrapper: {
+    width: '100%',
     height: 64,
-    paddingLeft: 0
+    display: 'flex',
+    alignItems: 'center'
+  },
+  toolBar: {
+    height: '100%',
+    paddingLeft: 0,
+    overflow: 'hidden',
+    width: '100%',
+    maxWidth: 'calc(100% - 96px)',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
+    }
   },
   title: {
     flexGrow: 1
   },
+  sideBarBottom: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
+  },
   logoutButton: {
     color: 'white',
-    width: '80px',
-    position: 'absolute',
-    bottom: '6px',
-    right: '8px',
-    left: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: '80px'
   },
   openSidebar: {
     [theme.breakpoints.down('xs')]: {
