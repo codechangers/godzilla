@@ -231,7 +231,14 @@ const useStyles = makeStyles(theme => ({
       [theme.breakpoints.down('xs')]: { fontSize: '1.6rem', lineHeight: '30px' }
     },
     '& h6': { fontSize: '1.5rem' },
-    '& img': { margin: 10, maxHeight: 500, maxWidth: '100%', display: 'block', alignSelf: 'center' }
+    '& img': {
+      margin: 10,
+      maxHeight: 500,
+      maxWidth: '100%',
+      display: 'block',
+      alignSelf: 'center'
+    },
+    '& iframe': { maxWidth: '100%' }
   },
   contentShift: {
     transition: theme.transitions.create('margin', {

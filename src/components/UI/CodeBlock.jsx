@@ -236,11 +236,22 @@ const CodeBlock = ({ code, lang }) => {
           variant="body1"
           style={{
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            overflow: 'hidden'
           }}
         >
           {title !== defaultTitle && <FolderIcon style={{ marginRight: 12 }} />}
-          {title}
+          <span
+            style={{
+              float: 'right',
+              direction: 'rtl',
+              marginRight: 12,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}
+          >
+            {title}
+          </span>
         </Typography>
         <CopyToClipboard text={copyCode}>
           <Button startIcon={<CopyIcon />}>Copy Code</Button>
