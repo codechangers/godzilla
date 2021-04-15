@@ -71,8 +71,6 @@ export const downloadCode = code => {
 
 export const makeRequest = (req, game) => {
   if (serverReqs.includes(req)) {
-    console.log('Making Request:', req);
-    console.log(game);
     const requests = game.requests || [];
     if (!requests.includes(req)) {
       requests.push(req);
@@ -80,9 +78,6 @@ export const makeRequest = (req, game) => {
         .doc(game.id)
         .update({
           requests
-        })
-        .then(() => {
-          console.log('Got it!!');
         })
         .catch(err => console.error(err));
     }
