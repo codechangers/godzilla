@@ -12,6 +12,7 @@ import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import DocumentationInterface from '../Interfaces/Documentation';
 import TutorialsInterface from '../Interfaces/Tutorials';
+import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
 
 const propTypes = {
@@ -34,10 +35,11 @@ const routeToInterface = {
   '/parent/profile': Profile,
   '/parent/settings': SettingsInterface,
   '/parent/docs': DocumentationInterface,
-  '/parent/tutorials': TutorialsInterface
+  '/parent/tutorials': TutorialsInterface,
+  '/parent/games': GamesInterface
 };
 
-const whoAmIRoutes = ['/parent/docs', '/parent/tutorials'];
+const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
 
 const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
   const [whoAmI, setWhoAmI] = useState(null);
@@ -73,7 +75,7 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'My Classes', 'Class Search', 'Docs', 'Tutorials'].concat(
+        names={['Profile', 'My Classes', 'Class Search', 'Games', 'Docs', 'Tutorials'].concat(
           approvedRoutes
         )}
         baseRoute="/parent"

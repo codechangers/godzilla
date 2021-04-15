@@ -15,7 +15,8 @@ import {
   School,
   Assignment,
   Description,
-  MenuBook
+  MenuBook,
+  VideogameAsset
 } from '@material-ui/icons';
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -66,6 +67,7 @@ const nameToIcon = {
   Settings,
   Docs: Description,
   Tutorials: MenuBook,
+  Games: VideogameAsset,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
   'Admin Dash': SupervisorAccount,
@@ -91,6 +93,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
     Settings: `${baseRoute}/settings`,
     Docs: `${baseRoute}/docs`,
     Tutorials: `${baseRoute}/tutorials`,
+    Games: `${baseRoute}/games`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
     'Admin Dash': '/admin',
