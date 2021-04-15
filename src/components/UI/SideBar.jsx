@@ -29,7 +29,6 @@ const propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   appBarConfig: PropTypes.shape({
     title: PropTypes.string,
@@ -74,7 +73,7 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) => {
+const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
   const { title, content, action, clsname, wrap, wrappedContent } = {
     ...defaultABC,
     ...appBarConfig
@@ -182,7 +181,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
               );
             })}
             <div className={classes.sideBarBottom}>
-              <Logout firebase={firebase} className={classes.logoutButton} />
+              <Logout className={classes.logoutButton} />
             </div>
           </div>
           <div className={classes.sidebarBorder} />

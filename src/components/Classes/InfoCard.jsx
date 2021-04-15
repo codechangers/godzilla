@@ -8,7 +8,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { URL } from '../../globals';
+import { URL } from '../../utils/globals';
 import InfoCardHeader from './InfoCardHeader';
 import CSVDownload from '../UI/CSVDownload';
 import StudentInfo from './StudentInfo';

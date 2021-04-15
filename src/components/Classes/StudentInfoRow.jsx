@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TableRow, TableCell } from '@material-ui/core';
-import { getAgeFromBirthday } from '../../helpers';
+import { getAgeFromBirthday } from '../../utils/helpers';
 
 const propTypes = {
   showLables: PropTypes.bool,

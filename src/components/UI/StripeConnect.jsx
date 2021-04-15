@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { API_URL } from '../../globals';
+import { API_URL } from '../../utils/globals';
 
 const controller = new AbortController();
 let abort = () => null;

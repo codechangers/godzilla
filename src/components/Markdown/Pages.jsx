@@ -18,7 +18,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIModal from '../Interfaces/interfaceHelpers/WhoAmIModal';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { toData } from '../../helpers';
+import { toData } from '../../utils/helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,

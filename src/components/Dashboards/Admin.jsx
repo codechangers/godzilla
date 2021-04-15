@@ -8,8 +8,6 @@ import ProfileInterface from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
@@ -21,10 +19,10 @@ const routeToInterface = {
   '/admin/profile': ProfileInterface
 };
 
-const AdminDashboard = ({ firebase, db, user, accounts, location }) => {
+const AdminDashboard = ({ user, accounts, location }) => {
   const getInterface = () => {
     const Interface = routeToInterface[location.pathname];
-    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
+    return Interface === null ? null : <Interface {...{ user, accounts }} />;
   };
 
   return user.isSignedIn ? (
@@ -32,7 +30,6 @@ const AdminDashboard = ({ firebase, db, user, accounts, location }) => {
       <SideBar
         names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
         baseRoute="/admin"
-        firebase={firebase}
       />
       {getInterface()}
     </PageWrapper>

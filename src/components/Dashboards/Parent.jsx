@@ -16,10 +16,8 @@ import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   apiKey: PropTypes.string
 };
@@ -41,7 +39,7 @@ const routeToInterface = {
 
 const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
 
-const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
+const ParentDashboard = ({ user, accounts, location, apiKey }) => {
   const [whoAmI, setWhoAmI] = useState(null);
 
   // Custom Action Bar Init
@@ -64,7 +62,7 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
     let Interface = routeToInterface[cleanPath];
     if (whoAmIRoutes.includes(cleanPath) && whoAmI === null) Interface = WhoAmInterface;
     return Interface === null ? null : (
-      <Interface {...{ firebase, accounts, db, user, useCustomAppBar, whoAmI, setWhoAmI }} />
+      <Interface {...{ accounts, user, useCustomAppBar, whoAmI, setWhoAmI }} />
     );
   };
 
@@ -79,13 +77,10 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
           approvedRoutes
         )}
         baseRoute="/parent"
-        firebase={firebase}
         appBarConfig={cab}
       />
       <SP apiKey={apiKey}>
-        <Elements>
-          {getInterface() || <ClassViewInterface firebase={firebase} db={db} accounts={accounts} />}
-        </Elements>
+        <Elements>{getInterface() || <ClassViewInterface accounts={accounts} />}</Elements>
       </SP>
     </PageWrapper>
   ) : (

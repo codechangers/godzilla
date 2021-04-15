@@ -35,15 +35,14 @@ import {
   Close
 } from '@material-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { dataMemberToValidation, API_URL } from '../../globals';
-import { getDateFromTimestamp } from '../../helpers';
-import autoBind from '../../autoBind';
+import { dataMemberToValidation, API_URL } from '../../utils/globals';
+import { getDateFromTimestamp } from '../../utils/helpers';
+import autoBind from '../../utils/autoBind';
+import { auth, db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
@@ -293,15 +292,13 @@ class ProfileInterface extends React.Component {
   }
 
   fetchAccountData() {
-    this.props.db
-      .collection('parents')
+    db.collection('parents')
       .doc(this.props.user.uid)
       .get()
       .then(doc => {
         let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
         if (this.props.accounts.teachers) {
-          this.props.db
-            .collection('teachers')
+          db.collection('teachers')
             .doc(this.props.user.uid)
             .get()
             .then(tDoc => {
@@ -379,7 +376,7 @@ class ProfileInterface extends React.Component {
       };
       if (this.validateFields(childFields)) {
         if (!child.parent) {
-          childFields.parent = this.props.db.collection('parents').doc(this.props.user.uid);
+          childFields.parent = db.collection('parents').doc(this.props.user.uid);
         }
         child.ref.update(childFields);
       }
@@ -387,8 +384,7 @@ class ProfileInterface extends React.Component {
   }
 
   changePassword() {
-    this.props.firebase
-      .auth()
+    auth
       .sendPasswordResetEmail(this.props.user.email)
       .then(() => {
         console.log('Email Sent...');

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
   makeStyles,
   Typography,
@@ -14,12 +13,9 @@ import {
 } from '@material-ui/core';
 import IDGenerator from './interfaceHelpers/IDGenerator';
 import StudentInfoRow from '../Classes/StudentInfoRow';
+import { db } from '../../utils/firebase';
 
-const propTypes = {
-  db: PropTypes.object.isRequired
-};
-
-const StudentIDs = ({ db }) => {
+const StudentIDs = () => {
   const [allStudents, setAllStudents] = useState([]);
   const [students, setStudents] = useState([]);
   const [page, setPage] = useState(0);
@@ -37,7 +33,7 @@ const StudentIDs = ({ db }) => {
         setAllStudents(res.docs);
         setIsLoading(false);
       });
-  }, [db]);
+  }, []);
 
   useEffect(() => {
     const i = page * pageLimit;
@@ -96,8 +92,6 @@ const StudentIDs = ({ db }) => {
     </div>
   );
 };
-
-StudentIDs.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

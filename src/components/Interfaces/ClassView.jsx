@@ -17,8 +17,9 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import Modal from '../UI/Modal';
 import TabPanel from '../UI/TabPanel';
 import ChildInfo from '../SignUpForms/ChildInfo';
-import autoBind from '../../autoBind';
+import autoBind from '../../utils/autoBind';
 import DeleteModal from './interfaceHelpers/DeleteModal';
+import { auth, db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 let parentListener = () => {};
@@ -132,12 +133,11 @@ class ClassViewInterface extends React.Component {
   }
 
   addChildRef(childRef) {
-    const user = this.props.firebase.auth().currentUser;
+    const user = auth.currentUser;
     const { childrenRefs } = this.state;
     childrenRefs.push(childRef);
     this.setState({ childrenRefs });
-    this.props.db
-      .collection('parents')
+    db.collection('parents')
       .doc(user.uid)
       .update({
         children: childrenRefs
@@ -223,9 +223,7 @@ class ClassViewInterface extends React.Component {
                   {child.classesData.map(cls =>
                     cls.endDate.seconds * 1000 > Date.now() || showOldClasses ? (
                       <Paper key={cls.id}>
-                        <InfoCardHeader cls={cls} db={this.props.db}>
-                          {this.getButton(cls)}
-                        </InfoCardHeader>
+                        <InfoCardHeader cls={cls}>{this.getButton(cls)}</InfoCardHeader>
                       </Paper>
                     ) : null
                   )}
@@ -257,8 +255,6 @@ class ClassViewInterface extends React.Component {
             noWrapper
           >
             <ChildInfo
-              firebase={this.props.firebase}
-              db={this.props.db}
               handleClose={() => this.setState({ showKidCreator: false })}
               addChildRef={this.addChildRef}
               title="Add a Child"
@@ -279,8 +275,6 @@ class ClassViewInterface extends React.Component {
 
 ClassViewInterface.propTypes = {
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { breakpoints } from '../../globals';
+import { breakpoints } from '../../utils/globals';
 
 // AccountType styles
 export const AccountType = styled.div({

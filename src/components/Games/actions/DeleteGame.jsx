@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Typography, Button } from '@material-ui/core';
-import { db } from '../utils/firebase';
+import { db } from '../../../utils/firebase';
 
 const propTypes = {
   game: PropTypes.object.isRequired,

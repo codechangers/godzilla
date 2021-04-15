@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import GameForm from '../GameForm';
 import StatusCard from '../StatusCard';
 import { checkInput, uploadCode } from '../utils/helpers';
-import { db, auth, Timestamp } from '../utils/firebase';
+import { db, auth, Timestamp } from '../../../utils/firebase';
 
 const propTypes = {
   onClose: PropTypes.func

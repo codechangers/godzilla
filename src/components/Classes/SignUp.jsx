@@ -16,18 +16,18 @@ import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
-import { API_URL } from '../../globals';
+import { API_URL } from '../../utils/globals';
+import { db } from '../../utils/firebase';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   cls: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   stripe: PropTypes.object.isRequired
 };
 
-const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
+const ClassSignUp = ({ open, onClose, cls, user, stripe }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);

@@ -2,10 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, MenuItem, TextField, Card, CardHeader, CardContent } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import autoBind from '../../autoBind';
-import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
+import autoBind from '../../utils/autoBind';
+import {
+  getUserData,
+  validateFields,
+  getErrorStatus,
+  getDateFromTimestamp
+} from '../../utils/helpers';
+import { db, auth } from '../../utils/firebase';
 import * as Styled from './styles';
-import { API_URL } from '../../globals';
+import { API_URL } from '../../utils/globals';
 
 const allFields = [
   'fName',
@@ -18,8 +24,6 @@ const allFields = [
 ];
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   handleClose: PropTypes.func.isRequired,
   addChildRef: PropTypes.func.isRequired,
   updateChildData: PropTypes.func,
@@ -84,22 +88,21 @@ class ChildInfo extends React.Component {
 
   createChild() {
     if (this.validateFields(allFields) === true) {
-      const user = this.props.firebase.auth().currentUser;
+      const user = auth.currentUser;
       if (user) {
         // eslint-disable-next-line
         fetch(`${API_URL}/get_uid`)
           .then(res => res.json())
           .then(res => {
             const learnID = res.uid;
-            this.props.db
-              .collection('children')
+            db.collection('children')
               .add({
                 learnID,
-                parent: this.props.db.collection('parents').doc(user.uid),
+                parent: db.collection('parents').doc(user.uid),
                 ...this.getUserData(allFields)
               })
               .then(child => {
-                this.props.addChildRef(this.props.db.collection('children').doc(child.id));
+                this.props.addChildRef(db.collection('children').doc(child.id));
               });
           });
         this.props.handleClose();

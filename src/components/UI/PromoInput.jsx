@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { makeStyles, TextField, Tooltip, IconButton, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
+import { db } from '../../utils/firebase';
 
 const propTypes = {
-  db: PropTypes.object.isRequired,
   cls: PropTypes.object.isRequired,
   promoDoc: PropTypes.object,
   setPromoDoc: PropTypes.func.isRequired,
   getPromoUses: PropTypes.func.isRequired
 };
 
-const PromoInput = ({ db, cls, promoDoc, setPromoDoc, getPromoUses }) => {
+const PromoInput = ({ cls, promoDoc, setPromoDoc, getPromoUses }) => {
   const [promo, setPromoCode] = useState('');
   const [promoError, setPromoError] = useState('');
 

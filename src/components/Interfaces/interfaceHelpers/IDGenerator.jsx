@@ -4,7 +4,7 @@ import { makeStyles, Typography, Button, TextField } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import Modal from '../../UI/Modal';
 import CSVDownload from '../../UI/CSVDownload';
-import { API_URL } from '../../../globals';
+import { API_URL } from '../../../utils/globals';
 
 const propTypes = {
   open: PropTypes.bool,

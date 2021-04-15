@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { withRouter, Redirect } from 'react-router-dom';
-import { API_URL } from '../../globals';
-import autoBind from '../../autoBind';
+import { API_URL } from '../../utils/globals';
+import autoBind from '../../utils/autoBind';
+import { db } from '../../utils/firebase';
 
 class StripeHandler extends React.Component {
   constructor(props) {
@@ -45,8 +46,7 @@ class StripeHandler extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.status === 200) {
-          this.props.db
-            .collection('teachers')
+          db.collection('teachers')
             .doc(this.props.user.uid)
             .update({ isTraining: false })
             .then(() => {
@@ -82,8 +82,7 @@ class StripeHandler extends React.Component {
 
 StripeHandler.propTypes = {
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 };
 
 export default withRouter(StripeHandler);

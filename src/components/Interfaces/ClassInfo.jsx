@@ -27,13 +27,13 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
 import ClassSignUp from '../Classes/SignUp';
+import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 const propTypes = {
   width: PropTypes.string.isRequired,
   useCustomAppBar: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 };
 
@@ -69,7 +69,7 @@ const defaultClassInfo = {
   faqs: []
 };
 
-const ClassInfoInterface = ({ location, db, user, useCustomAppBar, width }) => {
+const ClassInfoInterface = ({ location, user, useCustomAppBar, width }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

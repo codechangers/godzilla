@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Typography, Chip } from '@material-ui/core';
 import { CheckCircle, Block, Info, FiberManualRecord } from '@material-ui/icons';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { getStatus } from '../../../helpers';
+import { getStatus } from '../../../utils/helpers';
 
 const propTypes = {
   account: PropTypes.object.isRequired,

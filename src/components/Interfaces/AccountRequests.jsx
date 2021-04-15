@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles, Tabs, Tab, Typography } from '@material-ui/core';
 import RequestList from '../UI/Requests/RequestList';
 import TabPanel from '../UI/TabPanel';
+import { db } from '../../utils/firebase';
 
-const propTypes = {
-  db: PropTypes.object.isRequired
-};
-
-const AccountRequests = ({ db }) => {
+const AccountRequests = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [loadingTeachers, setLoadingTeachers] = useState(false);
   const [loadingOrgs, setLoadingOrgs] = useState(false);
@@ -69,8 +65,6 @@ const AccountRequests = ({ db }) => {
     </div>
   );
 };
-
-AccountRequests.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   reqsWrapper: {

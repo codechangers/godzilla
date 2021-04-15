@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, makeStyles } from '@material-ui/core';
 import Modal from './Modal';
-import { getDateFromTimestamp, getHrMn, getOrdinal } from '../../helpers';
-import { months, fullWeekDays, weekDays } from '../../globals';
+import { getDateFromTimestamp, getHrMn, getOrdinal } from '../../utils/helpers';
+import { months, fullWeekDays, weekDays } from '../../utils/globals';
 
 const propTypes = {
   showModal: PropTypes.bool.isRequired,
