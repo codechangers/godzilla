@@ -4,6 +4,7 @@ import GameForm from '../GameForm';
 import StatusCard from '../StatusCard';
 import { checkInput, uploadCode } from '../../../utils/gamesHelpers';
 import { db, auth, Timestamp } from '../../../utils/firebase';
+import { gamesPerKid } from '../../../utils/globals';
 
 const propTypes = {
   onClose: PropTypes.func
@@ -31,7 +32,7 @@ const CreateGame = forwardRef(({ onClose }, ref) => {
           .where('userID', '==', auth.currentUser.uid)
           .get()
           .then(snap => {
-            if (duplicates.empty && valid && snap.size < 1) {
+            if (duplicates.empty && valid && snap.size < gamesPerKid) {
               updateToggles({ isLoading: true });
               uploadCode(
                 newGame,
@@ -60,8 +61,12 @@ const CreateGame = forwardRef(({ onClose }, ref) => {
                   setError('Failed to Upload File.');
                 }
               );
-            } else if (snap.size > 0) {
-              setError('1|You may only create 1 game at a time!');
+            } else if (snap.size >= gamesPerKid) {
+              setError(
+                `1|You may only create ${gamesPerKid} game${
+                  gamesPerKid === 1 ? '' : 's'
+                } at a time!`
+              );
             } else if (!duplicates.empty) {
               setError(`1|The name ${newGame.name} is not available.`);
             } else if (error) {

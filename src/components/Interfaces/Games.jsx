@@ -10,6 +10,7 @@ import DeleteGame from '../Games/actions/DeleteGame';
 import Modal from '../UI/Modal';
 import { useUserGames, useGameStats } from '../../hooks/games';
 import { codeDate } from '../../utils/gamesHelpers';
+import { gamesPerKid } from '../../utils/globals';
 import * as Styled from './styles';
 
 const propTypes = {
@@ -41,16 +42,16 @@ const GamesInterface = ({ useCustomAppBar }) => {
           aria-label="New Game"
           variant="outlined"
           startIcon={<Add />}
-          disabled={games.length >= 1}
+          disabled={games.length >= gamesPerKid}
           onClick={() => {
-            if (games.length < 1) updateToggles({ showCreate: true });
+            if (games.length < gamesPerKid) updateToggles({ showCreate: true });
           }}
         >
           New Game
         </Button>
       )
     });
-  }, []);
+  }, [games]);
 
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;

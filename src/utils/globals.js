@@ -79,6 +79,8 @@ export const gameTypes = {
 
 export const gameNames = /^[a-z]+$/;
 
+export const gamesPerKid = 1;
+
 export const serverReqs = ['RESTART', 'STOP'];
 
 export const GREEN = '#22AE0C';
