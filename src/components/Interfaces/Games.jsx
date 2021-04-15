@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography, Button, Container, Grid } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
@@ -26,7 +26,7 @@ const GamesInterface = ({ useCustomAppBar }) => {
     deleteGame: null,
     showGame: null
   });
-  const updateToggles = update => setToggles({ ...toggles, ...update });
+  const updateToggles = useCallback(update => setToggles({ ...toggles, ...update }), [toggles]);
 
   const gameWithStats = game => {
     const gameStats = stats.filter(s => s.id === game.id);
@@ -51,7 +51,7 @@ const GamesInterface = ({ useCustomAppBar }) => {
         </Button>
       )
     });
-  }, [games]);
+  }, [games, updateToggles]);
 
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;
