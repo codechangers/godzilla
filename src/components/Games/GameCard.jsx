@@ -18,8 +18,8 @@ import {
   makeRequest,
   getGameStatus,
   statusLine
-} from './utils/helpers';
-import { types, serverReqs, defaultStatus } from './utils/globals';
+} from '../../utils/gamesHelpers';
+import { gameTypes, serverReqs, defaultStatus } from '../../utils/globals';
 
 const propTypes = {
   game: PropTypes.object.isRequired,
@@ -68,7 +68,7 @@ const GameCard = ({ game, updateToggles }) => {
         )}
       </Typography>
       <Typography variant="subtitle2" align="left" color="textSecondary">
-        <strong>Type:</strong> {types[game.type]}
+        <strong>Type:</strong> {gameTypes[game.type]}
       </Typography>
       <Typography variant="subtitle2" align="left" color="textSecondary">
         <strong>Code:</strong> {codeInfo(game.code).name} @ {codeTime(game.code)}
