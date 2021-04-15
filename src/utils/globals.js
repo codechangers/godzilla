@@ -67,6 +67,30 @@ export const STATUS = {
   PENDING: 'PENDING'
 };
 
+/**
+ * Games Globals
+ */
+export const gameTypes = {
+  '': '',
+  default: 'Default Template',
+  soccer: 'Soccer Game',
+  ninja: 'Ninja Game'
+};
+
+export const gameNames = /^[a-z]+$/;
+
+export const serverReqs = ['RESTART', 'STOP'];
+
+export const GREEN = '#22AE0C';
+
+export const defaultStatus = {
+  download: 0,
+  build: 0
+};
+
+/**
+ * Global Data Memeber Validation.
+ */
 export const dataMemberToValidation = {
   name: () => '',
   programType: () => '',

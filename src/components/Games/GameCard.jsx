@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Card, Typography, IconButton, Tooltip, Button } from '@material-ui/core';
-
 import {
   CloudDownload,
   PlayCircleOutline,

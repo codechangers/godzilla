@@ -2,7 +2,7 @@ import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import GameForm from '../GameForm';
 import StatusCard from '../StatusCard';
-import { checkInput, uploadCode } from '../utils/helpers';
+import { checkInput, uploadCode } from '../../../utils/gamesHelpers';
 import { db, auth, Timestamp } from '../../../utils/firebase';
 
 const propTypes = {

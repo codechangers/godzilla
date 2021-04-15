@@ -2,9 +2,8 @@ import React, { forwardRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Typography, Button } from '@material-ui/core';
 import { Autorenew, CheckCircle, Error, FiberManualRecord } from '@material-ui/icons';
-import { getGameStatus, statusLine } from './utils/helpers';
-
-import { defaultStatus, GREEN } from './utils/globals';
+import { getGameStatus, statusLine } from '../../utils/gamesHelpers';
+import { defaultStatus, GREEN } from '../../utils/globals';
 
 const propTypes = {
   gameId: PropTypes.string.isRequired,

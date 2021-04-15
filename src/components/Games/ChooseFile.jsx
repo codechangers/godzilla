@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, TextField } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
-import { codeInfo } from './utils/helpers';
+import { codeInfo } from '../../utils/gamesHelpers';
 
 const propTypes = {
   value: PropTypes.string.isRequired,

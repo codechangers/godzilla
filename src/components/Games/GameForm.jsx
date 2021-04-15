@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import ChooseFile from './ChooseFile';
-import { types } from './utils/globals';
+import { gameTypes } from '../../utils/globals';
 
 const propTypes = {
   title: PropTypes.string,
@@ -64,11 +64,11 @@ const GameForm = forwardRef(({ title, error, onSubmit, onCancel, game }, ref) =>
           error={errCode === '2'}
           helperText={errCode === '2' ? errMessage : ''}
         >
-          {Object.keys(types).map(key => {
+          {Object.keys(gameTypes).map(key => {
             if (key) {
               return (
                 <MenuItem key={key} value={key}>
-                  {types[key]}
+                  {gameTypes[key]}
                 </MenuItem>
               );
             }

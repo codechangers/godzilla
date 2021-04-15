@@ -1,4 +1,4 @@
-import { types, names, serverReqs } from './globals';
+import { gameTypes, gameNames, serverReqs } from './globals';
 import { db, ref, auth } from './firebase';
 
 export const codeInfo = codeString => {
@@ -22,10 +22,10 @@ export const checkInput = game => {
   } else if (game.name.length > 30) {
     valid = false;
     error = '1|Invalid Name! Must be no more than 30 characters.';
-  } else if (!game.name.match(names)) {
+  } else if (!game.name.match(gameNames)) {
     valid = false;
     error = '1|Invalid Name! Only lowercase letters allowed.';
-  } else if (game.type === '' || !Object.keys(types).includes(game.type)) {
+  } else if (game.type === '' || !Object.keys(gameTypes).includes(game.type)) {
     valid = false;
     error = '2|You must select a valid Type!';
   } else if (!game.code && (game.file === null || !(game.file instanceof File))) {
