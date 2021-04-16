@@ -4,18 +4,17 @@ import {
   Tooltip,
   IconButton,
   makeStyles,
-  Button,
   List,
   ListItem,
   ListItemText,
   ListItemIcon
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { AccountCircle, Help, School, Menu } from '@material-ui/icons';
+import { Help, School, Menu } from '@material-ui/icons';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
-import WhoAmIModal from '../Interfaces/interfaceHelpers/WhoAmIModal';
+import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { toData } from '../../utils/helpers';
@@ -52,7 +51,6 @@ const MarkdownPages = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
   const location = useLocation();
@@ -84,16 +82,12 @@ const MarkdownPages = ({
               Help!
             </Link>
             {child !== null && (
-              <Tooltip title="Change Profile" placement="bottom">
-                <Button
-                  variant="outlined"
-                  onClick={() => setShowProfile(true)}
-                  className={classes.profButton}
-                  startIcon={<AccountCircle />}
-                >
-                  {child.fName}
-                </Button>
-              </Tooltip>
+              <WhoAmIButton
+                whoAmI={child}
+                setWhoAmI={setWhoAmI}
+                accounts={accounts}
+                className={classes.profButton}
+              />
             )}
           </>
         ),
@@ -112,12 +106,7 @@ const MarkdownPages = ({
               <ListItemText primary="Help!" />
             </ListItem>
             {child !== null && (
-              <ListItem button onClick={() => setShowProfile(true)}>
-                <ListItemIcon>
-                  <AccountCircle />
-                </ListItemIcon>
-                <ListItemText primary={child.fName} />
-              </ListItem>
+              <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} accounts={accounts} listButton />
             )}
           </List>
         ),
@@ -178,12 +167,6 @@ const MarkdownPages = ({
         width={drawerWidth}
         locked={child !== null}
         whiteList={child !== null ? child[whiteList] : []}
-      />
-      <WhoAmIModal
-        open={showProfile}
-        onClose={() => setShowProfile(false)}
-        accounts={accounts}
-        setWhoAmI={setWhoAmI}
       />
     </div>
   );
@@ -310,6 +293,7 @@ const useStyles = makeStyles(theme => ({
   profButton: {
     flexShrink: 0,
     marginRight: 20,
+    marginLeft: 14,
     padding: '6px 16px'
   },
   hidePrimary: {
