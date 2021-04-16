@@ -39,3 +39,26 @@ exports.createStripeSellerAccount = functions.firestore
       handleError(error);
     }
   });
+
+/**
+ * Deauthorize the stripe account of a seller when they delete their account.
+ */
+exports.deleteStripeSellerAccount = functions.firestore
+  .document('/env/{env}/stripeSellers/{sellerId}')
+  .onDelete(async (snap, context) => {});
+/*
+db.collection('stripe').doc(req.body.id).get().then(stripeDoc => {
+    const { stripeID } = stripeDoc.data();
+    fetch('https://connect.stripe.com/oauth/deauthorize', {
+        method: 'POST',
+        body: JSON.stringify({ client_id: CLIENT_ID, stripe_user_id: stripeID }),
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${CLIENT_SECERET}`
+        }
+    }).then(resp => {
+        if (resp.error) res.json({ error: resp.error, status: 500 });
+        else res.send({ status: 200 });
+    }).catch(err => res.json({ error: err, status: 500 }));
+}).catch(err => res.json({ error: err, status: 500 }));
+*/
