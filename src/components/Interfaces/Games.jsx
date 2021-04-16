@@ -1,6 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Typography, Button, Container, Grid } from '@material-ui/core';
+import {
+  makeStyles,
+  Typography,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Tooltip
+} from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Add } from '@material-ui/icons';
 import GameCard from '../Games/GameCard';
 import GameStatus from '../Games/GameStatus';
@@ -14,10 +23,11 @@ import { gamesPerKid } from '../../utils/globals';
 import * as Styled from './styles';
 
 const propTypes = {
-  useCustomAppBar: PropTypes.func.isRequired
+  useCustomAppBar: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired
 };
 
-const GamesInterface = ({ useCustomAppBar }) => {
+const GamesInterface = ({ useCustomAppBar, width }) => {
   const games = useUserGames();
   const stats = useGameStats(games);
   const [toggles, setToggles] = useState({
@@ -35,23 +45,35 @@ const GamesInterface = ({ useCustomAppBar }) => {
 
   // Add a "New Game" button to app bar.
   useEffect(() => {
+    const disabled = games.length >= gamesPerKid;
+    const onClick = () => {
+      if (games.length < gamesPerKid) updateToggles({ showCreate: true });
+    };
+    let action = (
+      <Button
+        aria-label="New Game"
+        variant="outlined"
+        startIcon={<Add />}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        New Game
+      </Button>
+    );
+    if (isWidthDown('xs', width)) {
+      action = (
+        <Tooltip title="New Game" placement="bottom">
+          <IconButton aria-label="New Game" color="secondary" disabled={disabled} onClick={onClick}>
+            <Add />
+          </IconButton>
+        </Tooltip>
+      );
+    }
     useCustomAppBar({
       title: 'Games',
-      action: (
-        <Button
-          aria-label="New Game"
-          variant="outlined"
-          startIcon={<Add />}
-          disabled={games.length >= gamesPerKid}
-          onClick={() => {
-            if (games.length < gamesPerKid) updateToggles({ showCreate: true });
-          }}
-        >
-          New Game
-        </Button>
-      )
+      action
     });
-  }, [games, updateToggles]);
+  }, [games, updateToggles, width]);
 
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;
@@ -147,4 +169,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default GamesInterface;
+export default withWidth()(GamesInterface);
