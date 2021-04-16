@@ -164,7 +164,7 @@ const StatusIcon = ({ status }) => {
   return (
     <span style={{ color: colors[status] }} className={status === 1 ? classes.spinner : null}>
       {status === 0 && <FiberManualRecord />}
-      {status === 1 && <Autorenew color="primary" />}
+      {status === 1 && <Autorenew color="secondary" />}
       {status === 2 && <CheckCircle />}
       {status === 3 && <Error color="error" />}
     </span>
