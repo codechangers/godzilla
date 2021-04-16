@@ -1,0 +1,75 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  	function isAdmin(env) {
+      // Check Admin Privileges.
+      return get(/databases/$(database)/documents/env/$(env)/admins/$(request.auth.uid)).data.secret == "!_xEqyCw3Y.6*wrW32EkCz6GUUn7";
+    }
+
+    match /env/{env}/{document=**} {
+    	// Default document rules.
+    	allow read: if request.auth.uid != null;
+      allow write: if false;
+    }
+
+    match /env/{env} { // PRODUCTION or DEVELOPMENT
+
+    	match /admins/{admin} {
+      	allow read, write: if false;
+      }
+
+    	match /children/{child} {
+      	allow write: if request.auth.uid != null;
+      }
+
+      match /classes/{class} {
+      	allow write: if get(resource.data.teacher).id == request.auth.uid || isAdmin(env);
+        allow create, update: if request.auth.uid != null;
+        allow read: if true;
+      }
+
+      match /promos/{promo} {
+      	allow write: if get(resource.data.teacher).id == request.auth.uid || isAdmin(env);
+        allow create, update: if request.auth.uid != null;
+        allow read: if true;
+      }
+
+      match /organizations/{organization} {
+      	allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id || isAdmin(env);
+      }
+
+      match /parents/{parent} {
+      	allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id || isAdmin(env);
+      }
+
+      match /teachers/{teacher} {
+      	allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id || isAdmin(env);
+      }
+
+      match /games/{game} {
+        allow read, update, delete: if resource.data.userID == request.auth.uid;
+        allow create: if request.auth.uid != null;
+        allow write: if false;
+      }
+
+      match /stats/{status} {
+      	allow read: if request.auth.uid != null;
+        allow write: if false;
+      }
+
+    }
+
+    match /stripeAccounts/{stripeAccount} {
+      allow read, write: if isAdmin("PRODUCTION");
+    }
+
+    match /uids/{id} {
+      allow read, write: if isAdmin("PRODUCTION");
+    }
+    
+  }
+}
