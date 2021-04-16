@@ -13,7 +13,7 @@ const stripe = new Stripe(CLIENT_SECERET);
 exports.createStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
   .onCreate(async (snap, context) => {
-    const { auth_code } = snap.data();
+    const { authCode } = snap.data();
 
     const handleError = async error => {
       await snap.ref.update({ error });
@@ -24,7 +24,7 @@ exports.createStripeSellerAccount = functions.firestore
       // Fetch the stripe_user_id of the new seller.
       let res = await fetch('https://connect.stripe.com/oauth/token', {
         method: 'POST',
-        body: JSON.stringify({ code: auth_code, grant_type: 'authorization_code' }),
+        body: JSON.stringify({ code: authCode, grant_type: 'authorization_code' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${CLIENT_SECERET}`
@@ -34,7 +34,7 @@ exports.createStripeSellerAccount = functions.firestore
       if (res.error) handleError(res.error);
       else {
         // Save the stripe_user_id of the new seller.
-        const { stripe_user_id } = res;
+        const { stripe_user_id } = res; // eslint-disable-line
         const { sellerId } = context.params;
         await snap.ref.set({ stripeID: stripe_user_id });
         console.log('Successfully Created Stripe Seller Account!', sellerId);
@@ -49,7 +49,7 @@ exports.createStripeSellerAccount = functions.firestore
  */
 exports.deleteStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(async (snap, context) => {});
+  .onDelete(async () => {});
 /*
 db.collection('stripe').doc(req.body.id).get().then(stripeDoc => {
     const { stripeID } = stripeDoc.data();
@@ -72,7 +72,7 @@ db.collection('stripe').doc(req.body.id).get().then(stripeDoc => {
  */
 exports.handleRegistraionPayment = functions.firestore
   .document('/env/{env}/payments/{paymentId}')
-  .onCreate(async (snap) => {
+  .onCreate(async snap => {
     const { stripeToken, classRef, seller, parent, promo, kidsToRegister } = snap.data();
     // TODO: Add null checks for all this stuff...
     const { stripeID } = await seller.get().data();
@@ -84,22 +84,23 @@ exports.handleRegistraionPayment = functions.firestore
       // Calculate total price with discounts.
       let total = 0;
       let numOfDiscounts = 0;
-      const regCount = kidsToRegister.length
+      const regCount = kidsToRegister.length;
       if (validPromo) {
         numOfDiscounts = regCount > uses && limited ? uses : regCount;
         const numOfFullPrice = regCount - numOfDiscounts;
-        total = discountType === '$' ?
-        // ($10 * 10kids) - (5discounts * $5) = $100 - $25 => $75
-          (price * regCount) - (numOfDiscounts * discountAmount) :
-        // ($10 * 5kids) + ($10 * 5discounts * 0.01 * 50) = $50 + $25 => $75 
-          (price * numOfFullPrice) + (price * numOfDiscounts * 0.01 * discountAmount);
+        total =
+          discountType === '$'
+            ? // ($10 * 10kids) - (5discounts * $5) = $100 - $25 => $75
+              price * regCount - numOfDiscounts * discountAmount
+            : // ($10 * 5kids) + ($10 * 5discounts * 0.01 * 50) = $50 + $25 => $75
+              price * numOfFullPrice + price * numOfDiscounts * 0.01 * discountAmount;
       } else total = price * regCount;
       total = atLeastZero(total);
       // Create and run stripe charge.
       if (total > 0) {
         const chargeData = {
           amount: total * 100,
-          currency: "usd",
+          currency: 'usd',
           description: `${fName} ${lName} paying for ${regCount} registration(s) for ${name}`,
           source: stripeToken,
           receipt_email: email
@@ -109,24 +110,34 @@ exports.handleRegistraionPayment = functions.firestore
         if (stripeID === ADMIN_STRIPE_ID) charge = await stripe.charges.create(chargeData);
         else {
           // Create charge with fee for everyone else.
-          charge = await stripe.charges.create({
+          charge = await stripe.charges.create(
+            {
               ...chargeData,
               application_fee_amount: 1000 * regCount
-          }, { stripe_account: stripeID });
+            },
+            { stripe_account: stripeID }
+          );
         }
         await snap.ref.update({ status: charge.status });
         if (charge.status === 'succeeded') {
           // Save kids to class.children list.
-          const currentRegisrations = await classRef.get().data().children || [];
+          const currentRegisrations = (await classRef.get().data().children) || [];
           await classRef.update({ children: [...currentRegisrations, ...kidsToRegister] });
           // Save class to kids.classes lists.
-          kidsToRegister.forEach(kid => {
-            const currentClasses = await kid.get().data().classes || [];
-            await kid.update({ classes: [...currentClasses, classRef] });
-          });
+          Promise.all(
+            kidsToRegister.map(async kid => {
+              const currentClasses = (await kid.get().data().classes) || [];
+              await kid.update({ classes: [...currentClasses, classRef] });
+            })
+          );
           console.log('Successfully Handled Registration Payment!', chargeData.description);
         } else {
-          console.error('Stripe Payment Failed!', charge.status, charge.failure_code, charge.failure_message);
+          console.error(
+            'Stripe Payment Failed!',
+            charge.status,
+            charge.failure_code,
+            charge.failure_message
+          );
         }
       }
       // Tick promo code uses.
@@ -140,11 +151,10 @@ exports.handleRegistraionPayment = functions.firestore
     }
   });
 
-
 /**
  * Check if a promo code is valid for the given teacher.
  */
-const isPromoValid = (promo, teacherId) => {
+const isPromoValid = async (promo, teacherId) => {
   if (promo !== null) {
     const promoDoc = await promo.get();
     if (
@@ -153,7 +163,8 @@ const isPromoValid = (promo, teacherId) => {
       promoDoc.data().teacher.id === teacherId &&
       promoDoc.data().active &&
       !promoDoc.data().deletedOn
-    ) return [true, promoDoc.data()];
+    )
+      return [true, promoDoc.data()];
   }
   return [false, {}];
 };
@@ -161,4 +172,4 @@ const isPromoValid = (promo, teacherId) => {
 /**
  * Round a given number up to zero.
  */
-const atLeastZero = (num) => num > 0 ? num : 0;
+const atLeastZero = num => (num > 0 ? num : 0);
