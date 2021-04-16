@@ -36,7 +36,8 @@ const defaultProps = {
 };
 
 const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI }) => {
-  const games = useUserGames();
+  const userGames = useUserGames();
+  const [games, setGames] = useState([]);
   const stats = useGameStats(games);
   const [toggles, setToggles] = useState({
     showCreate: false,
@@ -50,6 +51,12 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
     const gameStats = stats.filter(s => s.id === game.id);
     return gameStats.length > 0 ? { ...gameStats[0], ...game } : game;
   };
+
+  // Filter games if whoAmI is set.
+  useEffect(() => {
+    if (whoAmI !== null) setGames(userGames.filter(g => g.child.path === whoAmI.ref.path));
+    else setGames(userGames);
+  }, [userGames, whoAmI]);
 
   // Add a "New Game" button to app bar.
   useEffect(() => {
@@ -104,7 +111,7 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;
     if (showCreate) {
-      return <CreateGame onClose={() => updateToggles({ showCreate: false })} />;
+      return <CreateGame onClose={() => updateToggles({ showCreate: false })} child={whoAmI} />;
     }
     if (editGame) {
       return <EditGame onClose={() => updateToggles({ editGame: null })} game={editGame} />;

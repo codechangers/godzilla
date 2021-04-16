@@ -7,13 +7,15 @@ import { db, auth, Timestamp } from '../../../utils/firebase';
 import { gamesPerKid } from '../../../utils/globals';
 
 const propTypes = {
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  child: PropTypes.object
 };
 const defaultProps = {
-  onClose: () => {}
+  onClose: () => {},
+  child: null
 };
 
-const CreateGame = forwardRef(({ onClose }, ref) => {
+const CreateGame = forwardRef(({ onClose, child }, ref) => {
   const [errorMessage, setError] = useState('');
   const [toggles, setToggles] = useState({
     isLoading: false,
@@ -38,14 +40,16 @@ const CreateGame = forwardRef(({ onClose }, ref) => {
                 newGame,
                 fileRef => {
                   const { name, type } = newGame;
+                  const data = {
+                    name,
+                    type,
+                    code: fileRef.fullPath,
+                    userID: auth.currentUser.uid,
+                    createdAt: Timestamp.fromDate(new Date())
+                  };
+                  if (child !== null) data.child = child.ref;
                   db.collection('games')
-                    .add({
-                      name,
-                      type,
-                      code: fileRef.fullPath,
-                      userID: auth.currentUser.uid,
-                      createdAt: Timestamp.fromDate(new Date())
-                    })
+                    .add(data)
                     .then(() => {
                       updateToggles({ isLoading: false, didSucceed: true });
                       setError('');
