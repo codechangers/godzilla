@@ -61,7 +61,8 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
     let action = (
       <Button
         aria-label="New Game"
-        variant="outlined"
+        color="primary"
+        variant="contained"
         startIcon={<Add />}
         disabled={disabled}
         onClick={onClick}
@@ -78,10 +79,13 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
         </Tooltip>
       );
     }
+    const contentProps = { whoAmI, setWhoAmI, accounts };
     useCustomAppBar({
       title: 'Games',
       action,
-      content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} accounts={accounts} />
+      wrap: true,
+      content: <WhoAmIButton {...contentProps} className={classes.profButton} />,
+      wrappedContent: <WhoAmIButton {...contentProps} listButton />
     });
   }, [games, updateToggles, width, whoAmI, accounts]);
 
@@ -177,7 +181,8 @@ const useStyles = makeStyles({
     alignItems: 'center',
     boxSizing: 'border-box',
     padding: 10
-  }
+  },
+  profButton: { marginRight: 20 }
 });
 
 export default withWidth()(GamesInterface);
