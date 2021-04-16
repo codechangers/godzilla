@@ -112,7 +112,17 @@ class ParentSignUp extends React.Component {
         />
         <CardContent>
           <Styled.Subtitle>Registered Children</Styled.Subtitle>
-          <List>
+          <List
+            style={{
+              border:
+                this.state.childrenData.length > 0
+                  ? '0.5px solid rgba(255, 255, 255, 0.2)'
+                  : 'none',
+              padding: 0,
+              marginTop: 8,
+              marginBottom: 8
+            }}
+          >
             {this.state.childrenData.map(child => (
               <Styled.ListItem key={`${child.fName}${child.lName}`}>
                 <ListItem>
