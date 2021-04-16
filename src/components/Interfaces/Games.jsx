@@ -12,11 +12,11 @@ import {
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Add } from '@material-ui/icons';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
-import GameCard from '../Games/GameCard';
-import GameStatus from '../Games/GameStatus';
-import CreateGame from '../Games/actions/CreateGame';
-import EditGame from '../Games/actions/EditGame';
-import DeleteGame from '../Games/actions/DeleteGame';
+import GameCard from '../Games/Card';
+import GameStatus from '../Games/Status';
+import CreateGame from '../Games/actions/Create';
+import EditGame from '../Games/actions/Edit';
+import DeleteGame from '../Games/actions/Delete';
 import Modal from '../UI/Modal';
 import { useUserGames, useGameStats } from '../../hooks/games';
 import { codeDate } from '../../utils/gamesHelpers';
