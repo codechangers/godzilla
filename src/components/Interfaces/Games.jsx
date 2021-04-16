@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Add } from '@material-ui/icons';
+import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import GameCard from '../Games/GameCard';
 import GameStatus from '../Games/GameStatus';
 import CreateGame from '../Games/actions/CreateGame';
@@ -24,10 +25,18 @@ import * as Styled from './styles';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired
+  accounts: PropTypes.object.isRequired,
+  width: PropTypes.string.isRequired,
+  whoAmI: PropTypes.object,
+  setWhoAmI: PropTypes.func
 };
 
-const GamesInterface = ({ useCustomAppBar, width }) => {
+const defaultProps = {
+  whoAmI: null,
+  setWhoAmI: () => {}
+};
+
+const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI }) => {
   const games = useUserGames();
   const stats = useGameStats(games);
   const [toggles, setToggles] = useState({
@@ -71,9 +80,10 @@ const GamesInterface = ({ useCustomAppBar, width }) => {
     }
     useCustomAppBar({
       title: 'Games',
-      action
+      action,
+      content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} accounts={accounts} />
     });
-  }, [games, updateToggles, width]);
+  }, [games, updateToggles, width, whoAmI, accounts]);
 
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;
@@ -154,6 +164,7 @@ const GamesInterface = ({ useCustomAppBar, width }) => {
   );
 };
 GamesInterface.propTypes = propTypes;
+GamesInterface.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   content: {
