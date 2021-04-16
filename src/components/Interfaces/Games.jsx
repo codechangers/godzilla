@@ -72,10 +72,23 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
     );
     if (isWidthDown('xs', width)) {
       action = (
-        <Tooltip title="New Game" placement="bottom">
-          <IconButton aria-label="New Game" color="secondary" disabled={disabled} onClick={onClick}>
-            <Add />
-          </IconButton>
+        <Tooltip
+          title="New Game"
+          placement="bottom"
+          disableFocusListener={disabled}
+          disableHoverListener={disabled}
+          disableTouchListener={disabled}
+        >
+          <span>
+            <IconButton
+              aria-label="New Game"
+              color="secondary"
+              disabled={disabled}
+              onClick={onClick}
+            >
+              <Add />
+            </IconButton>
+          </span>
         </Tooltip>
       );
     }
