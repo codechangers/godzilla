@@ -90,7 +90,7 @@ const GameForm = forwardRef(({ title, error, onSubmit, onCancel, game }, ref) =>
           <Button type="button" variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained">
+          <Button type="submit" color="primary" variant="contained">
             Submit
           </Button>
         </div>

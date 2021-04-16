@@ -86,6 +86,7 @@ const GameCard = ({ game, updateToggles }) => {
       <div className={classes.options}>
         <Button
           aria-label={`Play ${game.name}`}
+          color="primary"
           variant="contained"
           startIcon={isReady ? <PlayCircleOutline /> : null}
           onClick={() => window.open(`http://${game.name}.blobbert.io`)}
