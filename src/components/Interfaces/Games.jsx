@@ -21,7 +21,6 @@ import Modal from '../UI/Modal';
 import { useUserGames, useGameStats } from '../../hooks/games';
 import { codeDate } from '../../utils/gamesHelpers';
 import { gamesPerKid } from '../../utils/globals';
-import * as Styled from './styles';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -127,7 +126,7 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
 
   const classes = useStyles();
   return (
-    <Styled.PageContent>
+    <>
       <Container maxWidth="md" className={classes.content}>
         <Grid container direction="row" justify="flex-start" align="center" spacing={3}>
           {games.length === 0 ? (
@@ -177,7 +176,7 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
       >
         {getInterface()}
       </Modal>
-    </Styled.PageContent>
+    </>
   );
 };
 GamesInterface.propTypes = propTypes;
