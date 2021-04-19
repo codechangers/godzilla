@@ -17,7 +17,7 @@ exports.createStripeSellerAccount = functions.firestore
     const { authCode } = snap.data();
 
     const handleError = async error => {
-      await snap.ref.update({ error });
+      await snap.ref.update({ error: error || 'Create Stripe Account Failed!' });
       console.error('Create Stripe Seller Account Failed!', error);
     };
 
