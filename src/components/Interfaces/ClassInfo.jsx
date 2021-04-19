@@ -34,7 +34,8 @@ const propTypes = {
   width: PropTypes.string.isRequired,
   useCustomAppBar: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 const modalPropSets = {
@@ -69,7 +70,7 @@ const defaultClassInfo = {
   faqs: []
 };
 
-const ClassInfoInterface = ({ location, user, useCustomAppBar, width }) => {
+const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }) => {
   const [cls, setCls] = useState({});
   const [foundClass, setFoundClass] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -419,6 +420,7 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width }) => {
         cls={cls}
         db={db}
         user={user}
+        accounts={accounts}
       />
       <InfoModal
         open={showInfo}
