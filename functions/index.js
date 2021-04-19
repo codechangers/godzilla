@@ -52,6 +52,7 @@ exports.retryStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
   .onUpdate(({ before, after }, context) => {
     if (!before.data().stripeID) connectStripeSeller(after, context);
+    return 0;
   });
 
 /**
