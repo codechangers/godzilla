@@ -19,7 +19,6 @@ import Modal from '../../UI/Modal';
 import StripeConnect from '../../UI/StripeConnect';
 import ContactInfo from '../../UI/ContactInfo';
 import autoBind from '../../../utils/autoBind';
-import { API_URL } from '../../../utils/globals';
 import { db } from '../../../utils/firebase';
 import DeleteModal from '../../Interfaces/interfaceHelpers/DeleteModal';
 
@@ -33,9 +32,6 @@ const getMessage = () => (
 );
 
 const getClassRefs = classes => classes.map(cls => cls.ref);
-
-const controller = new AbortController();
-let abort = () => null;
 
 class ApprovedTeacher extends React.Component {
   constructor(props) {
@@ -54,18 +50,15 @@ class ApprovedTeacher extends React.Component {
 
   componentDidMount() {
     this.fetchClasses();
-    // eslint-disable-next-line
-    fetch(`${API_URL}/teacher_account/${this.props.user.uid}`, { method: 'GET' })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({ stripeIsLinked: res.stripe_is_linked });
+    db.collection('stripeSellers')
+      .doc(this.props.user.uid)
+      .get()
+      .then(sellerDoc => {
+        if (sellerDoc.exists) {
+          const { stripeID } = sellerDoc.data();
+          this.setState({ stripeIsLinked: stripeID !== undefined });
+        } else this.setState({ stripeIsLinked: false });
       });
-    abort = controller.abort.bind(controller);
-  }
-
-  componentWillUnmount() {
-    abort();
-    abort = () => null;
   }
 
   getEmptyPrompt() {
