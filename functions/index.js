@@ -8,16 +8,6 @@ const CLIENT_ID = functions.config().stripe.client_id;
 
 const stripe = new Stripe(CLIENT_SECERET);
 
-exports.createStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onCreate(connectStripeSeller);
-
-exports.retryStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onUpdate((snap, context) => {
-    if (!snap.data().stripeID) connectStripeSeller(snap, context);
-  });
-
 /**
  * Get the stripe user id of a seller when they connect their stripe account to
  * the Code Contest marketplace and store it in the stripeSellers collection.
@@ -53,6 +43,16 @@ const connectStripeSeller = async (snap, context) => {
     handleError(error);
   }
 };
+// Run onCreate
+exports.createStripeSellerAccount = functions.firestore
+  .document('/env/{env}/stripeSellers/{sellerId}')
+  .onCreate(connectStripeSeller);
+// Allow retry onUpdate
+exports.retryStripeSellerAccount = functions.firestore
+  .document('/env/{env}/stripeSellers/{sellerId}')
+  .onUpdate((snap, context) => {
+    if (!snap.data().stripeID) connectStripeSeller(snap, context);
+  });
 
 /**
  * Deauthorize the stripe account of a seller when they delete their account.
