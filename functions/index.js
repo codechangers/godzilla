@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const fetch = require('node-fetch');
 const { Stripe } = require('stripe');
 
 const ADMIN_STRIPE_ID = functions.config().stripe.admin_id;
