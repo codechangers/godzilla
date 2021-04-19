@@ -66,7 +66,7 @@ service cloud.firestore {
       // Stripe Data
       match /stripeSellers/{sellerId} {
         allow create: if request.auth.uid != null;
-        allow read: if request.auth.uid == resource.id;
+        allow read, update: if request.auth.uid == resource.id;
         allow write: if false;
       }
 
