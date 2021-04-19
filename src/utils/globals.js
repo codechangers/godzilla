@@ -4,6 +4,8 @@ export const birthDateValidation = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d
 
 export const URL = process.env.REACT_APP_REDIR_URL;
 export const API_URL = process.env.REACT_APP_STRIPE_API;
+export const STRIPE_KEY = process.env.REACT_APP_STRIPE_KEY;
+export const STRIPE_CID = process.env.REACT_APP_STRIPE_CID;
 
 const bpValues = {
   xs: 0,
