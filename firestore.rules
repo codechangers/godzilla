@@ -35,6 +35,7 @@ service cloud.firestore {
         allow read: if true;
       }
 
+      // Account Types
       match /organizations/{organization} {
       	allow create: if request.auth.uid != null;
         allow write: if request.auth.uid == resource.id || isAdmin(env);
@@ -50,6 +51,7 @@ service cloud.firestore {
         allow write: if request.auth.uid == resource.id || isAdmin(env);
       }
 
+      // IO Platform Games and Stats
       match /games/{game} {
         allow read, update, delete: if resource.data.userID == request.auth.uid;
         allow create: if request.auth.uid != null;
@@ -61,14 +63,19 @@ service cloud.firestore {
         allow write: if false;
       }
 
-    }
+      // Stripe Data
+      match /stripeSellers/{sellerId} {
+        allow create: if request.auth.uid != null;
+        allow read: if request.auth.uid == resource.id;
+        allow write: if false;
+      }
 
-    match /stripeAccounts/{stripeAccount} {
-      allow read, write: if isAdmin("PRODUCTION");
-    }
+      match /payments/{payment} {
+        allow create: if request.auth.uid != null;
+        allow read: if resource.data.userID == request.auth.uid;
+        allow write: if false;
+      }
 
-    match /uids/{id} {
-      allow read, write: if isAdmin("PRODUCTION");
     }
     
   }
