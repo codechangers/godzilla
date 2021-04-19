@@ -3,6 +3,7 @@ const { Stripe } = require('stripe');
 
 const ADMIN_STRIPE_ID = functions.config().stripe.admin_id;
 const CLIENT_SECERET = functions.config().stripe.secret;
+const CLIENT_ID = functions.config().stripe.client_id;
 
 const stripe = new Stripe(CLIENT_SECERET);
 
@@ -49,23 +50,20 @@ exports.createStripeSellerAccount = functions.firestore
  */
 exports.deleteStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(async () => {});
-/*
-db.collection('stripe').doc(req.body.id).get().then(stripeDoc => {
-    const { stripeID } = stripeDoc.data();
-    fetch('https://connect.stripe.com/oauth/deauthorize', {
-        method: 'POST',
-        body: JSON.stringify({ client_id: CLIENT_ID, stripe_user_id: stripeID }),
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${CLIENT_SECERET}`
-        }
-    }).then(resp => {
-        if (resp.error) res.json({ error: resp.error, status: 500 });
-        else res.send({ status: 200 });
-    }).catch(err => res.json({ error: err, status: 500 }));
-}).catch(err => res.json({ error: err, status: 500 }));
-*/
+  .onDelete(async snap => {
+    const { stripeID } = snap.data();
+    let res = await fetch('https://connect.stripe.com/oauth/deauthorize', {
+      method: 'POST',
+      body: JSON.stringify({ client_id: CLIENT_ID, stripe_user_id: stripeID }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${CLIENT_SECERET}`
+      }
+    });
+    res = await res.json();
+    if (res.error) console.error('Delete Stripe Seller Account Failed!', res.error);
+    else console.log('Successfully Deleted Stripe Seller Account.', snap.id);
+  });
 
 /**
  * Handle payment for class registration, and save kids to class upon successful transaction.
