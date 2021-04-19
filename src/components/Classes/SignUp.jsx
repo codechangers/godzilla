@@ -24,10 +24,11 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   cls: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   stripe: PropTypes.object.isRequired
 };
 
-const ClassSignUp = ({ accounts, open, onClose, cls, stripe }) => {
+const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
   const [children] = useParentChildren(accounts);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState([]);
@@ -64,7 +65,8 @@ const ClassSignUp = ({ accounts, open, onClose, cls, stripe }) => {
         seller: cls.teacher.ref,
         parent: accounts.parent.ref,
         promo: promoDoc !== null && promoDoc.ref,
-        kidsToRegister: selectedChildren.map(c => c.ref)
+        kidsToRegister: selectedChildren.map(c => c.ref),
+        userID: user.uid
       });
       // Listen for status updates.
       paymentRef
