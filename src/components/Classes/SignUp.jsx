@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -16,20 +16,20 @@ import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
-import { API_URL } from '../../utils/globals';
 import { db } from '../../utils/firebase';
+import { useParentChildren } from '../../hooks/children';
 
 const propTypes = {
+  accounts: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   cls: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
   stripe: PropTypes.object.isRequired
 };
 
-const ClassSignUp = ({ open, onClose, cls, user, stripe }) => {
+const ClassSignUp = ({ accounts, open, onClose, cls, stripe }) => {
+  const [children] = useParentChildren(accounts);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
   const [invalidPayment, setInvalidPayment] = useState('');
@@ -42,28 +42,10 @@ const ClassSignUp = ({ open, onClose, cls, user, stripe }) => {
     setPayment({ ...payment, ...changes });
   };
 
-  useEffect(() => {
-    return db
-      .collection('parents')
-      .doc(user.uid)
-      .onSnapshot(parentDoc => {
-        const childrenData = [];
-        const childrenRefs = parentDoc.data().children || [];
-        childrenRefs.forEach(child => {
-          child.get().then(childDoc => {
-            const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-            childrenData.push(childData);
-            if (childrenData.length === childrenRefs.length) {
-              setChildren(childrenData);
-            }
-          });
-        });
-      });
-  }, [db, user]);
-
   const handleSubmit = async () => {
     let token;
     let errorMessage = 'Invalid Payment Information!';
+    // Get Stripe Token.
     if (getTotal() > 0) {
       const stripePayment = await stripe.createToken({ name: 'Registration Payment' });
       token = stripePayment.token;
@@ -75,44 +57,26 @@ const ClassSignUp = ({ open, onClose, cls, user, stripe }) => {
       setIsProcessing(true);
       setInvalidPayment('');
       updatePayment({ error: '' });
-      // eslint-disable-next-line
-      fetch(`${API_URL}/charge`, {
-        method: 'POST',
-        body: JSON.stringify({
-          token: token ? token.id : '1234',
-          classID: cls.id,
-          teacherID: cls.teacher.id,
-          parentID: user.uid,
-          promoId: promoDoc !== null ? promoDoc.id : '1234',
-          numberOfChildren: selectedChildren.filter(c => !checkDisabled(c)).length
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (res.status === 200) {
-            const clsChildren = cls.children || [];
-            selectedChildren.forEach(child => {
-              const classes = child.classes || [];
-              classes.push(cls.ref);
-              child.ref.update({ classes });
-              clsChildren.push(child.ref);
-            });
-            cls.ref.update({ children: clsChildren });
-            updatePayment({ succeeded: true });
-          } else if (res.error) {
-            console.log(res.error);
-            if (res.error.code === 'card_declined') {
-              setIsProcessing(false);
-              setInvalidPayment('Your Card was Declined.');
-            } else {
-              updatePayment({ failed: true });
-              updatePayment({ error: res.error.message });
-            }
+      // Create Payment Document.
+      const paymentRef = await db.collection('payments').add({
+        stripeToken: token.id,
+        classRef: cls.ref,
+        seller: cls.teacher.ref,
+        parent: accounts.parent.ref,
+        promo: promoDoc !== null && promoDoc.ref,
+        kidsToRegister: selectedChildren.map(c => c.ref)
+      });
+      // Listen for status updates.
+      paymentRef
+        .onSnapshot(paymentDoc => {
+          console.log(paymentDoc.data());
+          const { status } = paymentDoc.data();
+          if (status === 'succeeded') updatePayment({ succeeded: true });
+          else if (status === 'card_declined') {
+            setIsProcessing(false);
+            setInvalidPayment('Your Card was Declined.');
           } else {
-            updatePayment({ failed: true });
+            updatePayment({ failed: true, error: 'Payment Failed...' });
           }
         })
         .catch(err => {

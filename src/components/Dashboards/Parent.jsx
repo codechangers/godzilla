@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
-import { Typography } from '@material-ui/core';
 import { PageWrapper } from './styles';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
@@ -14,16 +13,12 @@ import DocumentationInterface from '../Interfaces/Documentation';
 import TutorialsInterface from '../Interfaces/Tutorials';
 import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
+import { STRIPE_KEY } from '../../utils/globals';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  apiKey: PropTypes.string
-};
-
-const defaultProps = {
-  apiKey: null
+  location: PropTypes.object.isRequired
 };
 
 const routeToInterface = {
@@ -39,7 +34,7 @@ const routeToInterface = {
 
 const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
 
-const ParentDashboard = ({ user, accounts, location, apiKey }) => {
+const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
 
   // Custom Action Bar Init
@@ -66,7 +61,6 @@ const ParentDashboard = ({ user, accounts, location, apiKey }) => {
     );
   };
 
-  const SP = apiKey ? StripeProvider : Fail;
   let approvedRoutes = accounts.teachers ? ['Teacher Dash'] : [];
   approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
@@ -79,27 +73,14 @@ const ParentDashboard = ({ user, accounts, location, apiKey }) => {
         baseRoute="/parent"
         appBarConfig={cab}
       />
-      <SP apiKey={apiKey}>
+      <StripeProvider apiKey={STRIPE_KEY}>
         <Elements>{getInterface() || <ClassViewInterface accounts={accounts} />}</Elements>
-      </SP>
+      </StripeProvider>
     </PageWrapper>
   ) : (
     <Redirect to={{ pathname: '/login', state: { signupID: getID() } }} />
   );
 };
 ParentDashboard.propTypes = propTypes;
-ParentDashboard.defaultProps = defaultProps;
-
-const Fail = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', padding: 12 }}>
-    <Typography variant="h4" style={{ marginTop: 36, marginBottom: 18 }}>
-      Server Error!
-    </Typography>
-    <Typography variant="body1" style={{ marginBottom: 18 }}>
-      Sorry, we are currently experiencing some technical difficulties.
-    </Typography>
-    <Typography variant="h5">Please try again later.</Typography>
-  </div>
-);
 
 export default withRouter(ParentDashboard);

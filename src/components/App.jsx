@@ -14,7 +14,6 @@ import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
 import StripeHandler from './Handlers/Stripe';
-import { API_URL } from '../utils/globals';
 import { db, auth } from '../utils/firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -41,8 +40,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: { isSignedIn: false },
-      accounts: {},
-      apiKey: null
+      accounts: {}
     };
   }
 
@@ -52,14 +50,6 @@ class App extends React.Component {
       this.updateAccounts(user);
       this.setState({ user });
     });
-    // eslint-disable-next-line
-    fetch(`${API_URL}/stripe_key`, { method: 'GET' })
-      .then(res => res.json())
-      .then(res => this.setState({ apiKey: res.stripe_key }))
-      .catch(err => {
-        console.error(err);
-        this.setState({ apiKey: null });
-      });
   }
 
   componentWillUnmount() {
@@ -117,7 +107,6 @@ class App extends React.Component {
                       user={this.state.user}
                       accounts={this.state.accounts}
                       updateAccounts={user => this.updateAccounts(user)}
-                      apiKey={this.state.apiKey}
                       OAuthed={() => this.setState({ user: { ...this.state.user, OAuthed: true } })}
                     />
                   );
