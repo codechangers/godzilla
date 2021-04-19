@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
-import { withRouter, Redirect } from 'react-router-dom';
+import { Typography, Button } from '@material-ui/core';
+import { ArrowBack } from '@material-ui/icons';
+import { withRouter, Redirect, Link } from 'react-router-dom';
 import { db } from '../../utils/firebase';
 
 const propTypes = {
@@ -15,8 +16,7 @@ const StripeHandler = ({ user, location }) => {
 
   // Run Link on url params update.
   useEffect(() => {
-    if (user.isSignedIn) return linkStripeAccount();
-    return () => {};
+    if (user.isSignedIn) linkStripeAccount();
   }, [user, location.search]);
 
   const linkStripeAccount = async () => {
@@ -24,10 +24,13 @@ const StripeHandler = ({ user, location }) => {
     // Get code from url params.
     const options = location.search.replace('?', '').split('&');
     options.forEach(option => {
+      const allowedKeys = ['code', 'error'];
       const [key, value] = option.split('=');
-      if (key === 'code') search[key] = value;
+      if (allowedKeys.includes(key)) search[key] = value;
     });
-    if (search.code) {
+    if (search.error && search.error === 'access_denied') {
+      updateStatus({ error: 'Failed to connect to your stripe account. Please Try again.' });
+    } else if (search.code) {
       // Create stripeSeller document
       const sellerRef = db.collection('stripeSellers').doc(user.uid);
       await sellerRef.set({ authCode: search.code });
@@ -58,13 +61,23 @@ const StripeHandler = ({ user, location }) => {
         minHeight: '100vh',
         backgroundColor: 'var(--background-color)',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        boxSizing: 'border-box',
+        padding: 30
       }}
     >
       <Typography variant="h5">
         {error || 'Linking Stripe to your CodeChangers Account...'}
       </Typography>
+      {error && (
+        <Link to="/teacher" style={{ textDecoration: 'none', color: 'inherit', marginTop: 30 }}>
+          <Button variant="outlined" color="secondary" startIcon={<ArrowBack />}>
+            Back to Dashboard
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };
