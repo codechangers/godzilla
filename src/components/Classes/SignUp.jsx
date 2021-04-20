@@ -76,12 +76,8 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
         else if (status === 'card_declined') {
           setIsProcessing(false);
           setInvalidPayment('Your Card was Declined.');
-        } else {
-          /**
-           * This will always hit on the first run.
-           * TODO: Find a better way to catch errors.
-           */
-          updatePayment({ failed: true, error: 'Payment Failed...' });
+        } else if (status === 'failed') {
+          updatePayment({ failed: true, error: 'Failed to complete payment!' });
         }
       });
     } else {
