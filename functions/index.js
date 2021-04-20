@@ -81,30 +81,11 @@ exports.deleteStripeSellerAccount = functions.firestore
 exports.handleRegistraionPayment = functions.firestore
   .document('/env/{env}/payments/{paymentId}')
   .onCreate(async snap => {
-    const { stripeToken, classRef, seller, parent, promo, kidsToRegister } = snap.data();
-    // TODO: Add null checks for all this stuff...
-    const { stripeID } = await seller.get().data();
-    const { price, name, teacher } = await classRef.get().data();
-    const { fName, lName, email } = await parent.get().data();
-    const [validPromo, promoData] = isPromoValid(promo, teacher.id);
-    const { discountType, discountAmount, uses, limited, startUses } = promoData;
     try {
-      // Calculate total price with discounts.
-      let total = 0;
-      let numOfDiscounts = 0;
-      const regCount = kidsToRegister.length;
-      if (validPromo) {
-        numOfDiscounts = regCount > uses && limited ? uses : regCount;
-        const numOfFullPrice = regCount - numOfDiscounts;
-        total =
-          discountType === '$'
-            ? // ($10 * 10kids) - (5discounts * $5) = $100 - $25 => $75
-              price * regCount - numOfDiscounts * discountAmount
-            : // ($10 * 5kids) + ($10 * 5discounts * 0.01 * 50) = $50 + $25 => $75
-              price * numOfFullPrice + price * numOfDiscounts * 0.01 * discountAmount;
-      } else total = price * regCount;
-      total = atLeastZero(total);
-      // Create and run stripe charge.
+      const data = await getTransactionData(snap.data());
+      const [total, numOfDiscounts] = getTotalWithDiscount(data);
+      const { stripeToken, stripeID, email, fName, lName, regCount, name, kidsToRegister } = data;
+      const { classRef, promo } = snap.data();
       if (total > 0) {
         const chargeData = {
           amount: total * 100,
@@ -148,13 +129,15 @@ exports.handleRegistraionPayment = functions.firestore
           );
         }
       }
-      // Tick promo code uses.
-      if (numOfDiscounts > 0) {
-        if (limited) await promo.ref.update({ uses: atLeastZero(uses - numOfDiscounts) });
-        else await promo.ref.update({ startUses: startUses + numOfDiscounts });
-      }
+      await tickPromo(numOfDiscounts, promo, data);
     } catch (error) {
-      await snap.ref.update({ error, status: 'failed' });
+      let errorMessage = `${error}`;
+      if (error instanceof UnwrapError) {
+        const unwrapMessage = UnwrapMessages[error.stage];
+        console.error(unwrapMessage, error.key, error.value);
+        errorMessage = unwrapMessage;
+      }
+      await snap.ref.update({ error: errorMessage, status: 'failed' });
       console.error('Handle Registration Payment Failed!', error);
     }
   });
@@ -162,22 +145,115 @@ exports.handleRegistraionPayment = functions.firestore
 /**
  * Check if a promo code is valid for the given teacher.
  */
-const isPromoValid = async (promo, teacherId) => {
-  if (promo !== null) {
-    const promoDoc = await promo.get();
+function isPromoValid(promoRef, data, { promo }) {
+  const { teacher } = data;
+  if (promoRef !== null) {
     if (
-      promoDoc !== null &&
-      promoDoc.exists &&
-      promoDoc.data().teacher.id === teacherId &&
-      promoDoc.data().active &&
-      !promoDoc.data().deletedOn
+      promo &&
+      promo.exists &&
+      promo.data().teacher.id === teacher.id &&
+      promo.data().active &&
+      !promo.data().deletedOn
     )
-      return [true, promoDoc.data()];
+      return true;
   }
-  return [false, {}];
-};
+  return false;
+}
 
 /**
  * Round a given number up to zero.
  */
 const atLeastZero = num => (num > 0 ? num : 0);
+
+const UnwrapMessages = [
+  'This key is missing from the snapshot!',
+  'This key has a value of null but is not listed in the canBeNull whitelist!',
+  'This key has a reference to a document that does not exist!',
+  'This data memeber is either not present or null!'
+];
+
+class UnwrapError extends Error {
+  constructor(message, stage, key, value) {
+    super(message);
+    this.key = key;
+    this.value = value;
+    this.stage = stage;
+  }
+}
+
+/**
+ * Safely unwrap all snapshot data required for a transaction.
+ */
+async function getTransactionData(snapData) {
+  const { stripeToken, kidsToRegister } = snapData;
+  const data = { stripeToken, kidsToRegister, regCount: kidsToRegister.length };
+  const m = 'Failed to unwrap data!';
+  const canBeNull = ['promo'];
+  const dataToUnwrap = {
+    seller: ['stripeID'],
+    classRef: ['price', 'name', 'teacher'],
+    parent: ['fName', 'lName', 'email'],
+    promo: ['discountType', 'discountAmount', 'uses', 'limited', 'startUses']
+  };
+  const documents = {};
+  // Unwrap data from firestore references.
+  // Throw an UnwrapError if any stage required data is invalid.
+  await Promise.all(
+    // Loop through required references.
+    Object.entries(dataToUnwrap).map(async (key, dataMembers) => {
+      // Is the reference in our snapshot?
+      if (Object.keys(snapData).includes(key)) {
+        // Is our reference null?
+        if (snapData[key] !== null) {
+          const doc = await snapData[key].get();
+          // Is our reference a real document?
+          if (doc.exists) {
+            documents[key] = doc;
+            const docData = doc.data();
+            // Loop through required data members.
+            dataMembers.forEach(dm => {
+              // Is the data memeber null?
+              if (docData[dm] !== null) data[dm] = docData[dm];
+              else throw UnwrapError(m, 3, `${key}.${dm}`, snapData[key]);
+            });
+          } else throw UnwrapError(m, 2, key, snapData[key]);
+        } else if (!canBeNull.includes(key)) throw UnwrapError(m, 1, key, snapData[key]);
+      } else throw UnwrapError(m, 0, key, null);
+    })
+  );
+  data.validPromo = isPromoValid(snapData.promo, data, documents);
+  return data;
+}
+
+/**
+ * Calculate the total price of a transaction with discounts.
+ */
+function getTotalWithDiscount(data) {
+  const { regCount, price, validPromo } = data;
+  let total = 0;
+  let numOfDiscounts = 0;
+  if (validPromo) {
+    const { uses, limited, discountType, discountAmount } = data;
+    numOfDiscounts = regCount > uses && limited ? uses : regCount;
+    const numOfFullPrice = regCount - numOfDiscounts;
+    total =
+      discountType === '$'
+        ? // ($10 * 10kids) - (5discounts * $5) = $100 - $25 => $75
+          price * regCount - numOfDiscounts * discountAmount
+        : // ($10 * 5kids) + ($10 * 5discounts * 0.01 * 50) = $50 + $25 => $75
+          price * numOfFullPrice + price * numOfDiscounts * 0.01 * discountAmount;
+  } else total = price * regCount;
+  total = atLeastZero(total);
+  numOfDiscounts = atLeastZero(numOfDiscounts);
+  return [total, numOfDiscounts];
+}
+
+/**
+ * Update the number of uses available for a promo code.
+ */
+async function tickPromo(numOfDiscounts, promoRef, { uses, startUses, limited }) {
+  if (numOfDiscounts > 0) {
+    if (limited) await promoRef.update({ uses: atLeastZero(uses - numOfDiscounts) });
+    else await promoRef.update({ startUses: startUses + numOfDiscounts });
+  }
+}
