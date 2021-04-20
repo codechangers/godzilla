@@ -62,29 +62,28 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       const paymentRef = await db.collection('payments').add({
         stripeToken: token.id,
         classRef: cls.ref,
-        seller: cls.teacher.ref,
-        parent: accounts.parent.ref,
-        promo: promoDoc !== null && promoDoc.ref,
+        seller: cls.teacher,
+        parent: accounts.parents.ref,
+        promo: promoDoc !== null ? promoDoc.ref : null,
         kidsToRegister: selectedChildren.map(c => c.ref),
         userID: user.uid
       });
       // Listen for status updates.
-      paymentRef
-        .onSnapshot(paymentDoc => {
-          console.log(paymentDoc.data());
-          const { status } = paymentDoc.data();
-          if (status === 'succeeded') updatePayment({ succeeded: true });
-          else if (status === 'card_declined') {
-            setIsProcessing(false);
-            setInvalidPayment('Your Card was Declined.');
-          } else {
-            updatePayment({ failed: true, error: 'Payment Failed...' });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          updatePayment({ failed: true });
-        });
+      paymentRef.onSnapshot(paymentDoc => {
+        console.log(paymentDoc.data());
+        const { status } = paymentDoc.data();
+        if (status === 'succeeded') updatePayment({ succeeded: true });
+        else if (status === 'card_declined') {
+          setIsProcessing(false);
+          setInvalidPayment('Your Card was Declined.');
+        } else {
+          /**
+           * This will always hit on the first run.
+           * TODO: Find a better way to catch errors.
+           */
+          updatePayment({ failed: true, error: 'Payment Failed...' });
+        }
+      });
     } else {
       setIsProcessing(false);
       setInvalidPayment(errorMessage);
