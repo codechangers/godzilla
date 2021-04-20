@@ -62,7 +62,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       const paymentRef = await db.collection('payments').add({
         stripeToken: token.id,
         classRef: cls.ref,
-        seller: cls.teacher,
+        seller: db.collection('stripeSellers').doc(cls.teacher.id),
         parent: accounts.parents.ref,
         promo: promoDoc !== null ? promoDoc.ref : null,
         kidsToRegister: selectedChildren.map(c => c.ref),

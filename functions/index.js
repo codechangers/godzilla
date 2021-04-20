@@ -104,18 +104,20 @@ exports.handleRegistraionPayment = functions.firestore
               ...chargeData,
               application_fee_amount: 1000 * regCount
             },
-            { stripe_account: stripeID }
+            { stripeAccount: stripeID }
           );
         }
         await snap.ref.update({ status: charge.status });
         if (charge.status === 'succeeded') {
           // Save kids to class.children list.
-          const currentRegisrations = (await classRef.get().data().children) || [];
+          const classDoc = await classRef.get();
+          const currentRegisrations = classDoc.data().children || [];
           await classRef.update({ children: [...currentRegisrations, ...kidsToRegister] });
           // Save class to kids.classes lists.
           Promise.all(
             kidsToRegister.map(async kid => {
-              const currentClasses = (await kid.get().data().classes) || [];
+              const kidDoc = await kid.get();
+              const currentClasses = kidDoc.data().classes || [];
               await kid.update({ classes: [...currentClasses, classRef] });
             })
           );
@@ -200,7 +202,7 @@ async function getTransactionData(snapData) {
   // Throw an UnwrapError if any stage required data is invalid.
   await Promise.all(
     // Loop through required references.
-    Object.entries(dataToUnwrap).map(async (key, dataMembers) => {
+    Object.entries(dataToUnwrap).map(async ([key, dataMembers]) => {
       // Is the reference in our snapshot?
       if (Object.keys(snapData).includes(key)) {
         // Is our reference null?
