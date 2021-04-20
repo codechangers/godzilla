@@ -214,11 +214,11 @@ async function getTransactionData(snapData) {
             dataMembers.forEach(dm => {
               // Is the data memeber null?
               if (docData[dm] !== null) data[dm] = docData[dm];
-              else throw UnwrapError(m, 3, `${key}.${dm}`, snapData[key]);
+              else throw new UnwrapError(m, 3, `${key}.${dm}`, snapData[key]);
             });
-          } else throw UnwrapError(m, 2, key, snapData[key]);
-        } else if (!canBeNull.includes(key)) throw UnwrapError(m, 1, key, snapData[key]);
-      } else throw UnwrapError(m, 0, key, null);
+          } else throw new UnwrapError(m, 2, key, snapData[key]);
+        } else if (!canBeNull.includes(key)) throw new UnwrapError(m, 1, key, snapData[key]);
+      } else throw new UnwrapError(m, 0, key, null);
     })
   );
   data.validPromo = isPromoValid(snapData.promo, data, documents);
