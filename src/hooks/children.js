@@ -2,9 +2,19 @@ import { useState, useEffect } from 'react';
 import { toData } from '../utils/helpers';
 
 /**
- * Subscribe to a parent's children.
+ * Get static data from a given parent's children.
  */
-export const useParentChildren = accounts => {
+export const useParentChildren = accounts => getParentChildren(accounts, useChildren);
+
+/**
+ * Get live updating child data from a given parent.
+ */
+export const useLiveParentChildren = accounts => getParentChildren(accounts, useLiveChildren);
+
+/**
+ * Subscribe to a parent account and run a given callback when their children update.
+ */
+const getParentChildren = (accounts, callback) => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(
@@ -12,7 +22,7 @@ export const useParentChildren = accounts => {
       accounts.parents.ref.onSnapshot(async parentDoc => {
         setLoading(true);
         const childRefs = parentDoc.data().children || [];
-        setChildren(await getChildren(childRefs));
+        setChildren(await callback(childRefs));
         setLoading(false);
       }),
     [accounts]

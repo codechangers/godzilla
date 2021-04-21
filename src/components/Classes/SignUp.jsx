@@ -17,7 +17,7 @@ import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
 import { db } from '../../utils/firebase';
-import { useParentChildren } from '../../hooks/children';
+import { useLiveParentChildren } from '../../hooks/children';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -29,7 +29,7 @@ const propTypes = {
 };
 
 const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
-  const [children] = useParentChildren(accounts);
+  const [children] = useLiveParentChildren(accounts);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
@@ -72,6 +72,15 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       paymentRef.onSnapshot(paymentDoc => {
         console.log(paymentDoc.data());
         const { status } = paymentDoc.data();
+        /**
+         * TODO List:
+         * 1. [X] Pull the latest child data on success.
+         * 2. [ ] Test payment failures.
+         * 3. [ ] Test payment for admin.
+         * 3. [ ] Test promoCode payment.
+         * 4. [ ] Refactor all logic that uses the API_URL.
+         * 5. [ ] Delete student ids functionality from codebase.
+         */
         if (status === 'succeeded') updatePayment({ succeeded: true });
         else if (status === 'card_declined') {
           setIsProcessing(false);
