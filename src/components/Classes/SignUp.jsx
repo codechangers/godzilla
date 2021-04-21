@@ -17,7 +17,7 @@ import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
 import { db } from '../../utils/firebase';
-import { useLiveParentChildren } from '../../hooks/children';
+import { useLiveChildren } from '../../hooks/children';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -29,7 +29,7 @@ const propTypes = {
 };
 
 const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
-  const [children] = useLiveParentChildren(accounts);
+  const children = useLiveChildren(accounts);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
