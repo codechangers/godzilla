@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, IconButton, Button, Tooltip, makeStyles } from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
@@ -26,14 +26,6 @@ const propTypes = {
 const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => {
   const [showCheckOff, setShowCheckOff] = useState(false);
   const [students] = useChildren(cls.children);
-
-  useEffect(() => {
-    console.log('cls:', cls);
-  }, [cls]);
-
-  useEffect(() => {
-    console.log('students:', students);
-  }, [students]);
 
   const studentData = () =>
     students.map(s => ({
