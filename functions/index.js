@@ -131,7 +131,13 @@ exports.handleRegistraionPayment = functions.firestore
       }
       await tickPromo(numOfDiscounts, promo, data);
     } catch (error) {
-      const allowedStripeCodes = ['card_declined'];
+      const allowedStripeCodes = [
+        'card_declined',
+        'incorrect_cvc',
+        'expired_card',
+        'processing_error',
+        'incorrect_number'
+      ];
       let errorMessage = `${error}`;
       let status = 'failed';
       let logFullError = true;

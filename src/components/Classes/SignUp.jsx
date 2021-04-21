@@ -81,7 +81,13 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
          * 4. [ ] Refactor all logic that uses the API_URL.
          * 5. [ ] Delete student ids functionality from codebase.
          */
-        const stripeErrors = { card_declined: 'Your card was declined.' };
+        const stripeErrors = {
+          card_declined: 'Your card was declined.',
+          incorrect_cvc: "Your card's security code is incorrect.",
+          expired_card: 'Your card is expired.',
+          processing_error: 'We were unable to process your card.',
+          incorrect_number: 'The card number you entered is incorrect.'
+        };
         if (status === 'succeeded') updatePayment({ succeeded: true });
         else if (Object.keys(stripeErrors).includes(status)) {
           setIsProcessing(false);
@@ -285,7 +291,6 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     color: 'red',
-    fontWeight: 'bold',
     textAlign: 'center'
   },
   cardInfo: {
