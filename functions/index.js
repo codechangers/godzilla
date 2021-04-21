@@ -215,7 +215,7 @@ async function getTransactionData(snapData) {
             // Loop through required data members.
             dataMembers.forEach(dm => {
               // Is the data memeber valid?
-              if (docData.includes(dm) && docData[dm] !== null) data[dm] = docData[dm];
+              if (Object.keys(docData).includes(dm) && docData[dm] !== null) data[dm] = docData[dm];
               else throw new UnwrapError(m, 3, `${key}.${dm}`, snapData[key]);
             });
           } else throw new UnwrapError(m, 2, key, snapData[key]);
