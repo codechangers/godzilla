@@ -1,55 +1,79 @@
 import { useState, useEffect } from 'react';
 import { toData } from '../utils/helpers';
 
+/* ======================
+ * === Children Hooks ===
+ * ====================== */
+
+/**
+ * Get the data of each child reference given.
+ */
+export const useChildren = childRefs => {
+  const [children, setChildren] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  return [children, loading];
+};
+
+/**
+ * Subscribe to the data of of teach of the child references given.
+ */
+export const useLiveChildren = childRefs => {
+  const [children, setChildren] = useState([]);
+  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  return children;
+};
+
 /**
  * Get the data of each of a parents children.
  */
-export const useChildren = accounts => {
+export const useParentsChildren = accounts => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  // Subscribe to the parents children references.
-  useEffect(
-    () =>
-      accounts.parents.ref.onSnapshot(async parentDoc => {
-        setChildRefs(parentDoc.data().children || []);
-      }),
-    [accounts]
-  );
-  // Fetch the data of each of the parent's children once.
-  useEffect(() => {
-    /**
-     * This is how you are supposed to run async code in an effect.
-     * See this github issue for details:
-     * https://github.com/facebook/react/issues/14326#issuecomment-441680293
-     */
-    async function run() {
-      setLoading(true);
-      setChildren(await getChildren(childRefs));
-      setLoading(false);
-    }
-    run();
-  }, [childRefs]);
+  useEffect(parentChildRefsEffect(accounts, setChildRefs), [accounts]);
+  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
 /**
  * Subscribe to the data of each of a parents children.
  */
-export const useLiveChildren = accounts => {
+export const useParentsLiveChildren = accounts => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
+  useEffect(parentChildRefsEffect(accounts, setChildRefs), [accounts]);
+  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  return children;
+};
+
+/* ===============================
+ * === Custom Reusable Effects ===
+ * =============================== */
+
+/**
+ * Fetch the data of each of the parent's children once.
+ */
+const childDataEffect = (childRefs, setChildren, setLoading) => () => {
+  /**
+   * This is how you are supposed to run async code in an effect.
+   * See this github issue for details:
+   * https://github.com/facebook/react/issues/14326#issuecomment-441680293
+   */
+  async function run() {
+    setLoading(true);
+    setChildren(await getChildren(childRefs));
+    setLoading(false);
+  }
+  run();
+};
+
+/**
+ * Subscrive to each child's data.
+ */
+const liveChildDataEffect = (childRefs, setChildren) => {
   let subs = [];
-  // Subscribe to the parents children references.
-  useEffect(
-    () =>
-      accounts.parents.ref.onSnapshot(async parentDoc => {
-        setChildRefs(parentDoc.data().children || []);
-      }),
-    [accounts]
-  );
-  // Subscrive to each child's data.
-  useEffect(() => {
+  return () => {
     const childrenMap = {};
     childRefs.forEach(ref => {
       const sub = ref.onSnapshot(childDoc => {
@@ -63,9 +87,20 @@ export const useLiveChildren = accounts => {
       subs.forEach(sub => sub());
       subs = [];
     };
-  }, [childRefs]);
-  return children;
+  };
 };
+
+/**
+ * Subscribe to the parents children references.
+ */
+const parentChildRefsEffect = (accounts, setChildRefs) => () =>
+  accounts.parents.ref.onSnapshot(async parentDoc => {
+    setChildRefs(parentDoc.data().children || []);
+  });
+
+/* ====================
+ * === Hook Helpers ===
+ * ==================== */
 
 /**
  * Get the data of a list of child references.

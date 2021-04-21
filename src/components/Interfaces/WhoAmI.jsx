@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, makeStyles, CircularProgress } from '@material-ui/core';
-import { useChildren } from '../../hooks/children';
+import { useParentsChildren } from '../../hooks/children';
 
 const propTypes = {
   setWhoAmI: PropTypes.func.isRequired,
@@ -9,7 +9,7 @@ const propTypes = {
 };
 
 const WhoAmInterface = ({ setWhoAmI, accounts }) => {
-  const [children, loading] = useChildren(accounts);
+  const [children, loading] = useParentsChildren(accounts);
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
