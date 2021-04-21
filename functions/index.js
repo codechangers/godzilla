@@ -45,8 +45,8 @@ exports.createStripeSellerAccount = functions.firestore
 // Allow retry onUpdate
 exports.retryStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onUpdate(({ before, after }, context) => {
-    if (!before.data().stripeID) connectStripeSeller(after, context);
+  .onUpdate(({ after }, context) => {
+    if (!after.data().stripeID) connectStripeSeller(after, context);
     return 0;
   });
 
