@@ -77,14 +77,15 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
          * 1. [X] Pull the latest child data on success.
          * 2. [ ] Test payment failures.
          * 3. [ ] Test payment for admin.
-         * 3. [ ] Test promoCode payment.
+         * 3. [X] Test promoCode payment.
          * 4. [ ] Refactor all logic that uses the API_URL.
          * 5. [ ] Delete student ids functionality from codebase.
          */
+        const stripeErrors = { card_declined: 'Your card was declined.' };
         if (status === 'succeeded') updatePayment({ succeeded: true });
-        else if (status === 'card_declined') {
+        else if (Object.keys(stripeErrors).includes(status)) {
           setIsProcessing(false);
-          setInvalidPayment('Your Card was Declined.');
+          setInvalidPayment(stripeErrors[status]);
         } else if (status === 'failed') {
           updatePayment({ failed: true, error: 'Failed to complete payment!' });
         }

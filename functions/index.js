@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const fetch = require('node-fetch');
-const { Stripe } = require('stripe');
+const { Stripe, StripeCardError } = require('stripe');
 
 /**
  * Get the stripe user id of a seller when they connect their stripe account to
@@ -132,13 +132,26 @@ exports.handleRegistraionPayment = functions.firestore
       await tickPromo(numOfDiscounts, promo, data);
     } catch (error) {
       let errorMessage = `${error}`;
+      let status = 'failed';
+      let logFullError = true;
       if (error instanceof UnwrapError) {
+        // Handle Unwrap Errors
         const unwrapMessage = UnwrapMessages[error.stage];
         console.error(unwrapMessage, error.key, error.value);
         errorMessage = unwrapMessage;
+        logFullError = false;
+      } else if (error instanceof StripeCardError) {
+        // Handle Stripe Card Errors
+        const allowedCodes = ['card_declined'];
+        const validCode = allowedCodes.includes(error.code);
+        status = validCode ? error.code : status;
+        errorMessage = validCode ? error.message : errorMessage;
+        console.error('Stripe Error:', error.code, error.message);
+        logFullError = false;
       }
-      await snap.ref.update({ error: errorMessage, status: 'failed' });
-      console.error('Handle Registration Payment Failed!', error);
+      await snap.ref.update({ error: errorMessage, status });
+      console.error('Handle Registration Payment Failed!');
+      if (logFullError) console.error('->', error);
     }
   });
 
