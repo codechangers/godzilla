@@ -75,7 +75,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
         /**
          * TODO List:
          * 1. [X] Pull the latest child data on success.
-         * 2. [ ] Test payment failures.
+         * 2. [X] Test payment failures.
          * 3. [ ] Test payment for admin.
          * 3. [X] Test promoCode payment.
          * 4. [ ] Refactor all logic that uses the API_URL.

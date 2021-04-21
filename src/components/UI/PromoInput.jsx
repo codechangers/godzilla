@@ -102,7 +102,7 @@ const useStyles = makeStyles(theme => ({
   },
   text2: {
     fontSize: '0.8rem',
-    color: 'rgba(0,0,0,0.7)',
+    color: theme.palette.text.secondary,
     lineHeight: '12px'
   }
 }));
