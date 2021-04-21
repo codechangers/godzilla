@@ -2,18 +2,13 @@ const functions = require('firebase-functions');
 const fetch = require('node-fetch');
 const { Stripe } = require('stripe');
 
-const ADMIN_STRIPE_ID = functions.config().stripe.admin_id;
-const CLIENT_SECERET = functions.config().stripe.secret;
-const CLIENT_ID = functions.config().stripe.client_id;
-
-const stripe = new Stripe(CLIENT_SECERET);
-
 /**
  * Get the stripe user id of a seller when they connect their stripe account to
  * the Code Contest marketplace and store it in the stripeSellers collection.
  */
 const connectStripeSeller = async (snap, context) => {
   const { authCode } = snap.data();
+  const { secret } = envCreds(context);
 
   const handleError = async error => {
     await snap.ref.update({ error: error || 'Create Stripe Account Failed!' });
@@ -27,7 +22,7 @@ const connectStripeSeller = async (snap, context) => {
       body: JSON.stringify({ code: authCode, grant_type: 'authorization_code' }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${CLIENT_SECERET}`
+        Authorization: `Bearer ${secret}`
       }
     });
     res = await res.json();
@@ -60,14 +55,15 @@ exports.retryStripeSellerAccount = functions.firestore
  */
 exports.deleteStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(async snap => {
+  .onDelete(async (snap, context) => {
     const { stripeID } = snap.data();
+    const { clientId, secret } = envCreds(context);
     let res = await fetch('https://connect.stripe.com/oauth/deauthorize', {
       method: 'POST',
-      body: JSON.stringify({ client_id: CLIENT_ID, stripe_user_id: stripeID }),
+      body: JSON.stringify({ client_id: clientId, stripe_user_id: stripeID }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${CLIENT_SECERET}`
+        Authorization: `Bearer ${secret}`
       }
     });
     res = await res.json();
@@ -80,7 +76,9 @@ exports.deleteStripeSellerAccount = functions.firestore
  */
 exports.handleRegistraionPayment = functions.firestore
   .document('/env/{env}/payments/{paymentId}')
-  .onCreate(async snap => {
+  .onCreate(async (snap, context) => {
+    const { adminId, secret } = envCreds(context);
+    const stripe = new Stripe(secret);
     try {
       const data = await getTransactionData(snap.data());
       const [total, numOfDiscounts] = getTotalWithDiscount(data);
@@ -96,7 +94,7 @@ exports.handleRegistraionPayment = functions.firestore
         };
         let charge = null;
         // Create charge with no fee for market owner.
-        if (stripeID === ADMIN_STRIPE_ID) charge = await stripe.charges.create(chargeData);
+        if (stripeID === adminId) charge = await stripe.charges.create(chargeData);
         else {
           // Create charge with fee for everyone else.
           charge = await stripe.charges.create(
@@ -259,3 +257,24 @@ async function tickPromo(numOfDiscounts, promoRef, { uses, startUses, limited })
     else await promoRef.update({ startUses: startUses + numOfDiscounts });
   }
 }
+
+/**
+ * Get stripe credentials for the env that is being used.
+ */
+const envCreds = ({ params: { env } }) => {
+  // eslint-disable-next-line camelcase
+  const { admin_id, secret, client_id } = functions.config().stripe;
+  return env === 'PRODUCTION'
+    ? {
+        // Production Credentials
+        adminId: admin_id.prod,
+        clientId: client_id.prod,
+        secret: secret.prod
+      }
+    : {
+        // Development Credentials
+        adminId: admin_id.test,
+        clientId: client_id.test,
+        secret: secret.test
+      };
+};
