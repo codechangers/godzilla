@@ -86,7 +86,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
           incorrect_cvc: "Your card's security code is incorrect.",
           expired_card: 'Your card is expired.',
           processing_error: 'We were unable to process your card.',
-          incorrect_number: 'The card number you entered is incorrect.'
+          incorrect_number: 'Your card number is invalid.'
         };
         if (status === 'succeeded') updatePayment({ succeeded: true });
         else if (Object.keys(stripeErrors).includes(status)) {
