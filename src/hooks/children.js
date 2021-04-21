@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { toData } from '../utils/helpers';
 
 /**
- * Get data from a list of child references.
+ * Get the data of each of a parents children.
  */
 export const useChildren = accounts => {
   const [childRefs, setChildRefs] = useState([]);
