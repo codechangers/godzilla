@@ -82,7 +82,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
          * 3. [X] Test payment for admin.
          * 3. [X] Test promoCode payment.
          * 4. [X] Refactor all logic that uses the API_URL.
-         * 5. [ ] Delete student ids functionality from codebase.
+         * 5. [X] Delete student ids functionality from codebase.
          */
         const stripeErrors = {
           card_declined: 'Your card was declined.',
