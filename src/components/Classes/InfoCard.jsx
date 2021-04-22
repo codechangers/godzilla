@@ -31,7 +31,7 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
     students.map(s => ({
       first_name: s.fName,
       last_name: s.lName,
-      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
+      username: `user${Math.floor(Math.random() * 2000)}`,
       password: '12345678'
     }));
 

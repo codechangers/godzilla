@@ -20,8 +20,7 @@ const getInfo = student => [
   `${student.gender}`,
   `${student.birthDate ? getAgeFromBirthday(student.birthDate) : 'No Birth Date'}`,
   `${student.currentGrade} Grade`,
-  `${student.currentSchool}`,
-  `${student.learnID || 'No Student ID'}`
+  `${student.currentSchool}`
 ];
 
 const StudentInfoRow = ({ showLables, student }) => {
