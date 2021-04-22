@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from './styles';
 import AccountRequests from '../Interfaces/AccountRequests';
-import StudentIDs from '../Interfaces/StudentIDs';
 import ProfileInterface from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
 
@@ -15,7 +14,6 @@ const propTypes = {
 
 const routeToInterface = {
   '/admin': AccountRequests,
-  '/admin/ids': StudentIDs,
   '/admin/profile': ProfileInterface
 };
 
@@ -27,10 +25,7 @@ const AdminDashboard = ({ user, accounts, location }) => {
 
   return user.isSignedIn ? (
     <PageWrapper>
-      <SideBar
-        names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
-        baseRoute="/admin"
-      />
+      <SideBar names={['Profile', 'Dashboard', 'Parent Dash', 'Teacher Dash']} baseRoute="/admin" />
       {getInterface()}
     </PageWrapper>
   ) : (

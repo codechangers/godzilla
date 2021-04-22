@@ -13,7 +13,6 @@ import {
   AccountTree,
   SupervisorAccount,
   School,
-  Assignment,
   Description,
   MenuBook,
   VideogameAsset
@@ -69,8 +68,7 @@ const nameToIcon = {
   Games: VideogameAsset,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
-  'Admin Dash': SupervisorAccount,
-  'Student IDs': Assignment
+  'Admin Dash': SupervisorAccount
 };
 
 const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
@@ -95,8 +93,7 @@ const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
     Games: `${baseRoute}/games`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
-    'Admin Dash': '/admin',
-    'Student IDs': '/admin/ids'
+    'Admin Dash': '/admin'
   };
 
   const isSelected = (n, l) => {
