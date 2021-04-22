@@ -81,7 +81,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
          * 2. [X] Test payment failures.
          * 3. [X] Test payment for admin.
          * 3. [X] Test promoCode payment.
-         * 4. [ ] Refactor all logic that uses the API_URL.
+         * 4. [X] Refactor all logic that uses the API_URL.
          * 5. [ ] Delete student ids functionality from codebase.
          */
         const stripeErrors = {

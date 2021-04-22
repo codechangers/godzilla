@@ -11,7 +11,6 @@ import {
 } from '../../utils/helpers';
 import { db, auth } from '../../utils/firebase';
 import * as Styled from './styles';
-import { API_URL } from '../../utils/globals';
 
 const allFields = [
   'fName',
@@ -90,20 +89,13 @@ class ChildInfo extends React.Component {
     if (this.validateFields(allFields) === true) {
       const user = auth.currentUser;
       if (user) {
-        // eslint-disable-next-line
-        fetch(`${API_URL}/get_uid`)
-          .then(res => res.json())
-          .then(res => {
-            const learnID = res.uid;
-            db.collection('children')
-              .add({
-                learnID,
-                parent: db.collection('parents').doc(user.uid),
-                ...this.getUserData(allFields)
-              })
-              .then(child => {
-                this.props.addChildRef(db.collection('children').doc(child.id));
-              });
+        db.collection('children')
+          .add({
+            parent: db.collection('parents').doc(user.uid),
+            ...this.getUserData(allFields)
+          })
+          .then(child => {
+            this.props.addChildRef(db.collection('children').doc(child.id));
           });
         this.props.handleClose();
       }
