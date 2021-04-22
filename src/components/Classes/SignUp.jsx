@@ -74,13 +74,12 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       });
       // Listen for status updates.
       paymentRef.onSnapshot(paymentDoc => {
-        console.log(paymentDoc.data());
         const { status } = paymentDoc.data();
         /**
          * TODO List:
          * 1. [X] Pull the latest child data on success.
          * 2. [X] Test payment failures.
-         * 3. [ ] Test payment for admin.
+         * 3. [X] Test payment for admin.
          * 3. [X] Test promoCode payment.
          * 4. [ ] Refactor all logic that uses the API_URL.
          * 5. [ ] Delete student ids functionality from codebase.
