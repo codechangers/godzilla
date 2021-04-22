@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -27,6 +27,7 @@ import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
 import ClassSignUp from '../Classes/SignUp';
+import { useIdClass } from '../../hooks/classes';
 import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
@@ -71,47 +72,39 @@ const defaultClassInfo = {
 };
 
 const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }) => {
-  const [cls, setCls] = useState({});
-  const [foundClass, setFoundClass] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // Get a classId from the url.
+  const classId = useMemo(() => {
+    return location?.pathname.replace('/parent/signup/', '') || '';
+  }, [location.pathname]);
+  // TODO: Get live class data.
+  const [foundClass, cls, isLoading] = useIdClass(classId);
   const [showSignup, setShowSignup] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const [editFAQ, setEditFAQ] = useState([null, -1]);
+  const [originalInfo, setOriginalInfo] = useState(defaultClassInfo);
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
   const [isOwner, setIsOwner] = useState(false);
   const [inputCode, setInputCode] = useState('');
 
-  const updateClassInfo = newInfo => {
-    setClassInfo({ ...classInfo, ...newInfo });
+  const updateClassInfo = (newInfo, shouldSetOriginal = false) => {
+    const infoToBe = { ...classInfo, ...newInfo };
+    if (shouldSetOriginal) setOriginalInfo(infoToBe);
+    setClassInfo(infoToBe);
   };
 
+  // Check for class ownership.
   useEffect(() => {
-    const { pathname } = location;
-    if (pathname) {
-      db.collection('classes')
-        .doc(pathname.replace('/parent/signup/', ''))
-        .get()
-        .then(classDoc => {
-          if (classDoc.exists) {
-            setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
-            updateClassInfo(classDoc.data().info || defaultClassInfo);
-            setFoundClass(true);
-            if (classDoc.data().teacher.id === user.uid) {
-              setIsOwner(true);
-            }
-          } else {
-            setCls({ children: [] });
-          }
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-    // eslint-disable-next-line
-  }, [location, db]);
+    if (foundClass && cls.teacher.id === user.uid) setIsOwner(true);
+  }, [foundClass, cls, user]);
 
+  // Save class info to state.
+  useEffect(() => {
+    if (foundClass) updateClassInfo(cls.info || defaultClassInfo, true);
+  }, [foundClass, cls]);
+
+  // Use a custom app bar.
   useEffect(() => {
     if (isOwner) {
       let action = isEditing ? (
@@ -152,23 +145,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
     }
   }, [isOwner, isEditing, width]);
 
-  const getClassInfo = () => {
-    setIsLoading(true);
-    cls.ref
-      .get()
-      .then(classDoc => {
-        setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
-        updateClassInfo(classDoc.data().info || defaultClassInfo);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
-
   const saveClassInfo = () => {
-    cls.ref.update({ info: classInfo }).then(getClassInfo);
+    cls.ref.update({ info: classInfo });
   };
 
   const classes = useStyles();
@@ -186,7 +164,7 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
       </Typography>
       {isEditing && (
         <div className={classes.editButtons}>
-          <Button onClick={getClassInfo}>Revert Changes</Button>
+          <Button onClick={() => setClassInfo(originalInfo)}>Revert Changes</Button>
           <Button color="secondary" variant="outlined" onClick={saveClassInfo}>
             Save Changes
           </Button>
