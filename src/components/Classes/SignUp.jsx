@@ -23,9 +23,13 @@ const propTypes = {
   accounts: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  cls: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  stripe: PropTypes.object.isRequired
+  stripe: PropTypes.object.isRequired,
+  cls: PropTypes.object
+};
+
+const defaultProps = {
+  cls: null
 };
 
 const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
@@ -157,7 +161,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
   };
 
   const classes = useStyles();
-  return (
+  return cls !== null ? (
     <Modal open={open} onClose={onClose} className={classes.modal}>
       {isProcessing ? (
         <PaymentProcess
@@ -240,10 +244,10 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
         </>
       )}
     </Modal>
-  );
+  ) : null;
 };
-
 ClassSignUp.propTypes = propTypes;
+ClassSignUp.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   modal: {
