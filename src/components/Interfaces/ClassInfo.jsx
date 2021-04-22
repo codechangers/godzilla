@@ -76,8 +76,7 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
   const classId = useMemo(() => {
     return location?.pathname.replace('/parent/signup/', '') || '';
   }, [location.pathname]);
-  // TODO: Get live class data.
-  const [foundClass, cls, isLoading] = useIdClass(classId);
+  const [foundClass, cls, isLoading] = useIdClass(classId, true);
   const [showSignup, setShowSignup] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
