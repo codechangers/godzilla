@@ -75,15 +75,6 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       // Listen for status updates.
       paymentRef.onSnapshot(paymentDoc => {
         const { status } = paymentDoc.data();
-        /**
-         * TODO List:
-         * 1. [X] Pull the latest child data on success.
-         * 2. [X] Test payment failures.
-         * 3. [X] Test payment for admin.
-         * 3. [X] Test promoCode payment.
-         * 4. [X] Refactor all logic that uses the API_URL.
-         * 5. [X] Delete student ids functionality from codebase.
-         */
         const stripeErrors = {
           card_declined: 'Your card was declined.',
           incorrect_cvc: "Your card's security code is incorrect.",
