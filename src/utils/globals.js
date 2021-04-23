@@ -46,9 +46,7 @@ export const months = [
 ];
 
 export const programTypeToText = {
-  camp: 'Camp',
-  'after-school': 'After School Program',
-  'special-event': 'Special Event'
+  contest: 'Code Contest'
 };
 
 export const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

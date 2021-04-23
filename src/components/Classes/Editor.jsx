@@ -18,7 +18,7 @@ import {
   getErrorStatus,
   getDateFromTimestamp
 } from '../../utils/helpers';
-import { weekDays } from '../../utils/globals';
+import { programTypeToText, weekDays } from '../../utils/globals';
 import autoBind from '../../utils/autoBind';
 
 const allFields = [
@@ -60,7 +60,7 @@ class ClassEditor extends React.Component {
     super(props);
     this.state = {
       name: '',
-      programType: '',
+      programType: 'contest',
       description: '',
       locationName: '',
       locationAddress: '',
@@ -219,9 +219,9 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.programType}
             select
           >
-            <MenuItem value="camp">Camp</MenuItem>
-            <MenuItem value="after-school">After School Program</MenuItem>
-            <MenuItem value="special-event">Special Event</MenuItem>
+            {Object.entries(programTypeToText).map(([value, text]) => (
+              <MenuItem value={value}>{text}</MenuItem>
+            ))}
           </TextField>
         </div>
         {this.state.errors.daysOfWeek ? (
