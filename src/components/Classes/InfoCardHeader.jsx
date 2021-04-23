@@ -330,9 +330,10 @@ const styles = theme => ({
     zIndex: 2,
     position: 'relative',
     '& > span': {
-      width: '1px',
+      width: '2px',
       height: '10px',
-      backgroundColor: '#13506e',
+      borderRadius: '1px',
+      backgroundColor: 'var(--blue-color)',
       display: 'block'
     },
     [theme.breakpoints.down('sm')]: {
