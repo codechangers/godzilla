@@ -7,9 +7,9 @@ import {
   makeStyles,
   Paper,
   Button,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   InputBase,
   IconButton,
   Tooltip,
@@ -319,11 +319,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                 Important Information
               </Typography>
               {classInfo.faqs.map((faq, i) => (
-                <ExpansionPanel
-                  key={faq.q}
-                  className={clsx(classes.faqPanel, classes.faqPanelOutline)}
-                >
-                  <ExpansionPanelSummary
+                <Accordion key={faq.q} className={clsx(classes.faqPanel, classes.faqPanelOutline)}>
+                  <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
@@ -332,8 +329,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                     <Typography variant="h6" className={classes.question}>
                       {faq.q}
                     </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails className={classes.details}>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.details}>
                     <Typography variant="body1" className={classes.answer}>
                       {faq.a}
                     </Typography>
@@ -364,8 +361,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                         </Tooltip>
                       </div>
                     )}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  </AccordionDetails>
+                </Accordion>
               ))}
               {isEditing ? (
                 <Button
