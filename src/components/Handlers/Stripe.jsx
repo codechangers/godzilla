@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, CircularProgress } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import { withRouter, Redirect, Link } from 'react-router-dom';
 import { db } from '../../utils/firebase';
@@ -32,12 +32,14 @@ const StripeHandler = ({ user, location }) => {
       updateStatus({ error: 'Failed to connect to your stripe account. Please Try again.' });
     } else if (search.code) {
       // Create stripeSeller document
+      updateStatus({ loading: true });
       const sellerRef = db.collection('stripeSellers').doc(user.uid);
       await sellerRef.set({ authCode: search.code });
       return sellerRef.onSnapshot(sellerDoc => {
         const { stripeID, error } = sellerDoc.data();
         if (stripeID) completeTraining();
-        else if (error) updateStatus({ error: 'Failed to link accounts! Try again later.' });
+        else if (error)
+          updateStatus({ error: 'Failed to link accounts! Try again later.', loading: false });
       });
     }
     return () => {};
@@ -48,10 +50,10 @@ const StripeHandler = ({ user, location }) => {
       .collection('teachers')
       .doc(user.uid)
       .update({ isTraining: false });
-    updateStatus({ success: true });
+    updateStatus({ success: true, loading: false });
   };
 
-  const { success, error } = status;
+  const { success, loading, error } = status;
   return success ? (
     <Redirect to="/login" />
   ) : (
@@ -71,6 +73,7 @@ const StripeHandler = ({ user, location }) => {
       <Typography variant="h5">
         {error || 'Linking Stripe to your CodeChangers Account...'}
       </Typography>
+      {loading && <CircularProgress color="secondary" style={{ marginTop: 30 }} />}
       {error && (
         <Link to="/teacher" style={{ textDecoration: 'none', color: 'inherit', marginTop: 30 }}>
           <Button variant="outlined" color="secondary" startIcon={<ArrowBack />}>
