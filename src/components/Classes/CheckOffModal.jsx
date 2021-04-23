@@ -74,6 +74,14 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       </div>
       <TabPanel value={tabIndex} index={0} className={classes.panel}>
         <List className={classes.list}>
+          {children.length === 0 && (
+            <ListItem>
+              <ListItemText
+                style={{ textAlign: 'center ' }}
+                primary="Your students will show up here after they register!"
+              />
+            </ListItem>
+          )}
           {children.map(child => (
             <ListItem
               button
