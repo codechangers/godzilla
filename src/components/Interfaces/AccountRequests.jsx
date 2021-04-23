@@ -5,10 +5,9 @@ import TabPanel from '../UI/TabPanel';
 import { useAccountRequests } from '../../hooks/accountReqs';
 
 const AccountRequests = () => {
-  const [tabIndex, setTabIndex] = useState(0);
   const teacherReqs = useAccountRequests('teachers');
   const orgReqs = useAccountRequests('organizations');
-
+  const [tabIndex, setTabIndex] = useState(0);
   const classes = useStyles();
   return (
     <div className={classes.reqsWrapper}>
