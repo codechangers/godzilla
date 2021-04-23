@@ -5,12 +5,11 @@ import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LinkIcon from '@material-ui/icons/Link';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
+import VerifiedIcon from '@material-ui/icons/CheckCircle';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { URL } from '../../globals';
+import { URL } from '../../utils/globals';
 import InfoCardHeader from './InfoCardHeader';
-import CSVDownload from '../UI/CSVDownload';
 import StudentInfo from './StudentInfo';
 import { useChildren } from '../../hooks/children';
 import CheckOffModal from './CheckOffModal';
@@ -25,15 +24,7 @@ const propTypes = {
 
 const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => {
   const [showCheckOff, setShowCheckOff] = useState(false);
-  const students = useChildren(cls.children);
-
-  const studentData = () =>
-    students.map(s => ({
-      first_name: s.fName,
-      last_name: s.lName,
-      username: s.learnID || `user${Math.floor(Math.random() * 2000)}`,
-      password: '12345678'
-    }));
+  const [students] = useChildren(cls.children);
 
   const classes = useStyles();
   const small = isWidthUp(width, 'sm');
@@ -50,14 +41,13 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
             small={small}
           />
         </CopyToClipboard>
-        <CSVDownload filename={`${cls.name}-students.csv`} data={studentData()}>
-          <Option
-            icon={<DownloadIcon />}
-            text="Download Logins"
-            label="download-logins"
-            small={small}
-          />
-        </CSVDownload>
+        <Option
+          onClick={() => setShowCheckOff(true)}
+          icon={<VerifiedIcon />}
+          text="Check Offs"
+          label="check-off-progress"
+          small={small}
+        />
         <Option
           onClick={openContacts}
           icon={<ContactsIcon />}
@@ -80,9 +70,6 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
           small={small}
         />
       </div>
-      <button onClick={() => setShowCheckOff(true)} className={classes.checkOffButton}>
-        Check Off Progress
-      </button>
       <CheckOffModal
         open={showCheckOff}
         onClose={() => setShowCheckOff(false)}
@@ -144,7 +131,9 @@ const useStyles = makeStyles(theme => ({
     '& button': {
       marginRight: 16,
       fontSize: 12,
-      color: 'rgba(0, 0, 0, 0.6)',
+      [theme.breakpoints.up('md')]: {
+        color: 'rgba(0, 0, 0, 0.6)'
+      },
       '& svg': {
         marginRight: 8,
         [theme.breakpoints.down('sm')]: {
@@ -167,17 +156,6 @@ const useStyles = makeStyles(theme => ({
   students: {
     padding: '0 24px',
     minWidth: 936
-  },
-  checkOffButton: {
-    background: 'none',
-    outline: 'none',
-    border: 'none',
-    padding: 0,
-    fontSize: 14,
-    color: 'inherit',
-    cursor: 'pointer',
-    textDecoration: 'underline',
-    marginLeft: 40
   }
 }));
 

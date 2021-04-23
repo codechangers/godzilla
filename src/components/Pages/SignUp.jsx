@@ -9,13 +9,12 @@ import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import ThankYou from '../SignUpForms/ThankYou';
 import logoText from '../../assets/images/logoText.png';
-import autoBind from '../../autoBind';
+import autoBind from '../../utils/autoBind';
+import { auth } from '../../utils/firebase';
 
 import * as Styled from './styles';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   updateAccounts: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   location: PropTypes.shape({
@@ -41,8 +40,6 @@ class SignUp extends React.Component {
       signupID: '',
       redirectOnUpdate: false
     };
-    this.firebase = this.props.firebase;
-    this.db = this.props.db;
     autoBind(this);
   }
 
@@ -75,7 +72,7 @@ class SignUp extends React.Component {
 
   logout() {
     this.setState({ redirectOnUpdate: true });
-    this.props.firebase.auth().signOut();
+    auth.signOut();
   }
 
   render() {
@@ -95,8 +92,6 @@ class SignUp extends React.Component {
         </Styled.LogoButton>
         <Styled.Form full={formIndex === 0}>
           <Form
-            db={this.db}
-            firebase={this.firebase}
             accountType={accountType}
             next={() => this.setFormIndex(1)}
             prev={() => this.setFormIndex(-1)}

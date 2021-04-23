@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { breakpoints } from '../../globals';
+import { breakpoints } from '../../utils/globals';
 
 export const SignupWrapper = styled.div({
   width: '100%',

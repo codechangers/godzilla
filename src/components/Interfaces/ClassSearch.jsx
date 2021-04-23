@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
 import { withRouter, Redirect, Link } from 'react-router-dom';
-import { programTypeToText } from '../../globals';
+import { programTypeToText } from '../../utils/globals';
+import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
 
 const propTypes = {
   classes: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   user: PropTypes.object,
   accounts: PropTypes.object
@@ -20,7 +20,7 @@ const defaultProps = {
   accounts: { helper: true }
 };
 
-const ClassSearchInterface = ({ classes, db, location, user, accounts }) => {
+const ClassSearchInterface = ({ classes, location, user, accounts }) => {
   const [classList, setClassList] = useState([]);
   const [showOldClasses] = useState(false);
   const [searchId, setSearchId] = useState('');

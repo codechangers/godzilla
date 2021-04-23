@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
-import { Typography } from '@material-ui/core';
 import { PageWrapper } from './styles';
 import Profile from '../Interfaces/Profile';
 import SideBar from '../UI/SideBar';
@@ -12,19 +11,14 @@ import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import DocumentationInterface from '../Interfaces/Documentation';
 import TutorialsInterface from '../Interfaces/Tutorials';
+import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
+import { STRIPE_KEY } from '../../utils/globals';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  apiKey: PropTypes.string
-};
-
-const defaultProps = {
-  apiKey: null
+  location: PropTypes.object.isRequired
 };
 
 const routeToInterface = {
@@ -34,12 +28,13 @@ const routeToInterface = {
   '/parent/profile': Profile,
   '/parent/settings': SettingsInterface,
   '/parent/docs': DocumentationInterface,
-  '/parent/tutorials': TutorialsInterface
+  '/parent/tutorials': TutorialsInterface,
+  '/parent/games': GamesInterface
 };
 
-const whoAmIRoutes = ['/parent/docs', '/parent/tutorials'];
+const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
 
-const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => {
+const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
 
   // Custom Action Bar Init
@@ -62,47 +57,30 @@ const ParentDashboard = ({ firebase, user, accounts, db, location, apiKey }) => 
     let Interface = routeToInterface[cleanPath];
     if (whoAmIRoutes.includes(cleanPath) && whoAmI === null) Interface = WhoAmInterface;
     return Interface === null ? null : (
-      <Interface {...{ firebase, accounts, db, user, useCustomAppBar, whoAmI, setWhoAmI }} />
+      <Interface {...{ accounts, user, useCustomAppBar, whoAmI, setWhoAmI }} />
     );
   };
 
-  const SP = apiKey ? StripeProvider : Fail;
   let approvedRoutes = accounts.teachers ? ['Teacher Dash'] : [];
   approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'My Classes', 'Class Search', 'Docs', 'Tutorials'].concat(
+        names={['Profile', 'My Classes', 'Class Search', 'Games', 'Docs', 'Tutorials'].concat(
           approvedRoutes
         )}
         baseRoute="/parent"
-        firebase={firebase}
         appBarConfig={cab}
       />
-      <SP apiKey={apiKey}>
-        <Elements>
-          {getInterface() || <ClassViewInterface firebase={firebase} db={db} accounts={accounts} />}
-        </Elements>
-      </SP>
+      <StripeProvider apiKey={STRIPE_KEY}>
+        <Elements>{getInterface() || <ClassViewInterface accounts={accounts} />}</Elements>
+      </StripeProvider>
     </PageWrapper>
   ) : (
     <Redirect to={{ pathname: '/login', state: { signupID: getID() } }} />
   );
 };
 ParentDashboard.propTypes = propTypes;
-ParentDashboard.defaultProps = defaultProps;
-
-const Fail = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', padding: 12 }}>
-    <Typography variant="h4" style={{ marginTop: 36, marginBottom: 18 }}>
-      Server Error!
-    </Typography>
-    <Typography variant="body1" style={{ marginBottom: 18 }}>
-      Sorry, we are currently experiencing some technical difficulties.
-    </Typography>
-    <Typography variant="h5">Please try again later.</Typography>
-  </div>
-);
 
 export default withRouter(ParentDashboard);

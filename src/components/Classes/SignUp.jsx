@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -16,20 +16,25 @@ import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
-import { API_URL } from '../../globals';
+import { db } from '../../utils/firebase';
+import { useParentsLiveChildren } from '../../hooks/children';
 
 const propTypes = {
+  accounts: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  cls: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  stripe: PropTypes.object.isRequired
+  stripe: PropTypes.object.isRequired,
+  cls: PropTypes.object
 };
 
-const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
+const defaultProps = {
+  cls: null
+};
+
+const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
+  const children = useParentsLiveChildren(accounts);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
   const [invalidPayment, setInvalidPayment] = useState('');
@@ -42,28 +47,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
     setPayment({ ...payment, ...changes });
   };
 
-  useEffect(() => {
-    return db
-      .collection('parents')
-      .doc(user.uid)
-      .onSnapshot(parentDoc => {
-        const childrenData = [];
-        const childrenRefs = parentDoc.data().children || [];
-        childrenRefs.forEach(child => {
-          child.get().then(childDoc => {
-            const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-            childrenData.push(childData);
-            if (childrenData.length === childrenRefs.length) {
-              setChildren(childrenData);
-            }
-          });
-        });
-      });
-  }, [db, user]);
-
   const handleSubmit = async () => {
     let token;
     let errorMessage = 'Invalid Payment Information!';
+    // Get Stripe Token.
     if (getTotal() > 0) {
       const stripePayment = await stripe.createToken({ name: 'Registration Payment' });
       token = stripePayment.token;
@@ -75,50 +62,34 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
       setIsProcessing(true);
       setInvalidPayment('');
       updatePayment({ error: '' });
-      // eslint-disable-next-line
-      fetch(`${API_URL}/charge`, {
-        method: 'POST',
-        body: JSON.stringify({
-          token: token ? token.id : '1234',
-          classID: cls.id,
-          teacherID: cls.teacher.id,
-          parentID: user.uid,
-          promoId: promoDoc !== null ? promoDoc.id : '1234',
-          numberOfChildren: selectedChildren.filter(c => !checkDisabled(c)).length
-        }),
-        headers: {
-          'Content-Type': 'application/json'
+      // Create Payment Document.
+      const paymentRef = await db.collection('payments').add({
+        stripeToken: token.id,
+        classRef: cls.ref,
+        seller: db.collection('stripeSellers').doc(cls.teacher.id),
+        parent: accounts.parents.ref,
+        promo: promoDoc !== null ? promoDoc.ref : null,
+        kidsToRegister: selectedChildren.map(c => c.ref),
+        userID: user.uid
+      });
+      // Listen for status updates.
+      paymentRef.onSnapshot(paymentDoc => {
+        const { status } = paymentDoc.data();
+        const stripeErrors = {
+          card_declined: 'Your card was declined.',
+          incorrect_cvc: "Your card's security code is incorrect.",
+          expired_card: 'Your card is expired.',
+          processing_error: 'We were unable to process your card.',
+          incorrect_number: 'Your card number is invalid.'
+        };
+        if (status === 'succeeded') updatePayment({ succeeded: true });
+        else if (Object.keys(stripeErrors).includes(status)) {
+          setIsProcessing(false);
+          setInvalidPayment(stripeErrors[status]);
+        } else if (status === 'failed') {
+          updatePayment({ failed: true, error: 'Failed to complete payment!' });
         }
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (res.status === 200) {
-            const clsChildren = cls.children || [];
-            selectedChildren.forEach(child => {
-              const classes = child.classes || [];
-              classes.push(cls.ref);
-              child.ref.update({ classes });
-              clsChildren.push(child.ref);
-            });
-            cls.ref.update({ children: clsChildren });
-            updatePayment({ succeeded: true });
-          } else if (res.error) {
-            console.log(res.error);
-            if (res.error.code === 'card_declined') {
-              setIsProcessing(false);
-              setInvalidPayment('Your Card was Declined.');
-            } else {
-              updatePayment({ failed: true });
-              updatePayment({ error: res.error.message });
-            }
-          } else {
-            updatePayment({ failed: true });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          updatePayment({ failed: true });
-        });
+      });
     } else {
       setIsProcessing(false);
       setInvalidPayment(errorMessage);
@@ -180,7 +151,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
   };
 
   const classes = useStyles();
-  return (
+  return cls !== null ? (
     <Modal open={open} onClose={onClose} className={classes.modal}>
       {isProcessing ? (
         <PaymentProcess
@@ -263,10 +234,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
         </>
       )}
     </Modal>
-  );
+  ) : null;
 };
-
 ClassSignUp.propTypes = propTypes;
+ClassSignUp.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -314,7 +285,6 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     color: 'red',
-    fontWeight: 'bold',
     textAlign: 'center'
   },
   cardInfo: {

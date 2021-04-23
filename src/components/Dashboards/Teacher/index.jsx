@@ -14,12 +14,11 @@ import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
+import { db } from '../../../utils/firebase';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 
@@ -35,7 +34,7 @@ const routeToInterface = {
 };
 
 const TeacherDashboard = props => {
-  const { accounts, db, firebase, user, location } = props;
+  const { accounts, user, location } = props;
   const [teacher, setTeacher] = useState(null);
 
   // Custom Action Bar Init
@@ -50,13 +49,11 @@ const TeacherDashboard = props => {
         .doc(accounts.teachers.id)
         .onSnapshot(tDoc => setTeacher(tDoc.data()));
     return () => {};
-  }, [db, accounts]);
+  }, [accounts]);
 
   const getInterface = () => {
     const Interface = routeToInterface[location.pathname];
-    return Interface === null ? null : (
-      <Interface {...{ firebase, db, user, accounts, useCustomAppBar }} />
-    );
+    return Interface === null ? null : <Interface {...{ user, accounts, useCustomAppBar }} />;
   };
 
   const getDashboard = () => {
@@ -84,7 +81,6 @@ const TeacherDashboard = props => {
       <SideBar
         names={['Profile', 'Dashboard'].concat(approvedRoutes)}
         baseRoute="/teacher"
-        firebase={firebase}
         appBarConfig={cab}
       />
       {getInterface() || getDashboard()}

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter, Link } from 'react-router-dom';
-import firebase from 'firebase/app';
-import 'firebase/auth';
 import {
   Box,
   Button,
@@ -16,9 +14,10 @@ import {
   withStyles
 } from '@material-ui/core';
 
-import autoBind from '../../autoBind';
+import autoBind from '../../utils/autoBind';
 import { LogoText } from '../Images';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import { auth, googleSignIn } from '../../utils/firebase';
+import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
 import GoogleIcon from '../../assets/images/googleIcon.svg';
 
 const errorCodeToMessage = {
@@ -35,8 +34,6 @@ const accountTypeToRoute = {
 };
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
@@ -57,8 +54,6 @@ class Login extends React.Component {
       backgroundImage: 0,
       errors: {}
     };
-    this.firebase = props.firebase;
-    this.db = props.db;
     this.getUserData = getUserData;
     this.validateFields = validateFields;
     autoBind(this);
@@ -105,8 +100,7 @@ class Login extends React.Component {
 
   resetPassword() {
     if (this.validateFields(['email'])) {
-      this.firebase
-        .auth()
+      auth
         .sendPasswordResetEmail(this.state.email)
         .then(() => {
           this.setState({ showResetPrompt: true });
@@ -135,28 +129,14 @@ class Login extends React.Component {
     const { email, password, errors } = this.state;
 
     if (this.validateFields(['email', 'password']) === true) {
-      this.firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(err => {
-          errors.email = err.code === 'auth/user-not-found' ? errorCodeToMessage[err.code] : '';
-          errors.password = err.code === 'auth/wrong-password' ? errorCodeToMessage[err.code] : '';
-          this.setState({ errors });
-        });
+      auth.signInWithEmailAndPassword(email, password).catch(err => {
+        errors.email = err.code === 'auth/user-not-found' ? errorCodeToMessage[err.code] : '';
+        errors.password = err.code === 'auth/wrong-password' ? errorCodeToMessage[err.code] : '';
+        this.setState({ errors });
+      });
     } else {
       this.setState({ errors });
     }
-  }
-
-  googleSignIn() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('email');
-    this.firebase
-      .auth()
-      .signInWithPopup(provider)
-      .catch(err => {
-        console.log(err);
-      });
   }
 
   render() {
@@ -257,7 +237,7 @@ class Login extends React.Component {
                   Sign In
                 </Button>
                 <Button
-                  onClick={this.googleSignIn}
+                  onClick={googleSignIn}
                   style={{ backgroundColor: '#fff', color: 'rgba(0, 0, 0, 0.6)' }}
                   variant="contained"
                 >

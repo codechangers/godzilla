@@ -18,8 +18,8 @@ import ClassEditor from '../../Classes/Editor';
 import Modal from '../../UI/Modal';
 import StripeConnect from '../../UI/StripeConnect';
 import ContactInfo from '../../UI/ContactInfo';
-import autoBind from '../../../autoBind';
-import { API_URL } from '../../../globals';
+import autoBind from '../../../utils/autoBind';
+import { db } from '../../../utils/firebase';
 import DeleteModal from '../../Interfaces/interfaceHelpers/DeleteModal';
 
 const getName = user => `${user.data().fName} ${user.data().lName}`;
@@ -32,9 +32,6 @@ const getMessage = () => (
 );
 
 const getClassRefs = classes => classes.map(cls => cls.ref);
-
-const controller = new AbortController();
-let abort = () => null;
 
 class ApprovedTeacher extends React.Component {
   constructor(props) {
@@ -53,18 +50,15 @@ class ApprovedTeacher extends React.Component {
 
   componentDidMount() {
     this.fetchClasses();
-    // eslint-disable-next-line
-    fetch(`${API_URL}/teacher_account/${this.props.user.uid}`, { method: 'GET' })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({ stripeIsLinked: res.stripe_is_linked });
+    db.collection('stripeSellers')
+      .doc(this.props.user.uid)
+      .get()
+      .then(sellerDoc => {
+        if (sellerDoc.exists) {
+          const { stripeID } = sellerDoc.data();
+          this.setState({ stripeIsLinked: stripeID !== undefined });
+        } else this.setState({ stripeIsLinked: false });
       });
-    abort = controller.abort.bind(controller);
-  }
-
-  componentWillUnmount() {
-    abort();
-    abort = () => null;
   }
 
   getEmptyPrompt() {
@@ -169,8 +163,7 @@ class ApprovedTeacher extends React.Component {
 
   createClass(classData) {
     const { teachers } = this.props.accounts;
-    this.props.db
-      .collection('classes')
+    db.collection('classes')
       .add({ ...classData, children: [], teacher: teachers.ref })
       .then(classObj => {
         const classes = getClassRefs(this.state.classes);
@@ -182,8 +175,7 @@ class ApprovedTeacher extends React.Component {
 
   updateClass(classId, classData) {
     this.setState({ loadingClasses: true });
-    this.props.db
-      .collection('classes')
+    db.collection('classes')
       .doc(classId)
       .update(classData)
       .then(() => {
@@ -296,7 +288,6 @@ class ApprovedTeacher extends React.Component {
 
 ApprovedTeacher.propTypes = {
   accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };

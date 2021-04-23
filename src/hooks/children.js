@@ -1,69 +1,69 @@
-import { useState, useEffect } from 'react';
-import { toData } from '../helpers';
+import { useState, useEffect, useMemo } from 'react';
+import { getDataEffectBase, onSnapshotDataEffectBase } from '../utils/effectBases';
+
+/* ======================
+ * === Children Hooks ===
+ * ====================== */
 
 /**
- * Subscribe to a parent's children.
+ * Get the data of each child reference given.
  */
-export const useParentChildren = accounts => {
+export const useChildren = childRefs => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(
-    () =>
-      accounts.parents.ref.onSnapshot(async parentDoc => {
-        setLoading(true);
-        const childRefs = parentDoc.data().children || [];
-        setChildren(await getChildren(childRefs));
-        setLoading(false);
-      }),
-    [accounts]
-  );
+  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
 /**
- * Get data from childRefs.
- */
-export const useChildren = childRefs => {
-  const [children, setChildren] = useState([]);
-  useEffect(() => {
-    /**
-     * This is how you are supposed to run async code in an effect.
-     * See this github issue for details:
-     * https://github.com/facebook/react/issues/14326#issuecomment-441680293
-     */
-    async function run() {
-      setChildren(await getChildren(childRefs));
-    }
-    run();
-  }, [childRefs]);
-  return children;
-};
-
-/**
- * Subscribe to each child reference given.
+ * Subscribe to the data of of teach of the child references given.
  */
 export const useLiveChildren = childRefs => {
   const [children, setChildren] = useState([]);
-  let subs = [];
-  useEffect(() => {
-    const childrenMap = {};
-    childRefs.forEach(ref => {
-      const sub = ref.onSnapshot(childDoc => {
-        childrenMap[childDoc.id] = toData(childDoc);
-        setChildren(Object.values(childrenMap));
-      });
-      subs.push(sub);
-    });
-    // Cleanup subscriptions.
-    return () => {
-      subs.forEach(sub => sub());
-      subs = [];
-    };
-  }, [childRefs]);
+  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
   return children;
 };
 
 /**
- * Get the data of a list of child references.
+ * Get the data of each of a parents children.
  */
-const getChildren = refs => Promise.all(refs.map(async childRef => toData(await childRef.get())));
+export const useParentsChildren = accounts => {
+  const [childRefs, setChildRefs] = useState([]);
+  const [children, setChildren] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
+  useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
+  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  return [children, loading];
+};
+
+/**
+ * Subscribe to the data of each of a parents children.
+ */
+export const useParentsLiveChildren = accounts => {
+  const [childRefs, setChildRefs] = useState([]);
+  const [children, setChildren] = useState([]);
+  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
+  useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
+  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  return children;
+};
+
+/* ===============================
+ * === Custom Reusable Effects ===
+ * =============================== */
+
+/**
+ * Fetch the data of each of the parent's children once.
+ */
+const childDataEffect = getDataEffectBase(false);
+
+/**
+ * Subscribe to each child's data.
+ */
+const liveChildDataEffect = onSnapshotDataEffectBase(false);
+
+/**
+ * Subscribe to the parents children references.
+ */
+const parentChildRefsEffect = onSnapshotDataEffectBase(true, doc => doc.data().children || []);

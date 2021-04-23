@@ -12,9 +12,14 @@ import {
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
-import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
-import { weekDays } from '../../globals';
-import autoBind from '../../autoBind';
+import {
+  getUserData,
+  validateFields,
+  getErrorStatus,
+  getDateFromTimestamp
+} from '../../utils/helpers';
+import { weekDays } from '../../utils/globals';
+import autoBind from '../../utils/autoBind';
 
 const allFields = [
   'name',

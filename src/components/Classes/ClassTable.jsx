@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell
 } from '@material-ui/core';
-import { getDate, getTime, getWeekDays, calcSessions } from '../../helpers';
+import { getDate, getTime, getWeekDays, calcSessions } from '../../utils/helpers';
 
 const propTypes = {
   cls: PropTypes.object.isRequired

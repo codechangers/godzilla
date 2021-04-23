@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TableRow, TableCell } from '@material-ui/core';
-import { getAgeFromBirthday } from '../../helpers';
+import { getAgeFromBirthday } from '../../utils/helpers';
 
 const propTypes = {
   showLables: PropTypes.bool,
@@ -20,8 +20,7 @@ const getInfo = student => [
   `${student.gender}`,
   `${student.birthDate ? getAgeFromBirthday(student.birthDate) : 'No Birth Date'}`,
   `${student.currentGrade} Grade`,
-  `${student.currentSchool}`,
-  `${student.learnID || 'No Student ID'}`
+  `${student.currentSchool}`
 ];
 
 const StudentInfoRow = ({ showLables, student }) => {

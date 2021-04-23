@@ -14,8 +14,7 @@ import ParentDashboard from './Dashboards/Parent';
 import TeacherDashboard from './Dashboards/Teacher/index';
 import OrganizationDashboard from './Dashboards/Organization/index';
 import StripeHandler from './Handlers/Stripe';
-import { API_URL } from '../globals';
-import firebase from '../firebase';
+import { db, auth } from '../utils/firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
 import theme from './theme';
@@ -41,30 +40,16 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: { isSignedIn: false },
-      accounts: {},
-      apiKey: null
+      accounts: {}
     };
-    this.firebase = firebase();
-    this.db = this.firebase
-      .firestore()
-      .collection('env')
-      .doc(process.env.REACT_APP_ENV);
   }
 
   componentDidMount() {
-    authSubscription = this.firebase.auth().onAuthStateChanged(u => {
+    authSubscription = auth.onAuthStateChanged(u => {
       const user = u !== null ? { isSignedIn: true, ...u } : { isSignedIn: false };
       this.updateAccounts(user);
       this.setState({ user });
     });
-    // eslint-disable-next-line
-    fetch(`${API_URL}/stripe_key`, { method: 'GET' })
-      .then(res => res.json())
-      .then(res => this.setState({ apiKey: res.stripe_key }))
-      .catch(err => {
-        console.error(err);
-        this.setState({ apiKey: null });
-      });
   }
 
   componentWillUnmount() {
@@ -76,8 +61,7 @@ class App extends React.Component {
     if (user.isSignedIn) {
       let total = 0;
       ['teachers', 'organizations', 'parents', 'admins'].forEach(collection => {
-        this.db
-          .collection(collection)
+        db.collection(collection)
           .doc(user.uid)
           .get()
           .then(doc => {
@@ -123,9 +107,6 @@ class App extends React.Component {
                       user={this.state.user}
                       accounts={this.state.accounts}
                       updateAccounts={user => this.updateAccounts(user)}
-                      firebase={this.firebase}
-                      db={this.db}
-                      apiKey={this.state.apiKey}
                       OAuthed={() => this.setState({ user: { ...this.state.user, OAuthed: true } })}
                     />
                   );

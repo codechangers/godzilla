@@ -4,14 +4,14 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
 import DeleteModal from './interfaceHelpers/DeleteModal';
+import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 const propTypes = {
-  user: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 };
 
-const PromoCodesInterface = ({ user, db }) => {
+const PromoCodesInterface = ({ user }) => {
   const [teacher, setTeacher] = useState(null);
   const [promos, setPromos] = useState([]);
   const [showForm, setShowForm] = useState(false);

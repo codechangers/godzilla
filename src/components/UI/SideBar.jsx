@@ -13,9 +13,9 @@ import {
   AccountTree,
   SupervisorAccount,
   School,
-  Assignment,
   Description,
-  MenuBook
+  MenuBook,
+  VideogameAsset
 } from '@material-ui/icons';
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -28,7 +28,6 @@ const propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   appBarConfig: PropTypes.shape({
     title: PropTypes.string,
@@ -66,13 +65,13 @@ const nameToIcon = {
   Settings,
   Docs: Description,
   Tutorials: MenuBook,
+  Games: VideogameAsset,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
-  'Admin Dash': SupervisorAccount,
-  'Student IDs': Assignment
+  'Admin Dash': SupervisorAccount
 };
 
-const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) => {
+const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
   const { title, content, action, clsname, wrap, wrappedContent } = {
     ...defaultABC,
     ...appBarConfig
@@ -91,10 +90,10 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
     Settings: `${baseRoute}/settings`,
     Docs: `${baseRoute}/docs`,
     Tutorials: `${baseRoute}/tutorials`,
+    Games: `${baseRoute}/games`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
-    'Admin Dash': '/admin',
-    'Student IDs': '/admin/ids'
+    'Admin Dash': '/admin'
   };
 
   const isSelected = (n, l) => {
@@ -179,7 +178,7 @@ const SideBar = ({ names, baseRoute, location, firebase, width, appBarConfig }) 
               );
             })}
             <div className={classes.sideBarBottom}>
-              <Logout firebase={firebase} className={classes.logoutButton} />
+              <Logout className={classes.logoutButton} />
             </div>
           </div>
           <div className={classes.sidebarBorder} />

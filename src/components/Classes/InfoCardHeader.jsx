@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
-import { getDateString, getTime } from '../../helpers';
-import { programTypeToText } from '../../globals';
+import { getDateString, getTime } from '../../utils/helpers';
+import { programTypeToText } from '../../utils/globals';
 import { Template2 } from '../Images';
 import ScheduleModal from '../UI/ScheduleModal';
+import { db } from '../../utils/firebase';
 
 const SignUpsProgress = withStyles({
   root: {
@@ -29,9 +30,8 @@ class InfoCardHeader extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.db !== null) {
-      this.props.db
-        .collection('parents')
+    if (db !== null) {
+      db.collection('parents')
         .doc(this.props.cls.teacher.id)
         .get()
         .then(teacherDoc => {
@@ -150,7 +150,6 @@ class InfoCardHeader extends React.Component {
 InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired,
   children: PropTypes.node,
-  db: PropTypes.object,
   preview: PropTypes.bool,
   hideImage: PropTypes.bool,
   hideAccountType: PropTypes.bool,
@@ -159,7 +158,6 @@ InfoCardHeader.propTypes = {
 
 InfoCardHeader.defaultProps = {
   children: null,
-  db: null,
   preview: false,
   hideImage: false,
   hideAccountType: false

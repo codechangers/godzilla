@@ -10,8 +10,9 @@ import {
   CardHeader,
   CardContent
 } from '@material-ui/core';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
-import autoBind from '../../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
+import { db, auth } from '../../utils/firebase';
+import autoBind from '../../utils/autoBind';
 
 import * as Styled from './styles';
 
@@ -19,8 +20,6 @@ const propTypes = {
   accountType: PropTypes.string.isRequired,
   next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   OAuthed: PropTypes.func.isRequired
 };
@@ -54,8 +53,6 @@ class GenericSignUp extends React.Component {
     };
     this.getUserData = getUserData;
     this.validateFields = validateFields;
-    this.firebase = props.firebase;
-    this.db = props.db;
     autoBind(this);
   }
 
@@ -98,8 +95,7 @@ class GenericSignUp extends React.Component {
   }
 
   createParentDoc(user, accountType) {
-    this.db
-      .collection(accountTypeToCollection.parent)
+    db.collection(accountTypeToCollection.parent)
       .doc(user.uid)
       .set(
         this.getUserData([
@@ -129,8 +125,7 @@ class GenericSignUp extends React.Component {
     const { email, password } = this.state;
     const { accountType } = this.props;
     if (this.validateFields([...allFields, accountType === 'parent' ? 'address' : '']) === true) {
-      this.firebase
-        .auth()
+      auth
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {

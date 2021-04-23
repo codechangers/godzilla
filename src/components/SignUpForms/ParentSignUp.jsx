@@ -15,13 +15,12 @@ import {
 import UserIcon from '@material-ui/icons/PermIdentityOutlined';
 import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
-import autoBind from '../../autoBind';
+import autoBind from '../../utils/autoBind';
+import { db, auth } from '../../utils/firebase';
 
 import * as Styled from './styles';
 
 const propTypes = {
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired
 };
@@ -50,14 +49,13 @@ class ParentSignUp extends React.Component {
   }
 
   removeChild(childDoc) {
-    const user = this.props.firebase.auth().currentUser;
+    const user = auth.currentUser;
     let { childrenRefs, childrenData } = this.state;
     childrenRefs = childrenRefs.filter(c => c.id !== childDoc.ref.id);
     childrenData = childrenData.filter(c => c.ref.id !== childDoc.ref.id);
     this.setState({ childrenRefs, childrenData });
     childDoc.ref.delete().then(() => {
-      this.props.db
-        .collection('parents')
+      db.collection('parents')
         .doc(user.uid)
         .update({ children: childrenRefs });
     });
@@ -70,12 +68,11 @@ class ParentSignUp extends React.Component {
   }
 
   addChildRef(childRef) {
-    const user = this.props.firebase.auth().currentUser;
+    const user = auth.currentUser;
     const { childrenRefs } = this.state;
     childrenRefs.push(childRef);
     this.setState({ childrenRefs });
-    this.props.db
-      .collection('parents')
+    db.collection('parents')
       .doc(user.uid)
       .update({
         children: this.state.childrenRefs
@@ -92,8 +89,6 @@ class ParentSignUp extends React.Component {
   render() {
     return this.state.showChildEditor ? (
       <ChildInfo
-        db={this.props.db}
-        firebase={this.props.firebase}
         addChildRef={this.addChildRef}
         handleClose={() => this.setState({ showChildEditor: false, currentStudent: null })}
         prevData={this.state.currentStudent}

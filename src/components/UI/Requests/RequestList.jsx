@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { makeStyles, Paper, CircularProgress, Grid } from '@material-ui/core';
 import Request, { AccountChip } from './Request';
 import RequestModal from './RequestModal';
-import { STATUS } from '../../../globals';
-import { getStatus } from '../../../helpers';
+import { STATUS } from '../../../utils/globals';
+import { getStatus } from '../../../utils/helpers';
 
 const propTypes = {
   reqs: PropTypes.array.isRequired,
