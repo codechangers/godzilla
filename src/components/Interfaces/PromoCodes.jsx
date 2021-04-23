@@ -90,6 +90,13 @@ const PromoCodesInterface = ({ user }) => {
           Show Current Promo Codes
         </Button>
       )}
+      {promos.filter(p => (showOldPromos ? !p.active : p.active)).length === 0 && (
+        <Typography variant="h5" style={{ marginTop: 40 }}>
+          {showOldPromos
+            ? "You haven't deactivated any promo codes."
+            : "You haven't created any promo codes."}
+        </Typography>
+      )}
       {promos
         .filter(p => (showOldPromos ? !p.active : p.active))
         .map(p => (
