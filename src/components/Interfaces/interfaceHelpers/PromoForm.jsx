@@ -66,13 +66,15 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     promoCode.uses = Number(promoCode.uses);
     let dataIsValid = true;
     const newErrors = {};
-    Object.keys(promoCode).forEach(key => {
-      const v = dataMemberToValidation[key](promoCode);
-      newErrors[key] = v;
-      if (v !== '') {
-        dataIsValid = false;
-      }
-    });
+    Object.keys(promoCode)
+      .filter(key => Object.keys(dataMemberToValidation).includes(key))
+      .forEach(key => {
+        const v = dataMemberToValidation[key](promoCode);
+        newErrors[key] = v;
+        if (v !== '') {
+          dataIsValid = false;
+        }
+      });
     setErrors({ ...errors, ...newErrors });
     if (dataIsValid) {
       onSubmit(promoCode);
@@ -82,7 +84,7 @@ const PromoForm = ({ showForm, closeForm, onSubmit, editPromo }) => {
     }
   };
 
-  const getErrorStatus = error => error && error.length > 0;
+  const getErrorStatus = error => error !== undefined && error.length > 0;
 
   const classes = useStyles();
 
