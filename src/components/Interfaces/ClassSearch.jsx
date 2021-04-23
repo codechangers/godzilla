@@ -20,6 +20,8 @@ const defaultProps = {
   accounts: { helper: true }
 };
 
+const HIDE_TOGGLES = true;
+
 const ClassSearchInterface = ({ classes, location, user, accounts }) => {
   const [classList, setClassList] = useState([]);
   const [showOldClasses] = useState(false);
@@ -183,7 +185,7 @@ const styles = theme => ({
     }
   },
   typesWrapper: {
-    display: 'flex',
+    display: HIDE_TOGGLES ? 'none' : 'flex',
     flexDirection: 'row',
     '& > p': {
       margin: '4px 15px 4px 0'
