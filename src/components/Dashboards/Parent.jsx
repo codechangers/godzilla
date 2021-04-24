@@ -33,7 +33,7 @@ const routeToInterface = {
   '/parent/games': GamesInterface
 };
 
-const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
+const whoAmIRoutes = ['/parent', '/parent/docs', '/parent/tutorials', '/parent/games'];
 
 const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
@@ -77,7 +77,11 @@ const ParentDashboard = ({ user, accounts, location }) => {
         appBarConfig={cab}
       />
       <StripeProvider apiKey={STRIPE_KEY}>
-        <Elements>{getInterface() || <ClassViewInterface accounts={accounts} />}</Elements>
+        <Elements>
+          {getInterface() || (
+            <ClassViewInterface {...{ whoAmI, setWhoAmI, useCustomAppBar, accounts }} />
+          )}
+        </Elements>
       </StripeProvider>
     </PageWrapper>
   ) : (
