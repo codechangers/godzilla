@@ -22,7 +22,8 @@ import { toData } from './helpers';
 export const getDataEffectBase = (single = true, getter = toData) => (
   input,
   setData,
-  setLoading
+  setLoading,
+  handleError = () => {}
 ) => () => {
   /**
    * This is how you are supposed to run async code in an effect.
@@ -30,10 +31,14 @@ export const getDataEffectBase = (single = true, getter = toData) => (
    * https://github.com/facebook/react/issues/14326#issuecomment-441680293
    */
   async function run() {
-    setLoading(true);
-    if (single) setData(getter(await input.get()));
-    else setData(await Promise.all(input.map(async ref => getter(await ref.get()))));
-    setLoading(false);
+    try {
+      setLoading(true);
+      if (single) setData(getter(await input.get()));
+      else setData(await Promise.all(input.map(async ref => getter(await ref.get()))));
+      setLoading(false);
+    } catch (error) {
+      handleError(error);
+    }
   }
   run();
 };
