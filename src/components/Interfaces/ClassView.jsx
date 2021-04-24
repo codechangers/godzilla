@@ -23,10 +23,10 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
   useEffect(
     () =>
       useCustomAppBar({
-        title: `${child.fName}'s Classes`,
-        content: <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} />
+        title: `${whoAmI.fName}'s Classes`,
+        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />
       }),
-    [child]
+    [whoAmI]
   );
 
   const classes = useStyles();
