@@ -37,6 +37,7 @@ const routeToInterface = {
 const TeacherDashboard = props => {
   const { accounts, user, location } = props;
   const [isTeacher, teacher, loading] = useAccountData('teachers', true);
+  const [isAdmin] = useAccountData('admins');
 
   // Custom App Bar Init
   const [cab, setCAB] = useState({});
@@ -64,7 +65,7 @@ const TeacherDashboard = props => {
     isTeacher && teacher.isVerrified && !teacher.isTraining
       ? ['Promo Codes', 'Docs', 'Tutorials', 'Parent Dash']
       : ['Parent Dash'];
-  approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
+  approvedRoutes = isAdmin ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
   if (loading)
     return (
