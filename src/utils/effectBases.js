@@ -16,7 +16,7 @@ import { toData } from './helpers';
  * const newEffect = getDataEffectBase(single, getter);
  *
  * // Inside a component or hook.
- * useEffect(newEffect(input, setData, setLoading), [input]);
+ * useEffect(newEffect(input, setData, setLoading, handleError), [input]);
  * ~~~
  */
 export const getDataEffectBase = (single = true, getter = toData) => (
