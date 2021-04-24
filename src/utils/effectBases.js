@@ -59,22 +59,30 @@ export const getDataEffectBase = (single = true, getter = toData) => (
  * const newEffect = onSnapshotDataEffectBase(single, getter);
  *
  * // Inside a component or hook.
- * useEffect(newEffect(input, setData), [input]);
+ * useEffect(newEffect(input, setData, handleError), [input]);
  * ~~~
  */
-export const onSnapshotDataEffectBase = (single = true, getter = toData) => (input, setData) => {
+export const onSnapshotDataEffectBase = (single = true, getter = toData) => (
+  input,
+  setData,
+  handleError = () => {}
+) => {
   let subs = [];
   return () => {
     const dataMap = {};
     const refs = single ? [input] : input;
-    refs.forEach(ref => {
-      const sub = ref.onSnapshot(doc => {
-        dataMap[doc.id] = getter(doc);
-        const values = Object.values(dataMap);
-        setData(single ? values[0] : values);
+    try {
+      refs.forEach(ref => {
+        const sub = ref.onSnapshot(doc => {
+          dataMap[doc.id] = getter(doc);
+          const values = Object.values(dataMap);
+          setData(single ? values[0] : values);
+        });
+        subs.push(sub);
       });
-      subs.push(sub);
-    });
+    } catch (error) {
+      handleError(error);
+    }
     // Cleanup subscriptions.
     return () => {
       subs.forEach(sub => sub());

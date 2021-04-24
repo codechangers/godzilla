@@ -4,12 +4,11 @@ import { Typography, Button, makeStyles, CircularProgress } from '@material-ui/c
 import { useParentsChildren } from '../../hooks/children';
 
 const propTypes = {
-  setWhoAmI: PropTypes.func.isRequired,
-  accounts: PropTypes.object.isRequired
+  setWhoAmI: PropTypes.func.isRequired
 };
 
-const WhoAmInterface = ({ setWhoAmI, accounts }) => {
-  const [children, loading] = useParentsChildren(accounts);
+const WhoAmInterface = ({ setWhoAmI }) => {
+  const [children, loading] = useParentsChildren();
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>

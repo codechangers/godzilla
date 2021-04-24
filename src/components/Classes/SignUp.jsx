@@ -35,7 +35,7 @@ const defaultProps = {
 };
 
 const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
-  const children = useParentsLiveChildren(accounts);
+  const children = useParentsLiveChildren();
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);

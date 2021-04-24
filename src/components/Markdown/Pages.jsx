@@ -23,7 +23,6 @@ const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
@@ -46,8 +45,7 @@ const MarkdownPages = ({
   whiteList,
   useCustomAppBar,
   whoAmI,
-  setWhoAmI,
-  accounts
+  setWhoAmI
 }) => {
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -82,12 +80,7 @@ const MarkdownPages = ({
               Help!
             </Link>
             {child !== null && (
-              <WhoAmIButton
-                whoAmI={child}
-                setWhoAmI={setWhoAmI}
-                accounts={accounts}
-                className={classes.profButton}
-              />
+              <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} className={classes.profButton} />
             )}
           </>
         ),
@@ -105,9 +98,7 @@ const MarkdownPages = ({
               </ListItemIcon>
               <ListItemText primary="Help!" />
             </ListItem>
-            {child !== null && (
-              <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} accounts={accounts} listButton />
-            )}
+            {child !== null && <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} listButton />}
           </List>
         ),
         action: (

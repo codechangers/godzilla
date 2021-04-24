@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { getDataEffectBase, onSnapshotDataEffectBase } from '../utils/effectBases';
+import { useAccountRef } from './accounts';
 
 /* ======================
  * === Children Hooks ===
@@ -27,12 +28,13 @@ export const useLiveChildren = childRefs => {
 /**
  * Get the data of each of a parents children.
  */
-export const useParentsChildren = accounts => {
+export const useParentsChildren = () => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
-  useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
+  const handleError = () => setLoading(false);
+  const parentRef = useAccountRef('parents');
+  useEffect(parentChildRefsEffect(parentRef, setChildRefs, handleError), [parentRef]);
   useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
@@ -40,10 +42,10 @@ export const useParentsChildren = accounts => {
 /**
  * Subscribe to the data of each of a parents children.
  */
-export const useParentsLiveChildren = accounts => {
+export const useParentsLiveChildren = () => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
-  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
+  const parentRef = useAccountRef('parents');
   useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
   useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
   return children;

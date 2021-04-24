@@ -24,7 +24,6 @@ import { gamesPerKid } from '../../utils/globals';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
-  accounts: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func
@@ -35,7 +34,7 @@ const defaultProps = {
   setWhoAmI: () => {}
 };
 
-const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI }) => {
+const GamesInterface = ({ useCustomAppBar, width, whoAmI, setWhoAmI }) => {
   const userGames = useUserGames();
   const [games, setGames] = useState([]);
   const stats = useGameStats(games);
@@ -98,7 +97,7 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
         </Tooltip>
       );
     }
-    const contentProps = { whoAmI, setWhoAmI, accounts };
+    const contentProps = { whoAmI, setWhoAmI };
     useCustomAppBar({
       title: 'Games',
       action,
@@ -106,7 +105,7 @@ const GamesInterface = ({ useCustomAppBar, accounts, width, whoAmI, setWhoAmI })
       content: <WhoAmIButton {...contentProps} className={classes.profButton} />,
       wrappedContent: <WhoAmIButton {...contentProps} listButton />
     });
-  }, [games, updateToggles, width, whoAmI, accounts]);
+  }, [games, updateToggles, width, whoAmI]);
 
   const getInterface = () => {
     const { showCreate, editGame, deleteGame, showGame } = toggles;

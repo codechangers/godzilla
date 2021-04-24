@@ -17,10 +17,7 @@ export const useAccountData = (type, listenToUpdates = false) => {
   const [account, setAccount] = useState(null);
   const [exists, setExists] = useState(false);
   const [loading, setLoading] = useState(true);
-  const ref = useMemo(() => db.collection(type).doc(auth.currentUser?.uid || 'none'), [
-    auth.currentUser,
-    type
-  ]);
+  const ref = useAccountRef(type);
   let listener;
   const checkAccount = ([accountExists, data]) => {
     if (accountExists) setAccount(data);
@@ -38,6 +35,12 @@ export const useAccountData = (type, listenToUpdates = false) => {
   useEffect(accountExistsEffect(ref, checkAccount, setLoading, handleError), [ref]);
   return [exists, account, loading];
 };
+
+/**
+ * Get a firestore reference to the users given type of account.
+ */
+export const useAccountRef = type =>
+  useMemo(() => db.collection(type).doc(auth.currentUser?.uid || 'none'), [auth.currentUser, type]);
 
 /**
  * Fetch the data of an account and return an array of if the document exists and it's data.

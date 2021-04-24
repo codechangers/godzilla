@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 
 const propTypes = {
-  accounts: PropTypes.object.isRequired,
   whoAmI: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
   useCustomAppBar: PropTypes.func.isRequired
 };
 
-const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar, accounts }) => {
+const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
   useEffect(
     () =>
       useCustomAppBar({
         title: 'My Classes',
-        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} accounts={accounts} />
+        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />
       }),
-    [whoAmI, accounts]
+    [whoAmI]
   );
   return <div>Hello World</div>;
 };
