@@ -37,7 +37,7 @@ const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
 const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
 
-  // Custom Action Bar Init
+  // Custom App Bar Init
   const [cab, setCAB] = useState({});
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
   useEffect(() => setCAB({}), [location]);
