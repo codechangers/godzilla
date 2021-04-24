@@ -8,11 +8,12 @@ import { getStatus } from '../../../utils/helpers';
 
 const propTypes = {
   reqs: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   orgs: PropTypes.bool
 };
 
 const defaultProps = {
+  loading: false,
   orgs: false
 };
 
