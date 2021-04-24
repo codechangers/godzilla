@@ -45,7 +45,4 @@ export const useAccountRequests = type => {
  * === Custom Reusable Effects ===
  * =============================== */
 
-/**
- * Subscribe to a parent's data.
- */
 const liveParentDataEffect = onSnapshotDataEffectBase(false);

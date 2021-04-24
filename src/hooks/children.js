@@ -7,12 +7,21 @@ import { useAccountRef } from './accounts';
  * ====================== */
 
 /**
+ * Subscribe to the data of a given child reference.
+ */
+export const useLiveChild = childRef => {
+  const [child, setChild] = useState(null);
+  useEffect(liveChildDataEffect(childRef, setChild), [childRef]);
+  return child;
+};
+
+/**
  * Get the data of each child reference given.
  */
 export const useChildren = childRefs => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  useEffect(childrenDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
@@ -35,7 +44,7 @@ export const useParentsChildren = () => {
   const handleError = () => setLoading(false);
   const parentRef = useAccountRef('parents');
   useEffect(parentChildRefsEffect(parentRef, setChildRefs, handleError), [parentRef]);
-  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  useEffect(childrenDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
@@ -47,7 +56,7 @@ export const useParentsLiveChildren = () => {
   const [children, setChildren] = useState([]);
   const parentRef = useAccountRef('parents');
   useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
-  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  useEffect(liveChildrenDataEffect(childRefs, setChildren), [childRefs]);
   return children;
 };
 
@@ -55,17 +64,7 @@ export const useParentsLiveChildren = () => {
  * === Custom Reusable Effects ===
  * =============================== */
 
-/**
- * Fetch the data of each of the parent's children once.
- */
-const childDataEffect = getDataEffectBase(false);
-
-/**
- * Subscribe to each child's data.
- */
-const liveChildDataEffect = onSnapshotDataEffectBase(false);
-
-/**
- * Subscribe to the parents children references.
- */
+const childrenDataEffect = getDataEffectBase(false);
+const liveChildDataEffect = onSnapshotDataEffectBase(true);
+const liveChildrenDataEffect = onSnapshotDataEffectBase(false);
 const parentChildRefsEffect = onSnapshotDataEffectBase(true, doc => doc.data().children || []);

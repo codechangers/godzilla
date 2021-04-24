@@ -42,7 +42,8 @@ export const useAccountData = (type, listenToUpdates = false) => {
 export const useAccountRef = type =>
   useMemo(() => db.collection(type).doc(auth.currentUser?.uid || 'none'), [auth.currentUser, type]);
 
-/**
- * Fetch the data of an account and return an array of if the document exists and it's data.
- */
+/* ===============================
+ * === Custom Reusable Effects ===
+ * =============================== */
+
 const accountExistsEffect = getDataEffectBase(true, doc => [doc.exists, toData(doc)]);
