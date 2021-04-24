@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, makeStyles } from '@material-ui/core';
+import { Typography, Button, Paper, makeStyles } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import { useLiveChild } from '../../hooks/children';
@@ -23,15 +24,31 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
   useEffect(
     () =>
       useCustomAppBar({
-        title: `${whoAmI.fName}'s Classes`,
+        title: `${whoAmI.fName}'s Contests`,
         content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />
       }),
     [whoAmI]
   );
 
+  const history = useHistory();
   const classes = useStyles();
   return (
     <Styled.PageContent className={classes.wrapper}>
+      {childClasses.length === 0 && (
+        <>
+          <Typography variant="h4" className={classes.empty}>
+            You aren&apos;t registered for any contests!
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push('/parent/search')}
+            className={classes.bigButton}
+          >
+            Register Now!
+          </Button>
+        </>
+      )}
       {childClasses.map(cls => (
         <Paper key={cls.id} className={classes.paper}>
           <InfoCardHeader cls={cls} />
@@ -51,6 +68,12 @@ const useStyles = makeStyles({
   paper: {
     maxWidth: 900,
     margin: '20px 0'
+  },
+  empty: {
+    margin: '30px 0'
+  },
+  bigButton: {
+    padding: '6px 40px'
   }
 });
 
