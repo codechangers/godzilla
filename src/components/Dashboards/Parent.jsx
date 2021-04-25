@@ -70,9 +70,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'Contests', 'Register', 'Games', 'Docs', 'Tutorials'].concat(
-          approvedRoutes
-        )}
+        names={['Profile', 'Contests', 'Register', 'Games'].concat(approvedRoutes)}
         baseRoute="/parent"
         appBarConfig={cab}
       />

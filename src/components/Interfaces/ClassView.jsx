@@ -51,7 +51,15 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
       )}
       {childClasses.map(cls => (
         <Paper key={cls.id} className={classes.paper}>
-          <InfoCardHeader cls={cls} />
+          <InfoCardHeader cls={cls}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => history.push('/parent/tutorials')}
+            >
+              Start
+            </Button>
+          </InfoCardHeader>
         </Paper>
       ))}
     </Styled.PageContent>
