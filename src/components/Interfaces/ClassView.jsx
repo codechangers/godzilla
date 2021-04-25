@@ -94,9 +94,17 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
     return hasStarted && !hasEnded;
   };
 
+  const filteredClasses = useMemo(
+    () =>
+      showHistory
+        ? childClasses
+        : childClasses.filter(c => getExactDateTime(c.endDate, c.endTime) > new Date(Date.now())),
+    [showHistory, childClasses]
+  );
+
   return (
     <Styled.PageContent className={classes.wrapper}>
-      {childClasses.length === 0 && (
+      {filteredClasses.length === 0 && (
         <>
           <Typography variant="h4" className={classes.empty}>
             You aren&apos;t registered for any contests!
@@ -111,20 +119,22 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
           </Button>
         </>
       )}
-      {childClasses.map(cls => (
-        <Paper key={cls.id} className={classes.paper}>
-          <InfoCardHeader cls={cls}>
-            <Button
-              disabled={!isActive(cls)}
-              variant="contained"
-              color="primary"
-              onClick={() => history.push('/parent/tutorials')}
-            >
-              Start
-            </Button>
-          </InfoCardHeader>
-        </Paper>
-      ))}
+      {filteredClasses
+        .sort((a, b) => a.startDate - b.startDate)
+        .map(cls => (
+          <Paper key={cls.id} className={classes.paper}>
+            <InfoCardHeader cls={cls}>
+              <Button
+                disabled={!isActive(cls)}
+                variant="contained"
+                color="primary"
+                onClick={() => history.push('/parent/tutorials')}
+              >
+                Start
+              </Button>
+            </InfoCardHeader>
+          </Paper>
+        ))}
     </Styled.PageContent>
   );
 };
