@@ -14,10 +14,14 @@ const defaultProps = {
   children: null
 };
 
-const Paper = ({ className, children }) => {
+const Paper = React.forwardRef(({ className, children }, ref) => {
   const classes = useStyles();
-  return <MUIPaper className={clsx(classes.paper, className)}>{children}</MUIPaper>;
-};
+  return (
+    <MUIPaper ref={ref} className={clsx(classes.paper, className)}>
+      {children}
+    </MUIPaper>
+  );
+});
 Paper.propTypes = propTypes;
 Paper.defaultProps = defaultProps;
 

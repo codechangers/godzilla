@@ -17,7 +17,7 @@ const defaultProps = {
   parentIsModal: false
 };
 
-const WhoAmInterface = ({ setWhoAmI, parentIsModal }) => {
+const WhoAmInterface = React.forwardRef(({ setWhoAmI, parentIsModal }, ref) => {
   const [children, loading] = useParentsChildren();
   const parentRef = useAccountRef('parents');
   const [showCreate, setShowCreate] = useState(false);
@@ -37,53 +37,51 @@ const WhoAmInterface = ({ setWhoAmI, parentIsModal }) => {
     />
   );
 
-  const Wrapper = parentIsModal ? Paper : React.Fragment;
-
-  return parentIsModal && showCreate ? (
-    <div className={classes.wrapper}>{createForm()}</div>
-  ) : (
-    <Wrapper className={classes.paper}>
-      <div className={classes.wrapper}>
-        <Typography variant="h4" style={{ marginBottom: 20 }}>
-          Select your Profile
-        </Typography>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <>
-            <div className={classes.profiles}>
-              {children.length === 0 && <Typography variant="h5">No Profiles...</Typography>}
-              {children.map(child => (
-                <Button
-                  variant="outlined"
-                  key={child.id}
-                  onClick={() => setWhoAmI(child)}
-                  className={classes.button}
-                >
-                  {child.fName}
-                </Button>
-              ))}
-            </div>
-            <Button color="secondary" onClick={() => setShowCreate(true)} startIcon={<Add />}>
-              New Profile
-            </Button>
-          </>
-        )}
-        {!parentIsModal && (
-          <Modal
-            open={showCreate}
-            onClose={() => setShowCreate(false)}
-            title="Add a Profile"
-            description="Add a new Profile to your account."
-            noWrapper
-          >
-            {createForm()}
-          </Modal>
-        )}
-      </div>
-    </Wrapper>
+  const content = (
+    <div className={classes.wrapper}>
+      <Typography variant="h4" style={{ marginBottom: 20 }}>
+        Select your Profile
+      </Typography>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <div className={classes.profiles}>
+            {children.length === 0 && <Typography variant="h5">No Profiles...</Typography>}
+            {children.map(child => (
+              <Button
+                variant="outlined"
+                key={child.id}
+                onClick={() => setWhoAmI(child)}
+                className={classes.button}
+              >
+                {child.fName}
+              </Button>
+            ))}
+          </div>
+          <Button color="secondary" onClick={() => setShowCreate(true)} startIcon={<Add />}>
+            New Profile
+          </Button>
+        </>
+      )}
+      {!parentIsModal && (
+        <Modal
+          open={showCreate}
+          onClose={() => setShowCreate(false)}
+          title="Add a Profile"
+          description="Add a new Profile to your account."
+          noWrapper
+        >
+          {createForm()}
+        </Modal>
+      )}
+    </div>
   );
-};
+
+  if (parentIsModal && showCreate) return <div className={classes.wrapper}>{createForm()}</div>;
+  if (parentIsModal) return <Paper ref={ref}>{content}</Paper>;
+  return content;
+});
 WhoAmInterface.propTypes = propTypes;
 WhoAmInterface.defaultProps = defaultProps;
 
