@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, makeStyles, CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { useParentsChildren } from '../../hooks/children';
 
 const propTypes = {
@@ -18,18 +19,24 @@ const WhoAmInterface = ({ setWhoAmI }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <div className={classes.profiles}>
-          {children.map(child => (
-            <Button
-              variant="outlined"
-              key={child.id}
-              onClick={() => setWhoAmI(child)}
-              className={classes.button}
-            >
-              {child.fName}
-            </Button>
-          ))}
-        </div>
+        <>
+          <div className={classes.profiles}>
+            {children.length === 0 && <Typography variant="h5">No Profiles...</Typography>}
+            {children.map(child => (
+              <Button
+                variant="outlined"
+                key={child.id}
+                onClick={() => setWhoAmI(child)}
+                className={classes.button}
+              >
+                {child.fName}
+              </Button>
+            ))}
+          </div>
+          <Button color="secondary" onClick={() => {}} startIcon={<Add />}>
+            New Profile
+          </Button>
+        </>
       )}
     </div>
   );
@@ -50,7 +57,8 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginBottom: 20
   },
   button: {
     margin: 10
