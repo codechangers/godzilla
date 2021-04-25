@@ -6,6 +6,7 @@ import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import { useLiveChild } from '../../hooks/children';
 import { useLiveClasses } from '../../hooks/classes';
+import { getExactDateTime } from '../../utils/helpers';
 import * as Styled from './styles';
 
 const propTypes = {
@@ -32,6 +33,16 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
     [whoAmI, child]
   );
 
+  // TODO: Use timeouts to update without refresh.
+  const isActive = cls => {
+    const now = new Date(Date.now());
+    const endsAt = getExactDateTime(cls.endDate, cls.endTime);
+    const startsAt = getExactDateTime(cls.startDate, cls.startTime);
+    const hasEnded = endsAt <= now;
+    const hasStarted = startsAt <= now;
+    return hasStarted && !hasEnded;
+  };
+
   return (
     <Styled.PageContent className={classes.wrapper}>
       {childClasses.length === 0 && (
@@ -53,6 +64,7 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
         <Paper key={cls.id} className={classes.paper}>
           <InfoCardHeader cls={cls}>
             <Button
+              disabled={!isActive(cls)}
               variant="contained"
               color="primary"
               onClick={() => history.push('/parent/tutorials')}
