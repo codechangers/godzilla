@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
+import clsx from 'clsx';
 import { getDateString, getTime } from '../../utils/helpers';
 import { programTypeToText } from '../../utils/globals';
 import { Template2 } from '../Images';
@@ -44,7 +45,12 @@ class InfoCardHeader extends React.Component {
     const { cls, children, hideImage, preview, hideAccountType, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
-      <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
+      <div
+        className={clsx(classes.infoCardHeader, {
+          [classes.parent]: children !== null,
+          [classes.slim]: children !== null && !hideImage
+        })}
+      >
         <div style={hideImage ? { width: '100%' } : null}>
           <Typography variant="h5" style={{ marginBottom: '6px' }}>
             {cls.name}
@@ -205,6 +211,7 @@ const styles = theme => ({
       }
     }
   },
+  slim: { marginBottom: 0 },
   parent: {
     '& > img': {
       height: '474px',
