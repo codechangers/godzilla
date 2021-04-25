@@ -111,11 +111,11 @@ const ContactInfo = ({ cls, onClose }) => {
         <CSVDownload
           filename={`${cls !== null ? cls.name : 'blank'}-contacts.csv`}
           data={getContactInfo()}
-          disabled={isLoading}
+          disabled={isLoading || students.length === 0}
         >
           <Button
             variant="contained"
-            disabled={isLoading}
+            disabled={isLoading || students.length === 0}
             style={{ color: isLoading ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.6)' }}
           >
             <DownloadIcon style={{ marginRight: '8px' }} />
