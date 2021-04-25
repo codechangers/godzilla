@@ -30,17 +30,25 @@ export const getDataEffectBase = (single = true, getter = toData) => (
    * See this github issue for details:
    * https://github.com/facebook/react/issues/14326#issuecomment-441680293
    */
+  let safeSetData = setData;
+  let safeSetLoading = setLoading;
   async function run() {
     try {
-      setLoading(true);
-      if (single) setData(getter(await input.get()));
-      else setData(await Promise.all(input.map(async ref => getter(await ref.get()))));
-      setLoading(false);
+      safeSetLoading(true);
+      let newData;
+      if (single) newData = getter(await input.get());
+      else newData = await Promise.all(input.map(async ref => getter(await ref.get())));
+      safeSetData(newData);
+      safeSetLoading(false);
     } catch (error) {
       handleError(error);
     }
   }
   run();
+  return () => {
+    safeSetData = () => {};
+    safeSetLoading = () => {};
+  };
 };
 
 /**
