@@ -17,7 +17,7 @@ const propTypes = {
 const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
   const childRef = useMemo(() => whoAmI.ref, [whoAmI]);
   const child = useLiveChild(childRef);
-  const classRefs = useMemo(() => child?.classes, [child]);
+  const classRefs = useMemo(() => child?.classes || [], [child]);
   const childClasses = useLiveClasses(classRefs);
   const history = useHistory();
   const classes = useStyles();

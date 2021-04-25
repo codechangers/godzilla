@@ -35,6 +35,11 @@ export const useIdClass = (id, listenToUpdates = false) => {
  */
 export const useLiveClasses = refs => {
   const [classes, setClasses] = useState([]);
+  // Clear classes on empty refs.
+  useEffect(() => {
+    if (refs.length === 0) setClasses([]);
+  }, [refs]);
+  // Handle refs.
   useEffect(liveClassesDataEffect(refs, setClasses), [refs]);
   return classes;
 };
