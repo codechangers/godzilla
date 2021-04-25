@@ -105,44 +105,45 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
 
   // Use a custom app bar.
   useEffect(() => {
-    if (isOwner) {
-      let action = isEditing ? (
-        <Button
-          variant="contained"
-          onClick={() => setIsEditing(false)}
-          startIcon={<VisibilityIcon />}
-        >
-          View Preview
-        </Button>
+    let action = isEditing ? (
+      <Button
+        variant="contained"
+        onClick={() => setIsEditing(false)}
+        startIcon={<VisibilityIcon />}
+      >
+        View Preview
+      </Button>
+    ) : (
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => setIsEditing(true)}
+        startIcon={<EditIcon />}
+      >
+        Edit Info
+      </Button>
+    );
+    if (isWidthDown('xs', width)) {
+      // Use Icon buttons with Tooltips on mobile.
+      action = isEditing ? (
+        <Tooltip title="View Preview" placement="bottom">
+          <IconButton onClick={() => setIsEditing(false)}>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => setIsEditing(true)}
-          startIcon={<EditIcon />}
-        >
-          Edit Info
-        </Button>
+        <Tooltip title="Edit Info" placement="bottom">
+          <IconButton color="primary" onClick={() => setIsEditing(true)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
       );
-      if (isWidthDown('xs', width)) {
-        // Use Icon buttons with Tooltips on mobile.
-        action = isEditing ? (
-          <Tooltip title="View Preview" placement="bottom">
-            <IconButton onClick={() => setIsEditing(false)}>
-              <VisibilityIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Edit Info" placement="bottom">
-            <IconButton color="primary" onClick={() => setIsEditing(true)}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-        );
-      }
-      useCustomAppBar({ title: isEditing ? 'Editing Info' : 'Code Contest', action });
     }
-  }, [isOwner, isEditing, width]);
+    useCustomAppBar({
+      title: isEditing ? 'Editing Info' : `Register for ${cls?.name || 'this class'}`,
+      action: isOwner ? action : null
+    });
+  }, [isOwner, isEditing, width, cls]);
 
   const saveClassInfo = () => {
     cls.ref.update({ info: classInfo });
@@ -158,9 +159,11 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
     </Styled.PageContent>
   ) : (
     <Styled.PageContent>
-      <Typography variant="h3" className={classes.mainHeader}>
-        {foundClass ? 'Class Info' : 'Class not found.'}
-      </Typography>
+      {!foundClass && (
+        <Typography variant="h3" className={classes.mainHeader}>
+          Class not found.
+        </Typography>
+      )}
       {isEditing && (
         <div className={classes.editButtons}>
           <Button onClick={() => setClassInfo(originalInfo)}>Revert Changes</Button>
