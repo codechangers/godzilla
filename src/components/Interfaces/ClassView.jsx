@@ -19,6 +19,8 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
   const child = useLiveChild(childRef);
   const classRefs = useMemo(() => child?.classes, [child]);
   const childClasses = useLiveClasses(classRefs);
+  const history = useHistory();
+  const classes = useStyles();
 
   // Customize App Bar
   useEffect(
@@ -27,11 +29,9 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
         title: `${whoAmI.fName}'s Contests`,
         content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />
       }),
-    [whoAmI]
+    [whoAmI, child]
   );
 
-  const history = useHistory();
-  const classes = useStyles();
   return (
     <Styled.PageContent className={classes.wrapper}>
       {childClasses.length === 0 && (
