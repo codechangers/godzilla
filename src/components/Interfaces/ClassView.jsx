@@ -1,6 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { List, Typography, Button, Paper, makeStyles } from '@material-ui/core';
+import {
+  List,
+  Typography,
+  Tooltip,
+  IconButton,
+  Button,
+  Paper,
+  makeStyles
+} from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { History, Update } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -10,34 +20,69 @@ import { getExactDateTime } from '../../utils/helpers';
 import * as Styled from './styles';
 
 const propTypes = {
+  width: PropTypes.string.isRequired,
   whoAmI: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
   useCustomAppBar: PropTypes.func.isRequired
 };
 
-const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
+const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
   const childRef = useMemo(() => whoAmI.ref, [whoAmI]);
   const child = useLiveChild(childRef);
   const classRefs = useMemo(() => child?.classes || [], [child]);
   const childClasses = useLiveClasses(classRefs);
+  const [showHistory, setShowHistory] = useState(false);
   const history = useHistory();
   const classes = useStyles();
 
   // Customize App Bar
-  useEffect(
-    () =>
-      useCustomAppBar({
-        title: `${whoAmI.fName}'s Contests`,
-        wrap: true,
-        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />,
-        wrappedContent: (
-          <List style={{ width: '100%', padding: 0 }}>
-            <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} listButton />
-          </List>
-        )
-      }),
-    [whoAmI, child]
-  );
+  useEffect(() => {
+    const actionData = showHistory
+      ? {
+          title: 'Hide Old Classes',
+          onClick: () => setShowHistory(false),
+          icon: <Update />,
+          color: 'secondary',
+          margin: 34.5
+        }
+      : {
+          title: 'Show Old Classes',
+          onClick: () => setShowHistory(true),
+          icon: <History />,
+          color: 'inherit',
+          margin: 25
+        };
+    let action = (
+      <Button
+        onClick={actionData.onClick}
+        startIcon={actionData.icon}
+        color={actionData.color}
+        style={{ marginLeft: actionData.margin }}
+      >
+        {actionData.title}
+      </Button>
+    );
+    if (isWidthDown('xs', width)) {
+      action = (
+        <Tooltip title={actionData.title}>
+          <IconButton onClick={actionData.onClick} color={actionData.color}>
+            {actionData.icon}
+          </IconButton>
+        </Tooltip>
+      );
+    }
+    useCustomAppBar({
+      title: `${whoAmI.fName}'s Contests`,
+      wrap: true,
+      content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />,
+      wrappedContent: (
+        <List style={{ width: '100%', padding: 0 }}>
+          <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} listButton />
+        </List>
+      ),
+      action
+    });
+  }, [whoAmI, child, showHistory, width]);
 
   // TODO: Use timeouts to update without refresh.
   const isActive = cls => {
@@ -103,4 +148,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default ClassViewInterface;
+export default withWidth()(ClassViewInterface);
