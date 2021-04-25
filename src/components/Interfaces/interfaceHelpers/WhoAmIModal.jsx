@@ -10,8 +10,9 @@ const propTypes = {
 };
 
 const WhoAmIModal = ({ setWhoAmI, open, onClose }) => (
-  <Modal open={open} onClose={onClose}>
+  <Modal open={open} onClose={onClose} noWrapper>
     <WhoAmInterface
+      parentIsModal
       setWhoAmI={w => {
         setWhoAmI(w);
         onClose();
