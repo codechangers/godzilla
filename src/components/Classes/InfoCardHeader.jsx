@@ -350,6 +350,7 @@ const styles = theme => ({
   bottomLine: {
     width: '100%',
     height: 0,
+    marginTop: 40 + 22,
     borderBottom: '1px solid #e0e0e0',
     [theme.breakpoints.down('md')]: {
       display: 'none'

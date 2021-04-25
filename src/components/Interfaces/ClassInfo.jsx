@@ -151,14 +151,14 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
 
   const classes = useStyles();
   return isLoading ? (
-    <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Styled.PageContent className={classes.wrapper}>
       <Typography variant="h3" style={{ marginBottom: '20px' }}>
         Finding Class...
       </Typography>
       <CircularProgress color="primary" />
     </Styled.PageContent>
   ) : (
-    <Styled.PageContent>
+    <Styled.PageContent className={classes.wrapper}>
       {!foundClass && (
         <Typography variant="h3" className={classes.mainHeader}>
           Class not found.
@@ -543,6 +543,15 @@ SignUpButton.defaultProps = {
 };
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 'calc(100vh - 64px - 64px)',
+    boxSizing: 'border-box',
+    paddingBottom: 20
+  },
   mainHeader: {
     marginBottom: '36px',
     textAlign: 'center'
