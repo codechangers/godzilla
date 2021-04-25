@@ -89,6 +89,8 @@ export const defaultStatus = {
   build: 0
 };
 
+export const gameNameBlackList = ['www'];
+
 /**
  * Global Data Memeber Validation.
  */
