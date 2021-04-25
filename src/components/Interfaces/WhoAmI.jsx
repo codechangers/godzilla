@@ -6,6 +6,7 @@ import Modal from '../UI/Modal';
 import Paper from '../UI/Paper';
 import ChildInfo from '../SignUpForms/ChildInfo';
 import { useParentsChildren } from '../../hooks/children';
+import { useAccountRef } from '../../hooks/accounts';
 
 const propTypes = {
   setWhoAmI: PropTypes.func.isRequired,
@@ -18,16 +19,26 @@ const defaultProps = {
 
 const WhoAmInterface = ({ setWhoAmI, parentIsModal }) => {
   const [children, loading] = useParentsChildren();
+  const parentRef = useAccountRef('parents');
   const [showCreate, setShowCreate] = useState(false);
   const classes = useStyles();
+
+  const addChildRef = childRef => {
+    const childRefs = children.map(c => c.ref);
+    childRefs.push(childRef);
+    parentRef.update({ children: childRefs });
+  };
+
   const createForm = () => (
     <ChildInfo
       handleClose={() => setShowCreate(false)}
-      addChildRef={() => {}}
+      addChildRef={addChildRef}
       title="Add a Profile"
     />
   );
+
   const Wrapper = parentIsModal ? Paper : React.Fragment;
+
   return parentIsModal && showCreate ? (
     <div className={classes.wrapper}>{createForm()}</div>
   ) : (
