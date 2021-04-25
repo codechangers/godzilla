@@ -28,6 +28,7 @@ class InfoCardHeader extends React.Component {
       teacher: null,
       showSchedule: false
     };
+    this.safeSetState = this.setState;
   }
 
   componentDidMount() {
@@ -36,9 +37,13 @@ class InfoCardHeader extends React.Component {
         .doc(this.props.cls.teacher.id)
         .get()
         .then(teacherDoc => {
-          this.setState({ teacher: teacherDoc.data() });
+          this.safeSetState({ teacher: teacherDoc.data() });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.safeSetState = () => {};
   }
 
   render() {
