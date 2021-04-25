@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button, Paper, makeStyles } from '@material-ui/core';
+import { List, Typography, Button, Paper, makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -28,7 +28,13 @@ const ClassViewInterface = ({ whoAmI, setWhoAmI, useCustomAppBar }) => {
     () =>
       useCustomAppBar({
         title: `${whoAmI.fName}'s Contests`,
-        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />
+        wrap: true,
+        content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />,
+        wrappedContent: (
+          <List style={{ width: '100%', padding: 0 }}>
+            <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} listButton />
+          </List>
+        )
       }),
     [whoAmI, child]
   );
