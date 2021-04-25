@@ -8,6 +8,7 @@ import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 
 const propTypes = {
+  useCustomAppBar: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   user: PropTypes.object,
@@ -19,12 +20,15 @@ const defaultProps = {
   accounts: { helper: true }
 };
 
-const ClassSearchInterface = ({ classes, location, user, accounts }) => {
+const ClassSearchInterface = ({ useCustomAppBar, classes, location, user, accounts }) => {
   const [classList, setClassList] = useState([]);
   const [showOldClasses] = useState(false);
   const [searchId, setSearchId] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Customize App Bar
+  useEffect(() => useCustomAppBar({ title: 'Register for a Code Contest' }), [classList]);
 
   useEffect(() => {
     let { pathname } = location;
