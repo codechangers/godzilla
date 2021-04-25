@@ -163,6 +163,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
             setSelectedChildren([]);
             setIsProcessing(false);
             updatePayment({ succeeded: false });
+            if (payment.succeeded) setPromoDoc(null);
             if (cls.hasWaiver && payment.succeeded) {
               window.open(cls.waiverURL, '_blank');
             }
