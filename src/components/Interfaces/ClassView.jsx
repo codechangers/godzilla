@@ -85,13 +85,24 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
   }, [whoAmI, child, showHistory, width]);
 
   // TODO: Use timeouts to update without refresh.
-  const isActive = cls => {
+  const whenIs = cls => {
     const now = new Date(Date.now());
     const endsAt = getExactDateTime(cls.endDate, cls.endTime);
     const startsAt = getExactDateTime(cls.startDate, cls.startTime);
     const hasEnded = endsAt <= now;
     const hasStarted = startsAt <= now;
+    return [hasStarted, hasEnded];
+  };
+
+  const isActive = cls => {
+    const [hasStarted, hasEnded] = whenIs(cls);
     return hasStarted && !hasEnded;
+  };
+
+  const timePrompt = cls => {
+    if (isActive(cls)) return 'Start';
+    if (whenIs(cls)[1]) return 'Terminated';
+    return 'Upcoming';
   };
 
   const filteredClasses = useMemo(
@@ -130,7 +141,7 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
                 color="primary"
                 onClick={() => history.push('/parent/tutorials')}
               >
-                Start
+                {timePrompt(cls)}
               </Button>
             </InfoCardHeader>
           </Paper>
