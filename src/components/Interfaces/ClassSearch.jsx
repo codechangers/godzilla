@@ -125,7 +125,7 @@ const styles = theme => ({
     width: '60%',
     maxWidth: '800px',
     alignSelf: 'center',
-    marginBottom: 12,
+    margin: '20px 0',
     [theme.breakpoints.down('md')]: {
       width: '80%'
     },

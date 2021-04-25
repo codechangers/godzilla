@@ -553,14 +553,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginBottom: '30px'
+    alignItems: 'center'
   },
   cardWrapper: {
     width: 'calc(100% - 4px)',
     maxWidth: '1000px',
     minWidth: '300px',
-    marginBottom: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
