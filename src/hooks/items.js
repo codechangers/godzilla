@@ -56,7 +56,7 @@ export const getLiveCheckOffData = page => {
     () =>
       db
         .collection('checkOffs')
-        .where('parentId', '==', auth.currentUser.uid)
+        .where('parentId', '==', auth.currentUser?.uid)
         .where('page', '==', page),
     [page, auth.currentUser]
   );
