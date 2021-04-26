@@ -31,7 +31,7 @@ export const useIdClass = (id, listenToUpdates = false) => {
 };
 
 /**
- * Subscrive to the data of each class in a given array of references.
+ * Subscribe to the data of each class in a given array of references.
  */
 export const useLiveClasses = refs => {
   const [classes, setClasses] = useState([]);

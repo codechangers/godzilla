@@ -27,12 +27,5 @@ export const useLivePromoCodes = promos => {
  * === Custom Reusable Effects ===
  * =============================== */
 
-/**
- * Fetch the data of a list of references once.
- */
 const promoDataEffect = getDataEffectBase(false);
-
-/**
- * Subscribe to the data of a list of references.
- */
 const livePromoDataEffect = onSnapshotDataEffectBase(false);

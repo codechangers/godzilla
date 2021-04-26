@@ -220,7 +220,9 @@ class ClassEditor extends React.Component {
             select
           >
             {Object.entries(programTypeToText).map(([value, text]) => (
-              <MenuItem value={value}>{text}</MenuItem>
+              <MenuItem value={value} key={value}>
+                {text}
+              </MenuItem>
             ))}
           </TextField>
         </div>
