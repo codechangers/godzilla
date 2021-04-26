@@ -4,6 +4,7 @@ import { makeStyles, Typography, CircularProgress } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import MarkdownLink from './Link';
+import CheckOff from '../UI/CheckOff';
 import CodeBlock from '../UI/CodeBlock';
 import { resolveImg } from '../../resources/images';
 
@@ -64,12 +65,17 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
   /**
    * Render custom text that allows for the use of Jekyll like file includes.
    */
-  const text = ({ value }) =>
-    value.startsWith('{% include') && value.endsWith('%}') ? (
-      <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
-    ) : (
-      value
-    );
+  const text = ({ value }) => {
+    if (value.startsWith('{% include') && value.endsWith('%}')) {
+      return (
+        <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
+      );
+    }
+    if (value.trim() === '{% checkoff %}') {
+      return <CheckOff page={page} />;
+    }
+    return value;
+  };
   text.propTypes = { value: PropTypes.node.isRequired };
 
   /**
