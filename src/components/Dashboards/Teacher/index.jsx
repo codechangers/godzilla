@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Typography, CircularProgress } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from '../styles';
 import CurriculumInterface from '../../Interfaces/Curriculum';
@@ -14,7 +15,7 @@ import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
-import { db } from '../../../utils/firebase';
+import { useAccountData } from '../../../hooks/accounts';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -35,21 +36,13 @@ const routeToInterface = {
 
 const TeacherDashboard = props => {
   const { accounts, user, location } = props;
-  const [teacher, setTeacher] = useState(null);
+  const [isTeacher, teacher, loading] = useAccountData('teachers', true);
+  const [isAdmin] = useAccountData('admins');
 
-  // Custom Action Bar Init
+  // Custom App Bar Init
   const [cab, setCAB] = useState({});
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
   useEffect(() => setCAB({}), [location]);
-
-  useEffect(() => {
-    if (accounts.teachers)
-      return db
-        .collection('teachers')
-        .doc(accounts.teachers.id)
-        .onSnapshot(tDoc => setTeacher(tDoc.data()));
-    return () => {};
-  }, [accounts]);
 
   const getInterface = () => {
     const Interface = routeToInterface[location.pathname];
@@ -58,25 +51,32 @@ const TeacherDashboard = props => {
 
   const getDashboard = () => {
     let Dashboard = null;
-    if (teacher) {
-      if (user.isSignedIn && accounts.teachers) {
-        if (teacher.isVerrified) {
-          Dashboard = teacher.isTraining ? TrainingTeacher : ApprovedTeacher;
-        } else {
-          Dashboard = teacher.isDeclined ? DeclinedTeacher : PendingTeacher;
-        }
+    if (isTeacher) {
+      if (teacher.isVerrified) {
+        Dashboard = teacher.isTraining ? TrainingTeacher : ApprovedTeacher;
+      } else {
+        Dashboard = teacher.isDeclined ? DeclinedTeacher : PendingTeacher;
       }
     }
     return Dashboard !== null ? <Dashboard {...props} useCustomAppBar={useCustomAppBar} /> : null;
   };
 
   let approvedRoutes =
-    teacher && teacher.isVerrified && !teacher.isTraining
+    isTeacher && teacher.isVerrified && !teacher.isTraining
       ? ['Promo Codes', 'Docs', 'Tutorials', 'Parent Dash']
       : ['Parent Dash'];
-  approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
+  approvedRoutes = isAdmin ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
-  return user.isSignedIn ? (
+  if (loading)
+    return (
+      <PageWrapper style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h4" style={{ marginBottom: 20 }}>
+          Loading Dashboard...
+        </Typography>
+        <CircularProgress />
+      </PageWrapper>
+    );
+  return isTeacher ? (
     <PageWrapper>
       <SideBar
         names={['Profile', 'Dashboard'].concat(approvedRoutes)}
@@ -89,7 +89,6 @@ const TeacherDashboard = props => {
     <Redirect to="/login" />
   );
 };
-
 TeacherDashboard.propTypes = propTypes;
 
 export default TeacherDashboard;

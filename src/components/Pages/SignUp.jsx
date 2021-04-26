@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
@@ -9,7 +9,6 @@ import TeacherSignUp from '../SignUpForms/TeacherSignUp';
 import OrganizationSignUp from '../SignUpForms/OrganizationSignUp';
 import ThankYou from '../SignUpForms/ThankYou';
 import logoText from '../../assets/images/logoText.png';
-import autoBind from '../../utils/autoBind';
 import { auth } from '../../utils/firebase';
 
 import * as Styled from './styles';
@@ -30,82 +29,68 @@ const accountTypeToForms = {
   organization: [AccountType, GenericSignUp, OrganizationSignUp, ThankYou]
 };
 
-class SignUp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formIndex: 0,
-      isLoggedIn: false,
-      accountType: 'parent',
-      signupID: '',
-      redirectOnUpdate: false
-    };
-    autoBind(this);
-  }
+const SignUp = ({ location, user, OAuthed, updateAccounts }) => {
+  const [formIndex, setFormIndex] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accountType, setAccountType] = useState('parent');
+  const [signUpId, setSignUpId] = useState('');
+  const [redirectOnUpdate, setRedirOU] = useState(false);
 
-  componentDidMount() {
-    let { signupID } = this.state;
-    const { state } = this.props.location;
-    if (state) {
-      signupID = state.signupID || '';
+  // Get SignUpId from location params.
+  useEffect(() => {
+    if (location.state) {
+      const { signupID } = location.state;
+      setSignUpId(signupID || '');
     }
-    this.setState({ signupID });
-  }
+  }, [location.state]);
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillReceiveProps(props) {
-    if (!props.user.isSignedIn && this.state.redirectOnUpdate) {
-      this.setState({ isLoggedIn: true, redirectOnUpdate: false });
+  // Set isLoggedIn state.
+  useEffect(() => {
+    if (auth.currentUser === null && redirectOnUpdate) {
+      setRedirOU(false);
+      setIsLoggedIn(true);
     }
-  }
+  }, [auth.currentUser, redirectOnUpdate]);
 
-  setFormIndex(i) {
-    const { formIndex, accountType } = this.state;
+  // Redirect to login on last form.
+  const updateFormIndex = i => {
     const forms = accountTypeToForms[accountType];
     const dfi = formIndex + i;
     if (dfi < forms.length && dfi >= 0) {
-      this.setState({ formIndex: dfi });
+      setFormIndex(dfi);
     } else if (dfi >= forms.length) {
-      this.setState({ isLoggedIn: true });
+      setIsLoggedIn(true);
     }
-  }
+  };
 
-  logout() {
-    this.setState({ redirectOnUpdate: true });
+  const logout = () => {
+    setRedirOU(true);
     auth.signOut();
-  }
+  };
 
-  render() {
-    const { formIndex, accountType } = this.state;
-    const { updateAccounts, user, OAuthed } = this.props;
-    const forms = accountTypeToForms[accountType];
-    const Form = forms[formIndex];
+  const Form = useMemo(() => accountTypeToForms[accountType][formIndex], [accountType, formIndex]);
 
-    return this.state.isLoggedIn ? (
-      <Redirect to={{ pathname: '/login', state: { signupID: this.state.signupID } }} />
-    ) : (
-      <Styled.SignupWrapper>
-        <Styled.LogoButton
-          onClick={user.newOAuth ? this.logout : () => this.setState({ isLoggedIn: true })}
-        >
-          <Styled.LogoText src={logoText} />
-        </Styled.LogoButton>
-        <Styled.Form full={formIndex === 0}>
-          <Form
-            accountType={accountType}
-            next={() => this.setFormIndex(1)}
-            prev={() => this.setFormIndex(-1)}
-            setAccountType={a => this.setState({ accountType: a })}
-            updateAccounts={updateAccounts}
-            user={user}
-            OAuthed={OAuthed}
-          />
-        </Styled.Form>
-      </Styled.SignupWrapper>
-    );
-  }
-}
-
+  return isLoggedIn ? (
+    <Redirect to={{ pathname: '/login', state: { signupID: signUpId } }} />
+  ) : (
+    <Styled.SignupWrapper>
+      <Styled.LogoButton onClick={user.newOAuth ? logout : () => setIsLoggedIn(true)}>
+        <Styled.LogoText src={logoText} />
+      </Styled.LogoButton>
+      <Styled.Form full={formIndex === 0}>
+        <Form
+          accountType={accountType}
+          next={() => updateFormIndex(1)}
+          prev={() => updateFormIndex(-1)}
+          setAccountType={a => setAccountType(a)}
+          updateAccounts={updateAccounts}
+          user={user}
+          OAuthed={OAuthed}
+        />
+      </Styled.Form>
+    </Styled.SignupWrapper>
+  );
+};
 SignUp.propTypes = propTypes;
 
 export default SignUp;

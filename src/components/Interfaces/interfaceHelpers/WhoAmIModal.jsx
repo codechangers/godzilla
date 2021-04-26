@@ -4,16 +4,15 @@ import Modal from '../../UI/Modal';
 import WhoAmInterface from '../WhoAmI';
 
 const propTypes = {
-  accounts: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 };
 
-const WhoAmIModal = ({ accounts, setWhoAmI, open, onClose }) => (
-  <Modal open={open} onClose={onClose}>
+const WhoAmIModal = ({ setWhoAmI, open, onClose }) => (
+  <Modal open={open} onClose={onClose} noWrapper>
     <WhoAmInterface
-      accounts={accounts}
+      parentIsModal
       setWhoAmI={w => {
         setWhoAmI(w);
         onClose();

@@ -26,11 +26,13 @@ service cloud.firestore {
       }
 
       match /classes/{class} {
+        allow create: if request.auth.uid != null;
         allow write: if get(resource.data.teacher).id == request.auth.uid;
         allow read: if true;
       }
 
       match /promos/{promo} {
+        allow create: if request.auth.uid != null;
         allow write: if get(resource.data.teacher).id == request.auth.uid;
         allow read: if true;
       }

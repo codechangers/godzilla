@@ -14,6 +14,7 @@ import TutorialsInterface from '../Interfaces/Tutorials';
 import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
 import { STRIPE_KEY } from '../../utils/globals';
+import { useAccountData } from '../../hooks/accounts';
 
 const propTypes = {
   user: PropTypes.object.isRequired,
@@ -32,12 +33,14 @@ const routeToInterface = {
   '/parent/games': GamesInterface
 };
 
-const whoAmIRoutes = ['/parent/docs', '/parent/tutorials', '/parent/games'];
+const whoAmIRoutes = ['/parent', '/parent/docs', '/parent/tutorials', '/parent/games'];
 
 const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
+  const [isAdmin] = useAccountData('admins');
+  const [isTeacher] = useAccountData('teachers');
 
-  // Custom Action Bar Init
+  // Custom App Bar Init
   const [cab, setCAB] = useState({});
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
   useEffect(() => setCAB({}), [location]);
@@ -61,20 +64,22 @@ const ParentDashboard = ({ user, accounts, location }) => {
     );
   };
 
-  let approvedRoutes = accounts.teachers ? ['Teacher Dash'] : [];
-  approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
+  let approvedRoutes = isTeacher ? ['Teacher Dash'] : [];
+  approvedRoutes = isAdmin ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'My Classes', 'Class Search', 'Games', 'Docs', 'Tutorials'].concat(
-          approvedRoutes
-        )}
+        names={['Profile', 'Contests', 'Register', 'Games'].concat(approvedRoutes)}
         baseRoute="/parent"
         appBarConfig={cab}
       />
       <StripeProvider apiKey={STRIPE_KEY}>
-        <Elements>{getInterface() || <ClassViewInterface accounts={accounts} />}</Elements>
+        <Elements>
+          {getInterface() || (
+            <ClassViewInterface {...{ whoAmI, setWhoAmI, useCustomAppBar, accounts }} />
+          )}
+        </Elements>
       </StripeProvider>
     </PageWrapper>
   ) : (

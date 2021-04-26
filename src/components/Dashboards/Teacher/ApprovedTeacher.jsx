@@ -25,7 +25,7 @@ import DeleteModal from '../../Interfaces/interfaceHelpers/DeleteModal';
 const getName = user => `${user.data().fName} ${user.data().lName}`;
 
 const getMessage = () => (
-  <span id="client-snackbar" style={{ display: 'flex', alignItems: 'center' }}>
+  <span id="client-snackbar" style={{ display: 'flex', alignItems: 'center', color: 'black' }}>
     <WarningIcon style={{ marginRight: '9px', width: '19px' }} />
     <p>Connect Stripe to use Educator Features</p>
   </span>
@@ -273,8 +273,8 @@ class ApprovedTeacher extends React.Component {
           <SnackbarContent
             aria-describedby="client-snackbar"
             message={getMessage()}
-            action={[<StripeConnect key="stripe_oauth" />]}
-            style={{ width: '100%', backgroundColor: '#ffa000' }}
+            action={[<StripeConnect key="stripe_oauth" color="primary" variant="outlined" />]}
+            style={{ width: '100%', backgroundColor: 'var(--blue-color)' }}
           />
         </Snackbar>
         <ContactInfo

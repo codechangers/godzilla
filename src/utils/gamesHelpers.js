@@ -1,4 +1,4 @@
-import { gameTypes, gameNames, serverReqs } from './globals';
+import { gameTypes, gameNames, serverReqs, gameNameBlackList } from './globals';
 import { db, ref, auth } from './firebase';
 
 export const codeInfo = codeString => {
@@ -16,7 +16,10 @@ export const codeInfo = codeString => {
 export const checkInput = game => {
   let valid = true;
   let error = '';
-  if (game.name.length < 2) {
+  if (gameNameBlackList.includes(game.name)) {
+    valid = false;
+    error = '1|Invalid Name! You cannot use reserved names.';
+  } else if (game.name.length < 2) {
     valid = false;
     error = '1|Invalid Name! Must be at least two characters.';
   } else if (game.name.length > 30) {

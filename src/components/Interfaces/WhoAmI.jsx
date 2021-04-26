@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, makeStyles, CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
+import Modal from '../UI/Modal';
+import Paper from '../UI/Paper';
+import ChildInfo from '../SignUpForms/ChildInfo';
 import { useParentsChildren } from '../../hooks/children';
+import { useAccountRef } from '../../hooks/accounts';
 
 const propTypes = {
   setWhoAmI: PropTypes.func.isRequired,
-  accounts: PropTypes.object.isRequired
+  parentIsModal: PropTypes.bool
 };
 
-const WhoAmInterface = ({ setWhoAmI, accounts }) => {
-  const [children, loading] = useParentsChildren(accounts);
+const defaultProps = {
+  parentIsModal: false
+};
+
+const WhoAmInterface = React.forwardRef(({ setWhoAmI, parentIsModal }, ref) => {
+  const [children, loading] = useParentsChildren();
+  const parentRef = useAccountRef('parents');
+  const [showCreate, setShowCreate] = useState(false);
   const classes = useStyles();
-  return (
+
+  const addChildRef = childRef => {
+    const childRefs = children.map(c => c.ref);
+    childRefs.push(childRef);
+    parentRef.update({ children: childRefs });
+  };
+
+  const createForm = () => (
+    <ChildInfo
+      handleClose={() => setShowCreate(false)}
+      addChildRef={addChildRef}
+      title="Add a Profile"
+    />
+  );
+
+  const content = (
     <div className={classes.wrapper}>
       <Typography variant="h4" style={{ marginBottom: 20 }}>
         Select your Profile
@@ -19,24 +45,45 @@ const WhoAmInterface = ({ setWhoAmI, accounts }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <div className={classes.profiles}>
-          {children.map(child => (
-            <Button
-              variant="outlined"
-              key={child.id}
-              onClick={() => setWhoAmI(child)}
-              className={classes.button}
-            >
-              {child.fName}
-            </Button>
-          ))}
-        </div>
+        <>
+          <div className={classes.profiles}>
+            {children.length === 0 && <Typography variant="h5">No Profiles...</Typography>}
+            {children.map(child => (
+              <Button
+                variant="outlined"
+                key={child.id}
+                onClick={() => setWhoAmI(child)}
+                className={classes.button}
+              >
+                {child.fName}
+              </Button>
+            ))}
+          </div>
+          <Button color="secondary" onClick={() => setShowCreate(true)} startIcon={<Add />}>
+            New Profile
+          </Button>
+        </>
+      )}
+      {!parentIsModal && (
+        <Modal
+          open={showCreate}
+          onClose={() => setShowCreate(false)}
+          title="Add a Profile"
+          description="Add a new Profile to your account."
+          noWrapper
+        >
+          {createForm()}
+        </Modal>
       )}
     </div>
   );
-};
 
+  if (parentIsModal && showCreate) return <div className={classes.wrapper}>{createForm()}</div>;
+  if (parentIsModal) return <Paper ref={ref}>{content}</Paper>;
+  return content;
+});
 WhoAmInterface.propTypes = propTypes;
+WhoAmInterface.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   wrapper: {
@@ -51,7 +98,8 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginBottom: 20
   },
   button: {
     margin: 10

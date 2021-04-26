@@ -8,9 +8,11 @@ import {
   ListItemAvatar,
   ListItemText,
   Checkbox,
-  Button
+  Button,
+  ListItemSecondaryAction
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import { useHistory } from 'react-router';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
@@ -33,7 +35,7 @@ const defaultProps = {
 };
 
 const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
-  const children = useParentsLiveChildren(accounts);
+  const children = useParentsLiveChildren();
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
@@ -150,6 +152,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
     return total;
   };
 
+  const history = useHistory();
   const classes = useStyles();
   return cls !== null ? (
     <Modal open={open} onClose={onClose} className={classes.modal}>
@@ -160,7 +163,8 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
             setSelectedChildren([]);
             setIsProcessing(false);
             updatePayment({ succeeded: false });
-            if (cls.hasWaiver) {
+            if (payment.succeeded) setPromoDoc(null);
+            if (cls.hasWaiver && payment.succeeded) {
               window.open(cls.waiverURL, '_blank');
             }
             onClose();
@@ -176,6 +180,21 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
           <ClassTable cls={cls} />
           <Typography variant="body1">Select Children to Register</Typography>
           <List style={{ width: '100%' }}>
+            {children.length === 0 && (
+              <ListItem>
+                <ListItemText primary="You don't have any children!" />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => history.push('/parent')}
+                    className={classes.emptyPrompt}
+                  >
+                    Add Kids
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
             {children.map(child => (
               <ListItem
                 key={child.id}
@@ -300,6 +319,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap'
+  },
+  emptyPrompt: {
+    [theme.breakpoints.down('xs')]: { display: 'none' }
   }
 }));
 

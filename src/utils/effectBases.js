@@ -16,26 +16,39 @@ import { toData } from './helpers';
  * const newEffect = getDataEffectBase(single, getter);
  *
  * // Inside a component or hook.
- * useEffect(newEffect(input, setData, setLoading), [input]);
+ * useEffect(newEffect(input, setData, setLoading, handleError), [input]);
  * ~~~
  */
 export const getDataEffectBase = (single = true, getter = toData) => (
   input,
   setData,
-  setLoading
+  setLoading,
+  handleError = () => {}
 ) => () => {
   /**
    * This is how you are supposed to run async code in an effect.
    * See this github issue for details:
    * https://github.com/facebook/react/issues/14326#issuecomment-441680293
    */
+  let safeSetData = setData;
+  let safeSetLoading = setLoading;
   async function run() {
-    setLoading(true);
-    if (single) setData(getter(await input.get()));
-    else setData(await Promise.all(input.map(async ref => getter(await ref.get()))));
-    setLoading(false);
+    try {
+      safeSetLoading(true);
+      let newData;
+      if (single) newData = getter(await input.get());
+      else newData = await Promise.all(input.map(async ref => getter(await ref.get())));
+      safeSetData(newData);
+      safeSetLoading(false);
+    } catch (error) {
+      handleError(error);
+    }
   }
   run();
+  return () => {
+    safeSetData = () => {};
+    safeSetLoading = () => {};
+  };
 };
 
 /**
@@ -54,22 +67,30 @@ export const getDataEffectBase = (single = true, getter = toData) => (
  * const newEffect = onSnapshotDataEffectBase(single, getter);
  *
  * // Inside a component or hook.
- * useEffect(newEffect(input, setData), [input]);
+ * useEffect(newEffect(input, setData, handleError), [input]);
  * ~~~
  */
-export const onSnapshotDataEffectBase = (single = true, getter = toData) => (input, setData) => {
+export const onSnapshotDataEffectBase = (single = true, getter = toData) => (
+  input,
+  setData,
+  handleError = () => {}
+) => {
   let subs = [];
   return () => {
     const dataMap = {};
     const refs = single ? [input] : input;
-    refs.forEach(ref => {
-      const sub = ref.onSnapshot(doc => {
-        dataMap[doc.id] = getter(doc);
-        const values = Object.values(dataMap);
-        setData(single ? values[0] : values);
+    try {
+      refs.forEach(ref => {
+        const sub = ref.onSnapshot(doc => {
+          dataMap[doc.id] = getter(doc);
+          const values = Object.values(dataMap);
+          setData(single ? values[0] : values);
+        });
+        subs.push(sub);
       });
-      subs.push(sub);
-    });
+    } catch (error) {
+      handleError(error);
+    }
     // Cleanup subscriptions.
     return () => {
       subs.forEach(sub => sub());

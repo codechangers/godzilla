@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
+import clsx from 'clsx';
 import { getDateString, getTime } from '../../utils/helpers';
 import { programTypeToText } from '../../utils/globals';
 import { Template2 } from '../Images';
@@ -27,6 +28,7 @@ class InfoCardHeader extends React.Component {
       teacher: null,
       showSchedule: false
     };
+    this.safeSetState = this.setState;
   }
 
   componentDidMount() {
@@ -35,16 +37,25 @@ class InfoCardHeader extends React.Component {
         .doc(this.props.cls.teacher.id)
         .get()
         .then(teacherDoc => {
-          this.setState({ teacher: teacherDoc.data() });
+          this.safeSetState({ teacher: teacherDoc.data() });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.safeSetState = () => {};
   }
 
   render() {
     const { cls, children, hideImage, preview, hideAccountType, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
-      <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
+      <div
+        className={clsx(classes.infoCardHeader, {
+          [classes.parent]: children !== null,
+          [classes.slim]: children !== null && !hideImage
+        })}
+      >
         <div style={hideImage ? { width: '100%' } : null}>
           <Typography variant="h5" style={{ marginBottom: '6px' }}>
             {cls.name}
@@ -205,6 +216,7 @@ const styles = theme => ({
       }
     }
   },
+  slim: { marginBottom: 0 },
   parent: {
     '& > img': {
       height: '474px',
@@ -330,9 +342,10 @@ const styles = theme => ({
     zIndex: 2,
     position: 'relative',
     '& > span': {
-      width: '1px',
+      width: '2px',
       height: '10px',
-      backgroundColor: '#13506e',
+      borderRadius: '1px',
+      backgroundColor: 'var(--blue-color)',
       display: 'block'
     },
     [theme.breakpoints.down('sm')]: {
@@ -342,6 +355,7 @@ const styles = theme => ({
   bottomLine: {
     width: '100%',
     height: 0,
+    marginTop: 40 + 22,
     borderBottom: '1px solid #e0e0e0',
     [theme.breakpoints.down('md')]: {
       display: 'none'

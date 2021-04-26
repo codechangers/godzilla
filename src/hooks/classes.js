@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getDataEffectBase } from '../utils/effectBases';
+import { getDataEffectBase, onSnapshotDataEffectBase } from '../utils/effectBases';
 import { toData } from '../utils/helpers';
 import { db } from '../utils/firebase';
 
@@ -30,11 +30,23 @@ export const useIdClass = (id, listenToUpdates = false) => {
   return [exists, cls, loading];
 };
 
+/**
+ * Subscribe to the data of each class in a given array of references.
+ */
+export const useLiveClasses = refs => {
+  const [classes, setClasses] = useState([]);
+  // Clear classes on empty refs.
+  useEffect(() => {
+    if (refs.length === 0) setClasses([]);
+  }, [refs]);
+  // Handle refs.
+  useEffect(liveClassesDataEffect(refs, setClasses), [refs]);
+  return classes;
+};
+
 /* ===============================
  * === Custom Reusable Effects ===
  * =============================== */
 
-/**
- * Fetch the data of class and return an array of if the document exists and it's data.
- */
 const classExistsEffect = getDataEffectBase(true, doc => [doc.exists, toData(doc)]);
+const liveClassesDataEffect = onSnapshotDataEffectBase(false);

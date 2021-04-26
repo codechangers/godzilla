@@ -1,9 +1,19 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { getDataEffectBase, onSnapshotDataEffectBase } from '../utils/effectBases';
+import { useAccountRef } from './accounts';
 
 /* ======================
  * === Children Hooks ===
  * ====================== */
+
+/**
+ * Subscribe to the data of a given child reference.
+ */
+export const useLiveChild = childRef => {
+  const [child, setChild] = useState(null);
+  useEffect(liveChildDataEffect(childRef, setChild), [childRef]);
+  return child;
+};
 
 /**
  * Get the data of each child reference given.
@@ -11,7 +21,7 @@ import { getDataEffectBase, onSnapshotDataEffectBase } from '../utils/effectBase
 export const useChildren = childRefs => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  useEffect(childrenDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
@@ -27,25 +37,26 @@ export const useLiveChildren = childRefs => {
 /**
  * Get the data of each of a parents children.
  */
-export const useParentsChildren = accounts => {
+export const useParentsChildren = () => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
-  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
-  useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
-  useEffect(childDataEffect(childRefs, setChildren, setLoading), [childRefs]);
+  const handleError = () => setLoading(false);
+  const parentRef = useAccountRef('parents');
+  useEffect(parentChildRefsEffect(parentRef, setChildRefs, handleError), [parentRef]);
+  useEffect(childrenDataEffect(childRefs, setChildren, setLoading), [childRefs]);
   return [children, loading];
 };
 
 /**
  * Subscribe to the data of each of a parents children.
  */
-export const useParentsLiveChildren = accounts => {
+export const useParentsLiveChildren = () => {
   const [childRefs, setChildRefs] = useState([]);
   const [children, setChildren] = useState([]);
-  const parentRef = useMemo(() => accounts.parents.ref, [accounts]);
+  const parentRef = useAccountRef('parents');
   useEffect(parentChildRefsEffect(parentRef, setChildRefs), [parentRef]);
-  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  useEffect(liveChildrenDataEffect(childRefs, setChildren), [childRefs]);
   return children;
 };
 
@@ -53,17 +64,7 @@ export const useParentsLiveChildren = accounts => {
  * === Custom Reusable Effects ===
  * =============================== */
 
-/**
- * Fetch the data of each of the parent's children once.
- */
-const childDataEffect = getDataEffectBase(false);
-
-/**
- * Subscribe to each child's data.
- */
-const liveChildDataEffect = onSnapshotDataEffectBase(false);
-
-/**
- * Subscribe to the parents children references.
- */
+const childrenDataEffect = getDataEffectBase(false);
+const liveChildDataEffect = onSnapshotDataEffectBase(true);
+const liveChildrenDataEffect = onSnapshotDataEffectBase(false);
 const parentChildRefsEffect = onSnapshotDataEffectBase(true, doc => doc.data().children || []);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Dashboard,
   ImportContacts,
+  Event,
   AttachMoney,
   AccountCircle,
   Settings,
@@ -56,11 +57,11 @@ const defaultABC = defaultProps.appBarConfig;
 const nameToIcon = {
   Dashboard,
   Curriculum: ImportContacts,
-  'My Classes': ImportContacts,
+  Contests: Event,
   Payments: AttachMoney,
   Profile: AccountCircle,
   'Sign up': Edit,
-  'Class Search': Search,
+  Register: Search,
   'Promo Codes': CardGiftcard,
   Settings,
   Docs: Description,
@@ -80,12 +81,12 @@ const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
 
   const nameToRoute = {
     Dashboard: baseRoute,
-    'My Classes': baseRoute,
+    Contests: baseRoute,
     Curriculum: `${baseRoute}/curriculum`,
     Payments: `${baseRoute}/payments`,
     Profile: `${baseRoute}/profile`,
     'Sign up': `${baseRoute}/signup`,
-    'Class Search': `${baseRoute}/search`,
+    Register: `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`,
     Docs: `${baseRoute}/docs`,

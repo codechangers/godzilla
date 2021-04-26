@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
 import DeleteModal from './interfaceHelpers/DeleteModal';
+import { useLivePromoCodes } from '../../hooks/promos';
+import { toData } from '../../utils/helpers';
 import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
@@ -13,29 +15,11 @@ const propTypes = {
 
 const PromoCodesInterface = ({ user }) => {
   const [teacher, setTeacher] = useState(null);
-  const [promos, setPromos] = useState([]);
+  const promos = useLivePromoCodes(teacher?.promos || []);
   const [showForm, setShowForm] = useState(false);
   const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
   const [promoToDelete, setPromoToDelete] = useState({ isSet: false });
   const [showOldPromos, setShowOldPromos] = useState(false);
-
-  const getPromos = useCallback(
-    tchr => {
-      const newPromos = [];
-      tchr.promos.forEach(promoRef => {
-        promoRef
-          .get()
-          .then(promoDoc => {
-            newPromos.push({ ...promoDoc.data(), id: promoDoc.id, ref: promoDoc.ref });
-            if (newPromos.length === tchr.promos.length) {
-              setPromos(newPromos.reverse());
-            }
-          })
-          .catch(err => console.log(err));
-      });
-    },
-    [setPromos]
-  );
 
   const createPromo = promoCode => {
     promoCode.active = true;
@@ -55,34 +39,26 @@ const PromoCodesInterface = ({ user }) => {
     const updatedPromo = { ...promoToEdit, ...promoCode };
     delete updatedPromo.id;
     delete updatedPromo.ref; // prevent these fields from being saved to the doc
-    promoToEdit.ref.update(updatedPromo).then(() => getPromos(teacher));
+    promoToEdit.ref.update(updatedPromo);
     setPromoToEdit({ isSet: false });
   };
 
   const deletePromo = () => {
-    promoToDelete.ref
-      .update({
-        ...promoToDelete,
-        active: false,
-        deletedOn: { seconds: Date.now() / 1000 }
-      })
-      .then(() => getPromos(teacher));
+    promoToDelete.ref.update({
+      ...promoToDelete,
+      active: false,
+      deletedOn: { seconds: Date.now() / 1000 }
+    });
     setPromoToDelete({ isSet: false });
   };
 
   useEffect(() => {
-    // Get Promos
+    // Get Teacher Data
     return db
       .collection('teachers')
       .doc(user.uid)
-      .onSnapshot(doc => {
-        const teacherData = { ...doc.data(), id: doc.id, ref: doc.ref };
-        setTeacher(teacherData);
-        if (teacherData.promos) {
-          getPromos(teacherData);
-        }
-      });
-  }, [db, user, setTeacher, getPromos]);
+      .onSnapshot(doc => setTeacher(toData(doc)));
+  }, [db, user, setTeacher]);
 
   const classes = useStyles();
 
@@ -113,6 +89,13 @@ const PromoCodesInterface = ({ user }) => {
         >
           Show Current Promo Codes
         </Button>
+      )}
+      {promos.filter(p => (showOldPromos ? !p.active : p.active)).length === 0 && (
+        <Typography variant="h5" style={{ marginTop: 40 }}>
+          {showOldPromos
+            ? "You haven't deactivated any promo codes."
+            : "You haven't created any promo codes."}
+        </Typography>
       )}
       {promos
         .filter(p => (showOldPromos ? !p.active : p.active))

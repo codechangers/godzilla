@@ -7,9 +7,9 @@ import {
   makeStyles,
   Paper,
   Button,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   InputBase,
   IconButton,
   Tooltip,
@@ -105,44 +105,45 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
 
   // Use a custom app bar.
   useEffect(() => {
-    if (isOwner) {
-      let action = isEditing ? (
-        <Button
-          variant="contained"
-          onClick={() => setIsEditing(false)}
-          startIcon={<VisibilityIcon />}
-        >
-          View Preview
-        </Button>
+    let action = isEditing ? (
+      <Button
+        variant="contained"
+        onClick={() => setIsEditing(false)}
+        startIcon={<VisibilityIcon />}
+      >
+        View Preview
+      </Button>
+    ) : (
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => setIsEditing(true)}
+        startIcon={<EditIcon />}
+      >
+        Edit Info
+      </Button>
+    );
+    if (isWidthDown('xs', width)) {
+      // Use Icon buttons with Tooltips on mobile.
+      action = isEditing ? (
+        <Tooltip title="View Preview" placement="bottom">
+          <IconButton onClick={() => setIsEditing(false)}>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => setIsEditing(true)}
-          startIcon={<EditIcon />}
-        >
-          Edit Info
-        </Button>
+        <Tooltip title="Edit Info" placement="bottom">
+          <IconButton color="primary" onClick={() => setIsEditing(true)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
       );
-      if (isWidthDown('xs', width)) {
-        // Use Icon buttons with Tooltips on mobile.
-        action = isEditing ? (
-          <Tooltip title="View Preview" placement="bottom">
-            <IconButton onClick={() => setIsEditing(false)}>
-              <VisibilityIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Edit Info" placement="bottom">
-            <IconButton color="primary" onClick={() => setIsEditing(true)}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-        );
-      }
-      useCustomAppBar({ title: isEditing ? 'Editing Info' : 'Code Contest', action });
     }
-  }, [isOwner, isEditing, width]);
+    useCustomAppBar({
+      title: isEditing ? 'Editing Info' : `Register for ${cls?.name || 'this class'}`,
+      action: isOwner ? action : null
+    });
+  }, [isOwner, isEditing, width, cls]);
 
   const saveClassInfo = () => {
     cls.ref.update({ info: classInfo });
@@ -150,17 +151,19 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
 
   const classes = useStyles();
   return isLoading ? (
-    <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Styled.PageContent className={classes.wrapper}>
       <Typography variant="h3" style={{ marginBottom: '20px' }}>
         Finding Class...
       </Typography>
       <CircularProgress color="primary" />
     </Styled.PageContent>
   ) : (
-    <Styled.PageContent>
-      <Typography variant="h3" className={classes.mainHeader}>
-        {foundClass ? 'Class Info' : 'Class not found.'}
-      </Typography>
+    <Styled.PageContent className={classes.wrapper}>
+      {!foundClass && (
+        <Typography variant="h3" className={classes.mainHeader}>
+          Class not found.
+        </Typography>
+      )}
       {isEditing && (
         <div className={classes.editButtons}>
           <Button onClick={() => setClassInfo(originalInfo)}>Revert Changes</Button>
@@ -319,11 +322,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                 Important Information
               </Typography>
               {classInfo.faqs.map((faq, i) => (
-                <ExpansionPanel
-                  key={faq.q}
-                  className={clsx(classes.faqPanel, classes.faqPanelOutline)}
-                >
-                  <ExpansionPanelSummary
+                <Accordion key={faq.q} className={clsx(classes.faqPanel, classes.faqPanelOutline)}>
+                  <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
@@ -332,8 +332,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                     <Typography variant="h6" className={classes.question}>
                       {faq.q}
                     </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails className={classes.details}>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.details}>
                     <Typography variant="body1" className={classes.answer}>
                       {faq.a}
                     </Typography>
@@ -364,8 +364,8 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
                         </Tooltip>
                       </div>
                     )}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  </AccordionDetails>
+                </Accordion>
               ))}
               {isEditing ? (
                 <Button
@@ -543,6 +543,15 @@ SignUpButton.defaultProps = {
 };
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 'calc(100vh - 64px - 64px)',
+    boxSizing: 'border-box',
+    paddingBottom: 20
+  },
   mainHeader: {
     marginBottom: '36px',
     textAlign: 'center'
@@ -553,14 +562,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginBottom: '30px'
+    alignItems: 'center'
   },
   cardWrapper: {
     width: 'calc(100% - 4px)',
     maxWidth: '1000px',
     minWidth: '300px',
-    marginBottom: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',

@@ -7,7 +7,6 @@ import WhoAmIModal from './WhoAmIModal';
 const propTypes = {
   whoAmI: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
-  accounts: PropTypes.object.isRequired,
   className: PropTypes.string,
   classes: PropTypes.object,
   listButton: PropTypes.bool
@@ -54,7 +53,7 @@ ListButton.propTypes = {
 };
 ListButton.defaultProps = { classes: {} };
 
-const WhoAmIButton = ({ listButton, whoAmI, setWhoAmI, accounts, className, classes }) => {
+const WhoAmIButton = ({ listButton, whoAmI, setWhoAmI, className, classes }) => {
   const [showProfile, setShowProfile] = useState(false);
   const WAIButton = listButton ? ListButton : MainButton;
   return (
@@ -65,12 +64,7 @@ const WhoAmIButton = ({ listButton, whoAmI, setWhoAmI, accounts, className, clas
         className={className}
         classes={classes}
       />
-      <WhoAmIModal
-        open={showProfile}
-        onClose={() => setShowProfile(false)}
-        accounts={accounts}
-        setWhoAmI={setWhoAmI}
-      />
+      <WhoAmIModal open={showProfile} onClose={() => setShowProfile(false)} setWhoAmI={setWhoAmI} />
     </>
   );
 };

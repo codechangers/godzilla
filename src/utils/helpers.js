@@ -86,6 +86,20 @@ export const getAgeFromBirthday = bDay => {
   return Math.floor((today - bDay.seconds) / yearSecs);
 };
 
+export const getExactDateTime = (date, time) => {
+  const dateObj = new Date(date.seconds * 1000);
+  const timeObj = new Date(time.seconds * 1000);
+  return new Date(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate(),
+    timeObj.getHours(),
+    timeObj.getMinutes(),
+    0, // Seconds
+    0 // Milliseconds
+  );
+};
+
 export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
 
 export const getDateString = timestamp => getMonthDDYYYY(getDateFromTimestamp(timestamp));

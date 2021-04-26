@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Paper, CircularProgress, Grid } from '@material-ui/core';
+import { makeStyles, Paper, CircularProgress, Grid, Typography } from '@material-ui/core';
 import Request, { AccountChip } from './Request';
 import RequestModal from './RequestModal';
 import { STATUS } from '../../../utils/globals';
@@ -8,11 +8,12 @@ import { getStatus } from '../../../utils/helpers';
 
 const propTypes = {
   reqs: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   orgs: PropTypes.bool
 };
 
 const defaultProps = {
+  loading: false,
   orgs: false
 };
 
@@ -52,6 +53,9 @@ const RequestList = ({ reqs, loading, orgs }) => {
             />
           </div>
           <Paper className={classes.paper}>
+            {!loading && reqs.filter(r => toggles[getStatus(r)]).length === 0 && (
+              <Typography variant="body1">Account Requests Empty...</Typography>
+            )}
             {loading ? (
               <CircularProgress color="primary" />
             ) : (

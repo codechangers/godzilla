@@ -299,12 +299,12 @@ class ProfileInterface extends React.Component {
         } else {
           this.setState({ accountData });
         }
-        this.fetchChildrenData();
+        this.fetchChildrenData(accountData);
       });
   }
 
-  fetchChildrenData() {
-    const childrenRefs = this.state.accountData.children || [];
+  fetchChildrenData(accountData) {
+    const childrenRefs = accountData.children || this.state.accountData.children || [];
     const children = [];
     childrenRefs.forEach(childRef => {
       childRef.get().then(childDoc => {

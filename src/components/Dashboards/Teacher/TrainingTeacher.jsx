@@ -16,15 +16,8 @@ const TrainingTeacher = () => (
       Square, etc.), Stripe collects a fee of 2.9% + $0.30 per successful charge. This fee is taken
       at the time of the charge.
     </Typography>
-    <div
-      style={{
-        backgroundColor: '#8dc63f',
-        borderRadius: '4px',
-        marginTop: 18,
-        float: 'left'
-      }}
-    >
-      <StripeConnect />
+    <div style={{ margin: '18px 0', float: 'right' }}>
+      <StripeConnect variant="contained" color="primary" />
     </div>
   </div>
 );
