@@ -1,4 +1,7 @@
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { toData } from '../utils/helpers';
+import { db, auth } from '../utils/firebase';
+import { onSnapshotDataEffectBase } from '../utils/effectBases';
 import tutorials from '../resources/tutorials';
 
 const globalWhiteList = [
@@ -43,6 +46,24 @@ allowedSubDirs.forEach(subDir => {
     .map(item => globalWhiteList.push(item));
 });
 
+/* ===================
+ * === Items Hooks ===
+ * =================== */
+
+export const getLiveCheckOffData = page => {
+  const [checkOff, setCheckOff] = useState(null);
+  const ref = useMemo(
+    () =>
+      db
+        .collection('checkOffs')
+        .where('parentId', '==', auth.currentUser.uid)
+        .where('page', '==', page),
+    [page, auth.currentUser]
+  );
+  useEffect(liveCheckOffDataEffect(ref, setCheckOff), [ref]);
+  return checkOff;
+};
+
 const checkItems = (unlocked, value, prefix = '') => {
   const newValue = {};
   Object.entries(value).forEach(([key, val]) => {
@@ -74,3 +95,12 @@ export const useFlatItems = items => useMemo(() => flattenItems(items), [items])
 
 export const useFlatUnlockedItems = (items, locked, whiteList) =>
   useFlatItems(useUnlockedItems(items, locked, whiteList));
+
+/* ===============================
+ * === Custom Reusable Effects ===
+ * =============================== */
+
+const liveCheckOffDataEffect = onSnapshotDataEffectBase(
+  true,
+  snap => snap.docs.map(d => toData(d))[0] || null
+);
