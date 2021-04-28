@@ -21,9 +21,9 @@ import { toData } from '../../utils/helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
-  useSelectedCls: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
+  useSelectedCls: PropTypes.func,
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
@@ -34,7 +34,8 @@ const defaultProps = {
   homePage: 'home',
   whiteList: 'none',
   whoAmI: null,
-  setWhoAmI: () => {}
+  setWhoAmI: () => {},
+  useSelectedCls: () => [null]
 };
 
 const drawerWidth = 260;
