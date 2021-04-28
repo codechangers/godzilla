@@ -54,10 +54,12 @@ export const getLiveCheckOffData = page => {
   const [checkOff, setCheckOff] = useState(null);
   const ref = useMemo(
     () =>
-      db
-        .collection('checkOffs')
-        .where('parentId', '==', auth.currentUser?.uid)
-        .where('page', '==', page),
+      auth.currentUser?.uid
+        ? db
+            .collection('checkOffs')
+            .where('parentId', '==', auth.currentUser.uid)
+            .where('page', '==', page)
+        : () => {},
     [page, auth.currentUser]
   );
   useEffect(liveCheckOffDataEffect(ref, setCheckOff), [ref]);

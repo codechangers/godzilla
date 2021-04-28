@@ -9,11 +9,13 @@ export const useUserGames = () => {
   const [games, setGames] = useState([]);
   useEffect(
     () =>
-      db
-        .collection('games')
-        .where('userID', '==', auth.currentUser.uid)
-        .onSnapshot(snap => setGames(snap.docs.map(toData))),
-    [auth.currentUser.uid]
+      auth.currentUser?.uid
+        ? db
+            .collection('games')
+            .where('userID', '==', auth.currentUser.uid)
+            .onSnapshot(snap => setGames(snap.docs.map(toData)))
+        : () => {},
+    [auth.currentUser]
   );
   return games;
 };
