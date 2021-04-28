@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, MenuItem, TextField, makeStyles } from '@material-ui/core';
 import { db, auth } from '../../utils/firebase';
@@ -6,23 +6,33 @@ import { getLiveCheckOffData } from '../../hooks/items';
 import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
+  whoAmI: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired
 };
 
-const CheckOff = ({ page }) => {
+const CheckOff = ({ whoAmI, page }) => {
   const checkOff = getLiveCheckOffData(page);
   const games = useUserGames();
+  const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
   const [gameId, setGameId] = useState('');
   const classes = useStyles();
 
+  useEffect(() => {
+    if (childGames.length === 1) setGameId(childGames[0].id);
+  }, [childGames]);
+
+  const validGID = useMemo(() => gameId !== '' && childGames.map(g => g.id).includes(gameId));
+
   const createCheckOff = () => {
-    const data = {
-      page,
-      parent: auth.currentUser.uid
-    };
-    db.collection('checkOffs')
-      .doc()
-      .set(data);
+    if (validGID) {
+      const data = {
+        page,
+        parent: auth.currentUser.uid
+      };
+      db.collection('checkOffs')
+        .doc()
+        .set(data);
+    }
   };
 
   return checkOff !== null ? (
@@ -44,13 +54,14 @@ const CheckOff = ({ page }) => {
         className={classes.select}
         select
       >
-        {games.map(g => (
+        {childGames.length === 0 && <MenuItem value="">You Don&apos;t Have Any Games...</MenuItem>}
+        {childGames.map(g => (
           <MenuItem value={g.id} key={g.id}>
             {g.name}
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit">
+      <Button variant="contained" color="primary" type="submit" disabled={!validGID}>
         Check Off
       </Button>
     </form>

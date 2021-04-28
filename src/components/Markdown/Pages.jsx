@@ -131,7 +131,12 @@ const MarkdownPages = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <MarkdownRenderer pages={pages} page={page} useLoading={[loading, setLoading]} />
+        <MarkdownRenderer
+          pages={pages}
+          page={page}
+          useLoading={[loading, setLoading]}
+          whoAmI={whoAmI}
+        />
         {!loading && (
           <NavButtons
             onNav={setUrlPage}

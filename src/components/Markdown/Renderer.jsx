@@ -9,6 +9,7 @@ import CodeBlock from '../UI/CodeBlock';
 import { resolveImg } from '../../resources/images';
 
 const propTypes = {
+  whoAmI: PropTypes.object.isRequired,
   pages: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
   useLoading: PropTypes.array.isRequired
@@ -16,7 +17,7 @@ const propTypes = {
 
 const remarkPlugins = [gfm];
 
-const MarkdownRenderer = ({ pages, page, useLoading }) => {
+const MarkdownRenderer = ({ whoAmI, pages, page, useLoading }) => {
   const classes = useStyles();
   const [content, setContent] = useState('# Hello World');
   const [loading, setLoading] = useLoading;
@@ -72,7 +73,7 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
       );
     }
     if (value.trim() === '{% checkoff %}') {
-      return <CheckOff page={page} />;
+      return <CheckOff page={page} whoAmI={whoAmI} />;
     }
     return value;
   };
