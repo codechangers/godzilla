@@ -14,8 +14,8 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { SwapHoriz } from '@material-ui/icons';
-import Folder from '../UI/Folder';
-import { useFlatItems } from '../../hooks/items';
+import Folder from '../../UI/Folder';
+import { useFlatItems } from '../../../hooks/items';
 
 const propTypes = {
   title: PropTypes.string.isRequired,

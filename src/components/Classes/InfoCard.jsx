@@ -12,7 +12,7 @@ import { URL } from '../../utils/globals';
 import InfoCardHeader from './InfoCardHeader';
 import StudentInfo from './StudentInfo';
 import { useChildren } from '../../hooks/children';
-import CheckOffModal from './CheckOffModal';
+import CheckOffModal from './CheckOff/Modal';
 
 const propTypes = {
   cls: PropTypes.object.isRequired,

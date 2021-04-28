@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
-import CheckOffKids from './CheckOffKids';
-import Modal from '../UI/Modal';
+import CheckOffKids from './Kids';
+import Modal from '../../UI/Modal';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,

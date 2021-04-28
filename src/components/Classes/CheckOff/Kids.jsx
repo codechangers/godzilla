@@ -10,11 +10,11 @@ import {
   IconButton
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
-import CheckOffItems from './CheckOffItems';
-import TabPanel from '../UI/TabPanel';
-import { useLiveChildren } from '../../hooks/children';
-import docs from '../../resources/docs';
-import tutorials from '../../resources/tutorials';
+import CheckOffItems from './Items';
+import TabPanel from '../../UI/TabPanel';
+import { useLiveChildren } from '../../../hooks/children';
+import docs from '../../../resources/docs';
+import tutorials from '../../../resources/tutorials';
 
 const propTypes = {
   childRefs: PropTypes.arrayOf(PropTypes.object).isRequired
