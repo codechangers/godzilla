@@ -7,10 +7,15 @@ import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
   whoAmI: PropTypes.object.isRequired,
-  page: PropTypes.string.isRequired
+  page: PropTypes.string.isRequired,
+  cls: PropTypes.object
 };
 
-const CheckOff = ({ whoAmI, page }) => {
+const defaultProps = {
+  cls: null
+};
+
+const CheckOff = ({ whoAmI, page, cls }) => {
   const checkOff = getLiveCheckOffData(page);
   const games = useUserGames();
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
@@ -29,11 +34,12 @@ const CheckOff = ({ whoAmI, page }) => {
   ]);
 
   const createCheckOff = () => {
-    if (validGID && gameRef !== null) {
+    if (validGID && gameRef !== null && cls !== null) {
       const data = {
         page,
-        game: gameRef,
-        parent: auth.currentUser.uid
+        gameRef,
+        parentId: auth.currentUser.uid,
+        teacherId: cls.teacher.id
       };
       db.collection('checkOffs')
         .doc()
@@ -74,6 +80,7 @@ const CheckOff = ({ whoAmI, page }) => {
   );
 };
 CheckOff.propTypes = propTypes;
+CheckOff.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   form: {
