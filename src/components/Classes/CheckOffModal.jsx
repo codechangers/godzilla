@@ -1,22 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  Typography,
-  makeStyles,
-  Tooltip,
-  IconButton
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import CheckOffItems from './CheckOffItems';
+import { Button, makeStyles } from '@material-ui/core';
+import CheckOffKids from './CheckOffKids';
 import Modal from '../UI/Modal';
-import TabPanel from '../UI/TabPanel';
-import { useLiveChildren } from '../../hooks/children';
-import docs from '../../resources/docs';
-import tutorials from '../../resources/tutorials';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -25,99 +11,18 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, childRefs }) => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const [selected, select] = useState(null);
-  const children = useLiveChildren(childRefs);
+  const [showKidsUI] = useState(true);
   const classes = useStyles();
-
-  const close = () => {
-    setTabIndex(0);
-    select(null);
-    onClose();
-  };
-
-  const updateChild = newData => {
-    if (selected !== null) selected.ref.update(newData);
-  };
-
   return (
     <Modal
       open={open}
-      onClose={close}
+      onClose={onClose}
       title="Check Off Modal"
       description="Check off the progress of participants as they make their way through the competition."
       className={classes.paper}
     >
-      <div className={classes.header}>
-        {selected !== null && (
-          <div className={classes.grow}>
-            <Tooltip title="Back" placement="bottom">
-              <IconButton
-                onClick={() => {
-                  select(null);
-                  setTabIndex(0);
-                }}
-              >
-                <ArrowBack />
-              </IconButton>
-            </Tooltip>
-          </div>
-        )}
-        <Typography variant="h4" className={classes.headerText}>
-          {selected === null ? 'Check Off Progress' : `${selected.fName} ${selected.lName}`}
-        </Typography>
-        {selected !== null && (
-          <div className={classes.grow}>
-            <div style={{ width: 48 }} />
-          </div>
-        )}
-      </div>
-      <TabPanel value={tabIndex} index={0} className={classes.panel}>
-        <List className={classes.list}>
-          {children.length === 0 && (
-            <ListItem>
-              <ListItemText
-                style={{ textAlign: 'center ' }}
-                primary="Your students will show up here after they register!"
-              />
-            </ListItem>
-          )}
-          {children.map(child => (
-            <ListItem
-              button
-              divider
-              key={child.id}
-              onClick={() => {
-                select(child);
-                setTabIndex(1);
-              }}
-            >
-              <ListItemText primary={`${child.fName} ${child.lName}`} />
-            </ListItem>
-          ))}
-        </List>
-      </TabPanel>
-      <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <CheckOffItems
-          title="Tutorials"
-          other="Documentation"
-          items={tutorials}
-          onSwitch={() => setTabIndex(2)}
-          whiteList={selected?.tutorials}
-          onChange={tuts => updateChild({ tutorials: tuts })}
-        />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={2} className={classes.panel}>
-        <CheckOffItems
-          title="Documentation"
-          other="Tutorials"
-          items={docs}
-          onSwitch={() => setTabIndex(1)}
-          whiteList={selected?.docs}
-          onChange={dcs => updateChild({ docs: dcs })}
-        />
-      </TabPanel>
-      <Button onClick={close} style={{ paddingLeft: 50, paddingRight: 50 }}>
+      {showKidsUI && <CheckOffKids childRefs={childRefs} />}
+      <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>
     </Modal>
@@ -131,25 +36,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       padding: '0 4px 20px 4px'
     }
-  },
-  header: {
-    margin: '20px 0 0 0',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  grow: {
-    flexGrow: 1
-  },
-  list: {
-    width: '100%',
-    maxWidth: 600,
-    marginBottom: 18,
-    padding: 0
-  },
-  panel: {
-    width: '100%'
   }
 }));
 
