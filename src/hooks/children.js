@@ -30,7 +30,7 @@ export const useChildren = childRefs => {
  */
 export const useLiveChildren = childRefs => {
   const [children, setChildren] = useState([]);
-  useEffect(liveChildDataEffect(childRefs, setChildren), [childRefs]);
+  useEffect(liveChildrenDataEffect(childRefs, setChildren), [childRefs]);
   return children;
 };
 
