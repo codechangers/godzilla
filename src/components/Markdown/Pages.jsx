@@ -25,6 +25,7 @@ const propTypes = {
   pages: PropTypes.object.isRequired,
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
+  cls: PropTypes.object,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func
 };
@@ -32,6 +33,7 @@ const propTypes = {
 const defaultProps = {
   homePage: 'home',
   whiteList: 'none',
+  cls: null,
   whoAmI: null,
   setWhoAmI: () => {}
 };
@@ -44,6 +46,7 @@ const MarkdownPages = ({
   homePage,
   whiteList,
   useCustomAppBar,
+  cls,
   whoAmI,
   setWhoAmI
 }) => {
@@ -136,6 +139,7 @@ const MarkdownPages = ({
           page={page}
           useLoading={[loading, setLoading]}
           whoAmI={whoAmI}
+          cls={cls}
         />
         {!loading && (
           <NavButtons

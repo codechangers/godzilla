@@ -9,15 +9,21 @@ import CodeBlock from '../UI/CodeBlock';
 import { resolveImg } from '../../resources/images';
 
 const propTypes = {
-  whoAmI: PropTypes.object.isRequired,
   pages: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
-  useLoading: PropTypes.array.isRequired
+  useLoading: PropTypes.array.isRequired,
+  whoAmI: PropTypes.object,
+  cls: PropTypes.object
+};
+
+const defaultProps = {
+  whoAmI: null,
+  cls: null
 };
 
 const remarkPlugins = [gfm];
 
-const MarkdownRenderer = ({ whoAmI, pages, page, useLoading }) => {
+const MarkdownRenderer = ({ cls, whoAmI, pages, page, useLoading }) => {
   const classes = useStyles();
   const [content, setContent] = useState('# Hello World');
   const [loading, setLoading] = useLoading;
@@ -73,7 +79,13 @@ const MarkdownRenderer = ({ whoAmI, pages, page, useLoading }) => {
       );
     }
     if (value.trim() === '{% checkoff %}') {
-      return <CheckOff page={page} whoAmI={whoAmI} />;
+      return whoAmI !== null ? (
+        <CheckOff page={page} whoAmI={whoAmI} cls={cls} />
+      ) : (
+        <Typography variant="h6" color="secondary">
+          A student check off will be displayed here.
+        </Typography>
+      );
     }
     return value;
   };
@@ -142,6 +154,7 @@ const MarkdownRenderer = ({ whoAmI, pages, page, useLoading }) => {
   );
 };
 MarkdownRenderer.propTypes = propTypes;
+MarkdownRenderer.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   loading: { width: '100%', display: 'flex', justifyContent: 'center' },
