@@ -23,10 +23,16 @@ const CheckOff = ({ whoAmI, page }) => {
 
   const validGID = useMemo(() => gameId !== '' && childGames.map(g => g.id).includes(gameId));
 
+  const gameRef = useMemo(() => games.filter(g => g.id === gameId)[0]?.ref || null, [
+    games,
+    gameId
+  ]);
+
   const createCheckOff = () => {
-    if (validGID) {
+    if (validGID && gameRef !== null) {
       const data = {
         page,
+        game: gameRef,
         parent: auth.currentUser.uid
       };
       db.collection('checkOffs')
