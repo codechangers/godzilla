@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Help, School, Menu } from '@material-ui/icons';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Redirect, Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
@@ -21,11 +21,11 @@ import { toData } from '../../utils/helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
+  useSelectedCls: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
-  cls: PropTypes.object,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func
 };
@@ -33,7 +33,6 @@ const propTypes = {
 const defaultProps = {
   homePage: 'home',
   whiteList: 'none',
-  cls: null,
   whoAmI: null,
   setWhoAmI: () => {}
 };
@@ -46,10 +45,11 @@ const MarkdownPages = ({
   homePage,
   whiteList,
   useCustomAppBar,
-  cls,
+  useSelectedCls,
   whoAmI,
   setWhoAmI
 }) => {
+  const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
@@ -127,6 +127,9 @@ const MarkdownPages = ({
 
   const setUrlPage = p => history.push(`?page=${p}`);
 
+  // Redirect to class select on whoAmI change.
+  if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
+
   return (
     <div className={classes.wrapper}>
       <main
@@ -139,7 +142,7 @@ const MarkdownPages = ({
           page={page}
           useLoading={[loading, setLoading]}
           whoAmI={whoAmI}
-          cls={cls}
+          cls={selectedCls}
         />
         {!loading && (
           <NavButtons
