@@ -26,7 +26,7 @@ export const useChildren = childRefs => {
 };
 
 /**
- * Subscribe to the data of of teach of the child references given.
+ * Subscribe to the data of of each of the child references given.
  */
 export const useLiveChildren = childRefs => {
   const [children, setChildren] = useState([]);
