@@ -50,6 +50,22 @@ allowedSubDirs.forEach(subDir => {
  * === Items Hooks ===
  * =================== */
 
+export const getLiveTeacherCheckOffsData = () => {
+  const [checkOffs, setCheckOffs] = useState([]);
+  const refs = useMemo(
+    () =>
+      auth.currentUser?.uid
+        ? db.collection('checkOffs').where('teacherId', '==', auth.currentUser.uid)
+        : () => {},
+    [auth.currentUser]
+  );
+  useEffect(() => console.log(refs), [refs]);
+  useEffect(() => console.log(checkOffs), [checkOffs]);
+  const handleError = err => console.log(err);
+  useEffect(liveCheckOffListDataEffect(refs, setCheckOffs, handleError), [refs]);
+  return checkOffs;
+};
+
 export const getLiveCheckOffData = page => {
   const [checkOff, setCheckOff] = useState(null);
   const ref = useMemo(
@@ -106,3 +122,4 @@ const liveCheckOffDataEffect = onSnapshotDataEffectBase(
   true,
   snap => snap.docs.map(d => toData(d))[0] || null
 );
+const liveCheckOffListDataEffect = onSnapshotDataEffectBase(true, snap => snap.docs.map(toData));
