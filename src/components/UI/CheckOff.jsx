@@ -39,7 +39,8 @@ const CheckOff = ({ whoAmI, page, cls }) => {
         page,
         gameRef,
         parentId: auth.currentUser.uid,
-        teacherId: cls.teacher.id
+        teacherId: cls.teacher.id,
+        classId: cls.id
       };
       db.collection('checkOffs')
         .doc()

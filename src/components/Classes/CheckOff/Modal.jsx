@@ -8,10 +8,10 @@ import Modal from '../../UI/Modal';
 const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  childRefs: PropTypes.arrayOf(PropTypes.object).isRequired
+  cls: PropTypes.object.isRequired
 };
 
-const CheckOffModal = ({ open, onClose, childRefs }) => {
+const CheckOffModal = ({ open, onClose, cls }) => {
   const [showKidsUI] = useState(false);
   const classes = useStyles();
   return (
@@ -22,7 +22,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       description="Check off the progress of participants as they make their way through the competition."
       className={classes.paper}
     >
-      {showKidsUI ? <CheckOffKids childRefs={childRefs} /> : <CheckOffList />}
+      {showKidsUI ? <CheckOffKids childRefs={cls.children} /> : <CheckOffList cls={cls} />}
       <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>

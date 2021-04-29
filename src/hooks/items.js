@@ -50,18 +50,19 @@ allowedSubDirs.forEach(subDir => {
  * === Items Hooks ===
  * =================== */
 
-export const getLiveTeacherCheckOffsData = () => {
+export const getLiveClassCheckOffsData = classId => {
   const [checkOffs, setCheckOffs] = useState([]);
   const refs = useMemo(
     () =>
       auth.currentUser?.uid
-        ? db.collection('checkOffs').where('teacherId', '==', auth.currentUser.uid)
+        ? db
+            .collection('checkOffs')
+            .where('teacherId', '==', auth.currentUser.uid)
+            .where('classId', '==', classId)
         : () => {},
     [auth.currentUser]
   );
-  useEffect(() => console.log(refs), [refs]);
-  useEffect(() => console.log(checkOffs), [checkOffs]);
-  const handleError = err => console.log(err);
+  const handleError = () => setCheckOffs([]);
   useEffect(liveCheckOffListDataEffect(refs, setCheckOffs, handleError), [refs]);
   return checkOffs;
 };
