@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
 import CheckOffKids from './Kids';
+import CheckOffList from './List';
 import Modal from '../../UI/Modal';
 
 const propTypes = {
@@ -11,7 +12,7 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, childRefs }) => {
-  const [showKidsUI] = useState(true);
+  const [showKidsUI] = useState(false);
   const classes = useStyles();
   return (
     <Modal
@@ -21,7 +22,7 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
       description="Check off the progress of participants as they make their way through the competition."
       className={classes.paper}
     >
-      {showKidsUI && <CheckOffKids childRefs={childRefs} />}
+      {showKidsUI ? <CheckOffKids childRefs={childRefs} /> : <CheckOffList />}
       <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
         Close
       </Button>
