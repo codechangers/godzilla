@@ -8,14 +8,15 @@ import * as Styled from './styles';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 
 const propTypes = {
-  useCustomAppBar: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  useCustomAppBar: PropTypes.func,
   user: PropTypes.object,
   accounts: PropTypes.object
 };
 
 const defaultProps = {
+  useCustomAppBar: () => {},
   user: { isSignedIn: false },
   accounts: { helper: true }
 };
