@@ -8,6 +8,10 @@ const propTypes = {
   cls: PropTypes.object.isRequired
 };
 
+const pageSteps = {
+  DEVELOPMENT: 10
+};
+
 const CheckOffList = ({ cls }) => {
   const checkOffs = getLiveClassCheckOffsData(cls.id);
   const gameRefs = useMemo(() => checkOffs.map(co => co.gameRef), [checkOffs]);
@@ -27,8 +31,9 @@ const CheckOffList = ({ cls }) => {
     return [];
   }, [checkOffs, games]);
   return checkOffsWithGameData.map(co => (
+    // TODO: Add an Expand element with the remaining details...
     <Typography variant="body1" key={co.id}>
-      {co.game.name}
+      {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
     </Typography>
   ));
 };
