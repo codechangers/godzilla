@@ -66,7 +66,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       updatePayment({ error: '' });
       // Create Payment Document.
       const paymentRef = await db.collection('payments').add({
-        stripeToken: token.id,
+        stripeToken: token?.id || null,
         classRef: cls.ref,
         seller: db.collection('stripeSellers').doc(cls.teacher.id),
         parent: accounts.parents.ref,
