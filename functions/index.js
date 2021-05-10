@@ -107,19 +107,7 @@ exports.handleRegistraionPayment = functions.firestore
         }
         await snap.ref.update({ status: charge.status });
         if (charge.status === 'succeeded') {
-          // Save kids to class.children list.
-          const classDoc = await classRef.get();
-          const currentRegisrations = classDoc.data().children || [];
-          await classRef.update({ children: [...currentRegisrations, ...kidsToRegister] });
-          // Save class to kids.classes lists.
-          Promise.all(
-            kidsToRegister.map(async kid => {
-              const kidDoc = await kid.get();
-              const currentClasses = kidDoc.data().classes || [];
-              await kid.update({ classes: [...currentClasses, classRef] });
-            })
-          );
-          console.log('Successfully Handled Registration Payment!', chargeData.description);
+          await registerForClass(classRef, kidsToRegister, chargeData.description);
         } else {
           console.error(
             'Stripe Payment Failed!',
@@ -128,6 +116,8 @@ exports.handleRegistraionPayment = functions.firestore
             charge.failure_message
           );
         }
+      } else {
+        await registerForClass(classRef, kidsToRegister, '$0 payment (free registration)');
       }
       await tickPromo(numOfDiscounts, promo, data);
     } catch (error) {
@@ -159,6 +149,25 @@ exports.handleRegistraionPayment = functions.firestore
       if (logFullError) console.error('->', error);
     }
   });
+
+/**
+ * Register the given kids for the given class.
+ */
+async function registerForClass(classRef, kidsToRegister, description = '') {
+  // Save kids to class.children list.
+  const classDoc = await classRef.get();
+  const currentRegisrations = classDoc.data().children || [];
+  await classRef.update({ children: [...currentRegisrations, ...kidsToRegister] });
+  // Save class to kids.classes lists.
+  Promise.all(
+    kidsToRegister.map(async kid => {
+      const kidDoc = await kid.get();
+      const currentClasses = kidDoc.data().classes || [];
+      await kid.update({ classes: [...currentClasses, classRef] });
+    })
+  );
+  console.log('Successfully Handled Registration Payment!', description);
+}
 
 /**
  * Check if a promo code is valid for the given teacher.
