@@ -117,6 +117,8 @@ exports.handleRegistraionPayment = functions.firestore
           );
         }
       } else {
+        // Handle $0 transactions.
+        await snap.ref.update({ status: 'succeeded' });
         await registerForClass(classRef, kidsToRegister, '$0 payment (free registration)');
       }
       await tickPromo(numOfDiscounts, promo, data);
