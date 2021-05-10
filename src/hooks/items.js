@@ -67,8 +67,8 @@ export const getLiveClassCheckOffsData = classId => {
   return checkOffs;
 };
 
-export const getLiveCheckOffData = page => {
-  const [checkOff, setCheckOff] = useState(null);
+export const getLiveCheckOffsData = page => {
+  const [checkOffs, setCheckOffs] = useState([]);
   const ref = useMemo(
     () =>
       auth.currentUser?.uid
@@ -79,8 +79,8 @@ export const getLiveCheckOffData = page => {
         : () => {},
     [page, auth.currentUser]
   );
-  useEffect(liveCheckOffDataEffect(ref, setCheckOff), [ref]);
-  return checkOff;
+  useEffect(liveCheckOffListDataEffect(ref, setCheckOffs), [ref]);
+  return checkOffs;
 };
 
 const checkItems = (unlocked, value, prefix = '') => {
@@ -119,8 +119,4 @@ export const useFlatUnlockedItems = (items, locked, whiteList) =>
  * === Custom Reusable Effects ===
  * =============================== */
 
-const liveCheckOffDataEffect = onSnapshotDataEffectBase(
-  true,
-  snap => snap.docs.map(d => toData(d))[0] || null
-);
 const liveCheckOffListDataEffect = onSnapshotDataEffectBase(true, snap => snap.docs.map(toData));

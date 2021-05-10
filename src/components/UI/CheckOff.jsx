@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, MenuItem, TextField, makeStyles } from '@material-ui/core';
 import { db, auth } from '../../utils/firebase';
-import { getLiveCheckOffData } from '../../hooks/items';
+import { getLiveCheckOffsData } from '../../hooks/items';
 import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
@@ -16,7 +16,7 @@ const defaultProps = {
 };
 
 const CheckOff = ({ whoAmI, page, cls }) => {
-  const checkOff = getLiveCheckOffData(page);
+  const checkOffs = getLiveCheckOffsData(page);
   const games = useUserGames();
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
   const [gameId, setGameId] = useState('');
@@ -48,7 +48,12 @@ const CheckOff = ({ whoAmI, page, cls }) => {
     }
   };
 
-  return checkOff !== null ? (
+  const pageHasCheckOff = useMemo(
+    () => checkOffs.filter(co => games.filter(g => co.gameRef.id === g.id).length > 0).length > 0,
+    [checkOffs, games]
+  );
+
+  return pageHasCheckOff ? (
     <div>Checking Off: {page}</div>
   ) : (
     <form
