@@ -131,18 +131,14 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
     const registrations = selectedChildren.filter(c => !checkDisabled(c)).length;
     if (promoDoc !== null) {
       const { discountType, discountAmount, uses, limited } = promoDoc;
-      if (discountType === '$') {
-        total =
-          registrations > uses && limited
-            ? (cls.price - discountAmount >= 0 ? cls.price - discountAmount : 0 * uses) +
-              cls.price * (registrations - uses)
-            : (cls.price - discountAmount) * registrations;
-      } else {
-        total =
-          registrations > uses && limited
-            ? cls.price * (0.01 * discountAmount) * uses + cls.price * registrations - uses
-            : cls.price * (0.01 * discountAmount) * registrations;
-      }
+      const dPrice =
+        discountType === '$'
+          ? cls.price - discountAmount
+          : cls.price * (0.01 * (100 - discountAmount));
+      total =
+        registrations > uses && limited
+          ? dPrice * uses + cls.price * (registrations - uses)
+          : dPrice * registrations;
     } else {
       total = cls.price * registrations;
     }
