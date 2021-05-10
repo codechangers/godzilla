@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import { Typography, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 import { getLiveClassCheckOffsData } from '../../../hooks/items';
 import { useLiveGames } from '../../../hooks/games';
 
@@ -16,6 +16,7 @@ const CheckOffList = ({ cls }) => {
   const checkOffs = getLiveClassCheckOffsData(cls.id);
   const gameRefs = useMemo(() => checkOffs.map(co => co.gameRef), [checkOffs]);
   const games = useLiveGames(gameRefs);
+
   const checkOffsWithGameData = useMemo(() => {
     if (checkOffs.length === games.length) {
       const gamesMap = {};
@@ -30,12 +31,26 @@ const CheckOffList = ({ cls }) => {
     }
     return [];
   }, [checkOffs, games]);
-  return checkOffsWithGameData.map(co => (
-    // TODO: Add an Expand element with the remaining details...
-    <Typography variant="body1" key={co.id}>
-      {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
-    </Typography>
-  ));
+
+  const bioLink = name => {
+    const domain = name.concat('.blobbert.io');
+    return <a href={`http://${domain}`}>{domain}</a>;
+  };
+
+  return checkOffsWithGameData
+    .filter(a => a.game.name !== undefined)
+    .map(co => (
+      <Accordion key={co.id}>
+        <AccordionSummary>
+          <Typography variant="body1">
+            {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Check out the game: {bioLink(co.game.name)}</Typography>
+        </AccordionDetails>
+      </Accordion>
+    ));
 };
 CheckOffList.propTypes = propTypes;
 
