@@ -48,13 +48,13 @@ const CheckOff = ({ whoAmI, page, cls }) => {
     }
   };
 
-  const pageHasCheckOff = useMemo(
-    () => checkOffs.filter(co => games.filter(g => co.gameRef.id === g.id).length > 0).length > 0,
-    [checkOffs, games]
+  const myGamesCheckOffs = useMemo(
+    () => checkOffs.filter(co => games.filter(g => co.gameRef.id === g.id).length > 0),
+    [(checkOffs, games)]
   );
 
-  return pageHasCheckOff ? (
-    <div>Checking Off: {page}</div>
+  return myGamesCheckOffs.length > 0 ? (
+    myGamesCheckOffs.map(checkOff => <CheckOffState key={checkOff.id} checkOff={checkOff} />)
   ) : (
     <form
       className={classes.form}
@@ -87,6 +87,16 @@ const CheckOff = ({ whoAmI, page, cls }) => {
 };
 CheckOff.propTypes = propTypes;
 CheckOff.defaultProps = defaultProps;
+
+const CheckOffState = ({ checkOff: { approved, page } }) => {
+  // Waiting State.
+  if (approved === undefined) return <div>Checking Off: {page}</div>;
+  // Approved State.
+  if (approved) return <div>Your game has been approved!</div>;
+  // Denied State.
+  return <div>Your game has been denied!</div>;
+};
+CheckOffState.propTypes = { checkOff: PropTypes.object.isRequired };
 
 const useStyles = makeStyles({
   form: {
