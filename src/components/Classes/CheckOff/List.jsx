@@ -51,14 +51,22 @@ const CheckOffList = ({ cls }) => {
 
   const classes = useStyles();
 
+  const [fbError, setFbError] = useState('');
   const [feedback, setFeedback] = useState('');
   const handleFeedback = e => setFeedback(e.target.value);
+
+  const updateCheckOff = (checkOff, approved) => {
+    if (feedback.length > 0) {
+      checkOff.ref.update({ approved, feedback });
+    } else setFbError('Feedback is required.');
+  };
 
   return (
     <>
       <div className={classes.padTop} />
       {checkOffsWithGameData
         .filter(a => a.game.name !== undefined)
+        .filter(b => b.approved === undefined)
         .map(co => (
           <Accordion key={co.id} classes={{ root: classes.accTop }}>
             <AccordionSummary>
@@ -79,10 +87,12 @@ const CheckOffList = ({ cls }) => {
                 className={classes.input}
                 value={feedback}
                 onChange={handleFeedback}
+                helperText={fbError}
+                error={fbError.length > 0}
               />
               <div className={classes.options}>
                 <Button
-                  onClick={() => {}}
+                  onClick={() => updateCheckOff(co, false)}
                   variant="outlined"
                   color="secondary"
                   startIcon={<Block />}
@@ -90,9 +100,7 @@ const CheckOffList = ({ cls }) => {
                   Decline
                 </Button>
                 <Button
-                  onClick={() => {
-                    console.log(feedback);
-                  }}
+                  onClick={() => updateCheckOff(co, true)}
                   variant="contained"
                   color="primary"
                   startIcon={<CheckCircle />}
