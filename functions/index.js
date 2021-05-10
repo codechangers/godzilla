@@ -254,12 +254,9 @@ function getTotalWithDiscount(data) {
     const { uses, limited, discountType, discountAmount } = data;
     numOfDiscounts = regCount > uses && limited ? uses : regCount;
     const numOfFullPrice = regCount - numOfDiscounts;
-    total =
-      discountType === '$'
-        ? // ($10 * 10kids) - (5discounts * $5) = $100 - $25 => $75
-          price * regCount - numOfDiscounts * discountAmount
-        : // ($10 * 5kids) + ($10 * 5discounts * 0.01 * 50) = $50 + $25 => $75
-          price * numOfFullPrice + price * numOfDiscounts * 0.01 * discountAmount;
+    const dPrice =
+      discountType === '$' ? price - discountAmount : price * (0.01 * (100 - discountAmount));
+    total = price * numOfFullPrice + dPrice * numOfDiscounts;
   } else total = price * regCount;
   total = atLeastZero(total);
   numOfDiscounts = atLeastZero(numOfDiscounts);
