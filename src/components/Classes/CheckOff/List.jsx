@@ -1,12 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Button,
   Typography,
+  TextField,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   makeStyles
 } from '@material-ui/core';
+import { CheckCircle, Block } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { getLiveClassCheckOffsData } from '../../../hooks/items';
 import { useLiveGames } from '../../../hooks/games';
@@ -48,6 +51,9 @@ const CheckOffList = ({ cls }) => {
 
   const classes = useStyles();
 
+  const [feedback, setFeedback] = useState('');
+  const handleFeedback = e => setFeedback(e.target.value);
+
   return (
     <>
       <div className={classes.padTop} />
@@ -65,9 +71,39 @@ const CheckOffList = ({ cls }) => {
                 <Typography variant="body1">Game: {bioLink(co.game.name)}</Typography>
                 <Typography variant="body1">Page: {tutLink(co.page)}</Typography>
               </div>
+              <TextField
+                variant="outlined"
+                label="Feedback"
+                placeholder="Good job!"
+                margin="dense"
+                className={classes.input}
+                value={feedback}
+                onChange={handleFeedback}
+              />
+              <div className={classes.options}>
+                <Button
+                  onClick={() => {}}
+                  variant="outlined"
+                  color="secondary"
+                  startIcon={<Block />}
+                >
+                  Decline
+                </Button>
+                <Button
+                  onClick={() => {
+                    console.log(feedback);
+                  }}
+                  variant="contained"
+                  color="primary"
+                  startIcon={<CheckCircle />}
+                >
+                  Approve
+                </Button>
+              </div>
             </AccordionDetails>
           </Accordion>
         ))}
+      <div className={classes.padBottom} />
     </>
   );
 };
@@ -75,6 +111,7 @@ CheckOffList.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   padTop: { marginTop: 40 },
+  padBottom: { marginBottom: 10 },
   accTop: {
     width: '100%',
     maxWidth: 800,
@@ -98,6 +135,18 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     '& p': {
       marginRight: 20
+    }
+  },
+  input: { margin: '20px 0 10px 0' },
+  options: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap-reverse',
+    '& button': {
+      padding: '6px 32px',
+      margin: '10px 20px'
     }
   }
 }));
