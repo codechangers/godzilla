@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  makeStyles
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { getLiveClassCheckOffsData } from '../../../hooks/items';
 import { useLiveGames } from '../../../hooks/games';
 
@@ -37,21 +44,47 @@ const CheckOffList = ({ cls }) => {
     return <a href={`http://${domain}`}>{domain}</a>;
   };
 
-  return checkOffsWithGameData
-    .filter(a => a.game.name !== undefined)
-    .map(co => (
-      <Accordion key={co.id}>
-        <AccordionSummary>
-          <Typography variant="body1">
-            {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>Check out the game: {bioLink(co.game.name)}</Typography>
-        </AccordionDetails>
-      </Accordion>
-    ));
+  const tutLink = page => <Link to={`teacher/tutorials?page=${page}`}>{page}</Link>;
+
+  const classes = useStyles();
+
+  return (
+    <>
+      <div className={classes.padTop} />
+      {checkOffsWithGameData
+        .filter(a => a.game.name !== undefined)
+        .map(co => (
+          <Accordion key={co.id} classes={{ root: classes.accTop }}>
+            <AccordionSummary>
+              <Typography variant="body1">
+                {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails classes={{ root: classes.accDetails }}>
+              <Typography variant="body2">Check out the game: {bioLink(co.game.name)}</Typography>
+              <Typography variant="body2">Page: {tutLink(co.page)}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+    </>
+  );
 };
 CheckOffList.propTypes = propTypes;
+
+const useStyles = makeStyles(theme => ({
+  padTop: { marginTop: 40 },
+  accTop: {
+    width: '100%',
+    maxWidth: 800,
+    backgroundColor: theme.palette.background.default,
+    '&:before': {
+      display: 'none'
+    }
+  },
+  accDetails: {
+    display: 'flex',
+    flexDirection: 'column'
+  }
+}));
 
 export default CheckOffList;
