@@ -61,8 +61,10 @@ const CheckOffList = ({ cls }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails classes={{ root: classes.accDetails }}>
-              <Typography variant="body2">Check out the game: {bioLink(co.game.name)}</Typography>
-              <Typography variant="body2">Page: {tutLink(co.page)}</Typography>
+              <div className={classes.coInfo}>
+                <Typography variant="body1">Game: {bioLink(co.game.name)}</Typography>
+                <Typography variant="body1">Page: {tutLink(co.page)}</Typography>
+              </div>
             </AccordionDetails>
           </Accordion>
         ))}
@@ -83,7 +85,20 @@ const useStyles = makeStyles(theme => ({
   },
   accDetails: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    '& a': {
+      color: theme.palette.text.hint
+    }
+  },
+  coInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    '& p': {
+      marginRight: 20
+    }
   }
 }));
 
