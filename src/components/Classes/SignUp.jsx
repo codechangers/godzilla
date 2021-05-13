@@ -155,6 +155,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
       {isProcessing ? (
         <PaymentProcess
           payment={payment}
+          waiver={cls.hasWaiver}
           onClose={() => {
             setSelectedChildren([]);
             setIsProcessing(false);
