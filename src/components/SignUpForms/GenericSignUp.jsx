@@ -261,28 +261,36 @@ class GenericSignUp extends React.Component {
               </Styled.FormFieldsRow>
             ) : null}
             {useOAuth ? null : (
-              <Styled.FormFieldsRow>
-                <TextField
-                  error={getErrorStatus(errors.password)}
-                  id="password"
-                  type="password"
-                  label="Password"
-                  variant="outlined"
-                  helperText={errors.password}
-                  value={password}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  error={getErrorStatus(errors.confirmPassword)}
-                  id="confirmPassword"
-                  type="password"
-                  label="Confirm Password"
-                  variant="outlined"
-                  helperText={errors.confirmPassword}
-                  value={confirmPassword}
-                  onChange={this.handleChange}
-                />
-              </Styled.FormFieldsRow>
+              <>
+                {this.props.accountType === 'parent' && (
+                  <Typography variant="body2" style={{ margin: '10px 4px' }}>
+                    <strong>Note:</strong> Your kids will need to be able to get into this account,
+                    so make sure to use a password they can remember.
+                  </Typography>
+                )}
+                <Styled.FormFieldsRow>
+                  <TextField
+                    error={getErrorStatus(errors.password)}
+                    id="password"
+                    type="password"
+                    label="Password"
+                    variant="outlined"
+                    helperText={errors.password}
+                    value={password}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    error={getErrorStatus(errors.confirmPassword)}
+                    id="confirmPassword"
+                    type="password"
+                    label="Confirm Password"
+                    variant="outlined"
+                    helperText={errors.confirmPassword}
+                    value={confirmPassword}
+                    onChange={this.handleChange}
+                  />
+                </Styled.FormFieldsRow>
+              </>
             )}
           </Styled.FormFieldsContainer>
           <Styled.FormFieldsOptions>
