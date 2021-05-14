@@ -69,7 +69,7 @@ const MarkdownPages = ({
   useEffect(
     () =>
       useCustomAppBar({
-        title: page,
+        title: page.split('.').slice(-1)[0],
         wrap: true,
         content: (
           <>
