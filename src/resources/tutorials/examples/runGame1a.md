@@ -1,8 +1,8 @@
 # Run Game - 1.A
 
-## Change the Background.
+## Add a new background to your game.
 
-**(Step 1/3)** Learn how to add a new background to your game!
+**(Step 1/3)** Upload a new background image.
 
 
 ### Get a background image.

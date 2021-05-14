@@ -1,6 +1,9 @@
-# 2. Create Enemies
+# Run Game - 2.A
 
-(Step 1/5) To Learn how to add enenies into your game.
+## Add enemies to your game.
+
+**(Step 1/5)** Load the enemy image into your game.
+
 
 ##### 1. Go into the `preload` _function_ in `game.js` and add a new image named after the new character set.
 

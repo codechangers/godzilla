@@ -1,18 +1,20 @@
-# 1 Add a Background
+# Run Game - 1.B
 
-(Step 2/3) To learn how to add a background to your game!
+## Add a new background to your game.
 
-##### 2. In `game.js`, Add `loadImage` into the preload() function
+**(Step 2/3)** Load the new background image into your game.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Qoq2ZgZPfbw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Update the image path.
+
+In `game.js`, Change the path to the background image in the `preload()` _function_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.loadImage('background', 'background.png');
+g.loadImage('background', 'new-background.png');
 // End Copy
 preload() {
-    g.loadImage('players', 'logo.png');/*[*/
-    g.loadImage('background', 'background.png');/*]*/
+    g.loadImage('background', /*{*/'bg.png'/*}[*/'new-background.png'/*]*/);
+    g.loadImage('players', 'logo.png');
 }
 ```
