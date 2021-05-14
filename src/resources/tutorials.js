@@ -43,6 +43,7 @@ import newCharacterSet from './tutorials/blocks/newCharacterSet.md';
 import newLocationsSet from './tutorials/blocks/newLocationsSet.md';
 import setupItems from './tutorials/blocks/setupItems.md';
 import setupLeaderboard from './tutorials/blocks/setupLeaderboard.md';
+import uploadImage from './tutorials/blocks/uploadImage.md';
 import useBarrier from './tutorials/blocks/useBarrier.md';
 import useItems from './tutorials/blocks/useItems.md';
 // Horse Game
@@ -200,6 +201,7 @@ const blocks = {
   newLocationsSet,
   setupItems,
   setupLeaderboard,
+  uploadImage,
   useBarrier,
   useItems
 };
