@@ -2,6 +2,7 @@ import fork from './images/fork.png';
 import signup from './images/signup.png';
 import rename from './images/repl-rename.gif';
 import invite from './images/repl-invite.gif';
+import replImages from './images/repl-images.gif';
 import download from './images/repl-download.gif';
 import upload from './images/create-game.gif';
 import building from './images/building.png';
@@ -45,7 +46,8 @@ const images = {
   vctrPNG,
   vctrSize,
   vctrDownload,
-  replAsset
+  replAsset,
+  replImages
 };
 
 export const resolveImg = imgPath => images[imgPath.replace('/images/', '')] || '#';
