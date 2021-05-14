@@ -1,20 +1,21 @@
-# 2. Create Enemies
+# Run Game - 2.B
 
-(Step 2/5) To Learn how to add enenies into your game.
+## Add enemies to your game.
 
-##### 2. In the `room.js` file we need to put a `setupCharacters` _function_ in the `onInit` function.
+**(Step 2/6)** Load the enemy image into your game.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EjEw4HeAMdM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Load your new image.
+
+In `game.js` add a new `g.loadImage` line in the `preload` _function_ to load your new enemy image.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: game.js
 // Copy
-g.setupCharacters('enemy');
+g.loadImage('enemy', 'enemy.png');
 // End Copy
-onInit() {
-  g.setup(this);
-  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-  g.setupCharacters('players');/*[*/
-  g.setupCharacters('enemy');/*]*/
+preload() {
+  g.loadImage('background', 'new-background.png');
+  g.loadImage('players', 'logo.png');/*[*/
+  g.loadImage('enemy', 'enemy.png');/*]*/
 }
 ```

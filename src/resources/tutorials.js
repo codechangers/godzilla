@@ -67,6 +67,7 @@ import runGame2c from './tutorials/examples/runGame2c.md';
 import runGame2d from './tutorials/examples/runGame2d.md';
 import runGame2e from './tutorials/examples/runGame2e.md';
 import runGame2f from './tutorials/examples/runGame2f.md';
+import runGame2g from './tutorials/examples/runGame2g.md';
 import runGame3a from './tutorials/examples/runGame3a.md';
 import runGame3b from './tutorials/examples/runGame3b.md';
 import runGame3c from './tutorials/examples/runGame3c.md';
@@ -219,16 +220,17 @@ const horseGame = {
 };
 
 const runGame = {
-  '1) Runner': runGame1a,
-  '2) Runner': runGame1b,
-  '3) Runner': runGame1c,
-  '4) Runner': runGame1d,
-  '5) Runner': runGame2a,
-  '6) Runner': runGame2b,
-  '7) Runner': runGame2c,
-  '8) Runner': runGame2d,
-  '9) Runner': runGame2e,
-  '10) Runner': runGame2f,
+  'Run Game 1A': runGame1a,
+  'Run Game 1B': runGame1b,
+  'Run Game 1C': runGame1c,
+  'Run Game Checkoff 1': runGame1d,
+  'Run Game 2A': runGame2a,
+  'Run Game 2B': runGame2b,
+  'Run Game 2C': runGame2c,
+  'Run Game 2D': runGame2d,
+  'Run Game 2E': runGame2e,
+  'Run Game 2F': runGame2f,
+  'Run Game 2G': runGame2g,
   '11) Runner': runGame3a,
   '12) Runner': runGame3b,
   '13) Runner': runGame3c,

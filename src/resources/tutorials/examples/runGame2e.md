@@ -1,31 +1,21 @@
 # 2. Create Enemies
 
-(Step 5/5) To Learn how to add enenies into your game.
+(Step 4/5) To Learn how to add enenies into your game.
 
-##### 5. In the `room.js` _file_ in the `onInit` _function_. We’re going to put a `createACharacter` function in a for loop.
+##### 4. In `game.js`, Add a `getCharacters` function in the `create` function.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PE0gKJDuDw0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fTJp0inDN2U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: code/client/src/game.js
 // Copy
-for (let i = 0; i < 15; i++) {
-  g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-    x: Math.floor(Math.random() * 500) + 1,
-    y: Math.floor(Math.random() * 1900) + 1,
-  });
-}
+g.getCharacters('enemy');
 // End Copy
-onInit() {
-  g.setup(this);
-  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-  g.setupCharacters('players');
-  g.setupCharacters('enemy');/*[*/
-  for (let i = 0; i < 15; i++) {
-    g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-      x: Math.floor(Math.random() * 500) + 1,
-      y: Math.floor(Math.random() * 1900) + 1,
-    });
-  }/*]*/
-}
+  g.getCharacters('players', player => {
+    if (player.id === g.myId()) {
+      g.cameraFollow(player.sprite);
+    }
+  });/*[*/
+  g.getCharacters('enemy');/*]*/
+  g.drawBackground('background', 3, 500, 2000);
 ```

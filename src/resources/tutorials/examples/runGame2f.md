@@ -1,15 +1,31 @@
-# STOP!!!!
-<hr>
+# 2. Create Enemies
 
-##### MAKE SURE TO DO THE FOLLOWING STEPS BEFORE YOU MOVE ON
+(Step 5/5) To Learn how to add enenies into your game.
 
-1. Download your .zip from Repl
-2. Upload your .zip to Blobbert.io
-3. Make sure the new features work on your url
-4. If it's not working get help.
-5. If you have verified it is working you can move on!
-<hr>
+##### 5. In the `room.js` _file_ in the `onInit` _function_. We’re going to put a `createACharacter` function in a for loop.
 
-# STOP!!!!
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PE0gKJDuDw0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-**Do not move on unless you have followed these steps and verified your game is working up to this point!
+```javascript
+// File: code/server/rooms/room.js
+// Copy
+for (let i = 0; i < 15; i++) {
+  g.createACharacter('enemy', g.nextCharacterId('enemy'), {
+    x: Math.floor(Math.random() * 500) + 1,
+    y: Math.floor(Math.random() * 1900) + 1,
+  });
+}
+// End Copy
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
+  g.setupCharacters('enemy');/*[*/
+  for (let i = 0; i < 15; i++) {
+    g.createACharacter('enemy', g.nextCharacterId('enemy'), {
+      x: Math.floor(Math.random() * 500) + 1,
+      y: Math.floor(Math.random() * 1900) + 1,
+    });
+  }/*]*/
+}
+```
