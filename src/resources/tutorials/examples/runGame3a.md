@@ -1,26 +1,29 @@
-# 3. Add Enemy Movement
+# Run Game - 3.A
 
-(Step 1/2) To Learn how to make enemies move and recognize collision.
+## Add enemy movement.
 
-##### 1. Go into our `onUpdate` _function_ in our `room.js` file and add a `handleCollision` _function_ that sends our characters back to the start.
+**(Step 1/2)** Handle enemy and player collisions.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nGpu4sZiAQA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Handle enemy collisions.
+
+In `room.js` we need to add a `handleCollision` _function_ to our `onUpdate` _method_. When the player runs into an enemy we should send them back to the beginning of the level.
+
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.handleCollision('players', 'enemy', (player) => {
+g.handleCollision('players', 'enemies', (player) => {
 	if (player.safe === false) {
-		player.x = 270;
-		player.y = 1980;
+		player.x = GAME_WIDTH / 2 - 30;
+		player.y = GAME_HEIGHT - 20;
 	}
 });
 // End Copy
 onUpdate(dt) {
-	/*[*/g.handleCollision('players', 'enemy', (player) => {
+	/*[*/g.handleCollision('players', 'enemies', (player) => {
 		if (player.safe === false) {
-			player.x = 270;
-			player.y = 1980;
+			player.x = GAME_WIDTH / 2 - 30;
+			player.y = GAME_HEIGHT - 20;
 		}
 	});/*]*/
 }
