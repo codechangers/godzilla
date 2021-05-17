@@ -20,7 +20,6 @@ onInit() {
   g.setupCharacters('enemies');/*[*/
   g.setupLocations('safeZones');/*]*/
 
-
   const enemyCount = 15;
   const enemyMaxX  = GAME_WIDTH  - 100;
   const enemyMaxY  = GAME_HEIGHT - 100;
