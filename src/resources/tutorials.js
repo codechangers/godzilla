@@ -232,7 +232,7 @@ const runGame = {
   'Run Game 2D': runGame2d,
   'Run Game 2E': runGame2e,
   'Run Game 2F': runGame2f,
-  'Run Game 2G': runGame2g,
+  'Run Game 2 ✓': runGame2g,
   '11) Runner': runGame3a,
   '12) Runner': runGame3b,
   '13) Runner': runGame3c,
