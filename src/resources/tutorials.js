@@ -46,6 +46,7 @@ import setupLeaderboard from './tutorials/blocks/setupLeaderboard.md';
 import uploadImage from './tutorials/blocks/uploadImage.md';
 import useBarrier from './tutorials/blocks/useBarrier.md';
 import useItems from './tutorials/blocks/useItems.md';
+import stop from './tutorials/blocks/stop.md';
 // Horse Game
 import horseGame0 from './tutorials/examples/horseGame.md';
 import horseGame1 from './tutorials/examples/horseGame1.md';
@@ -204,7 +205,8 @@ const blocks = {
   setupLeaderboard,
   uploadImage,
   useBarrier,
-  useItems
+  useItems,
+  stop
 };
 
 const horseGame = {
