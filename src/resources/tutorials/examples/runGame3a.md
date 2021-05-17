@@ -13,17 +13,17 @@ In `room.js` we need to add a `handleCollision` _function_ to our `onUpdate` _me
 // File: game.js
 // Copy
 g.handleCollision('players', 'enemies', (player) => {
-	if (player.safe === false) {
-		player.x = GAME_WIDTH / 2 - 30;
-		player.y = GAME_HEIGHT - 20;
+	if (!player.safe) {
+		player.x = GAME_WIDTH / 2;
+		player.y = GAME_HEIGHT - player.height / 2;
 	}
 });
 // End Copy
 onUpdate(dt) {
 	/*[*/g.handleCollision('players', 'enemies', (player) => {
-		if (player.safe === false) {
-			player.x = GAME_WIDTH / 2 - 30;
-			player.y = GAME_HEIGHT - 20;
+		if (!player.safe) {
+			player.x = GAME_WIDTH / 2;
+			player.y = GAME_HEIGHT - player.height / 2;
 		}
 	});/*]*/
 }
