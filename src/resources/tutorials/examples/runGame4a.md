@@ -1,21 +1,24 @@
-# 4. Set Up Safe Zones
+# Run Game - 4.A
 
-(Step 1/5) To Set up safe zones and an end zone.
+## Add safe zones.
 
-##### 1. Go into our `game.js` file and use an `addLocations` _function_ **above** our `addCharacters` function.
+**(Step 1/5)** Add safe zone locations.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BD4Gdtoz7-I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+### Add safe zone locations.
+
+In `game.js` we need to a an `addLocations` _function_ to our `init` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.addLocations('safeZone');
+g.addLocations('safeZones');
 // End Copy
 init() {
     g.setup(this);
-    g.setSize(GAME_WIDTH, GAME_HEIGHT);/*[*/
-    g.addLocations('safeZone');/*]*/
+    g.setSize(GAME_WIDTH, GAME_HEIGHT);
+    g.cameraBounds();
     g.addCharacters('players', 0.5);
-    g.addCharacters('enemy', 0.5);
+    g.addCharacters('enemies', 0.5);/*[*/
+    g.addLocations('safeZones');/*]*/
 }
 ```
