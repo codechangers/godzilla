@@ -1,11 +1,31 @@
 // Global
 import downloads from './tutorials/downloads.md';
 import images from './tutorials/images.md';
+import start1 from './tutorials/start1.md';
+import start2 from './tutorials/start2.md';
+import fork1 from './tutorials/fork1.md';
+import fork2 from './tutorials/fork2.md';
+import fork3 from './tutorials/fork3.md';
+import fork4 from './tutorials/fork4.md';
+import preflight1 from './tutorials/preflight1.md';
+import preflight2 from './tutorials/preflight2.md';
+import preflight3 from './tutorials/preflight3.md';
+import preflight4 from './tutorials/preflight4.md';
+import preflight5 from './tutorials/preflight5.md';
+import preflight6 from './tutorials/preflight6.md';
+import preflight7 from './tutorials/preflight7.md';
+import preflight8 from './tutorials/preflight8.md';
+import preflight9 from './tutorials/preflight9.md';
+import preflight10 from './tutorials/preflight10.md';
+import preflight11 from './tutorials/preflight11.md';
+import preflight12 from './tutorials/preflight12.md';
+import preflight13 from './tutorials/preflight13.md';
+import preflight14 from './tutorials/preflight14.md';
+import preflight15 from './tutorials/preflight15.md';
+import preflight16 from './tutorials/preflight16.md';
+import preflight17 from './tutorials/preflight17.md';
 import pickagame from './tutorials/pickagame.md';
-import setup2 from './tutorials/setup2.md';
 import splitScreen from './tutorials/splitScreen.md';
-import start from './tutorials/start.md';
-import uploadtoserver from './tutorials/uploadtoserver.md';
 // Blocks
 import addAStore from './tutorials/blocks/addAStore.md';
 import addResources from './tutorials/blocks/addResources.md';
@@ -330,10 +350,30 @@ const zombieGame = {
 };
 
 const tutorials = {
-  '1) Full Day Overview': start,
-  '2) Fork Project in Repl': setup2,
-  '3) Setup Server': uploadtoserver,
-  '4) Pick a Game': pickagame,
+  '1) Start 1': start1,
+  '1) Start 2': start2,
+  '1) Fork 1': fork1,
+  '2) Fork 2': fork2,
+  '3) Fork 3': fork3,
+  '4) Fork 4': fork4,
+  '5) Preflight 1': preflight1,
+  '6) Preflight 2': preflight2,
+  '7) Preflight 3': preflight3,
+  '8) Preflight 4': preflight4,
+  '9) Preflight 5': preflight5,
+  '9) Preflight 6': preflight6,
+  '9) Preflight 7': preflight7,
+  '9) Preflight 8': preflight8,
+  '9) Preflight 9': preflight9,
+  '9) Preflight 10': preflight10,
+  '9) Preflight 11': preflight11,
+  '9) Preflight 12': preflight12,
+  '9) Preflight 13': preflight13,
+  '9) Preflight 14': preflight14,
+  '9) Preflight 15': preflight15,
+  '9) Preflight 16': preflight16,
+  '9) Preflight 17': preflight17,
+  'Pick a Game': pickagame,
   'Horse Game Tutorial': horseGame,
   'Run Game Tutorial': runGame,
   'Soccer Game Tutorial': soccerGame,
