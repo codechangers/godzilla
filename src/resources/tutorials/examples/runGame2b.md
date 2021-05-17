@@ -6,7 +6,7 @@
 
 ### Load your new image.
 
-In `game.js` add a new `g.loadImage` line in the `preload` _function_ to load your new enemy image.
+In `game.js` add a new `loadImage` _function_ in the `preload` _method_ to load your new enemy image.
 
 ```javascript
 // File: game.js
