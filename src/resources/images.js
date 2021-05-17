@@ -2,6 +2,8 @@ import fork from './images/fork.png';
 import signup from './images/signup.png';
 import rename from './images/repl-rename.gif';
 import invite from './images/repl-invite.gif';
+import download from './images/repl-download.gif';
+import upload from './images/create-game.gif';
 import building from './images/building.png';
 import cannotGet from './images/cannotGet.png';
 import error1 from './images/502.png';
@@ -25,6 +27,8 @@ const images = {
   signup,
   rename,
   invite,
+  download,
+  upload,
   building,
   cannotGet,
   error1,

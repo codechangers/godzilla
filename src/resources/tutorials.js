@@ -24,6 +24,8 @@ import preflight14 from './tutorials/preflight14.md';
 import preflight15 from './tutorials/preflight15.md';
 import preflight16 from './tutorials/preflight16.md';
 import preflight17 from './tutorials/preflight17.md';
+import savezip from './tutorials/savezip.md';
+import newgame from './tutorials/newgame.md';
 import pickagame from './tutorials/pickagame.md';
 import splitScreen from './tutorials/splitScreen.md';
 // Blocks
@@ -373,6 +375,8 @@ const tutorials = {
   '9) Preflight 15': preflight15,
   '9) Preflight 16': preflight16,
   '9) Preflight 17': preflight17,
+  'Download Code': savezip,
+  'Upload Code': newgame,
   'Pick a Game': pickagame,
   'Horse Game Tutorial': horseGame,
   'Run Game Tutorial': runGame,
