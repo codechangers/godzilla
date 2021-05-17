@@ -1,23 +1,27 @@
-# 4. Set Up Safe Zones
+# Run Game - 4.B
 
-(Step 2/5) To Set up safe zones and an end zone.
+## Add safe zones.
 
-##### 2. In the `game.js` file in the `create` function we''ll put a `getLocations` function **above** our `getCharacters` _functions_.
+**(Step 2/5)** Listen to safe zone state changes from the server.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Tkl6o1Z88P0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Get the safe zones from the server.
+
+In `game.js` we need to add a `getLocations` _function_ to the `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.getLocations('safeZone');
+g.getLocations('safeZones');
 // End Copy
-  g.useStore('The Store', [
-    // Add Store Items here!
-  ]);/*[*/
-  g.getLocations('safeZone');/*]*/
-  g.getCharacters('players', player => {
+  g.useStore('The Store', []);
+
+  g.drawBackground('background');
+  g.getCharacters('players', (player) => {
     if (player.id === g.myId()) {
       g.cameraFollow(player.sprite);
     }
   });
+  g.getCharacters('enemies');
+  g.getLocations('safeZones');
+}
 ```
