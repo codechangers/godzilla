@@ -1,21 +1,26 @@
-# 2. Create Enemies
+# Run Game - 2.E
 
-(Step 4/5) To Learn how to add enenies into your game.
+## Add enemies to your game.
 
-##### 4. In `game.js`, Add a `getCharacters` function in the `create` function.
+**(Step 5/6)** Load the enemy image into your game.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fTJp0inDN2U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+### Get enemies from the server.
+
+In `game.js`, Add a `getCharacters` _function_ in the `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.getCharacters('enemy');
+g.getCharacters('enemies');
 // End Copy
-  g.getCharacters('players', player => {
-    if (player.id === g.myId()) {
-      g.cameraFollow(player.sprite);
-    }
-  });/*[*/
-  g.getCharacters('enemy');/*]*/
-  g.drawBackground('background', 3, 500, 2000);
+	g.useStore('The Store', []);
+
+	g.drawBackground('background');
+	g.getCharacters('players', (player) => {
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});/*[*/
+	g.getCharacters('enemies');/*]*/
+}
 ```
