@@ -1,41 +1,39 @@
-# 3. Add Enemy Movement
+# Run Game - 3.B
 
-(Step 2/2) To Learn how to make enemies move and recognize collision.
+## Add enemy movement.
 
-##### 2. In the `onUpdate` function in our `room.js` file we put a `getAllCharacters` _function_. (for our callback function we will set up some if else statements for the movement.
+**(Step 2/2)** Move all the enemies back and forth.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5mYBdR03rE4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Make the enemies move. 
+
+In `room.js` we need to put a `getAllCharacters` _function_ inside our `onUpdate` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.getAllCharacters('enemy', (enemy, i) => {
-  if (enemy.x <= 575 && enemy.right == true) {
-    g.move(enemy, 'x', 0.01 * i + 0.1);
-  } else if (enemy.x >= 25) {
-    enemy.right = false;
-    g.move(enemy, 'x', -0.01 * i - 0.1);
-  } else {
-    enemy.right = true;
-  }
+g.getAllCharacters('enemies', (enemy, i) => {
+	const padding = 25;
+	const speed = 0.01 * i + 0.1;
+	const outOfBounds = enemy.x >= GAME_WIDTH - padding || enemy.x <= padding;
+	if (outOfBounds) enemy.right = enemy.x > padding;
+	const direction = enemy.right ? 1 : -1;
+	g.move(enemy, 'x', speed * direction);
 });
 // End Copy
 onUpdate(dt) {
-	g.handleCollision('players', 'enemy', (player) => {
+	g.handleCollision('players', 'enemies', (player) => {
 		if (player.safe === false) {
-			player.x = 270;
-			player.y = 1980;
+			player.x = GAME_WIDTH / 2 - 30;
+			player.y = GAME_HEIGHT - 20;
 		}
 	});/*[*/
-	g.getAllCharacters('enemy', (enemy, i) => {
-		if (enemy.x <= 575 && enemy.right == true) {
-			g.move(enemy, 'x', 0.01 * i + 0.1);
-		} else if (enemy.x >= 25) {
-			enemy.right = false;
-			g.move(enemy, 'x', -0.01 * i - 0.1);
-		} else {
-			enemy.right = true;
-		}
+	g.getAllCharacters('enemies', (enemy, i) => {
+		const padding = 25;
+		const speed = 0.01 * i + 0.1;
+		const outOfBounds = enemy.x >= GAME_WIDTH - padding || enemy.x <= padding;
+		if (outOfBounds) enemy.right = enemy.x > padding;
+		const direction = enemy.right ? 1 : -1;
+		g.move(enemy, 'x', speed * direction);
 	});/*]*/
 }
 ```
