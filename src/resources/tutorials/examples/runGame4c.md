@@ -1,27 +1,38 @@
-# 4. Set Up Safe Zones
+# Run Game - 4.C
 
-(Step 3/5) To Set up safe zones and an end zone.
+## Add safe zones.
 
-##### 3. In `room.js` file in our `onInit` _function_ we'll use a `setupLocations` _function_ **above** our `setupCharacters` _functions_
+**(Step 3/5)** Setup the safe zone locations on our server.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Tqm1HhXyGBI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Setup safe zone locations.
+
+In `room.js` we need to add a `setupLocations` _function_ to our `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-g.setupLocations('safeZone');
+g.setupLocations('safeZones');
 // End Copy
 onInit() {
-    g.setup(this);
-    g.setBounds(GAME_WIDTH, GAME_HEIGHT);/*[*/
-    g.setupLocations('safeZone');/*]*/
-    g.setupCharacters('players');
-    g.setupCharacters('enemy');
-    for (let i = 0; i < 15; i++) {
-        g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-            x: Math.floor(Math.random() * 500) + 1,
-            y: Math.floor(Math.random() * 1900) + 1,
-        });
-    }
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
+  g.setupCharacters('enemies');/*[*/
+  g.setupLocations('safeZones');/*]*/
+
+
+  const enemyCount = 15;
+  const enemyMaxX  = GAME_WIDTH  - 100;
+  const enemyMaxY  = GAME_HEIGHT - 100;
+  for (let i = 0; i < enemyCount; i++) {
+    g.createACharacter('enemies',
+      g.nextCharacterId('enemies'),
+      {
+        x: Math.floor(Math.random() * enemyMaxX) + 1,
+        y: Math.floor(Math.random() * enemyMaxY) + 1,
+      }
+    );
+  }
+
 }
 ```
