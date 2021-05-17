@@ -1,35 +1,37 @@
-# 4. Set Up Safe Zones
+# Run Game - 4.E
 
-(Step 5/5) To Set up safe zones and an end zone.
+## Add safe zones.
 
-##### 5. Go into our `onUpdate` _function_ in the `room.js` file and add a `getAllCharacters` _function_ and a `handleLocations` _function_.
+**(Step 5/5)** Enable safe zone functionality.
+
+### Turn on the safe zones.
+
+In `room.js` we need to add a couple different _functions_ to our `onUpdate` _method_. First we need a `getAllCharacters` to reset our `safe` setting to `false`. Then we need a `handleLocations` _function_ to allow the location to run while we are inside it!
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-g.getAllCharacters('players', player => { player.safe = false });
-g.handleLocations('safeZone', 'players');
+g.getAllCharacters('players', player => player.safe = false);
+g.handleLocations('safeZones', 'players');
 // End Copy
 onUpdate(dt) {
-	g.handleCollision('players', 'enemy', (player) => {
-		if (player.safe === false) {
-			player.x = 270;
-			player.y = 1980;
+	g.handleCollision('players', 'enemies', (player) => {
+		if (!player.safe) {
+			player.x = GAME_WIDTH / 2;
+			player.y = GAME_HEIGHT - player.height / 2;
 		}
 	});
-	g.getAllCharacters('enemy', (enemy, i) => {
-		if (enemy.x <= 575 && enemy.right == true) {
-			g.move(enemy, 'x', 0.01 * i + 0.1);
-		} else if (enemy.x >= 25) {
-			enemy.right = false;
-			g.move(enemy, 'x', -0.01 * i - 0.1);
-		} else {
-			enemy.right = true;
-		}
+	g.getAllCharacters('enemies', (enemy, i) => {
+		const padding = enemy.width / 2;
+		const speed = 0.01 * i + 0.1;
+		const outOfBounds = enemy.x >= GAME_WIDTH - padding || enemy.x <= padding;
+		if (outOfBounds) enemy.right = enemy.x < GAME_WIDTH / 2;
+		const direction = enemy.right ? 1 : -1;
+		g.move(enemy, 'x', speed * direction);
 	});/*[*/
-	g.getAllCharacters('players', player => { player.safe = false });
-	g.handleLocations('safeZone', 'players');/*]*/
+	g.getAllCharacters('players', player => player.safe = false);
+	g.handleLocations('safeZones', 'players');/*]*/
 }
 ```
 
-Now when we make it to the end our players are sent back to the first, later we’ll set up level’s so that we progress every time we make it to the end.
+> For now when we make it to the end of the level our players are sent back to the beginning. Later we’ll set up levels so that we progress every time we make it to the end.
