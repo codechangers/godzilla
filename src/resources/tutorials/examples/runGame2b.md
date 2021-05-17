@@ -11,11 +11,11 @@ In `game.js` add a new `g.loadImage` line in the `preload` _function_ to load yo
 ```javascript
 // File: game.js
 // Copy
-g.loadImage('enemy', 'enemy.png');
+g.loadImage('enemies', 'enemy.png');
 // End Copy
 preload() {
   g.loadImage('background', 'new-background.png');
   g.loadImage('players', 'logo.png');/*[*/
-  g.loadImage('enemy', 'enemy.png');/*]*/
+  g.loadImage('enemies', 'enemy.png');/*]*/
 }
 ```
