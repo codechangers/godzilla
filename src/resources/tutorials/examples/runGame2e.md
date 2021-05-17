@@ -2,7 +2,7 @@
 
 ## Add enemies to your game.
 
-**(Step 5/6)** Load the enemy image into your game.
+**(Step 5/6)** Listen to enemy state changes from the server.
 
 ### Get enemies from the server.
 
