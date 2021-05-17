@@ -7,6 +7,6 @@
 
 ### Get a new image.
 
-First, find or create an image that you want to use for your enemies and download it to your computer. [Need help?](/tutorials/images/)
+Find or create an image you want to use for your enemies and download it to your computer. [Need help?](/tutorials/images/)
 
 {% include blocks/uploadImage.md %}

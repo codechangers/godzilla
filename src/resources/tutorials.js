@@ -225,7 +225,7 @@ const runGame = {
   'Run Game 1A': runGame1a,
   'Run Game 1B': runGame1b,
   'Run Game 1C': runGame1c,
-  'Run Game Checkoff 1': runGame1d,
+  'Run Game 1 ✓': runGame1d,
   'Run Game 2A': runGame2a,
   'Run Game 2B': runGame2b,
   'Run Game 2C': runGame2c,
