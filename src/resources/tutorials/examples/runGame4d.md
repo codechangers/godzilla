@@ -1,29 +1,61 @@
-# 4. Set Up Safe Zones
+# Run Game - 4.D
 
-(Step 4/5) To Set up safe zones and an end zone.
+## Add safe zones.
 
-##### 4. In `room.js`, Use 3 `createLocations` _functions_ right **under** the `setupLocations` _function_ that we just wrote, to create three different locations on the map.
+**(Step 4/5)** Create each safe zone at a specific position.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BD4Gdtoz7-I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+### Create the safe zones.
+
+In `room.js` we need to add a `createLocation` _function_ for each of the safe zones we want to create. We can do this inside a _loop_ in our `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-[0, 1000, 1940].forEach(y => {
-    g.createALocation('safeZone', g.nextLocationId('safeZone'),
-        { x: -47, y, width: 670, height: 1000 },
-        '6cdc00', player => { player.safe = true });
-});
+const zoneYs = [0, 1000, 1940];
+zoneYs.forEach(y =>
+  g.createALocation('safeZones',
+    g.nextLocationId('safeZones'), {
+      x: -47,
+      y,
+      width: GAME_WIDTH,
+      height: 100
+    },
+    '6cdc00',
+    player => player.safe = true
+  ));
 // End Copy
 onInit() {
-    g.setup(this);
-    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-    g.setupLocations('safeZone');/*[*/
-    [0, 1000, 1940].forEach(y => {
-        g.createALocation('safeZone', g.nextLocationId('safeZone'),
-            { x: -47, y, width: 670, height: 1000 },
-            '6cdc00', player => { player.safe = true });
-    });/*]*/
-    g.setupCharacters('players');
-    g.setupCharacters('enemy');
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
+  g.setupCharacters('enemies');
+  g.setupLocations('safeZones');/*[*/
+
+  const zoneYs = [0, 1000, 1940];
+  zoneYs.forEach(y =>
+    g.createALocation('safeZones',
+      g.nextLocationId('safeZones'), {
+        x: 0,
+        y,
+        width: GAME_WIDTH,
+        height: 100
+      },
+      '6cdc00',
+      player => player.safe = true
+    ));/*]*/
+
+  const enemyCount = 15;
+  const enemyMaxX  = GAME_WIDTH  - 100;
+  const enemyMaxY  = GAME_HEIGHT - 100;
+  for (let i = 0; i < enemyCount; i++) {
+    g.createACharacter('enemies',
+      g.nextCharacterId('enemies'),
+      {
+        x: Math.floor(Math.random() * enemyMaxX) + 1,
+        y: Math.floor(Math.random() * enemyMaxY) + 1,
+      }
+    );
+  }
+
+}
 ```
