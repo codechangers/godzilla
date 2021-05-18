@@ -1,19 +1,30 @@
-# 6. Set up Scoring
- (Step 3/5) To Set up a scoring system.
+# Run Game - 6.C
 
-##### 3. In `game.js`, Add a `getCharacters` function in the create _function_.
+## Add scoring to your game.
+
+**(Step 3/5)** Listen to teams state from the server.
+
+### Get teams from the server.
+
+In `game.js` we need to add a `getCharacters` _function_ to our `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.getCharacters('team');
+g.getCharacters('teams');
 // End Copy
-  g.getCharacters('players', player => {
+create() {
+  g.setupKeys(keys);
+  g.useLoginScreen((name) => g.connect({ name }));
+  g.useStore('The Store', []);
+  g.drawBackground('background');
+  g.getCharacters('players', (player) => {
     if (player.id === g.myId()) {
       g.cameraFollow(player.sprite);
     }
   });
-  g.getCharacters('enemy');/*[*/
-  g.getCharacters('team');/*]*/
-  g.drawBackground('background', 3, 500, 2000);
+  g.getCharacters('enemies');/*[*/
+  g.getCharacters('teams');/*]*/
+  g.getLocations('safeZones');
+}
 ```
