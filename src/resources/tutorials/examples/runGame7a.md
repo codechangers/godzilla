@@ -1,19 +1,29 @@
-# 7. Set up Co-op play
+# Run Game - 7.A
 
-(Step 1/4) To Set up multiplayer gameplay
+## Add co-operative play.
 
-##### 1. In the `room.js` file, we'll change the speed in our `onMessage` _function_
+**(Step 1/4)** Add dynamic player speed to the game.
+
+### Add dynamic player speed.
+
+In `room.js` we need to change our speed in the `onMessage` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 const speed = player.speed;
 // End Copy
-  const player = g.getACharacter('players', client.sessionId);
-  const speed = /*{*/10/*}[*/player.speed/*]*/;
-  const actions = {
-    moveUp: () => g.move(player, 'y', -speed),
-    moveDown: () => g.move(player, 'y', speed),
+onMessage(client, data) {
+	const player = g.getACharacter('players', client.sessionId);
+	const speed = /*{*/10/*}[*/player.speed/*]*/;
+	const actions = {
+		moveUp: () => g.move(player, 'y', -speed),
+		moveDown: () => g.move(player, 'y', speed),
+		moveLeft: () => g.move(player, 'x', -speed),
+		moveRight: () => g.move(player, 'x', speed),
+	};
+	g.handleActions(actions, data);
+}
 ```
 
-Make sure that you don't add a new speed variable! just change the one that is already there.
+> **Make sure that you don't add a new speed variable! just change the one that is already there.**
