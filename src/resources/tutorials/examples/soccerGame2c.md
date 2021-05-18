@@ -1,19 +1,27 @@
-# 2. Add a Background
+# Soccer Game - 2.C
 
-Step (3/3) To create a background for your game.
+## Add a new background to your game.
 
-##### 3. In `game.js`, Update the `drawBackground` _function_ in the `create` _method_
+**(Step 3/3)** Set the background scale.
+
+### Set the background scale.
+
+In `game.js` we need to change the `drawBackground` _function_ in the `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.drawBackground('background', 0.8);
 // End Copy
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name) => g.connect({ name }));
+	g.useStore('The Store', []);
+	g.drawBackground('background'/*[*/, 0.8/*]*/);
 	g.getCharacters('players', (player) => {
 		if (player.id === g.myId()) {
 			g.cameraFollow(player.sprite);
 		}
 	});
-  g.drawBackground(/*{*/ 'background',  3,  500,  2000 /*}[*/'background', 0.8/*]*/);
 }
 ```

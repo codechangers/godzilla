@@ -1,16 +1,20 @@
-# 2. Add a Background
+# Soccer Game - 2.B
 
-Step (2/3) To create a background for your game.
+## Add a new background to your game.
 
-##### 2. Go into the `preload` _function_ in `game.js` and add a new image named after the new character set.
+**(Step 2/3)** Load the new background image into your game.
+
+### Update the image path.
+
+In `game.js`, Change the path to the background image in the `preload()` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.loadImage('background', 'grass.jpg');
+g.loadImage('background', 'new-background.png');
 // End Copy
 preload() {
-	g.loadImage('players', 'logo.png');/*[*/
-	g.loadImage('background', 'grass.jpg');/*]*/
+    g.loadImage('background', /*{*/'bg.png'/*}[*/'new-background.png'/*]*/);
+    g.loadImage('players', 'logo.png');
 }
 ```
