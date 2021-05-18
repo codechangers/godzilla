@@ -1,11 +1,15 @@
-# 4. Add Goals
+# Soccer Game - 4.H
 
-Step (8/8) To create goals for your game
+## Add soccer goals.
 
-##### 8. in `room.js`, Add `deleteACharacter` function so that players are removed when the leave the game.
+**(Step 8/8)** Delete goals when players leave the game.
+
+### Delete player's goals.
+
+In `room.js` we need to add a new `deleteACharacter` _function_ to the `onLeave` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.deleteACharacter('goals', client.sessionId);
 // End Copy
