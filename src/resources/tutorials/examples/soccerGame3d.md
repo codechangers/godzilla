@@ -1,11 +1,15 @@
-# 3. Add More Characters
+# Soccer Game - 3.D
 
-Step (4/5) To add more characters to your game
+## Add more characters.
 
-##### 4. Add a player select Screen in `game.js` after the `useLoginScreen()` function.
+**(Step 4/5)** Add a player selection screen to your game.
+
+### Add player select screen.
+
+In `game.js` we need to add a `usePlayerSelectScreen` _function_ to our `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.usePlayerSelectScreen({
   blobbert: 'circle1.png',
@@ -15,12 +19,24 @@ g.usePlayerSelectScreen({
   tangles: 'circle5.png'
 });
 // End Copy
-	g.useLoginScreen(name => g.connect({ name }));/*[*/
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name) => g.connect({ name }));/*[*/
+
 	g.usePlayerSelectScreen({
 		blobbert: 'circle1.png',
 		grunch: 'circle2.png',
 		neon: 'circle3.png',
 		nimbo: 'circle4.png',
 		tangles: 'circle5.png'
-	});/*]*/
+	});
+/*]*/
+	g.useStore('The Store', []);
+	g.drawBackground('background', 0.8);
+	g.getCharacters('players', (player) => {
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});
+}
 ```
