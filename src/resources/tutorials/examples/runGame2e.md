@@ -13,8 +13,10 @@ In `game.js`, Add a `getCharacters` _function_ in the `create` _method_.
 // Copy
 g.getCharacters('enemies');
 // End Copy
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name) => g.connect({ name }));
 	g.useStore('The Store', []);
-
 	g.drawBackground('background');
 	g.getCharacters('players', (player) => {
 		if (player.id === g.myId()) {
