@@ -1,11 +1,15 @@
-# Set up Name Tags
+# Run Game - 5.A
 
-subtitle: (Step 1/1) Set up name tags.
+## Set up name tags.
 
-##### 1. Go into our `room.js` file and add an `attachTo` _function_ in our onJoin _function_ right after our `createACharacter` _function_.
+**(Step 1/1)** Add name tags to players.
+
+### Add name tags.
+
+In `room.js` we need to add an `attachTo` _function_ to our `onJoin` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.attachTo('players', client.sessionId, {
 	name: 'nameTag',
@@ -18,7 +22,7 @@ g.attachTo('players', client.sessionId, {
 onJoin(client, data) {
 	const x = Math.floor(Math.random() * GAME_WIDTH);
 	const y = Math.floor(Math.random() * GAME_HEIGHT);
-	g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });/*[*/
+	g.createACharacter('players', client.sessionId,  { x, y, ...data });/*[*/
 	g.attachTo('players', client.sessionId, {
 		name: 'nameTag',
 		x: -50,
@@ -29,4 +33,4 @@ onJoin(client, data) {
 }
 ```
 
-You can change where the name tag is created by changing the x and y values.
+> You can change where the name tag is created by changing the x and y values.
