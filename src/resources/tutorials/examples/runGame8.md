@@ -1,3 +1,3 @@
-## 8. Moving forward
+# Run Game Finished
 
 {% include blocks/movingForward.md %}
