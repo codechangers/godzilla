@@ -1,34 +1,40 @@
-# 6. Set up Scoring
+# Run Game - 6.E
 
-(Step 5/5) To Set up a scoring system.
+## Add scoring to your game.
 
-##### 5. In the `room.js` file in the `onInit` function in the third `createALocation` function that we wrote, we'll tell the score to up, and the difficulty to increase.
+**(Step 5/5)** Increase team score on init.
+
+### Increase the team score.
+
+In `room.js` we need to add a `getACharacter` _function_ to the `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-let team = g.getACharacter('team', 'team');
-team.score += 1;
-g.getAllCharacters('enemy', enemy => { g.deleteACharacter('enemy', enemy.id) });
-for (let i = 0; i < team.score + 15; i++) {
-   g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-      x: Math.floor(Math.random() * 500) + 1,
-      y: Math.floor(Math.random() * 1900) + 1,
-      right: true,
-   });
-}
+g.getACharacter('teams', 'team1').score += 1;
 // End Copy
-   g.setupCharacters('team');
-   g.setupCharacters('enemy');
-   g.createACharacter('team', 'team', { x: 10000, y: 10000, name: 'Level', score: 1 });/*[*/
-   let team = g.getACharacter('team', 'team');
-   team.score += 1;
-   g.getAllCharacters('enemy', enemy => { g.deleteACharacter('enemy', enemy.id) });/*]*/
-   for (let i = 0; i </*[*/ team.score +/*]*/ 15; i++) {
-      g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-         x: Math.floor(Math.random() * 500) + 1,
-         y: Math.floor(Math.random() * 1900) + 1,/*[*/
-         right: true,/*]*/
-      });
-   }
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
+  g.setupCharacters('enemies');
+  g.setupCharacters('teams');
+  g.setupLocations('safeZones');
+
+  g.createACharacter('teams', 'team1',
+    { x: 10000, y: 10000, name: 'Level', score: 1 });/*[*/
+  g.getACharacter('teams', 'team1').score += 1;/*]*/
+
+  const zoneYs = [0, 1000, 1940];
+  zoneYs.forEach(y =>
+    g.createALocation('safeZones',
+      g.nextLocationId('safeZones'), {
+        x: 0,
+        y,
+        width: GAME_WIDTH,
+        height: 100
+      },
+      '6cdc00',
+      player => player.safe = true
+    ));
 ```
