@@ -11,10 +11,10 @@ In `game.js`, Change the path to the background image in the `preload()` _method
 ```javascript
 // File: game.js
 // Copy
-g.loadImage('background', 'new-background.png');
+g.loadImage('background', 'grass.jpg');
 // End Copy
 preload() {
-    g.loadImage('background', /*{*/'bg.png'/*}[*/'new-background.png'/*]*/);
+    g.loadImage('background', /*{*/'bg.png'/*}[*/'grass.jpg'/*]*/);
     g.loadImage('players', 'logo.png');
 }
 ```
