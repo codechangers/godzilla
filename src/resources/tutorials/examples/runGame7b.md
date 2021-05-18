@@ -1,18 +1,23 @@
-# 7. Set up Co-op play
+# Run Game - 7.B
 
-(Step 2/4) To Set up multiplayer gameplay
+## Add co-operative play.
 
-##### 2. In the `game.js` file in our `preload` _function_ we add a new image. First make sure you have the image in your asset folder ([Need Help?](/tutorials/images/)).
+**(Step 2/4)** Load grave stone image into your game.
+
+### Load grave image.
+
+In `game.js` we need to add a new `loadImage` _function_ to our `preload` _method_.
+We also need to upload a picture of a grave stone to repl so we can use it's name in our code. ([New Help?](/tutorials/images)).
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.loadImage('grave',  'grave.png');
 // End Copy
 preload() {
+  g.loadImage('background', 'new-background.png');
   g.loadImage('players', 'logo.png');
-  g.loadImage('background', 'background.png');
-  g.loadImage('enemy', 'enemy.png');/*[*/
+  g.loadImage('enemies', 'enemy.png');/*[*/
   g.loadImage('grave',  'grave.png');/*]*/
 }
 ```
