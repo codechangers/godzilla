@@ -11,7 +11,7 @@ In `room.js` we need to change our `handleCollision` _function_ for players and 
 ```javascript
 // File: game.js
 // Copy
-g.handleCollision('players', 'enemy', (player) => {
+g.handleCollision('players', 'enemies', (player) => {
 	if (player.safe == false) {
 		player.spriteName = "grave";
 		player.speed = 0;
