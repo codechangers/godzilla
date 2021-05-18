@@ -1,38 +1,55 @@
-# 7. Set up Co-op play
+# Run Game - 7.C
 
-(Step 4/4) To Set up multiplayer gameplay
+## Add co-operative play.
 
-##### 4. Add a `handleCollision` _function_ for our players. We will put this in a `setTimeout` _function_. This will be written in our `onUpdate` _function_ in the `room.js` file.
+**(Step 4/4)** Make it so players revived when they run into each other.
+
+### Add player revival.
+
+In `room.js` we need to add a new `handleCollision` _function_ to our `onUpdate` _method_. This collision will allow players to revive each other.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 setTimeout(() => {
   g.handleCollision('players', 'players', (player1) => {
     if (player1.speed == 0) {
       player1.speed =  5;
       player1.spriteName = 'players';
-     }
+    }
   });
 }, 500);
 // End Copy
-  g.handleCollision('players', 'enemy', (player) => {
-    if (player.safe == false)  {
+onUpdate(dt) {
+  g.handleCollision('players', 'enemies', (player) => {
+    if (!player.safe) {
       player.spriteName = "grave";
       player.speed = 0;
       let result = true;
-      g.getAllCharacters('players', player => {
-        if  (player.speed == 5) {
-          result = false;
-        }
-      })
-      if  (result == true) {
-        g.getACharacter('team', 'team').score =  1;
-        g.getAllCharacters('players', player =>
-          { player.x = 270, player.y = 1990, player.spriteName = 'players', player.speed = 5 });
+      g.getAllCharacters('players', p => {
+        if (p.speed == 5) result = false;
+      });
+      if (result) {
+        g.getACharacter('teams', 'team1').score = 1;
+        g.getAllCharacters('players', p => {
+          p.x = GAME_WIDTH / 2;
+          p.y = GAME_HEIGHT - p.height / 2;
+          p.spriteName = 'players';
+          p.speed = 5;
+        });
       }
     }
-  });/*[*/
+  });
+  g.getAllCharacters('enemies', (enemy, i) => {
+    const padding = enemy.width / 2;
+    const speed = 0.01 * i + 0.1;
+    const outOfBounds = enemy.x >= GAME_WIDTH - padding || enemy.x <= padding;
+    if (outOfBounds) enemy.right = enemy.x < GAME_WIDTH / 2;
+    const direction = enemy.right ? 1 : -1;
+    g.move(enemy, 'x', speed * direction);
+  });
+  g.getAllCharacters('players', player => player.safe = false);
+  g.handleLocations('safeZones', 'players');/*[*/
   setTimeout(() => {
     g.handleCollision('players', 'players', (player1) => {
       if (player1.speed == 0) {
@@ -43,5 +60,3 @@ setTimeout(() => {
   }, 500);/*]*/
 }
 ```
-
-And we should now have a fully functioning game! Feel free to customize it and change or add whatever you like!
