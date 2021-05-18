@@ -1,20 +1,25 @@
-# 6. Set up Scoring
+# Run Game - 6.B
 
-(Step 2/5) To Set up a scoring system.
+## Add scoring to your game.
 
-##### 2. In the `game.js` file we need to put an `addCharacters` _function_ in the `init` _function_.
+**(Step 2/5)** Add teams to the client.
+
+### Add teams.
+
+In `game.js` we need to add an `addCharacters` _function_ to the `init` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.addCharacters('team');
+g.addCharacters('teams');
 // End Copy
 init() {
   g.setup(this);
   g.setSize(GAME_WIDTH, GAME_HEIGHT);
-  g.addLocations('safeZone');
+  g.cameraBounds();
   g.addCharacters('players', 0.5);
-  g.addCharacters('enemy', 0.5);/*[*/
-  g.addCharacters('team');/*]*/
+  g.addCharacters('enemies', 0.5);/*[*/
+  g.addCharacters('teams');/*]*/
+  g.addLocations('safeZones');
 }
 ```
