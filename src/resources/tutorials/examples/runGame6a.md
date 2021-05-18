@@ -1,26 +1,36 @@
-# 6. Set up Scoring
+# Run Game - 6.A
 
-(Step 1/5) To Set up a scoring system.
+## Add scoring to your game.
 
-##### 1. Go to the `room.js` file and put a `setupCharacters` _function_ in the `onInit` _function_.
+**(Step 1/5)** Setup teams on the server.
+
+### Setup teams.
+
+In `room.js` we need to add a `setupCharacters` _function_ to the `onInit` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.setupCharacters('team');
+g.setupCharacters('teams');
 // End Copy
-    [0, 1000, 1940].forEach(y => {
-        g.createALocation('safeZone', g.nextLocationId('safeZone'),
-            { x: -47, y, width: 670, height: 1000 },
-            '6cdc00', player => { player.safe = true });
-    });
-    g.setupCharacters('players');/*[*/
-    g.setupCharacters('team');/*]*/
-    g.setupCharacters('enemy');
-    for (let i = 0; i < 15; i++) {
-        g.createACharacter('enemy', g.nextCharacterId('enemy'), {
-            x: Math.floor(Math.random() * 500) + 1,
-            y: Math.floor(Math.random() * 1900) + 1,
-        });
-    }
+onInit() {
+    g.setup(this);
+    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+    g.setupCharacters('players');
+    g.setupCharacters('enemies');/*[*/
+    g.setupCharacters('teams');/*]*/
+    g.setupLocations('safeZones');
+
+    const zoneYs = [0, 1000, 1940];
+    zoneYs.forEach(y =>
+      g.createALocation('safeZones',
+        g.nextLocationId('safeZones'), {
+          x: 0,
+          y,
+          width: GAME_WIDTH,
+          height: 100
+        },
+        '6cdc00',
+        player => player.safe = true
+      ));
 ```
