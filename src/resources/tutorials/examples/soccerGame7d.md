@@ -1,11 +1,15 @@
-# 7. Add Scoring A Goal
+# Soccer Game - 7.D
 
-Step (4/5) To add scoring to your game. 
+## Add scoring to your game.
 
-##### 4. In `room.js`, Add this code so we can update the lives and scores when a goal is made.
+**(Step 4/5)** Increase score and decrease lives when a goal is scored.
+
+### Handling goal scoring.
+
+In `room.js` we need to add a `handleCollision` _function_ to the `onUpdate` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.handleCollision('goals', 'soccerBalls', (goal, ball) => {
 	if (ball.kicker !== goal.id) {

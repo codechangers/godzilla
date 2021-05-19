@@ -1,11 +1,15 @@
-# 7. Add Scoring A Goal
+# Soccer Game - 7.E
 
-Step (5/5) To add scoring to your game.
+## Add scoring to your game.
 
-##### 5. In `game.js` Add a check so we know if the game is over.
+**(Step 5/5)** Cause a game over when a player runs out of lives.
+
+### Add a game over.
+
+In `game.js` we need to add another _parameter_ to the **players** `getCharacters` _function_ in the `create` _method_. This new _parameter_ will check to see if the **player** run's out of lives.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.getCharacters('players', (player) => {
 	player.sprite.depth = 5;
@@ -20,17 +24,21 @@ g.getCharacters('players', (player) => {
 	}
 });
 // End Copy
+	g.useStore('The Store', []);
+	g.drawBackground('background', 0.8);
 	g.getCharacters('players', (player) => {
 		player.sprite.depth = 5;
 		if (player.id === g.myId()) {
 			g.cameraFollow(player.sprite);
 		}
-	}/*[*/,
+	}/*{*/);/*}[*/,
 	() => {},
 	(id, attr, value) => {
 		if (id === g.myId() && attr === 'lives' && value <= 0) {
 			location.reload();
 		}
-	}/*]*/);
-	g.drawBackground('background', 0.8);
+	});/*]*/
+	g.getCharacters('goals');
+	g.getCharacters('soccerBalls');
+}
 ```
