@@ -1,5 +1,48 @@
-# Added Team Scores
+# Run Game - 6.F
 
-After completing the steps below, you shouldn't notice anything new in your game. But we now have the functionality need to keep track of team scores.
+## Add scoring to your game.
 
-{% include blocks/stop.md %}
+**(Step 6/8)** Respawn enemies more enemies on every level.
+
+### Add respawn logic.
+
+In `room.js` we need to move our enemy spawning logic to a new _method_ called `spawnEnemies`.
+
+```javascript
+// File: room.js
+// Copy
+spawnEnemies(difficulty = 0) {
+	const enemyCount = 15;
+	const enemyMaxX  = GAME_WIDTH  - 100;
+	const enemyMaxY  = GAME_HEIGHT - 100;
+	for (let i = 0; i < difficulty + enemyCount; i++) {
+		g.createACharacter('enemies',
+			g.nextCharacterId('enemies'),
+			{
+				x: Math.floor(Math.random() * enemyMaxX) + 1,
+				y: Math.floor(Math.random() * enemyMaxY) + 1,
+			}
+		);
+	}
+}
+// End Copy
+	onLeave(client) {
+		g.deleteACharacter('players', client.sessionId);
+	}/*[*/
+
+	spawnEnemies(difficulty = 0) {
+		const enemyCount = 15;
+    const enemyMaxX  = GAME_WIDTH  - 100;
+    const enemyMaxY  = GAME_HEIGHT - 100;
+    for (let i = 0; i < difficulty + enemyCount; i++) {
+      g.createACharacter('enemies',
+        g.nextCharacterId('enemies'),
+        {
+          x: Math.floor(Math.random() * enemyMaxX) + 1,
+          y: Math.floor(Math.random() * enemyMaxY) + 1,
+        }
+      );
+    }
+	}/*]*/
+};
+```

@@ -2,7 +2,7 @@
 
 ## Add scoring to your game.
 
-**(Step 3/5)** Listen to teams state from the server.
+**(Step 3/8)** Listen to teams state from the server.
 
 ### Get teams from the server.
 

@@ -12,17 +12,20 @@ In `room.js` we need to add a `createLocation` _function_ for each of the safe z
 // File: room.js
 // Copy
 const zoneYs = [0, 1000, 1940];
-zoneYs.forEach(y =>
+zoneYs.forEach(y => {
+  const doSafe = player => player.safe = true;
+  const doWin = player => {};
   g.createALocation('safeZones',
     g.nextLocationId('safeZones'), {
-      x: -47,
+      x: 0,
       y,
       width: GAME_WIDTH,
       height: 100
     },
     '6cdc00',
-    player => player.safe = true
-  ));
+    y === 0 ? doWin : doSafe
+  );
+});
 // End Copy
 onInit() {
   g.setup(this);
@@ -32,7 +35,9 @@ onInit() {
   g.setupLocations('safeZones');/*[*/
 
   const zoneYs = [0, 1000, 1940];
-  zoneYs.forEach(y =>
+  zoneYs.forEach(y => {
+    const doSafe = player => player.safe = true;
+    const doWin = player => {};
     g.createALocation('safeZones',
       g.nextLocationId('safeZones'), {
         x: 0,
@@ -41,8 +46,9 @@ onInit() {
         height: 100
       },
       '6cdc00',
-      player => player.safe = true
-    ));/*]*/
+      y === 0 ? doWin : doSafe
+    );
+  });/*]*/
 
   const enemyCount = 15;
   const enemyMaxX  = GAME_WIDTH  - 100;

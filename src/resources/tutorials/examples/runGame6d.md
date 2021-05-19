@@ -2,7 +2,7 @@
 
 ## Add scoring to your game.
 
-**(Step 4/5)** Create teams for the game.
+**(Step 4/8)** Create teams for the game.
 
 ### Create teams.
 
@@ -26,7 +26,9 @@ onInit() {
     { x: 10000, y: 10000, name: 'Level', score: 1 });/*]*/
 
   const zoneYs = [0, 1000, 1940];
-  zoneYs.forEach(y =>
+  zoneYs.forEach(y => {
+    const doSafe = player => player.safe = true;
+    const doWin = player => {};
     g.createALocation('safeZones',
       g.nextLocationId('safeZones'), {
         x: 0,
@@ -35,6 +37,7 @@ onInit() {
         height: 100
       },
       '6cdc00',
-      player => player.safe = true
-    ));
+      y === 0 ? doWin : doSafe
+    );
+  });
 ```
