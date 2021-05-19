@@ -1,5 +1,11 @@
-# 1. Change The Background and Character
+# Zombie Game - 1.A
 
-First, find or create an image that you want to use and download it to your computer.
+## Add a new background and character to your game.
+
+**(Step 1/5)** Upload a new background image.
+
+### Get a background image.
+
+First, find or create an image that you want to use for your **background** and download it to your computer. [Need help?](/tutorials/images/)
 
 {% include blocks/uploadImage.md %}

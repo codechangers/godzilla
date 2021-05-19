@@ -1,8 +1,8 @@
-# 1. Change The Background and Character
+# Zombie Game - 1.E
 
-## Add a new background to your game.
+## Add a new background and character to your game.
 
-Change the dimensions of your game.
+**(Step 5/5)** Change the dimensions of your game.
 
 ### Set the client game width.
 

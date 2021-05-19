@@ -1,10 +1,10 @@
-# 1. Change The Background and Character
+# Zombie Game - 1.D
 
-## Change The Main Character
+## Add a new background and character to your game.
 
-Change the Character of your game
+**(Step 4/5)** Load your new character image into the game.
 
-### Update the image path.
+### Update the character image path.
 
 In `game.js`, Change the path to the players image in the `preload()` _method_.
 
