@@ -1,11 +1,15 @@
-# 6. Adding Kicking
+# Soccer Game - 6.D
 
-Step (4/4) To add Kicking to your game.
+## Add kicking to the game.
 
-##### 4. In `room.js`, Add the values for the collision right after the code we just added.
+**(Step 4/4)** Kick the ball in the opposite direction when a player runs into it.
+
+### Kick the ball when players run into it.
+
+In `room.js` we need to add a `handleCollision` _function_ to our `onUpdate` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.handleCollision('players', 'soccerBalls', (player, ball) => {
   ball.dx = g.getXTowards(player, ball.x, ball.y);
