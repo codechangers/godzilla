@@ -1,8 +1,8 @@
 # Run Game - 5.A
 
-## Set up name tags.
+## Add name tags and starting position.
 
-**(Step 1/1)** Add name tags to players.
+**(Step 1/3)** Add name tags to players.
 
 ### Add name tags.
 

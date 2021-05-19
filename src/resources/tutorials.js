@@ -75,8 +75,9 @@ import runGame4c from './tutorials/examples/runGame4c.md';
 import runGame4d from './tutorials/examples/runGame4d.md';
 import runGame4e from './tutorials/examples/runGame4e.md';
 import runGame4f from './tutorials/examples/runGame4f.md';
-import runGame5 from './tutorials/examples/runGame5.md';
+import runGame5a from './tutorials/examples/runGame5a.md';
 import runGame5b from './tutorials/examples/runGame5b.md';
+import runGame5c from './tutorials/examples/runGame5c.md';
 import runGame6a from './tutorials/examples/runGame6a.md';
 import runGame6b from './tutorials/examples/runGame6b.md';
 import runGame6c from './tutorials/examples/runGame6c.md';
@@ -238,8 +239,9 @@ const runGame = {
   'Run Game 4D': runGame4d,
   'Run Game 4E': runGame4e,
   'Run Game 4 ✓': runGame4f,
-  'Run Game 5A': runGame5,
-  'Run Game 5 ✓': runGame5b,
+  'Run Game 5A': runGame5a,
+  'Run Game 5B': runGame5b,
+  'Run Game 5 ✓': runGame5c,
   'Run Game 6A': runGame6a,
   'Run Game 6B': runGame6b,
   'Run Game 6C': runGame6c,
