@@ -1,7 +1,7 @@
-# 1 Setup Login Screen
+# 5. Setup Login Screen
  (Step 3/4)
 
-##### 3. In `room.js`, Delete the existing `createACharacter()` function and replace it with a new one!
+##### 3. In `room.js`, Delete the existing `createACharacter()` function inside the `onJoin` function and replace it with a new one!
 
 ``` javascript
 // File: code/server/rooms/room.js

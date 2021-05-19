@@ -1,4 +1,5 @@
-# Zombie Game
-Learn how to create an awesome online zombie shooter game!
+# 1. Change The Background and Character
 
-##### 1. Make sure that you have forked the repl.
+First, find or create an image that you want to use and download it to your computer.
+
+{% include blocks/uploadImage.md %}

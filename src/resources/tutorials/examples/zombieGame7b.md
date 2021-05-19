@@ -1,4 +1,4 @@
-# 1 Setup Login Screen
+# 5. Setup Login Screen
  (Step 2/4)
 
 ##### 2. In `room.js`, add this code to the bottom of your `onJoin()` function to customize the login screen.

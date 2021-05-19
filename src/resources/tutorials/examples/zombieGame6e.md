@@ -1,4 +1,4 @@
-# 1 Setup Bullets
+# 4. Setup Bullets
  (Step 5/10)
 
 ##### 5. In `room.js`, Create a `click` action in the `onMessage()` function.

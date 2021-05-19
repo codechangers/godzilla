@@ -1,4 +1,4 @@
-# 1 Create a Scoreboard
+# 8. Create a Scoreboard
  (Step 2/3)
 
 ##### 2. In `room.js`, in the `onUpdate()` function, inside of your handleCollision method, add a character with a score of 100 using the `getACharacter()` function.

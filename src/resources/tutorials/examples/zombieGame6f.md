@@ -1,4 +1,4 @@
-# 1 Setup Bullets
+# 4. Setup Bullets
  (Step 6/10)
 
 ##### 6. In `room.js`, in the `click` action that you just created, add code to make the bullets animate and go in the right direction.

@@ -1,4 +1,4 @@
-# 1 Setup Bullets
+# 4. Setup Bullets
  (Step 7/10)
 
 ##### 7. In `game.js`, Add the `sendAction()` function inside the `click()` function near the bottom of the page.
@@ -6,7 +6,7 @@
 ``` javascript
 // File: code/client/src/game.js
 // Copy
-	g.sendAction('click', {x, y});
+g.sendAction('click', {x, y});
 // End Copy
 click(x, y) {  
 	/*[*/g.sendAction('click', {x, y});/*]*/

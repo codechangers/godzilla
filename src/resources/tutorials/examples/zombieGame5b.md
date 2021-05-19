@@ -1,4 +1,4 @@
-# 1 Add a Health Bar
+# 3. Add a Health Bar
  (Step 2/3)
 
 ##### 2. In `room.js`, Create a `handleCollision()` function inside the `onUpdate()` function so that our health bar will update when we collide with zombies.

@@ -1,4 +1,4 @@
-# 1 Set Zombies Rotation
+# 9. Set Zombies Rotation
  (Step 1/2)
 
 ##### 1. in `room.js` in the `onUpdate()`, Delete the old `follow()` function and add the following `follow()` function with updated data.

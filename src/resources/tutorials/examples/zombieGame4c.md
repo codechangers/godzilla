@@ -1,5 +1,5 @@
-# 1 Add Zombies
- (Step 3/7)
+# 2. Add Zombies
+(Step 3/7)
 
 ##### 3. In `game.js`, Add `addCharacters()` in the `Init()` function to add zombies.
 

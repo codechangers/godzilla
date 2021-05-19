@@ -1,15 +1,44 @@
-# 1 Add a Background
- (Step 4/5)
+# 1. Change The Background and Character
 
-##### 4. In `room.js`, Change `GAME_WIDTH` and `GAME_HEIGHT` so the numbers match what we did in the previous step.
+## Add a new background to your game.
 
-``` javascript
-// File: code/server/rooms/room.js
+Change the dimensions of your game.
+
+### Set the client game width.
+
+In `game.js`, Change the game width in the top of the file from **2000** to **600**.
+
+```javascript
+// File: game.js
 // Copy
 const GAME_WIDTH = 4000;
-const GAME_HEIGHT = 4000;
 // End Copy
-const GAME_WIDTH = /*{*/2000/*}[*/4000;/*]*/
-const GAME_HEIGHT = /*{*/2000/*}[*/4000;/*]*/
-}
+const Phaser = require('phaser');
+const ClientLib = require('./client-lib');
+const g = new ClientLib();
+
+const GAME_WIDTH = /*{*/2000/*}[*/4000/*]*/;
+const GAME_HEIGHT = 2000;
+
+const keyCodes = Phaser.Input.Keyboard.KeyCodes;
+```
+
+### Set the server game width.
+
+In `room.js`, Change the game width in the top of the file from **2000** to **600**.
+
+```javascript
+// File: room.js
+// Copy
+const GAME_WIDTH = 4000;
+// End Copy
+const Room = require('colyseus').Room;
+const ServerLib = require('./server-lib');
+const g = new ServerLib();
+
+const GAME_WIDTH = /*{*/2000/*}*//*[*/4000/*]*/;
+const GAME_HEIGHT = 2000;
+
+module.exports = class MyRoom extends Room {
+  onInit() {
 ```

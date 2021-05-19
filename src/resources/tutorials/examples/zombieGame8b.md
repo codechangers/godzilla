@@ -1,4 +1,4 @@
-# 1 Set Players Rotation
+# 6. Set Players Rotation
  (Step 2/3)
 
 ##### 2. In `room.js`, create a `mousemove` action under the `click` action.

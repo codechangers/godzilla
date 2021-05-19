@@ -1,5 +1,5 @@
-# 1 Add Zombies
- (Step 5/7)
+# 2. Add Zombies
+(Step 5/7)
 
 ##### 5. In `room.js`, add a `setInterval()` function to randomly spawn zombies across the map inside the `onInit()` function.
 
@@ -15,7 +15,8 @@ setInterval(() => g.createACharacter('zombies',
 onInit() {
 	g.setup(this);
 	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-	g.setupCharacters('players');/*[*/
+	g.setupCharacters('players');
+	g.setupCharacters('zombies', 0.5);/*[*/
 	setInterval(() => g.createACharacter('zombies',
 	g.nextCharacterId('zombies'), {
 	x: Math.floor((Math.random() * 2000) + 1),

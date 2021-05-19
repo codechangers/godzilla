@@ -1,5 +1,5 @@
-# 1 Add Zombies
- (Step 1/7) Find an Image for the Zombies in Your Game
+# 2. Add Zombies
+(Step 1/7) Find an Image for the Zombies in Your Game
 
 ##### 1. In `game.js` Use `loadImage()` function to add some Zombies inside the `preload()` function.
 
@@ -14,3 +14,5 @@ preload() {
 	g.loadImage('zombies', 'zombie.png');/*]*/
 }
 ```
+
+> **You will need to uplaod an new image for the zombies. Make sure the image name you add in this step matches the image name in the `imgs` folder.

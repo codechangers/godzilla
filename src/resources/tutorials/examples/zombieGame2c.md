@@ -1,44 +1,20 @@
-# Zombie Game - 1.C
+# 1. Change The Background and Character
 
-## Add a new background to your game.
+## Change The Main Character
 
-**(Step 3/3)** Change the dimensions of your game.
+Change the Character of your game
 
-### Set the client game width.
+### Update the image path.
 
-In `game.js`, Change the game width in the top of the file from **2000** to **600**.
+In `game.js`, Change the path to the players image in the `preload()` _method_.
 
 ```javascript
 // File: game.js
 // Copy
-const GAME_WIDTH = 4000;
+g.loadImage('players', 'new-player.png');
 // End Copy
-const Phaser = require('phaser');
-const ClientLib = require('./client-lib');
-const g = new ClientLib();
-
-const GAME_WIDTH = /*{*/2000/*}[*/4000/*]*/;
-const GAME_HEIGHT = 2000;
-
-const keyCodes = Phaser.Input.Keyboard.KeyCodes;
-```
-
-### Set the server game width.
-
-In `room.js`, Change the game width in the top of the file from **2000** to **600**.
-
-```javascript
-// File: room.js
-// Copy
-const GAME_WIDTH = 4000;
-// End Copy
-const Room = require('colyseus').Room;
-const ServerLib = require('./server-lib');
-const g = new ServerLib();
-
-const GAME_WIDTH = /*{*/2000/*}*//*[*/4000/*]*/;
-const GAME_HEIGHT = 2000;
-
-module.exports = class MyRoom extends Room {
-  onInit() {
+preload() {
+    g.loadImage('background', 'new-background.png');
+    g.loadImage('players', /*{*/'logo.png'/*}[*/'new-player.png'/*]*/);
+}
 ```

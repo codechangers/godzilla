@@ -1,7 +1,20 @@
-# 2. Add a Background
+# 1. Change The Background and Character
 
-Step (1/5) To create a background for your game.
+## Add a new background to your game.
 
-First, find or create an image that you want to use and download it to your computer.
+**(Step 2/3)** Load the new background image into your game.
 
-{% include blocks/uploadImage.md %}
+### Update the image path.
+
+In `game.js`, Change the path to the background image in the `preload()` _method_.
+
+```javascript
+// File: game.js
+// Copy
+g.loadImage('background', 'new-background.png');
+// End Copy
+preload() {
+    g.loadImage('background', /*{*/'bg.png'/*}[*/'new-background.png'/*]*/);
+    g.loadImage('players', 'logo.png');
+}
+```

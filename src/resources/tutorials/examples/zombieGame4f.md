@@ -1,5 +1,5 @@
-# 1 Add Zombies
- (Step 6/7)
+# 2. Add Zombies
+(Step 6/7)
 
 ##### 6. In `room.js`, add the `follow()` function inside the `onUpdate()` function so that zombies will follow you.
 ``` javascript

@@ -1,4 +1,4 @@
-# 1 Setup Bullets
+# 4. Setup Bullets
  (Step 9/10)
 
 ##### 9. In `room.js`, Add code to handle the collision and delete the zombies if they collide with the bullets in the `onUpdate()` function.

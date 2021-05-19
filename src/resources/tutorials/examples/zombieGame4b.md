@@ -1,5 +1,5 @@
-# 1 Add Zombies
- (Step 2/7)
+# 2. Add Zombies
+(Step 2/7)
 
 ##### 2. In `room.js`, Add `setupCharacters()` in the `onInit()` function to add zombies.
 

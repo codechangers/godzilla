@@ -1,7 +1,7 @@
-# 1 Create a Scoreboard
+# 8. Create a Scoreboard
  (Step 1/3)
 
-##### 1. In `game.js` delete the old `getCharacters()` code and ad the new code in the `create()` function.
+##### 1. In `game.js` delete the old `getCharacters()` code and add the new code in the `create()` function.
 
 ``` javascript
 // File: code/client/src/game.js

@@ -1,4 +1,4 @@
-# 1 Add a Health Bar
+# 3. Add a Health Bar
  (Step 1/3)
 
 ##### 1. In `room.js` Create an `attachTo()` function inside the `onJoin()` function to add a health bar
