@@ -1,10 +1,11 @@
-# 8. Add Blocks
+# Soccer Game - 8.A
 
-Step (1/3) To add blocks to your game.
+## Add blocks to your game.
 
-##### 1. Upload an block images to the Assets folder in Repl
+**(Step 1/3)** Upload images for the blocks.
 
-1. Find the downloaded images. [Need help?](/tutorials/downloads/)
-2. Open the asset folder in repl, click: `code > client > asset`
-   ![repl asset](/images/replAsset)
-3. Click and drag your files into this folder. Make sure your files are named something very easy and obvious (it is best to not use spaces or symbols), for example "zombies.png" or "shark.png".
+### Add block images.
+
+First, find or create an image that you want to use for your **blocks** and download it to your computer. [Need help?](/tutorials/images/)
+
+{% include blocks/uploadImage.md %}
