@@ -1,11 +1,15 @@
-# 3. Add More Characters
+# Soccer Game - 3.C
 
-Step (3/5) To add more characters to your game
+## Add more characters.
 
-##### 3. Add the rest of your character images in the `loadImage` _function_ in `game.js`
+**(Step 3/5)** Load all your other character images.
+
+### Load optional character images.
+
+In `game.js` we need to add more `loadImage` _functions_ to our `preload` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.loadImage('blobbert', 'circle1.png');
 g.loadImage('grunch', 'circle2.png');
@@ -14,8 +18,8 @@ g.loadImage('nimbo', 'circle4.png');
 g.loadImage('tangles', 'circle5.png');
 // End Copy
 preload() {
-	g.loadImage('players', 'circle1.png');
-	g.loadImage('background', 'grass.jpg');/*[*/
+	g.loadImage('background', 'grass.jpg');
+	g.loadImage('players', 'circle1.png');/*[*/
 	g.loadImage('blobbert', 'circle1.png');
 	g.loadImage('grunch', 'circle2.png');
 	g.loadImage('neon', 'circle3.png');

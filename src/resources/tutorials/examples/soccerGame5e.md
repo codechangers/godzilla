@@ -1,14 +1,23 @@
-# 5. Add Soccer Balls
+# Soccer Game - 5.E
 
-Step (5/6) To add Soccer Balls into your game.
+## Add soccer balls.
 
-##### 5. In, `room.js`, Add `setupCharacters` function so the server loads the soccer balls.
+**(Step 5/6)** Setup the soccer balls on the server.
+
+### Setup the soccer balls.
+
+In `room.js` we need to add a `setupCharacters` _function_ to the `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.setupCharacters('soccerBalls');
 // End Copy
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');
   g.setupCharacters('goals');/*[*/
   g.setupCharacters('soccerBalls');/*]*/
+}
 ```

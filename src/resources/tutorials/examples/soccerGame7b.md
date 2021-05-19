@@ -1,11 +1,15 @@
-# 7. Add Scoring A Goal
+# Soccer Game - 7.B
 
-Step (2/5) To add scoring to your game.
+## Add scoring to your game.
 
-##### 2. In `room.js`, Add the kicker to our ball.
+**(Step 2/5)** Add a kicker value to the soccer ball.
+
+### Add kicker to ball.
+
+In `room.js` we need to add a `kicker` value to our `addABall` _method_. This will allow us to keep track of who kicked the ball last. With that information we can then figure out when the kicker makes a goal!
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 kicker: '',
 // End Copy

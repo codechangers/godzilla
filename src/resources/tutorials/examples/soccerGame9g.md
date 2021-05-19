@@ -1,11 +1,15 @@
-# 9. Place Blocks
+# Soccer Game - 9.G
 
-Step (7/7) To be able to place blocks in your game.
+## Allow players to place blocks in the game.
 
-##### 7. In `room.js`, Add code so that the balls collide with the blocks.
+**(Step 7/7)** Block the soccer ball when it runs into a block.
+
+### Blocks block soccer balls.
+
+In `room.js` we need to add another `handleCollision` _function_ to our `onUpdate` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.handleCollision('soccerBalls', 'blocks', (ball, block) => {
   ball.dx = g.getXTowards(block, ball.x, ball.y);
@@ -19,6 +23,11 @@ g.handleCollision('soccerBalls', 'blocks', (ball, block) => {
   }
 });
 // End Copy
+	g.handleCollision('players', 'soccerBalls', (player, ball) => {
+		ball.dx = g.getXTowards(player, ball.x, ball.y);
+		ball.dy = g.getYTowards(player, ball.x, ball.y);
+		ball.kicker = player.id;
+	});
 	g.handleCollision('goals', 'soccerBalls', (goal, ball) => {
 		if (ball.kicker !== goal.id) {
 			g.getACharacter('players', ball.kicker).score += 1;
@@ -38,4 +47,5 @@ g.handleCollision('soccerBalls', 'blocks', (ball, block) => {
 			g.deleteACharacter('blocks', block.id);
 		}
 	});/*]*/
+}
 ```

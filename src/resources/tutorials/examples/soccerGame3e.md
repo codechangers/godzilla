@@ -1,13 +1,36 @@
-# 3. Add More Characters
+# Soccer Game - 3.E
 
-Step (5/5) To add more characters to your game
+## Add more characters.
 
-##### 5. In `game.js` change the Login Screen code and replace it with the following code.
+**(Step 5/5)** Send the character selection to the server.
+
+### Save our character choice.
+
+In `game.js` we need to change the `useLoginScreen` _function_ in our `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.useLoginScreen((name, spriteName) => g.connect({ name, spriteName }));
 // End Copy
-g.useLoginScreen((name/*[*/, spriteName/*]*/) => g.connect({ name/*[*/, spriteName/*]*/ }));
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name/*[*/, spriteName/*]*/) => g.connect({ name/*[*/, spriteName/*]*/ }));
+
+	g.usePlayerSelectScreen({
+		blobbert: 'circle1.png',
+		grunch: 'circle2.png',
+		neon: 'circle3.png',
+		nimbo: 'circle4.png',
+		tangles: 'circle5.png'
+	});
+
+	g.useStore('The Store', []);
+	g.drawBackground('background', 0.8);
+	g.getCharacters('players', (player) => {
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});
+}
 ```

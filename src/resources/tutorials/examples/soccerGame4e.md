@@ -1,14 +1,26 @@
-# 4. Add Goals
+# Soccer Game - 4.E
 
-Step (5/8) To create goals for your game
+## Add soccer goals.
 
-##### 5. In `game.js`, Add the goals using `getCharacters` Function so the they render in your game.
+**(Step 5/8)** Listen to goals state from the server.
+
+### Get goals from server.
+
+In `game.js` we need to add another `getCharacter` _function_ to the `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.getCharacters('goals');
 // End Copy
-	g.drawBackground('background', 0.8);/*[*/
+	g.useStore('The Store', []);
+	g.drawBackground('background', 0.8);
+	g.getCharacters('players', (player) => {
+		player.sprite.depth = 5;
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});/*[*/
 	g.getCharacters('goals');/*]*/
+}
 ```

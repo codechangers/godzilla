@@ -1,11 +1,17 @@
-# 6. Adding Kicking
+# Soccer Game - 6.A
 
-Step (1/4) To add Kicking to your game. 
+## Add kicking to the game.
 
-##### 1. In `room.js`, Change the `setupCharacters` functions to be circles.
+**(Step 1/4)** Set character shape types to circles.
+
+### Set characters to circles.
+
+In `room.js` we need to change our `setupCharacters` _functions_ to say that our characters are circles.
+
+You only need to do this for the images you added that are circular. So for example, if you have a circle ball and square players, you should add the circle code to the ball, but **do not** add it to the player.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.setupCharacters('players', 'circle');
 g.setupCharacters('goals', 'circle');

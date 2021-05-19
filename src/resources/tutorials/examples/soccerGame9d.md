@@ -1,19 +1,23 @@
-# 9. Place Blocks
+# Soccer Game - 9.D
 
-Step (4/7) To be able to place blocks in your game.
+## Allow players to place blocks in the game.
 
-##### 4. In `game.js`, Add an `if` statement so that when you click the moouse it will place a block.
+**(Step 4/7)** Send a place block action to the server on click.
+
+### Click places a block.
+
+In `game.js` we need to add a `sendAction` _function_ to the `click` _method_. We can only send _actions_ while we are connected to the server. So we need to make sure we are connected before the messages are sent using an _if statement_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 if (g.canSend()) {
   g.sendAction('placeBlock', { x, y });
 }
 // End Copy
-  click(x, y) {
-		/*[*/if (g.canSend()) {
-			g.sendAction('placeBlock', { x, y });
-		}/*]*/
-  }
+click(x, y) {
+  /*[*/if (g.canSend()) {
+    g.sendAction('placeBlock', { x, y });
+  }/*]*/
+}
 ```

@@ -1,14 +1,22 @@
-# 4. Add Goals
+# Soccer Game - 4.F
 
-Step (6/8) To create goals for your game
+## Add soccer goals.
 
-##### 6. In `room.js`, Add `setupCharacters` function to display the Goals.
+**(Step 6/8)** Setup goals on the server.
+
+### Setup goals.
+
+In `room.js` we need to add a `setupCharacters` _function_ to the `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.setupCharacters('goals');
 // End Copy
+onInit() {
+  g.setup(this);
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
   g.setupCharacters('players');/*[*/
   g.setupCharacters('goals');/*]*/
+}
 ```

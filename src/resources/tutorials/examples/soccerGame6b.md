@@ -1,11 +1,15 @@
-# 6. Adding Kicking
+# Soccer Game - 6.B
 
-Step (2/4) To add Kicking to your game.
+## Add kicking to the game.
 
-##### 2. In `room.js`, add a `dx` and `dy` to our ball in the `addABall` _method_.
+**(Step 2/4)** Add directional values to soccer balls.
+
+### Add direction to the ball.
+
+In `room.js` we need to add a `dx` and `dy` value to our ball in the `addABall` _method_. This will allow us to keep track of what direction the ball is traveling in.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 dx: 0,
 dy: 0,

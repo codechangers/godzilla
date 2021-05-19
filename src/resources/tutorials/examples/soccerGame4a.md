@@ -1,14 +1,23 @@
-# 4. Add Goals
+# Soccer Game - 4.A
 
-Step (1/8) To create goals for your game
+## Add soccer goals.
 
-##### 1. In `game.js`, Add `addCharacters` to add a new character for the Soccer Goal.
+**(Step 1/8)** Add soccer goals to your game.
+
+### Add goals characters.
+
+In `game.js` we need to add an `addCharacters` _function_ to our `init` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.addCharacters('goals', 0.6);
 // End Copy
-  g.addCharacter('players', 0.6);/*[*/
-  g.addCharacters('goals', 0.6);/*]*/
+init() {
+	g.setup(this);
+	g.setSize(GAME_WIDTH, GAME_HEIGHT);
+	g.cameraBounds();
+	g.addCharacters('players', 0.5);/*[*/
+	g.addCharacters('goals', 0.6);/*]*/
+}
 ```

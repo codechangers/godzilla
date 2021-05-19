@@ -1,11 +1,15 @@
-# 9. Place Blocks
+# Soccer Game - 9.E
 
-Step (5/7) To be able to place blocks in your game.
+## Allow players to place blocks in the game.
 
-##### 5. In `room.js`, Add `setupCharacters`, function to setup the block.
+**(Step 5/7)** Setup the block characters on the server.
+
+### Setup blocks.
+
+In `room.js` we need to add another `setupCharacters` _function_ to the `onInit` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.setupCharacters('blocks');
 // End Copy

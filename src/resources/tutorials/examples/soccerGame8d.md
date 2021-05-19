@@ -1,15 +1,7 @@
-# STOP!!!!
-<hr>
+# Added Blocks
 
-##### MAKE SURE TO DO THE FOLLOWING STEPS BEFORE YOU MOVE ON
+After completing the steps below, you should be able to buy blocks from the store using your points.
 
-1. Download your .zip from Repl
-2. Upload your .zip to Blobbert.io
-3. Make sure the new features work on your url
-4. If it's not working get help.
-5. If you have verified it is working you can move on!
-<hr>
+> **Note:** Placing the blocks won't do anything yet. Don't worry, that is what we are doing next `:)`
 
-# STOP!!!!
-
-**Do not move on unless you have followed these steps and verified your game is working up to this point!
+{% include blocks/stop.md %}

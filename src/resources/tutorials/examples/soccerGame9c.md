@@ -1,16 +1,32 @@
-# 9. Place Blocks
+# Soccer Game - 9.C
 
-Step (3/7) To be able to place blocks in your game.
+## Allow players to place blocks in the game.
 
-##### 3. In `game.js`, Add `getCharacters` function to add the blocks to the game.
+**(Step 3/7)** Listen to the blocks state on the server.
+
+### Get the blocks from the server.
+
+In `game.js` we need to add another `getCharacters` _function_ to the `create` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.getCharacters('blocks');
 // End Copy
-  g.drawBackground('background', 0.8);
+  g.getCharacters('players', (player) => {
+    player.sprite.depth = 5;
+    if (player.id === g.myId()) {
+      g.cameraFollow(player.sprite);
+    }
+  },
+  () => {},
+  (id, attr, value) => {
+    if (id === g.myId() && attr === 'lives' && value <= 0) {
+      location.reload();
+    }
+  });
   g.getCharacters('goals');
   g.getCharacters('soccerBalls');/*[*/
   g.getCharacters('blocks');/*]*/
+}
 ```

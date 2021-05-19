@@ -1,11 +1,15 @@
-# 7. Add Scoring A Goal
+# Soccer Game - 7.A
 
-Step (1/5) To add scoring to your game.
+## Add scoring to your game.
 
-##### 1. In `room.js`, Add data to the players.
+**(Step 1/5)** Update the player data to have a score.
+
+### Update player data.
+
+In `room.js` we need to change the `createACharacter` _function_ for **players** in the `onJoin` _method_.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.createACharacter('players', client.sessionId,
 	{ ...data, x, y, score: 0, lives: 3, block3s: 0, block5s: 0 });
@@ -16,6 +20,7 @@ onJoin(client, data) {
   g.createACharacter('players', client.sessionId, /*[*/
 		/*]*/{ x, y, ...data/*[*/, score: 0, lives: 3, block3s: 0, block5s: 0/*]*/ });
   g.createACharacter('goals', client.sessionId, { x, y });
+  this.addABall();
 }
 ```
 
