@@ -12,7 +12,7 @@ init() {
 	g.setup(this);
 	g.setSize(GAME_WIDTH, GAME_HEIGHT);
 	g.addCharacters('players', 0.5);
-  g.addCharacters('zombies', 0.5);/*[*/
+	g.addCharacters('zombies', 0.5);/*[*/
 	g.addCharacters('bullets', 0.5);/*]*/
 }
 ```

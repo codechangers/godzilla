@@ -7,7 +7,7 @@
 // File: code/server/rooms/room.js
 // Copy
 const index = g.nextCharacterId('bullets');
-		g.createACharacter('bullets', index, { x: player.x, y: player.y });
+		g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
 		let newCharacter = g.getACharacter('bullets', index);
 		g.playAnimation(newCharacter, 'x',
 			g.getXTowards(newCharacter, data.x, data.y) * 500, 2000);  
@@ -17,7 +17,7 @@ const index = g.nextCharacterId('bullets');
 // End Copy
 click: () => {/*[*/
 	const index = g.nextCharacterId('bullets');
-	g.createACharacter('bullets', index, { x: player.x, y: player.y });
+	g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
 	let newCharacter = g.getACharacter('bullets', index);
 	g.playAnimation(newCharacter, 'x',
 	g.getXTowards(newCharacter, data.x, data.y) * 500, 2000);  
