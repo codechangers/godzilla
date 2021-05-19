@@ -72,8 +72,9 @@ export const STATUS = {
 export const gameTypes = {
   '': '',
   default: 'Default Template',
+  runner: 'Run Game',
   soccer: 'Soccer Game',
-  ninja: 'Ninja Game'
+  zombie: 'Zombie Game'
 };
 
 export const gameNames = /^[a-z]+$/;

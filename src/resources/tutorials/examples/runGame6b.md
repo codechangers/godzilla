@@ -2,7 +2,7 @@
 
 ## Add scoring to your game.
 
-**(Step 2/5)** Add teams to the client.
+**(Step 2/8)** Add teams to the client.
 
 ### Add teams.
 

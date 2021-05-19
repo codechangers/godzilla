@@ -2,7 +2,7 @@
 
 ## Add scoring to your game.
 
-**(Step 1/5)** Setup teams on the server.
+**(Step 1/8)** Setup teams on the server.
 
 ### Setup teams.
 
@@ -22,7 +22,9 @@ onInit() {
     g.setupLocations('safeZones');
 
     const zoneYs = [0, 1000, 1940];
-    zoneYs.forEach(y =>
+    zoneYs.forEach(y => {
+      const doSafe = player => player.safe = true;
+      const doWin = player => {};
       g.createALocation('safeZones',
         g.nextLocationId('safeZones'), {
           x: 0,
@@ -31,6 +33,7 @@ onInit() {
           height: 100
         },
         '6cdc00',
-        player => player.safe = true
-      ));
+        y === 0 ? doWin : doSafe
+      );
+    });
 ```

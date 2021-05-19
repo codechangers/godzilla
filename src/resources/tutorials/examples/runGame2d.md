@@ -21,3 +21,26 @@ init() {
 	g.addCharacters('enemies', 0.5);/*]*/
 }
 ```
+
+### Remove camera bounds to center game.
+
+In the `game.js` file we need to remove the `cameraBounds` _function_ from the `init` _method_.
+
+```javascript
+// File: game.js
+// Copy
+init() {
+	g.setup(this);
+	g.setSize(GAME_WIDTH, GAME_HEIGHT);
+	g.addCharacters('players', 0.5);
+	g.addCharacters('enemies', 0.5);
+}
+// End Copy
+init() {
+	g.setup(this);
+	g.setSize(GAME_WIDTH, GAME_HEIGHT);/*{*/
+	g.cameraBounds();/*}*/
+	g.addCharacters('players', 0.5);
+	g.addCharacters('enemies', 0.5);
+}
+```
