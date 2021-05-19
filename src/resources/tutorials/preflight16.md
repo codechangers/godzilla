@@ -5,12 +5,12 @@
 ```javascript
 // File: game.js
 // Copy
-  g.useLoginScreen((name) => g.connect({ name }));
+g.useLoginScreen((name) => g.connect({ name }));
 // End Copy
 create() {
+  g.drawBackground('background');
   g.setupKeys(keys);/*[*/
   g.useLoginScreen((name) => g.connect({ name }));/*]*/
-  g.drawBackground('background');
   g.getCharacters('players', (player) => {
     if (player.id === g.myId()) {
       g.cameraFollow(player.sprite);

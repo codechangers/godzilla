@@ -5,20 +5,20 @@
 ```javascript
 // File: game.js
 // Copy
-   const keys = {
-      w: keyCodes.W,
-      s: keyCodes.S,
-      a: keyCodes.A,
-      d: keyCodes.D,
-      up: keyCodes.UP,
-      down: keyCodes.DOWN,
-      left: keyCodes.LEFT,
-      right: keyCodes.RIGHT,
-      tab: keyCodes.TAB,
-   };
+const keys = {
+   w: keyCodes.W,
+   s: keyCodes.S,
+   a: keyCodes.A,
+   d: keyCodes.D,
+   up: keyCodes.UP,
+   down: keyCodes.DOWN,
+   left: keyCodes.LEFT,
+   right: keyCodes.RIGHT,
+   tab: keyCodes.TAB,
+};
 // End Copy
-const keyCodes = Phaser.Input.Keyboard.KeyCodes;
-/*[*/const keys = {
+const keyCodes = Phaser.Input.Keyboard.KeyCodes;/*[*/
+const keys = {
   w: keyCodes.W,
   s: keyCodes.S,
   a: keyCodes.A,

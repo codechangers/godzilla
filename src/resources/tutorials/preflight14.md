@@ -5,24 +5,24 @@
 ```javascript
 // File: room.js
 // Copy
-   const speed = 10;
-   const actions = {
-      moveUp: () => g.move(player, 'y', -speed),
-      moveDown: () => g.move(player, 'y', speed),
-      moveLeft: () => g.move(player, 'x', -speed),
-      moveRight: () => g.move(player, 'x', speed),
-   };
-   g.handleActions(actions, data);
+const speed = 10;
+const actions = {
+  moveUp: () => g.move(player, 'y', -speed),
+  moveDown: () => g.move(player, 'y', speed),
+  moveLeft: () => g.move(player, 'x', -speed),
+  moveRight: () => g.move(player, 'x', speed),
+};
+g.handleActions(actions, data);
 // End Copy
-  onMessage(client, data) {
-    const player = g.getACharacter('players', client.sessionId);/*[*/
-    const speed = 10;
-    const actions = {
-      moveUp: () => g.move(player, 'y', -speed),
-      moveDown: () => g.move(player, 'y', speed),
-      moveLeft: () => g.move(player, 'x', -speed),
-      moveRight: () => g.move(player, 'x', speed),
-    };
-    g.handleActions(actions, data);/*]*/
-  }
+onMessage(client, data) {
+  const player = g.getACharacter('players', client.sessionId);/*[*/
+  const speed = 10;
+  const actions = {
+    moveUp: () => g.move(player, 'y', -speed),
+    moveDown: () => g.move(player, 'y', speed),
+    moveLeft: () => g.move(player, 'x', -speed),
+    moveRight: () => g.move(player, 'x', speed),
+  };
+  g.handleActions(actions, data);/*]*/
+}
 ```

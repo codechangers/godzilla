@@ -5,7 +5,7 @@
 ```javascript
 // File: game.js
 // Copy
-   g.drawBackground('background');
+g.drawBackground('background');
 // End Copy
 create() {
    /*[*/g.drawBackground('background');/*]*/

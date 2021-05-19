@@ -5,7 +5,7 @@
 ```javascript
 // File: game.js
 // Copy
-   g.loadImage('players', 'logo.png');
+g.loadImage('players', 'logo.png');
 // End Copy
 preload() {
    g.loadImage('background', 'bg.png');
@@ -13,4 +13,4 @@ preload() {
 }
 ```
 
-** Make sure to change the name of the image you copied to match the name of the images you added to the `img` folder. Leave the name `players` the same.
+> ** Make sure to change the name of the image you copied to match the name of the images you added to the `img` folder. Leave the name `players` the same.

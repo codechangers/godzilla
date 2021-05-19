@@ -5,20 +5,20 @@
 ```javascript
 // File: game.js
 // Copy
+g.getCharacters('players', (player) => {
+  if (player.id === g.myId()) {
+    g.cameraFollow(player.sprite);
+  }
+});
+// End Copy
+create() {
+  g.drawBackground('background');
+  g.setupKeys(keys);/*[*/
   g.getCharacters('players', (player) => {
     if (player.id === g.myId()) {
       g.cameraFollow(player.sprite);
     }
-  });
-// End Copy
-  create() {
-    g.setupKeys(keys);
-    g.drawBackground('background');/*[*/
-    g.getCharacters('players', (player) => {
-      if (player.id === g.myId()) {
-        g.cameraFollow(player.sprite);
-      }
-    });/*]*/
-  }
+  });/*]*/
+}
 ```
 

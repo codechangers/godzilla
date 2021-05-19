@@ -5,12 +5,12 @@
 ```javascript
 // File: room.js
 // Copy
-   g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-   g.setupCharacters('players');
+g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+g.setupCharacters('players');
 // End Copy
-  onInit() {
-    g.setup(this);/*[*/
-    g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-    g.setupCharacters('players');/*]*/
-  }
+onInit() {
+  g.setup(this);/*[*/
+  g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+  g.setupCharacters('players');/*]*/
+}
 ```

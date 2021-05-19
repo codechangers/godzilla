@@ -5,9 +5,9 @@
 ```javascript
 // File: room.js
 // Copy
-   const player = g.getACharacter('players', client.sessionId);
+const player = g.getACharacter('players', client.sessionId);
 // End Copy
-  onMessage(client, data) {
-    /*[*/const player = g.getACharacter('players', client.sessionId);/*]*/
-  }
+onMessage(client, data) {
+  /*[*/const player = g.getACharacter('players', client.sessionId);/*]*/
+}
 ```

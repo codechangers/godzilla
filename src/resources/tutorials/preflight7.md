@@ -5,14 +5,14 @@
 ```javascript
 // File: game.js
 // Copy
-   g.setSize(GAME_WIDTH, GAME_HEIGHT);
-   g.cameraBounds();
-   g.addCharacters('players', 0.5);
+g.setSize(GAME_WIDTH, GAME_HEIGHT);
+g.cameraBounds();
+g.addCharacters('players', 0.5);
 // End Copy
 init() {
-    g.setup(this);
-    /*[*/g.setSize(GAME_WIDTH, GAME_HEIGHT);
-    g.cameraBounds();
-    g.addCharacters('players', 0.5);/*]*/
-  }
+  g.setup(this);/*[*/
+  g.setSize(GAME_WIDTH, GAME_HEIGHT);
+  g.cameraBounds();
+  g.addCharacters('players', 0.5);/*]*/
+}
 ```

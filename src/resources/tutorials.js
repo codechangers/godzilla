@@ -7,9 +7,6 @@ import fork1 from './tutorials/fork1.md';
 import fork2 from './tutorials/fork2.md';
 import fork3 from './tutorials/fork3.md';
 import fork4 from './tutorials/fork4.md';
-import preflight1 from './tutorials/preflight1.md';
-import preflight2 from './tutorials/preflight2.md';
-import preflight3 from './tutorials/preflight3.md';
 import preflight4 from './tutorials/preflight4.md';
 import preflight5 from './tutorials/preflight5.md';
 import preflight6 from './tutorials/preflight6.md';
@@ -146,11 +143,8 @@ import soccerGame9g from './tutorials/examples/soccerGame9g.md';
 import soccerGame9h from './tutorials/examples/soccerGame9h.md';
 import soccerGame10 from './tutorials/examples/soccerGame10.md';
 // Zombie Game
-import zombieGame1 from './tutorials/examples/zombieGame1.md';
 import zombieGame2a from './tutorials/examples/zombieGame2a.md';
-import zombieGame2b from './tutorials/examples/zombieGame2b.md';
 import zombieGame2c from './tutorials/examples/zombieGame2c.md';
-import zombieGame2d from './tutorials/examples/zombieGame2d.md';
 import zombieGame2e from './tutorials/examples/zombieGame2e.md';
 import zombieGame4a from './tutorials/examples/zombieGame4a.md';
 import zombieGame4b from './tutorials/examples/zombieGame4b.md';
@@ -314,12 +308,9 @@ const soccerGame = {
 };
 
 const zombieGame = {
-  '1) Zombies': zombieGame1,
-  '2) Zombies': zombieGame2a,
-  '3) Zombies': zombieGame2b,
-  '4) Zombies': zombieGame2c,
-  '5) Zombies': zombieGame2d,
-  '6) Zombies': zombieGame2e,
+  'Zombie 1A': zombieGame2a,
+  'Zombie 1B': zombieGame2c,
+  'Zombie 1✓': zombieGame2e,
   '9) Zombies': zombieGame4a,
   '10) Zombies': zombieGame4b,
   '11) Zombies': zombieGame4c,
@@ -364,23 +355,20 @@ const tutorials = {
   '2) Fork 2': fork2,
   '3) Fork 3': fork3,
   '4) Fork 4': fork4,
-  '5) Preflight 1': preflight1,
-  '6) Preflight 2': preflight2,
-  '7) Preflight 3': preflight3,
-  '8) Preflight 4': preflight4,
-  '9) Preflight 5': preflight5,
-  '9) Preflight 6': preflight6,
-  '9) Preflight 7': preflight7,
-  '9) Preflight 8': preflight8,
-  '9) Preflight 9': preflight9,
-  '9) Preflight 10': preflight10,
-  '9) Preflight 11': preflight11,
+  '1) Preflight 4': preflight4,
+  '2) Preflight 5': preflight5,
+  '3) Preflight 6': preflight6,
+  '4) Preflight 7': preflight7,
+  '5) Preflight 8': preflight8,
+  '6) Preflight 9': preflight9,
+  '7) Preflight 10': preflight10,
+  '8) Preflight 11': preflight11,
   '9) Preflight 12': preflight12,
-  '9) Preflight 13': preflight13,
-  '9) Preflight 14': preflight14,
-  '9) Preflight 15': preflight15,
-  '9) Preflight 16': preflight16,
-  '9) Preflight 17': preflight17,
+  '10) Preflight 13': preflight13,
+  '11) Preflight 14': preflight14,
+  '12) Preflight 15': preflight15,
+  '13) Preflight 16': preflight16,
+  '14) Preflight 17': preflight17,
   'Download Code': savezip,
   'Upload Code': newgame,
   'Pick a Game': pickagame,

@@ -5,7 +5,7 @@
 ```javascript
 // File: room.js
 // Copy
-  g.deleteACharacter('players', client.sessionId);
+g.deleteACharacter('players', client.sessionId);
 // End Copy
 onLeave(client) {/*[*/
   g.deleteACharacter('players', client.sessionId);/*]*/

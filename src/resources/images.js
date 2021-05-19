@@ -1,5 +1,8 @@
 import fork from './images/fork.png';
 import signup from './images/signup.png';
+import signupbutton from './images/signupbutton.png';
+import imagedrop from './images/imagedrop.png';
+import imagecheck from './images/imagecheck.png';
 import rename from './images/repl-rename.gif';
 import invite from './images/repl-invite.gif';
 import replImages from './images/repl-images.gif';
@@ -26,6 +29,9 @@ import zombieGame from './images/Zombie-Game.gif';
 const images = {
   fork,
   signup,
+  signupbutton,
+  imagedrop,
+  imagecheck,
   rename,
   invite,
   download,
