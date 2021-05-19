@@ -6,12 +6,12 @@
 ``` javascript
 // File: code/server/rooms/room.js
 // Copy
-g.setupCharacters('zombies', 0.5);
+g.setupCharacters('zombies');
 // End Copy
 onInit() {
 	g.setup(this);
 	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
 	g.setupCharacters('players');/*[*/
-	g.setupCharacters('zombies', 0.5);/*]*/
+	g.setupCharacters('zombies');/*]*/
 }
 ```
