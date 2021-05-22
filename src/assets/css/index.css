@@ -11,6 +11,8 @@
 
 html {
   background-color: var(--background-color);
+  scrollbar-color:  var(--primary-color) rgba(0, 0, 0, 0);
+  scrollbar-width: thin;
 }
 
 body {
