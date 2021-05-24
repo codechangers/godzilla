@@ -54,7 +54,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
 
   const myGamesCheckOffs = useMemo(
     () => checkOffs.filter(co => games.filter(g => co.gameRef.id === g.id).length > 0),
-    [(checkOffs, games)]
+    [checkOffs, games]
   );
 
   return myGamesCheckOffs.length > 0 ? (
@@ -83,7 +83,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit" disabled={!validGID && !submitted}>
+      <Button variant="contained" color="primary" type="submit" disabled={!validGID || !submitted}>
         Check Off
       </Button>
     </form>
