@@ -2,62 +2,20 @@ import { useState, useEffect, useMemo } from 'react';
 import { toData } from '../utils/helpers';
 import { db, auth } from '../utils/firebase';
 import { onSnapshotDataEffectBase } from '../utils/effectBases';
-import tutorials from '../resources/tutorials';
-
-const globalWhiteList = [
-  '1) Start 1',
-  '1) Start 2',
-  '1) Fork 1',
-  '2) Fork 2',
-  '3) Fork 3',
-  '4) Fork 4',
-  '1) Preflight 4',
-  '2) Preflight 5',
-  '3) Preflight 6',
-  '4) Preflight 7',
-  '5) Preflight 8',
-  '6) Preflight 9',
-  '7) Preflight 10',
-  '8) Preflight 11',
-  '9) Preflight 12',
-  '10) Preflight 13',
-  '11) Preflight 14',
-  '12) Preflight 15',
-  '13) Preflight 16',
-  '14) Preflight 17',
-  'Download Code',
-  'Upload Code',
-  'Pick a Game',
-  'Horse Game Tutorial',
-  'Run Game Tutorial',
-  'Soccer Game Tutorial',
-  'Zombie Game Tutorial',
-  'blocks',
-  'downloads',
-  'images',
-  'splitScreen'
-];
-
-// White list subdirectories.
-const allowedSubDirs = ['Run Game Tutorial', 'Soccer Game Tutorial', 'Zombie Game Tutorial'];
-allowedSubDirs.forEach(subDir => {
-  Object.keys(tutorials[subDir])
-    .map(key => `${subDir}.${key}`)
-    .map(item => globalWhiteList.push(item));
-});
 
 /* ===================
  * === Items Hooks ===
  * =================== */
 
-export const getLiveClassCheckOffsData = classId => {
+export const getLiveClassCheckOffsData = (classId, teacher = false) => {
   const [checkOffs, setCheckOffs] = useState([]);
+  const userType = teacher ? 'teacherId' : 'parentId';
   const refs = useMemo(
     () =>
       auth.currentUser?.uid
         ? db
             .collection('checkOffs')
-            .where('teacherId', '==', auth.currentUser.uid)
+            .where(userType, '==', auth.currentUser.uid)
             .where('classId', '==', classId)
         : () => {},
     [auth.currentUser]
@@ -106,9 +64,7 @@ const flattenItems = (fItems, prefix = '') => {
 };
 
 export const useUnlockedItems = (items, locked, whiteList) =>
-  locked
-    ? useMemo(() => checkItems([...globalWhiteList, ...whiteList], items), [items, whiteList])
-    : items;
+  locked ? useMemo(() => checkItems(whiteList, items), [items, whiteList]) : items;
 
 export const useFlatItems = items => useMemo(() => flattenItems(items), [items]);
 

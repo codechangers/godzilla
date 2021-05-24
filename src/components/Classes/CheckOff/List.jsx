@@ -23,7 +23,7 @@ const pageSteps = {
 };
 
 const CheckOffList = ({ cls }) => {
-  const checkOffs = getLiveClassCheckOffsData(cls.id);
+  const checkOffs = getLiveClassCheckOffsData(cls.id, true);
   const gameRefs = useMemo(() => checkOffs.map(co => co.gameRef), [checkOffs]);
   const games = useLiveGames(gameRefs);
 

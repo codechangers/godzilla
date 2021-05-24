@@ -17,6 +17,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
+import { getLiveClassCheckOffsData } from '../../hooks/items';
 import { toData } from '../../utils/helpers';
 
 const propTypes = {
@@ -55,9 +56,14 @@ const MarkdownPages = ({
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
+  const checkOffs = getLiveClassCheckOffsData(selectedCls.id);
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log('cos:', checkOffs);
+  }, [checkOffs]);
 
   // Set page from url params.
   useEffect(() => {
@@ -151,7 +157,7 @@ const MarkdownPages = ({
             current={page}
             items={pages}
             locked={child !== null}
-            whiteList={child !== null ? child[whiteList] : []}
+            whiteList={child !== null ? [...child[whiteList]] : []}
           />
         )}
       </main>
