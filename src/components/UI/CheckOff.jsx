@@ -19,6 +19,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
   const checkOffs = getLiveCheckOffsData(page);
   const games = useUserGames();
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
+  const [submitted, setSubmitted] = useState(false);
   const [gameId, setGameId] = useState('');
   const classes = useStyles();
 
@@ -35,6 +36,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
 
   const createCheckOff = () => {
     if (validGID && gameRef !== null && cls !== null) {
+      setSubmitted(true);
       const data = {
         page,
         gameRef,
@@ -79,7 +81,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit" disabled={!validGID}>
+      <Button variant="contained" color="primary" type="submit" disabled={!validGID && !submitted}>
         Check Off
       </Button>
     </form>
