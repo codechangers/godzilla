@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -51,7 +51,18 @@ const CheckOffList = ({ cls }) => {
     );
   };
 
-  const tutLink = page => <Link to={`teacher/tutorials?page=${page}`}>{page}</Link>;
+  const blankLink = forwardRef(({ children, href }, ref) => (
+    <a href={href} ref={ref} target="blank" rel="noreferrer noopener">
+      {children}
+    </a>
+  ));
+  blankLink.propTypes = { children: PropTypes.node.isRequired, href: PropTypes.string.isRequired };
+
+  const tutLink = page => (
+    <Link to={`teacher/tutorials?page=${page}`} component={blankLink}>
+      {page}
+    </Link>
+  );
 
   const classes = useStyles();
 
