@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Button, MenuItem, TextField, makeStyles } from '@material-ui/core';
+import { Button, MenuItem, TextField, Typography, makeStyles } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 import { db, auth } from '../../utils/firebase';
+import { GREEN } from '../../utils/globals';
 import { getLiveCheckOffsData } from '../../hooks/items';
 import { useUserGames } from '../../hooks/games';
 
@@ -90,13 +92,26 @@ const CheckOff = ({ whoAmI, page, cls }) => {
 CheckOff.propTypes = propTypes;
 CheckOff.defaultProps = defaultProps;
 
-const CheckOffState = ({ checkOff: { approved, page } }) => {
+const Approval = ({ approved, feedback }) => (
+  <div>
+    <Typography variant="h5" style={{ color: approved ? GREEN : red['500'] }}>
+      {approved ? 'Your game has been approved!' : 'Your game has been denied!'}
+    </Typography>
+    <Typography variant="body1">
+      <strong>Feedback:</strong> {feedback}
+    </Typography>
+  </div>
+);
+Approval.propTypes = {
+  approved: PropTypes.bool.isRequired,
+  feedback: PropTypes.string.isRequired
+};
+
+const CheckOffState = ({ checkOff: { approved, page, feedback } }) => {
   // Waiting State.
   if (approved === undefined) return <div>Checking Off: {page}</div>;
-  // Approved State.
-  if (approved) return <div>Your game has been approved!</div>;
-  // Denied State.
-  return <div>Your game has been denied!</div>;
+  // Approved/Denied State.
+  return <Approval approved={approved} feedback={feedback} />;
 };
 CheckOffState.propTypes = { checkOff: PropTypes.object.isRequired };
 
