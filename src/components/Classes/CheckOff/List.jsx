@@ -44,7 +44,11 @@ const CheckOffList = ({ cls }) => {
 
   const bioLink = name => {
     const domain = name.concat('.blobbert.io');
-    return <a href={`http://${domain}`}>{domain}</a>;
+    return (
+      <a href={`http://${domain}`} target="blank" rel="noreferrer noopener">
+        {domain}
+      </a>
+    );
   };
 
   const tutLink = page => <Link to={`teacher/tutorials?page=${page}`}>{page}</Link>;
