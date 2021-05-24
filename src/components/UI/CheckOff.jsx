@@ -29,7 +29,10 @@ const CheckOff = ({ whoAmI, page, cls }) => {
     if (childGames.length === 1) setGameId(childGames[0].id);
   }, [childGames]);
 
-  const validGID = useMemo(() => gameId !== '' && childGames.map(g => g.id).includes(gameId));
+  const validGID = useMemo(() => gameId !== '' && childGames.map(g => g.id).includes(gameId), [
+    childGames,
+    gameId
+  ]);
 
   const gameRef = useMemo(() => games.filter(g => g.id === gameId)[0]?.ref || null, [
     games,
@@ -83,7 +86,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit" disabled={!validGID || !submitted}>
+      <Button variant="contained" color="primary" type="submit" disabled={!validGID || submitted}>
         Check Off
       </Button>
     </form>
