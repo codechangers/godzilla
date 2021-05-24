@@ -92,7 +92,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
 CheckOff.propTypes = propTypes;
 CheckOff.defaultProps = defaultProps;
 
-const Approval = ({ approved, feedback }) => (
+const Approval = ({ approved, feedback, onResubmit, onNext }) => (
   <div>
     <Typography variant="h5" style={{ color: approved ? GREEN : red['500'] }}>
       {approved ? 'Your game has been approved!' : 'Your game has been denied!'}
@@ -100,18 +100,35 @@ const Approval = ({ approved, feedback }) => (
     <Typography variant="body1">
       <strong>Feedback:</strong> {feedback}
     </Typography>
+    <Button
+      color="secondary"
+      variant="outlined"
+      style={{ marginTop: 10, padding: '5px 28px' }}
+      onClick={approved ? onNext : onResubmit}
+    >
+      {approved ? 'Next' : 'ReSubmit'}
+    </Button>
   </div>
 );
 Approval.propTypes = {
   approved: PropTypes.bool.isRequired,
-  feedback: PropTypes.string.isRequired
+  feedback: PropTypes.string.isRequired,
+  onResubmit: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired
 };
 
-const CheckOffState = ({ checkOff: { approved, page, feedback } }) => {
+const CheckOffState = ({ checkOff: { approved, page, feedback, ref } }) => {
   // Waiting State.
   if (approved === undefined) return <div>Checking Off: {page}</div>;
   // Approved/Denied State.
-  return <Approval approved={approved} feedback={feedback} />;
+  return (
+    <Approval
+      approved={approved}
+      feedback={feedback}
+      onResubmit={() => ref.delete()}
+      onNext={() => console.log('moving on....')}
+    />
+  );
 };
 CheckOffState.propTypes = { checkOff: PropTypes.object.isRequired };
 
