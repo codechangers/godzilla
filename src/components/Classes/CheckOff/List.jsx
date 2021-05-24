@@ -61,56 +61,58 @@ const CheckOffList = ({ cls }) => {
     } else setFbError('Feedback is required.');
   };
 
+  const gamesToRender = checkOffsWithGameData
+    .filter(a => a.game.name !== undefined)
+    .filter(b => b.approved === undefined);
+
   return (
     <>
       <div className={classes.padTop} />
-      {checkOffsWithGameData
-        .filter(a => a.game.name !== undefined)
-        .filter(b => b.approved === undefined)
-        .map(co => (
-          <Accordion key={co.id} classes={{ root: classes.accTop }}>
-            <AccordionSummary>
-              <Typography variant="body1">
-                {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails classes={{ root: classes.accDetails }}>
-              <div className={classes.coInfo}>
-                <Typography variant="body1">Game: {bioLink(co.game.name)}</Typography>
-                <Typography variant="body1">Page: {tutLink(co.page)}</Typography>
-              </div>
-              <TextField
+      {gamesToRender.length === 0 && <Typography variant="h1">EMPTY</Typography>}
+      {gamesToRender.map(co => (
+        <Accordion key={co.id} classes={{ root: classes.accTop }}>
+          <AccordionSummary>
+            <Typography variant="body1">
+              {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails classes={{ root: classes.accDetails }}>
+            <div className={classes.coInfo}>
+              <Typography variant="body1">Game: {bioLink(co.game.name)}</Typography>
+              <Typography variant="body1">Page: {tutLink(co.page)}</Typography>
+            </div>
+            <TextField
+              variant="outlined"
+              label="Feedback"
+              placeholder="Good job!"
+              margin="dense"
+              className={classes.input}
+              value={feedback}
+              onChange={handleFeedback}
+              helperText={fbError}
+              error={fbError.length > 0}
+            />
+            <div className={classes.options}>
+              <Button
+                onClick={() => updateCheckOff(co, false)}
                 variant="outlined"
-                label="Feedback"
-                placeholder="Good job!"
-                margin="dense"
-                className={classes.input}
-                value={feedback}
-                onChange={handleFeedback}
-                helperText={fbError}
-                error={fbError.length > 0}
-              />
-              <div className={classes.options}>
-                <Button
-                  onClick={() => updateCheckOff(co, false)}
-                  variant="outlined"
-                  color="secondary"
-                  startIcon={<Block />}
-                >
-                  Decline
-                </Button>
-                <Button
-                  onClick={() => updateCheckOff(co, true)}
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CheckCircle />}
-                >
-                  Approve
-                </Button>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                color="secondary"
+                startIcon={<Block />}
+              >
+                Decline
+              </Button>
+              <Button
+                onClick={() => updateCheckOff(co, true)}
+                variant="contained"
+                color="primary"
+                startIcon={<CheckCircle />}
+              >
+                Approve
+              </Button>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      ))}
       <div className={classes.padBottom} />
     </>
   );
