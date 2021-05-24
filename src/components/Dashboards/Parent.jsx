@@ -35,7 +35,13 @@ const routeToInterface = {
   '/parent/games': GamesInterface
 };
 
-const whoAmIRoutes = ['/parent', '/parent/docs', '/parent/tutorials', '/parent/games'];
+const whoAmIRoutes = [
+  '/parent',
+  '/parent/docs',
+  '/parent/tutorials',
+  '/parent/preflight',
+  '/parent/games'
+];
 
 const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
