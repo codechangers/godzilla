@@ -11,6 +11,7 @@ import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
 import DocumentationInterface from '../Interfaces/Documentation';
 import TutorialsInterface from '../Interfaces/Tutorials';
+import PreFlightTutorialsInterface from '../Interfaces/PreFlightTutorials';
 import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
 import { STRIPE_KEY } from '../../utils/globals';
@@ -30,6 +31,7 @@ const routeToInterface = {
   '/parent/settings': SettingsInterface,
   '/parent/docs': DocumentationInterface,
   '/parent/tutorials': TutorialsInterface,
+  '/parent/preflight': PreFlightTutorialsInterface,
   '/parent/games': GamesInterface
 };
 
@@ -70,7 +72,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'Contests', 'Register', 'Games'].concat(approvedRoutes)}
+        names={['Profile', 'Contests', 'Register', 'Pre Contest', 'Games'].concat(approvedRoutes)}
         baseRoute="/parent"
         appBarConfig={cab}
       />

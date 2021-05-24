@@ -362,7 +362,7 @@ const zombieGame = {
   'Zombie ✓': zombieGame12a
 };
 
-const tutorials = {
+export const preFlight = {
   '1) Start 1': start1,
   '1) Start 2': start2,
   '1) Fork 1': fork1,
@@ -382,7 +382,10 @@ const tutorials = {
   '11) Preflight 14': preflight14,
   '12) Preflight 15': preflight15,
   '13) Preflight 16': preflight16,
-  '14) Preflight 17': preflight17,
+  '14) Preflight 17': preflight17
+};
+
+const tutorials = {
   'Download Code': savezip,
   'Upload Code': newgame,
   'Pick a Game': pickagame,
