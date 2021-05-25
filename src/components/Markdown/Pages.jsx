@@ -57,7 +57,11 @@ const MarkdownPages = ({
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
   const checkOffs =
-    whoAmI !== null ? getFilteredLiveCheckOffsData(a => a.where('childId', '==', whoAmI.id)) : [];
+    whoAmI !== null
+      ? getFilteredLiveCheckOffsData(a =>
+          a.where('childId', '==', whoAmI.id).where('classId', '==', selectedCls.id)
+        )
+      : [];
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
@@ -65,6 +69,13 @@ const MarkdownPages = ({
   useEffect(() => {
     // TODO: Parse out all valid checked off pages.
     console.log('cos:', checkOffs);
+    console.log('pages:', pages);
+    /**
+     * List of things that need to get done:
+     * 1. Flatten pages.
+     * 2. Split pages by titles containing a '✓'.
+     * 3. Concat split sections based on checkoffs.
+     */
   }, [checkOffs]);
 
   // Set page from url params.
