@@ -58,13 +58,8 @@ const CheckOff = ({ whoAmI, page, cls }) => {
     }
   };
 
-  const myGamesCheckOffs = useMemo(
-    () => checkOffs.filter(co => games.filter(g => co.gameRef.id === g.id).length > 0),
-    [checkOffs, games]
-  );
-
-  return myGamesCheckOffs.length > 0 ? (
-    myGamesCheckOffs.map(checkOff => <CheckOffState key={checkOff.id} checkOff={checkOff} />)
+  return checkOffs.length > 0 ? (
+    checkOffs.map(checkOff => <CheckOffState key={checkOff.id} checkOff={checkOff} />)
   ) : (
     <form
       className={classes.form}
