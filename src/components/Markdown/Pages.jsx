@@ -17,7 +17,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { getLiveClassCheckOffsData } from '../../hooks/items';
+import { getFilteredLiveCheckOffsData } from '../../hooks/items';
 import { toData } from '../../utils/helpers';
 
 const propTypes = {
@@ -56,12 +56,14 @@ const MarkdownPages = ({
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
-  const checkOffs = getLiveClassCheckOffsData(selectedCls.id);
+  const checkOffs =
+    whoAmI !== null ? getFilteredLiveCheckOffsData(a => a.where('childId', '==', whoAmI.id)) : [];
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
+    // TODO: Parse out all valid checked off pages.
     console.log('cos:', checkOffs);
   }, [checkOffs]);
 

@@ -4,7 +4,7 @@ import { Button, MenuItem, TextField, Typography, makeStyles } from '@material-u
 import { red } from '@material-ui/core/colors';
 import { db, auth } from '../../utils/firebase';
 import { GREEN } from '../../utils/globals';
-import { getLiveCheckOffsData } from '../../hooks/items';
+import { getFilteredLiveCheckOffsData } from '../../hooks/items';
 import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
@@ -18,7 +18,9 @@ const defaultProps = {
 };
 
 const CheckOff = ({ whoAmI, page, cls }) => {
-  const checkOffs = getLiveCheckOffsData(page);
+  const checkOffs = getFilteredLiveCheckOffsData(a =>
+    a.where('childId', '==', whoAmI.id).where('classId', '==', cls.id)
+  );
   const games = useUserGames();
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
   const [submitted, setSubmitted] = useState(false);
@@ -45,6 +47,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
       const data = {
         page,
         gameRef,
+        childId: whoAmI.id,
         parentId: auth.currentUser.uid,
         teacherId: cls.teacher.id,
         classId: cls.id
