@@ -25,7 +25,6 @@ import savezip from './tutorials/savezip.md';
 import newgame from './tutorials/newgame.md';
 import pickagame from './tutorials/pickagame.md';
 import splitScreen from './tutorials/splitScreen.md';
-import DEVELOPMENT from './tutorials/DEV.md';
 
 // Blocks
 import addAStore from './tutorials/blocks/addAStore.md';
