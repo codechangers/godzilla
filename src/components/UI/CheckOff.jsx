@@ -19,7 +19,10 @@ const defaultProps = {
 
 const CheckOff = ({ whoAmI, page, cls }) => {
   const checkOffs = getFilteredLiveCheckOffsData(a =>
-    a.where('childId', '==', whoAmI.id).where('classId', '==', cls.id)
+    a
+      .where('childId', '==', whoAmI.id)
+      .where('classId', '==', cls.id)
+      .where('page', '==', page)
   );
   const games = useUserGames();
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
