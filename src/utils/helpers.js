@@ -134,3 +134,36 @@ export const getStatus = account => {
 };
 
 export const toData = doc => ({ ...doc.data(), id: doc.id, ref: doc.ref });
+
+// ===============================
+// Page data manipulation helpers.
+// ===============================
+
+/**
+ * Check the given `value` object against the given `unlocked` whitelist.
+ * Return only the allowed values.
+ */
+export const filterPages = (unlocked, value, prefix = '') => {
+  const newValue = {};
+  Object.entries(value).forEach(([key, val]) => {
+    if (typeof val === 'string' && unlocked.includes(prefix + key)) newValue[key] = val;
+    else if (typeof val !== 'string') {
+      const nextUp = filterPages(unlocked, val, `${prefix}${key}.`);
+      if (Object.keys(nextUp).length > 0) newValue[key] = nextUp;
+    }
+  });
+  return newValue;
+};
+
+/**
+ * Flatten a multi-dimentional object into a single array of pages.
+ */
+export const flattenPages = (fItems, prefix = '') => {
+  const flattened = [];
+  Object.entries(fItems).forEach(([key, value]) => {
+    const item = prefix + key;
+    if (typeof value === 'string') flattened.push(item);
+    else flattened.push(...flattenPages(value, `${item}.`));
+  });
+  return flattened;
+};

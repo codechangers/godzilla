@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   List,
@@ -15,12 +15,12 @@ import {
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { SwapHoriz } from '@material-ui/icons';
 import Folder from '../../UI/Folder';
-import { useFlatItems } from '../../../hooks/items';
+import { flattenPages } from '../../../utils/helpers';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
   other: PropTypes.string.isRequired,
-  items: PropTypes.object.isRequired,
+  pages: PropTypes.object.isRequired,
   onSwitch: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -31,7 +31,7 @@ const defaultProps = {
   whiteList: []
 };
 
-const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteList }) => {
+const CheckOffPages = ({ title, pages, onSwitch, other, width, onChange, whiteList }) => {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
   const setWhiteList = newChecked => {
@@ -43,12 +43,12 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
     setChecked(whiteList);
   }, [whiteList]);
 
-  const flatItems = useFlatItems(items);
+  const flatPages = useMemo(() => flattenPages(pages), [pages]);
 
   const toggleAll = () => {
-    if (checked.length === flatItems.length) {
+    if (checked.length === flatPages.length) {
       setWhiteList([]);
-    } else setWhiteList(flatItems);
+    } else setWhiteList(flatPages);
   };
 
   const handleToggle = value => {
@@ -66,7 +66,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
           <Tooltip title="Select All" placement="top">
             <Checkbox
               edge="start"
-              checked={checked.length === flatItems.length}
+              checked={checked.length === flatPages.length}
               onChange={toggleAll}
               tabIndex={-1}
             />
@@ -91,7 +91,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
           )}
         </ListItemSecondaryAction>
       </ListItem>
-      {Object.entries(items).map(([item, value]) =>
+      {Object.entries(pages).map(([item, value]) =>
         typeof value === 'string' ? (
           <ListItem button divider key={item} onClick={() => handleToggle(item)}>
             <ListItemIcon>
@@ -103,7 +103,7 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
           <Folder
             key={item}
             title={item}
-            items={value}
+            pages={value}
             onClick={handleToggle}
             prefix={`${item}.`}
             checked={subItem => checked.includes(subItem)}
@@ -114,8 +114,8 @@ const CheckOffItems = ({ title, items, onSwitch, other, width, onChange, whiteLi
     </List>
   );
 };
-CheckOffItems.propTypes = propTypes;
-CheckOffItems.defaultProps = defaultProps;
+CheckOffPages.propTypes = propTypes;
+CheckOffPages.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -132,4 +132,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withWidth()(CheckOffItems);
+export default withWidth()(CheckOffPages);

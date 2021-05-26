@@ -85,7 +85,7 @@ const CheckOffKids = ({ childRefs }) => {
         <CheckOffItems
           title="Tutorials"
           other="Documentation"
-          items={tutorials}
+          pages={tutorials}
           onSwitch={() => setTabIndex(2)}
           whiteList={selected?.tutorials}
           onChange={tuts => updateChild({ tutorials: tuts })}
@@ -95,7 +95,7 @@ const CheckOffKids = ({ childRefs }) => {
         <CheckOffItems
           title="Documentation"
           other="Tutorials"
-          items={docs}
+          pages={docs}
           onSwitch={() => setTabIndex(1)}
           whiteList={selected?.docs}
           onChange={dcs => updateChild({ docs: dcs })}

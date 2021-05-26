@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Button } from '@material-ui/core';
 import NextIcon from '@material-ui/icons/NavigateNext';
 import PrevIcon from '@material-ui/icons/NavigateBefore';
-import { useFlatUnlockedItems } from '../../hooks/items';
+import { flattenPages, filterPages } from '../../utils/helpers';
 
 const propTypes = {
   onNav: PropTypes.func.isRequired,
@@ -19,7 +19,11 @@ const defaultProps = {
 };
 
 const NavButtons = ({ current, items, locked, whiteList, onNav }) => {
-  const flatUnlocks = useFlatUnlockedItems(items, locked, whiteList);
+  const flatUnlocks = useMemo(() => flattenPages(filterPages(items, locked, whiteList)), [
+    items,
+    locked,
+    whiteList
+  ]);
   const classes = useStyles();
 
   const nextPage = useMemo(() => {

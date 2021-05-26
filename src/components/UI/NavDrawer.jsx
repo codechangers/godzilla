@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Folder from './Folder';
-import { useUnlockedItems } from '../../hooks/items';
+import { filterPages } from '../../utils/helpers';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -21,7 +21,11 @@ const defaultProps = {
 
 const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) => {
   const classes = useStyles(width);
-  const unlockedItems = useUnlockedItems(items, locked, whiteList);
+  const unlockedPages = useMemo(() => filterPages(items, locked, whiteList), [
+    items,
+    locked,
+    whiteList
+  ]);
 
   return (
     <Drawer
@@ -34,7 +38,7 @@ const NavDrawer = ({ open, onNav, current, items, width, locked, whiteList }) =>
       }}
     >
       <List>
-        {Object.entries(unlockedItems).map(([item, value]) =>
+        {Object.entries(unlockedPages).map(([item, value]) =>
           typeof value === 'string' ? (
             <ListItem
               button

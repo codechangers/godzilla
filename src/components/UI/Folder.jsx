@@ -6,7 +6,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  items: PropTypes.object.isRequired,
+  pages: PropTypes.object.isRequired,
   prefix: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   current: PropTypes.string,
@@ -20,7 +20,7 @@ const defaultProps = {
   checked: () => {}
 };
 
-const Folder = ({ title, items, prefix, current, onClick, useChecks, checked }) => {
+const Folder = ({ title, pages, prefix, current, onClick, useChecks, checked }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -41,7 +41,7 @@ const Folder = ({ title, items, prefix, current, onClick, useChecks, checked }) 
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {Object.entries(items).map(([item, value]) =>
+          {Object.entries(pages).map(([item, value]) =>
             typeof value === 'string' ? (
               <ListItem
                 button
@@ -69,7 +69,7 @@ const Folder = ({ title, items, prefix, current, onClick, useChecks, checked }) 
               <Folder
                 key={item}
                 title={item}
-                items={value}
+                pages={value}
                 onClick={onClick}
                 prefix={`${prefix}${item}.`}
               />
