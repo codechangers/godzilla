@@ -18,28 +18,21 @@ const propTypes = {
   cls: PropTypes.object.isRequired
 };
 
-const pageSteps = {
-  DEVELOPMENT: 10
-};
-
 const CheckOffList = ({ cls }) => {
   const checkOffs = getFilteredLiveCheckOffsData(a => a.where('classId', '==', cls.id), true);
   const gameRefs = useMemo(() => checkOffs.map(co => co.gameRef), [checkOffs]);
   const games = useLiveGames(gameRefs);
 
   const checkOffsWithGameData = useMemo(() => {
-    if (checkOffs.length === games.length) {
-      const gamesMap = {};
-      games.map(g => {
-        gamesMap[g.id] = g;
-        return g;
-      });
-      return checkOffs.map(co => {
-        co.game = gamesMap[co.gameRef.id];
-        return co;
-      });
-    }
-    return [];
+    const gamesMap = {};
+    games.map(g => {
+      gamesMap[g.id] = g;
+      return g;
+    });
+    return checkOffs.map(co => {
+      co.game = gamesMap[co.gameRef.id] || {};
+      return co;
+    });
   }, [checkOffs, games]);
 
   const bioLink = name => {
@@ -60,7 +53,7 @@ const CheckOffList = ({ cls }) => {
 
   const tutLink = page => (
     <Link to={`teacher/tutorials?page=${page}`} component={blankLink}>
-      {page}
+      {pageToStep(page)}
     </Link>
   );
 
@@ -80,6 +73,11 @@ const CheckOffList = ({ cls }) => {
     .filter(a => a.game.name !== undefined)
     .filter(b => b.approved === undefined);
 
+  const pageToStep = p => {
+    const parts = p.split('.');
+    return parts[parts.length - 1].replace('✓', '').trim();
+  };
+
   return (
     <>
       <div className={classes.padTop} />
@@ -88,7 +86,7 @@ const CheckOffList = ({ cls }) => {
         <Accordion key={co.id} classes={{ root: classes.accTop }}>
           <AccordionSummary>
             <Typography variant="body1">
-              {co.game.name.toUpperCase()} @ Step#{pageSteps[co.page]}
+              {co.game.name.toUpperCase()} @ {pageToStep(co.page)}
             </Typography>
           </AccordionSummary>
           <AccordionDetails classes={{ root: classes.accDetails }}>
