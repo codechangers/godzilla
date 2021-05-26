@@ -18,7 +18,7 @@ import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { getFilteredLiveCheckOffsData } from '../../hooks/checkoffs';
-import { toData } from '../../utils/helpers';
+import { toData, flattenPages } from '../../utils/helpers';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -68,8 +68,15 @@ const MarkdownPages = ({
 
   useEffect(() => {
     // TODO: Parse out all valid checked off pages.
+    console.log('hard:', child[whiteList]);
     console.log('cos:', checkOffs);
     console.log('pages:', pages);
+    // const chapters = {};
+    const flatPages = flattenPages(pages);
+    const checkPoints = flatPages
+      .filter(p => p.includes('✓'))
+      .map(cp => ({ page: cp, index: flatPages.indexOf(cp) }));
+    console.log(checkPoints);
     /**
      * List of things that need to get done:
      * 1. Flatten pages.
@@ -168,7 +175,7 @@ const MarkdownPages = ({
           <NavButtons
             onNav={setUrlPage}
             current={page}
-            items={pages}
+            pages={pages}
             locked={child !== null}
             whiteList={child !== null ? [...child[whiteList]] : []}
           />
@@ -178,7 +185,7 @@ const MarkdownPages = ({
         open={showMenu}
         onClose={() => setShowMenu(false)}
         current={page}
-        items={pages}
+        pages={pages}
         onNav={
           isWidthDown('sm', width)
             ? p => {
