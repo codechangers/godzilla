@@ -12,7 +12,7 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, cls }) => {
-  const [showKidsUI] = useState(true);
+  const [showKidsUI] = useState(false);
   const classes = useStyles();
   return (
     <Modal

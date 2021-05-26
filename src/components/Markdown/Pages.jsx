@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -66,23 +66,27 @@ const MarkdownPages = ({
   const history = useHistory();
   const classes = useStyles();
 
-  useEffect(() => {
-    // TODO: Parse out all valid checked off pages.
-    console.log('cos:', checkOffs);
-    console.log('pages:', pages);
-    // const chapters = {};
+  function concatUnlocks() {
+    let unlocks = [];
     const flatPages = flattenPages(pages);
     const checkPoints = flatPages
       .filter(p => p.includes('✓'))
       .map(cp => ({ page: cp, index: flatPages.indexOf(cp) }));
-    console.log(checkPoints);
-    /**
-     * List of things that need to get done:
-     * 1. Flatten pages.
-     * 2. Split pages by titles containing a '✓'.
-     * 3. Concat split sections based on checkoffs.
-     */
-  }, [checkOffs]);
+    const coPages = Object.values(checkOffs)
+      .filter(co => co.approved)
+      .map(co => co.page);
+    coPages.forEach(p => {
+      const matchedCP = checkPoints.filter(cp => cp.page === p)[0] || null;
+      const mcpIndex = checkPoints.indexOf(matchedCP);
+      const nextCP = checkPoints[mcpIndex + 1] || null;
+      if (matchedCP && nextCP) {
+        unlocks = [...unlocks, ...flatPages.slice(matchedCP.index + 1, nextCP.index + 1)];
+      }
+    });
+    return unlocks;
+  }
+
+  const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages]);
 
   // Set page from url params.
   useEffect(() => {
@@ -176,7 +180,7 @@ const MarkdownPages = ({
             current={page}
             pages={pages}
             locked={child !== null}
-            whiteList={child !== null ? [...child[whiteList]] : []}
+            whiteList={child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : []}
           />
         )}
       </main>
@@ -195,7 +199,7 @@ const MarkdownPages = ({
         }
         width={drawerWidth}
         locked={child !== null}
-        whiteList={child !== null ? child[whiteList] : []}
+        whiteList={child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : []}
       />
     </div>
   );
