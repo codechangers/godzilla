@@ -29,13 +29,15 @@ const propTypes = {
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
-  setWhoAmI: PropTypes.func
+  setWhoAmI: PropTypes.func,
+  doNotLock: PropTypes.bool
 };
 
 const defaultProps = {
   homePage: 'home',
-  whiteList: 'none',
+  whiteList: null,
   whoAmI: null,
+  doNotLock: false,
   setWhoAmI: () => {},
   useSelectedCls: () => [null]
 };
@@ -50,7 +52,8 @@ const MarkdownPages = ({
   useCustomAppBar,
   useSelectedCls,
   whoAmI,
-  setWhoAmI
+  setWhoAmI,
+  doNotLock
 }) => {
   const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
@@ -162,6 +165,12 @@ const MarkdownPages = ({
   // Redirect to class select on whoAmI change.
   if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
 
+  const whieListedPages = useMemo(
+    () =>
+      whiteList !== null && child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : [],
+    [child, whiteList, checkOffUnlockedPages]
+  );
+
   return (
     <div className={classes.wrapper}>
       <main
@@ -181,8 +190,8 @@ const MarkdownPages = ({
             onNav={setUrlPage}
             current={page}
             pages={pages}
-            locked={child !== null}
-            whiteList={child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : []}
+            locked={!doNotLock && child !== null}
+            whiteList={whieListedPages}
           />
         )}
       </main>
@@ -200,8 +209,8 @@ const MarkdownPages = ({
             : setUrlPage
         }
         width={drawerWidth}
-        locked={child !== null}
-        whiteList={child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : []}
+        locked={!doNotLock && child !== null}
+        whiteList={whieListedPages}
       />
     </div>
   );
