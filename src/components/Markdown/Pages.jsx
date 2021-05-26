@@ -68,7 +68,6 @@ const MarkdownPages = ({
 
   useEffect(() => {
     // TODO: Parse out all valid checked off pages.
-    console.log('hard:', child[whiteList]);
     console.log('cos:', checkOffs);
     console.log('pages:', pages);
     // const chapters = {};

@@ -26,7 +26,6 @@ const NavDrawer = ({ open, onNav, current, pages, width, locked, whiteList }) =>
     locked,
     whiteList
   ]);
-  console.log(unlockedPages);
 
   return (
     <Drawer
