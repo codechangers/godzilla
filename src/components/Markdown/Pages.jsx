@@ -19,6 +19,7 @@ import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { getFilteredLiveCheckOffsData } from '../../hooks/checkoffs';
 import { toData, flattenPages } from '../../utils/helpers';
+import { PICK_A_GAME } from '../../resources/tutorials';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
@@ -83,7 +84,8 @@ const MarkdownPages = ({
         unlocks = [...unlocks, ...flatPages.slice(matchedCP.index + 1, nextCP.index + 1)];
       }
     });
-    return unlocks;
+    const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
+    return [...startingPages, ...unlocks];
   }
 
   const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages]);

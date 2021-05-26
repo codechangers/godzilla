@@ -386,10 +386,12 @@ export const preFlight = {
   '14) Preflight 17': preflight17
 };
 
+export const PICK_A_GAME = 'Pick a Game';
+
 const tutorials = {
   'Download Code': savezip,
   'Upload Code': newgame,
-  'Pick a Game': pickagame,
+  [PICK_A_GAME]: pickagame,
   'Horse Game Tutorial': horseGame,
   'Run Game Tutorial': runGame,
   'Soccer Game Tutorial': soccerGame,
