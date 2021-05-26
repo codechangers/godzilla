@@ -19,10 +19,11 @@ const defaultProps = {
 };
 
 const NavButtons = ({ current, pages, locked, whiteList, onNav }) => {
-  const flatUnlocks = useMemo(
-    () => (locked ? flattenPages(filterPages(whiteList, pages)) : pages),
-    [pages, locked, whiteList]
-  );
+  const flatUnlocks = useMemo(() => flattenPages(locked ? filterPages(whiteList, pages) : pages), [
+    pages,
+    locked,
+    whiteList
+  ]);
   const classes = useStyles();
 
   const nextPage = useMemo(() => {
