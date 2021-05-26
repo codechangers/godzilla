@@ -10,7 +10,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
-import CheckOffItems from './Items';
+import CheckOffPages from './Pages';
 import TabPanel from '../../UI/TabPanel';
 import { useLiveChildren } from '../../../hooks/children';
 import docs from '../../../resources/docs';
@@ -82,7 +82,7 @@ const CheckOffKids = ({ childRefs }) => {
         </List>
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <CheckOffItems
+        <CheckOffPages
           title="Tutorials"
           other="Documentation"
           pages={tutorials}
@@ -92,7 +92,7 @@ const CheckOffKids = ({ childRefs }) => {
         />
       </TabPanel>
       <TabPanel value={tabIndex} index={2} className={classes.panel}>
-        <CheckOffItems
+        <CheckOffPages
           title="Documentation"
           other="Tutorials"
           pages={docs}

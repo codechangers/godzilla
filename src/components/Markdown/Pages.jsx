@@ -17,7 +17,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { getFilteredLiveCheckOffsData } from '../../hooks/items';
+import { getFilteredLiveCheckOffsData } from '../../hooks/checkoffs';
 import { toData } from '../../utils/helpers';
 
 const propTypes = {

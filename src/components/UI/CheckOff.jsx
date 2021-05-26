@@ -4,7 +4,7 @@ import { Button, MenuItem, TextField, Typography, makeStyles } from '@material-u
 import { red } from '@material-ui/core/colors';
 import { db, auth } from '../../utils/firebase';
 import { GREEN } from '../../utils/globals';
-import { getFilteredLiveCheckOffsData } from '../../hooks/items';
+import { getFilteredLiveCheckOffsData } from '../../hooks/checkoffs';
 import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
