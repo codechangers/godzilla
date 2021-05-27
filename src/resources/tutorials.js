@@ -25,6 +25,7 @@ import savezip from './tutorials/savezip.md';
 import newgame from './tutorials/newgame.md';
 import pickagame from './tutorials/pickagame.md';
 import splitScreen from './tutorials/splitScreen.md';
+
 // Blocks
 import addAStore from './tutorials/blocks/addAStore.md';
 import addResources from './tutorials/blocks/addResources.md';
@@ -44,16 +45,6 @@ import uploadImage from './tutorials/blocks/uploadImage.md';
 import useBarrier from './tutorials/blocks/useBarrier.md';
 import useItems from './tutorials/blocks/useItems.md';
 import stop from './tutorials/blocks/stop.md';
-// Horse Game
-import horseGame0 from './tutorials/examples/horseGame.md';
-import horseGame1 from './tutorials/examples/horseGame1.md';
-import horseGame2 from './tutorials/examples/horseGame2.md';
-import horseGame3 from './tutorials/examples/horseGame3.md';
-import horseGame4 from './tutorials/examples/horseGame4.md';
-import horseGame5 from './tutorials/examples/horseGame5.md';
-import horseGame6 from './tutorials/examples/horseGame6.md';
-import horseGame7 from './tutorials/examples/horseGame7.md';
-import horseGame8 from './tutorials/examples/horseGame8.md';
 // Run Game
 import runGame1a from './tutorials/examples/runGame1a.md';
 import runGame1b from './tutorials/examples/runGame1b.md';
@@ -95,7 +86,7 @@ import runGame7d from './tutorials/examples/runGame7d.md';
 import runGame7e from './tutorials/examples/runGame7e.md';
 import runGame8 from './tutorials/examples/runGame8.md';
 // Soccer Game
-import soccerGame1 from './tutorials/examples/soccerGame1.md';
+import soccerGame1a from './tutorials/examples/soccerGame1a.md';
 import soccerGame2a from './tutorials/examples/soccerGame2a.md';
 import soccerGame2b from './tutorials/examples/soccerGame2b.md';
 import soccerGame2c from './tutorials/examples/soccerGame2c.md';
@@ -147,7 +138,7 @@ import soccerGame9g from './tutorials/examples/soccerGame9g.md';
 import soccerGame9h from './tutorials/examples/soccerGame9h.md';
 import soccerGame10 from './tutorials/examples/soccerGame10.md';
 // Zombie Game
-import zombieGame1 from './tutorials/examples/zombieGame1.md';
+import zombieGame1a from './tutorials/examples/zombieGame1a.md';
 import zombieGame2a from './tutorials/examples/zombieGame2a.md';
 import zombieGame2b from './tutorials/examples/zombieGame2b.md';
 import zombieGame2c from './tutorials/examples/zombieGame2c.md';
@@ -210,18 +201,6 @@ const blocks = {
   stop
 };
 
-const horseGame = {
-  horseGame0,
-  horseGame1,
-  horseGame2,
-  horseGame3,
-  horseGame4,
-  horseGame5,
-  horseGame6,
-  horseGame7,
-  horseGame8
-};
-
 const runGame = {
   'Run Game 1A': runGame1a,
   'Run Game 1B': runGame1b,
@@ -265,7 +244,7 @@ const runGame = {
 };
 
 const soccerGame = {
-  'Soccer Game 1': soccerGame1,
+  'Soccer Game 1': soccerGame1a,
   'Soccer Game 2A': soccerGame2a,
   'Soccer Game 2B': soccerGame2b,
   'Soccer Game 2C': soccerGame2c,
@@ -319,7 +298,7 @@ const soccerGame = {
 };
 
 const zombieGame = {
-  'Zombie 1A': zombieGame1,
+  'Zombie 1A': zombieGame1a,
   'Zombie 1B': zombieGame2a,
   'Zombie 1C': zombieGame2b,
   'Zombie 1D': zombieGame2c,
@@ -385,15 +364,20 @@ export const preFlight = {
   '14) Preflight 17': preflight17
 };
 
+export const PICK_A_GAME = 'Pick a Game';
+export const RUNNER_TUTORIAL = 'Run Game Tutorial';
+export const SOCCER_TUTORIAL = 'Soccer Game Tutorial';
+export const ZOMBIE_TUTORIAL = 'Zombie Game Tutorial';
+export const BLOCK_TUTORIALS = 'blocks';
+
 const tutorials = {
   'Download Code': savezip,
   'Upload Code': newgame,
-  'Pick a Game': pickagame,
-  'Horse Game Tutorial': horseGame,
-  'Run Game Tutorial': runGame,
-  'Soccer Game Tutorial': soccerGame,
-  'Zombie Game Tutorial': zombieGame,
-  blocks,
+  [PICK_A_GAME]: pickagame,
+  [RUNNER_TUTORIAL]: runGame,
+  [SOCCER_TUTORIAL]: soccerGame,
+  [ZOMBIE_TUTORIAL]: zombieGame,
+  [BLOCK_TUTORIALS]: blocks,
   downloads,
   images,
   splitScreen

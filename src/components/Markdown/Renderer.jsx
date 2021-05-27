@@ -4,18 +4,27 @@ import { makeStyles, Typography, CircularProgress } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import MarkdownLink from './Link';
+import CheckOff from '../UI/CheckOff';
+import GameSelect from '../UI/GameSelect';
 import CodeBlock from '../UI/CodeBlock';
 import { resolveImg } from '../../resources/images';
 
 const propTypes = {
   pages: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
-  useLoading: PropTypes.array.isRequired
+  useLoading: PropTypes.array.isRequired,
+  whoAmI: PropTypes.object,
+  cls: PropTypes.object
+};
+
+const defaultProps = {
+  whoAmI: null,
+  cls: null
 };
 
 const remarkPlugins = [gfm];
 
-const MarkdownRenderer = ({ pages, page, useLoading }) => {
+const MarkdownRenderer = ({ cls, whoAmI, pages, page, useLoading }) => {
   const classes = useStyles();
   const [content, setContent] = useState('# Hello World');
   const [loading, setLoading] = useLoading;
@@ -64,12 +73,37 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
   /**
    * Render custom text that allows for the use of Jekyll like file includes.
    */
-  const text = ({ value }) =>
-    value.startsWith('{% include') && value.endsWith('%}') ? (
-      <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
-    ) : (
-      value
+  const text = ({ value }) => {
+    // Check for includes...
+    if (value.startsWith('{% include') && value.endsWith('%}')) {
+      return (
+        <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
+      );
+    }
+    // Return defaults to the text value.
+    let textReturn = value;
+    // Allow other tags to be checked.
+    function checkTag(tag, parentElem, teacherElem) {
+      if (value.trim() === tag) textReturn = whoAmI !== null ? parentElem : teacherElem;
+    }
+    // Check for checkoff tags...
+    checkTag(
+      '{% checkoff %}',
+      <CheckOff page={page} whoAmI={whoAmI} cls={cls} />,
+      <Typography variant="h6" color="secondary">
+        Contestants will check off their game here.
+      </Typography>
     );
+    // Check for selectgame tags...
+    checkTag(
+      '{% selectgame %}',
+      <GameSelect whoAmI={whoAmI} cls={cls} />,
+      <Typography variant="h6" color="secondary">
+        Contestants will select their game here.
+      </Typography>
+    );
+    return textReturn;
+  };
   text.propTypes = { value: PropTypes.node.isRequired };
 
   /**
@@ -135,6 +169,7 @@ const MarkdownRenderer = ({ pages, page, useLoading }) => {
   );
 };
 MarkdownRenderer.propTypes = propTypes;
+MarkdownRenderer.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   loading: { width: '100%', display: 'flex', justifyContent: 'center' },

@@ -12,7 +12,7 @@ import { URL } from '../../utils/globals';
 import InfoCardHeader from './InfoCardHeader';
 import StudentInfo from './StudentInfo';
 import { useChildren } from '../../hooks/children';
-import CheckOffModal from './CheckOffModal';
+import CheckOffModal from './CheckOff/Modal';
 
 const propTypes = {
   cls: PropTypes.object.isRequired,
@@ -70,11 +70,7 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
           small={small}
         />
       </div>
-      <CheckOffModal
-        open={showCheckOff}
-        onClose={() => setShowCheckOff(false)}
-        childRefs={cls.children}
-      />
+      <CheckOffModal open={showCheckOff} onClose={() => setShowCheckOff(false)} cls={cls} />
       <div className={classes.studWrapper}>
         <div className={classes.students}>
           <StudentInfo showLabels />

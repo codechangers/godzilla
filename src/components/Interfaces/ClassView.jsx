@@ -23,10 +23,12 @@ const propTypes = {
   width: PropTypes.string.isRequired,
   whoAmI: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
-  useCustomAppBar: PropTypes.func.isRequired
+  useCustomAppBar: PropTypes.func.isRequired,
+  useSelectedCls: PropTypes.func.isRequired
 };
 
-const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
+const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSelectedCls }) => {
+  const [setSelectedCls] = useSelectedCls().slice(1);
   const childRef = useMemo(() => whoAmI.ref, [whoAmI]);
   const child = useLiveChild(childRef);
   const classRefs = useMemo(() => child?.classes || [], [child]);
@@ -139,7 +141,10 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
                 disabled={!isActive(cls)}
                 variant="contained"
                 color="primary"
-                onClick={() => history.push('/parent/tutorials')}
+                onClick={() => {
+                  setSelectedCls(cls);
+                  history.push('/parent/tutorials');
+                }}
               >
                 {timePrompt(cls)}
               </Button>

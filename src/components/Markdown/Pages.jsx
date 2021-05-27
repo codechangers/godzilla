@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -11,29 +11,47 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Help, School, Menu } from '@material-ui/icons';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Redirect, Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { toData } from '../../utils/helpers';
+import { getFilteredLiveCheckOffsData, getLiveTutorialSelection } from '../../hooks/pages';
+import { toData, flattenPages } from '../../utils/helpers';
+import {
+  PICK_A_GAME,
+  RUNNER_TUTORIAL,
+  SOCCER_TUTORIAL,
+  ZOMBIE_TUTORIAL,
+  BLOCK_TUTORIALS
+} from '../../resources/tutorials';
 
 const propTypes = {
   useCustomAppBar: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
+  useSelectedCls: PropTypes.func,
   homePage: PropTypes.string,
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
-  setWhoAmI: PropTypes.func
+  setWhoAmI: PropTypes.func,
+  doNotLock: PropTypes.bool
 };
 
 const defaultProps = {
   homePage: 'home',
-  whiteList: 'none',
+  whiteList: null,
   whoAmI: null,
-  setWhoAmI: () => {}
+  doNotLock: false,
+  setWhoAmI: () => {},
+  useSelectedCls: () => [null]
+};
+
+const tutorialTypeToText = {
+  runner: RUNNER_TUTORIAL,
+  soccer: SOCCER_TUTORIAL,
+  zombie: ZOMBIE_TUTORIAL
 };
 
 const drawerWidth = 260;
@@ -44,16 +62,72 @@ const MarkdownPages = ({
   homePage,
   whiteList,
   useCustomAppBar,
+  useSelectedCls,
   whoAmI,
-  setWhoAmI
+  setWhoAmI,
+  doNotLock
 }) => {
+  const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
+  const checkOffs = getFilteredLiveCheckOffsData(a =>
+    a.where('childId', '==', whoAmI?.id || '').where('classId', '==', selectedCls?.id || '')
+  );
+  const tutorialSelection = getLiveTutorialSelection(whoAmI?.id || '', selectedCls?.id || '');
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
+
+  function concatUnlocks() {
+    let unlocks = [];
+    const selectedTutorial = tutorialTypeToText[tutorialSelection?.type];
+    const flatPages = flattenPages(pages);
+    // Get a list of check points.
+    const checkPoints = flatPages
+      .filter(p => p.includes('✓'))
+      .map(cp => ({ page: cp, index: flatPages.indexOf(cp) }));
+    // Get a list of checked off pages.
+    const coPages = Object.values(checkOffs)
+      .filter(co => (selectedTutorial ? co.page.includes(selectedTutorial) : false))
+      .filter(co => co.approved)
+      .map(co => co.page);
+    // Loop through check offs and concat unlocked pages.
+    coPages.forEach(p => {
+      const matchedCP = checkPoints.filter(cp => cp.page === p)[0] || null;
+      const mcpIndex = checkPoints.indexOf(matchedCP);
+      const nextCP = checkPoints[mcpIndex + 1] || null;
+      if (matchedCP && nextCP) {
+        unlocks = [...unlocks, ...flatPages.slice(matchedCP.index + 1, nextCP.index + 1)];
+      }
+    });
+    // Add initial/global tutorials.
+    const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
+    let firstTutorialPages = [];
+    // Concat the firt tutorial for the selected game.
+    if (selectedTutorial) {
+      const gameTutorials = Object.keys(pages[selectedTutorial]);
+      const i = flatPages.indexOf(`${selectedTutorial}.${gameTutorials[0]}`);
+      const j = flatPages.indexOf(
+        `${selectedTutorial}.${gameTutorials.filter(t => t.includes('✓'))[0]}`
+      );
+      firstTutorialPages = flatPages.slice(i, j + 1);
+    }
+    // Show blocks after finishing game.
+    let postTutorialPages = [];
+    const gameTutsCount = checkPoints.filter(cp => cp.page.includes(selectedTutorial)).length;
+    if (selectedTutorial && coPages.length + 1 >= gameTutsCount) {
+      postTutorialPages = flatPages.filter(p => p.includes(BLOCK_TUTORIALS.concat('.')));
+    }
+    return [...startingPages, ...firstTutorialPages, ...unlocks, ...postTutorialPages];
+  }
+
+  const checkOffUnlockedPages = useMemo(doNotLock ? () => [] : concatUnlocks, [
+    checkOffs,
+    pages,
+    tutorialSelection
+  ]);
 
   // Set page from url params.
   useEffect(() => {
@@ -124,6 +198,17 @@ const MarkdownPages = ({
 
   const setUrlPage = p => history.push(`?page=${p}`);
 
+  const whieListedPages = useMemo(
+    () =>
+      child !== null && child[whiteList]
+        ? [...child[whiteList], ...checkOffUnlockedPages]
+        : checkOffUnlockedPages,
+    [child, whiteList, checkOffUnlockedPages]
+  );
+
+  // Redirect to class select on whoAmI change.
+  if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
+
   return (
     <div className={classes.wrapper}>
       <main
@@ -131,14 +216,20 @@ const MarkdownPages = ({
           [classes.contentShift]: showMenu
         })}
       >
-        <MarkdownRenderer pages={pages} page={page} useLoading={[loading, setLoading]} />
+        <MarkdownRenderer
+          pages={pages}
+          page={page}
+          useLoading={[loading, setLoading]}
+          whoAmI={whoAmI}
+          cls={selectedCls}
+        />
         {!loading && (
           <NavButtons
             onNav={setUrlPage}
             current={page}
-            items={pages}
-            locked={child !== null}
-            whiteList={child !== null ? child[whiteList] : []}
+            pages={pages}
+            locked={!doNotLock && child !== null}
+            whiteList={whieListedPages}
           />
         )}
       </main>
@@ -146,7 +237,7 @@ const MarkdownPages = ({
         open={showMenu}
         onClose={() => setShowMenu(false)}
         current={page}
-        items={pages}
+        pages={pages}
         onNav={
           isWidthDown('sm', width)
             ? p => {
@@ -156,8 +247,8 @@ const MarkdownPages = ({
             : setUrlPage
         }
         width={drawerWidth}
-        locked={child !== null}
-        whiteList={child !== null ? child[whiteList] : []}
+        locked={!doNotLock && child !== null}
+        whiteList={whieListedPages}
       />
     </div>
   );

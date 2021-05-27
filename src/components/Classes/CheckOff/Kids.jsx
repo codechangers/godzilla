@@ -4,50 +4,34 @@ import {
   List,
   ListItem,
   ListItemText,
-  Button,
   Typography,
   makeStyles,
   Tooltip,
   IconButton
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
-import CheckOffItems from './CheckOffItems';
-import Modal from '../UI/Modal';
-import TabPanel from '../UI/TabPanel';
-import { useLiveChildren } from '../../hooks/children';
-import docs from '../../resources/docs';
-import tutorials from '../../resources/tutorials';
+import CheckOffPages from './Pages';
+import TabPanel from '../../UI/TabPanel';
+import { useLiveChildren } from '../../../hooks/children';
+import docs from '../../../resources/docs';
+import tutorials from '../../../resources/tutorials';
 
 const propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   childRefs: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-const CheckOffModal = ({ open, onClose, childRefs }) => {
+const CheckOffKids = ({ childRefs }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [selected, select] = useState(null);
   const children = useLiveChildren(childRefs);
   const classes = useStyles();
-
-  const close = () => {
-    setTabIndex(0);
-    select(null);
-    onClose();
-  };
 
   const updateChild = newData => {
     if (selected !== null) selected.ref.update(newData);
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={close}
-      title="Check Off Modal"
-      description="Check off the progress of participants as they make their way through the competition."
-      className={classes.paper}
-    >
+    <>
       <div className={classes.header}>
         {selected !== null && (
           <div className={classes.grow}>
@@ -98,40 +82,31 @@ const CheckOffModal = ({ open, onClose, childRefs }) => {
         </List>
       </TabPanel>
       <TabPanel value={tabIndex} index={1} className={classes.panel}>
-        <CheckOffItems
+        <CheckOffPages
           title="Tutorials"
           other="Documentation"
-          items={tutorials}
+          pages={tutorials}
           onSwitch={() => setTabIndex(2)}
           whiteList={selected?.tutorials}
           onChange={tuts => updateChild({ tutorials: tuts })}
         />
       </TabPanel>
       <TabPanel value={tabIndex} index={2} className={classes.panel}>
-        <CheckOffItems
+        <CheckOffPages
           title="Documentation"
           other="Tutorials"
-          items={docs}
+          pages={docs}
           onSwitch={() => setTabIndex(1)}
           whiteList={selected?.docs}
           onChange={dcs => updateChild({ docs: dcs })}
         />
       </TabPanel>
-      <Button onClick={close} style={{ paddingLeft: 50, paddingRight: 50 }}>
-        Close
-      </Button>
-    </Modal>
+    </>
   );
 };
-CheckOffModal.propTypes = propTypes;
+CheckOffKids.propTypes = propTypes;
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    paddingTop: 0,
-    [theme.breakpoints.down('xs')]: {
-      padding: '0 4px 20px 4px'
-    }
-  },
+const useStyles = makeStyles({
   header: {
     margin: '20px 0 0 0',
     width: '100%',
@@ -151,6 +126,6 @@ const useStyles = makeStyles(theme => ({
   panel: {
     width: '100%'
   }
-}));
+});
 
-export default CheckOffModal;
+export default CheckOffKids;

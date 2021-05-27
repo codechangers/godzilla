@@ -12,4 +12,6 @@
 
 # STOP!!!!
 
-**Do not move on unless you have followed these steps and verified your game is working up to this point!
+**Do not move on unless you have followed these steps and verified your game is working up to this point!**
+
+{% checkoff %}
