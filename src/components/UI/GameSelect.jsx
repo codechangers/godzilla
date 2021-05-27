@@ -11,6 +11,7 @@ const propTypes = {
 };
 
 const selectableTypes = { ...gameTypes };
+delete selectableTypes[''];
 selectableTypes.default = 'Which game will you choose?';
 
 const GameSelect = ({ whoAmI, cls }) => {
