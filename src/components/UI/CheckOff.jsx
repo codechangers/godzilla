@@ -8,12 +8,13 @@ import { getFilteredLiveCheckOffsData } from '../../hooks/pages';
 import { useUserGames } from '../../hooks/games';
 
 const propTypes = {
-  whoAmI: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
+  whoAmI: PropTypes.object,
   cls: PropTypes.object
 };
 
 const defaultProps = {
+  whoAmI: null,
   cls: null
 };
 
@@ -25,7 +26,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
       .where('page', '==', page)
   );
   const games = useUserGames();
-  const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI.id), [games]);
+  const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI?.id), [games]);
   const [submitted, setSubmitted] = useState(false);
   const [gameId, setGameId] = useState('');
   const classes = useStyles();
@@ -45,7 +46,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
   ]);
 
   const createCheckOff = () => {
-    if (validGID && gameRef !== null && cls !== null) {
+    if (validGID && gameRef !== null && cls !== null && whoAmI !== null) {
       setSubmitted(true);
       const data = {
         page,
