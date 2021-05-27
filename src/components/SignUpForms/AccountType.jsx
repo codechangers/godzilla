@@ -30,14 +30,14 @@ const AccountType = ({ setAccountType, next, width }) => (
       </Typography>
       <Styled.AccountSelectionCards>
         <Card style={{ width: '40%', minWidth: '300px' }}>
-          <CardHeader title="Parent Account" />
+          <CardHeader title="Family Account" />
           <CardContent>
             <Typography
               variant="body2"
               component="p"
               style={{ fontSize: '18px', marginBottom: 20 }}
             >
-              Register your children and get them learning STEM today!
+              Register your kids for a Code Contest today!
             </Typography>
             <Button
               onClick={() => {
@@ -48,7 +48,7 @@ const AccountType = ({ setAccountType, next, width }) => (
               variant="contained"
               color="primary"
             >
-              Sign Up as a Parent
+              Sign Up as a Family
             </Button>
           </CardContent>
         </Card>

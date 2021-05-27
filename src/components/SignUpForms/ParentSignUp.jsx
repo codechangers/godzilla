@@ -97,7 +97,7 @@ class ParentSignUp extends React.Component {
     ) : (
       <Card>
         <CardHeader
-          title="Parent Application"
+          title="Family Account Signup"
           style={{
             marginLeft: 5,
             textTransform: 'capitalize',

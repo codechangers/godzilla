@@ -33,7 +33,7 @@ const propTypes = {
 const defaultProps = {
   updateChildData: () => {},
   prevData: undefined,
-  title: 'Parent Application'
+  title: 'Family Account Signup'
 };
 
 const today = new Date();

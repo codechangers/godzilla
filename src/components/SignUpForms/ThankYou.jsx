@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, CardHeader, CardContent } from '@material-ui/core';
+import { URL } from '../../utils/globals';
 
 const accountTypeToMessage = {
   '': 'Thank you for creating an account!',
-  parent:
-    "Congratulations! Your account is now active. You can login by clicking the link below or by going to go.codechangers.com. Once you login, you'll be able to view all of the CodeChangers programs offered in your area. This account can also be used to register your children for events like Tech Nights, After-School Programs and Summer Camps!",
+  parent: `Congratulations! Your family account is now active. You can login by clicking the link below or by going to ${
+    URL.split('//')[1]
+  }. Once you login, you'll be able to view, register, and participate in Code Contests!`,
   teacher:
-    'Thank you for signing up with CodeChangers! Your account will have limited features until it has been reviewed and approved by one of our admins. If approved, you will be able to create your own events and have access to all of the tools needed to run your own program! You can login to your account by clicking on the link below.',
+    'Thank you for signing up with Code Contest! Your account will have limited features until it has been reviewed and approved by one of our admins. If approved, you will be able to create your own code contests and have access to all of the tools needed to run your own event! You can login to your account by clicking on the link below.',
   organization: 'Thank you for creating an account!'
 };
 

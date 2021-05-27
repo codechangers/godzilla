@@ -171,7 +171,7 @@ class GenericSignUp extends React.Component {
     return (
       <Card>
         <CardHeader
-          title={`${accountType} Application`}
+          title={accountType === 'parent' ? 'Family Account Signup' : `${accountType} Application`}
           style={{
             marginLeft: 5,
             textTransform: 'capitalize',
