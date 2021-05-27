@@ -32,7 +32,6 @@ const GameSelect = ({ whoAmI, cls }) => {
         childId: whoAmI.id,
         classId: cls.id
       };
-      // TODO: Add a "Success" snackbar or something so they know it worked.
 
       if (savedSelection !== null) {
         // Update Selection.
