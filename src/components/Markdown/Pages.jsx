@@ -17,7 +17,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { getFilteredLiveCheckOffsData } from '../../hooks/checkoffs';
+import { getFilteredLiveCheckOffsData } from '../../hooks/pages';
 import { toData, flattenPages } from '../../utils/helpers';
 import { PICK_A_GAME } from '../../resources/tutorials';
 
@@ -87,6 +87,7 @@ const MarkdownPages = ({
         unlocks = [...unlocks, ...flatPages.slice(matchedCP.index + 1, nextCP.index + 1)];
       }
     });
+    // TODO: Skip to tutorial based on tutorialSelection...
     const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
     return [...startingPages, ...unlocks];
   }

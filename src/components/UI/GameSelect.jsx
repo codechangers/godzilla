@@ -17,6 +17,8 @@ const GameSelect = ({ whoAmI, cls }) => {
   const [error, setError] = useState('');
   const classes = useStyles();
 
+  // TODO: Pull their selection in and auto-populate form...
+
   const saveSelection = () => {
     if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
       setError('');

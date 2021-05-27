@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { CheckCircle, Block } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { getFilteredLiveCheckOffsData } from '../../../hooks/checkoffs';
+import { getFilteredLiveCheckOffsData } from '../../../hooks/pages';
 import { useLiveGames } from '../../../hooks/games';
 
 const propTypes = {
