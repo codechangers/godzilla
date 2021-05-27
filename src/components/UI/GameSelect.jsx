@@ -6,8 +6,13 @@ import { gameTypes } from '../../utils/globals';
 import { auth, db } from '../../utils/firebase';
 
 const propTypes = {
-  whoAmI: PropTypes.object.isRequired,
-  cls: PropTypes.object.isRequired
+  whoAmI: PropTypes.object,
+  cls: PropTypes.object
+};
+
+const defaultProps = {
+  whoAmI: null,
+  cls: null
 };
 
 const selectableTypes = { ...gameTypes };
@@ -24,7 +29,12 @@ const GameSelect = ({ whoAmI, cls }) => {
   useEffect(() => setSelection(savedSelection?.type || 'default'), [savedSelection]);
 
   const saveSelection = () => {
-    if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
+    if (
+      cls !== null &&
+      whoAmI !== null &&
+      selection !== 'default' &&
+      Object.keys(selectableTypes).includes(selection)
+    ) {
       setError('');
       const data = {
         type: selection,
@@ -85,6 +95,7 @@ const GameSelect = ({ whoAmI, cls }) => {
   );
 };
 GameSelect.propTypes = propTypes;
+GameSelect.defaultProps = defaultProps;
 
 const useStyles = makeStyles({
   form: {
