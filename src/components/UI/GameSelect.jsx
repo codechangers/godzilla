@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TextField, MenuItem, Button, makeStyles } from '@material-ui/core';
 import { gameTypes } from '../../utils/globals';
-import { auth } from '../../utils/firebase';
+import { auth, db } from '../../utils/firebase';
 
 const propTypes = {
   whoAmI: PropTypes.object.isRequired,
@@ -14,19 +14,23 @@ selectableTypes.default = 'Which game will you choose?';
 
 const GameSelect = ({ whoAmI, cls }) => {
   const [selection, setSelection] = useState('default');
+  const [error, setError] = useState('');
   const classes = useStyles();
 
   const saveSelection = () => {
     if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
+      setError('');
       const data = {
         type: selection,
         parentId: auth.currentUser.uid,
         childId: whoAmI.id,
         classId: cls.id
       };
-      console.log('Save selection:', data);
+      db.collection('tutorialSelections')
+        .doc()
+        .set(data);
     } else {
-      console.log('You need to make a valid selection!!!');
+      setError('You need to choose a game to build!');
     }
   };
 
@@ -45,6 +49,8 @@ const GameSelect = ({ whoAmI, cls }) => {
         value={selection}
         onChange={e => setSelection(e.target.value)}
         className={classes.select}
+        error={error !== ''}
+        helperText={error}
         select
       >
         {Object.entries(selectableTypes).map(([type, text]) => (
@@ -54,7 +60,7 @@ const GameSelect = ({ whoAmI, cls }) => {
         ))}
       </TextField>
       <Button variant="contained" color="primary" type="submit">
-        Check Off
+        Save Choice
       </Button>
     </form>
   );
