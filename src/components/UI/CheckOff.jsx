@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, MenuItem, TextField, Typography, makeStyles } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
-import { db, auth } from '../../utils/firebase';
+import { db, auth, Timestamp } from '../../utils/firebase';
 import { GREEN } from '../../utils/globals';
 import { getFilteredLiveCheckOffsData } from '../../hooks/pages';
 import { useUserGames } from '../../hooks/games';
@@ -55,7 +55,8 @@ const CheckOff = ({ whoAmI, page, cls }) => {
         childId: whoAmI.id,
         parentId: auth.currentUser.uid,
         teacherId: cls.teacher.id,
-        classId: cls.id
+        classId: cls.id,
+        createdAt: Timestamp.fromDate(new Date())
       };
       db.collection('checkOffs')
         .doc()
