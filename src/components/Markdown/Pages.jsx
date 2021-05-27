@@ -72,14 +72,10 @@ const MarkdownPages = ({
   const [showMenu, setShowMenu] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
-  const checkOffs =
-    whoAmI !== null
-      ? getFilteredLiveCheckOffsData(a =>
-          a.where('childId', '==', whoAmI.id).where('classId', '==', selectedCls.id)
-        )
-      : [];
-  const tutorialSelection =
-    whoAmI !== null ? getLiveTutorialSelection(whoAmI.id, selectedCls.id) : '';
+  const checkOffs = getFilteredLiveCheckOffsData(a =>
+    a.where('childId', '==', whoAmI?.id || '').where('classId', '==', selectedCls?.id || '')
+  );
+  const tutorialSelection = getLiveTutorialSelection(whoAmI?.id || '', selectedCls?.id || '');
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
@@ -198,14 +194,14 @@ const MarkdownPages = ({
 
   const setUrlPage = p => history.push(`?page=${p}`);
 
-  // Redirect to class select on whoAmI change.
-  if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
-
   const whieListedPages = useMemo(
     () =>
       child[whiteList] ? [...child[whiteList], ...checkOffUnlockedPages] : checkOffUnlockedPages,
     [child, whiteList, checkOffUnlockedPages]
   );
+
+  // Redirect to class select on whoAmI change.
+  if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
 
   return (
     <div className={classes.wrapper}>
