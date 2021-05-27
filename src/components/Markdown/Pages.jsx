@@ -123,7 +123,11 @@ const MarkdownPages = ({
     return [...startingPages, ...firstTutorialPages, ...unlocks, ...postTutorialPages];
   }
 
-  const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages, tutorialSelection]);
+  const checkOffUnlockedPages = useMemo(doNotLock ? () => [] : concatUnlocks, [
+    checkOffs,
+    pages,
+    tutorialSelection
+  ]);
 
   // Set page from url params.
   useEffect(() => {
