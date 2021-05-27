@@ -221,7 +221,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     flexShrink: 0,
-    overflowY: 'scroll',
+    overflowY: 'auto',
     '& > *': {
       marginBottom: '20px'
     },

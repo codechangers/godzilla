@@ -112,13 +112,13 @@ const useStyles = makeStyles({
     width: '95%',
     maxWidth: 600,
     maxHeight: '100vh',
-    overflow: 'scroll',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
     boxSizing: 'border-box',
     padding: 20
   },
   form: {
     width: '100%',
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
