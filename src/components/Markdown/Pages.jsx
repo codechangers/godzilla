@@ -23,7 +23,8 @@ import {
   PICK_A_GAME,
   RUNNER_TUTORIAL,
   SOCCER_TUTORIAL,
-  ZOMBIE_TUTORIAL
+  ZOMBIE_TUTORIAL,
+  BLOCK_TUTORIALS
 } from '../../resources/tutorials';
 
 const propTypes = {
@@ -108,7 +109,7 @@ const MarkdownPages = ({
     // Add initial/global tutorials.
     const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
     let firstTutorialPages = [];
-    // Conact the firt tutorial for the selected game.
+    // Concat the firt tutorial for the selected game.
     if (selectedTutorial) {
       const gameTutorials = Object.keys(pages[selectedTutorial]);
       const i = flatPages.indexOf(`${selectedTutorial}.${gameTutorials[0]}`);
@@ -117,7 +118,13 @@ const MarkdownPages = ({
       );
       firstTutorialPages = flatPages.slice(i, j + 1);
     }
-    return [...startingPages, ...firstTutorialPages, ...unlocks];
+    // Show blocks after finishing game.
+    let postTutorialPages = [];
+    const gameTutsCount = checkPoints.filter(cp => cp.page.includes(selectedTutorial)).length;
+    if (coPages.length + 1 >= gameTutsCount) {
+      postTutorialPages = flatPages.filter(p => p.includes(BLOCK_TUTORIALS.concat('.')));
+    }
+    return [...startingPages, ...firstTutorialPages, ...unlocks, ...postTutorialPages];
   }
 
   const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages, tutorialSelection]);

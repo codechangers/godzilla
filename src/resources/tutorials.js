@@ -368,6 +368,7 @@ export const PICK_A_GAME = 'Pick a Game';
 export const RUNNER_TUTORIAL = 'Run Game Tutorial';
 export const SOCCER_TUTORIAL = 'Soccer Game Tutorial';
 export const ZOMBIE_TUTORIAL = 'Zombie Game Tutorial';
+export const BLOCK_TUTORIALS = 'Blocks';
 
 const tutorials = {
   'Download Code': savezip,
@@ -376,7 +377,7 @@ const tutorials = {
   [RUNNER_TUTORIAL]: runGame,
   [SOCCER_TUTORIAL]: soccerGame,
   [ZOMBIE_TUTORIAL]: zombieGame,
-  blocks,
+  [BLOCK_TUTORIALS]: blocks,
   downloads,
   images,
   splitScreen
