@@ -121,7 +121,7 @@ const MarkdownPages = ({
     // Show blocks after finishing game.
     let postTutorialPages = [];
     const gameTutsCount = checkPoints.filter(cp => cp.page.includes(selectedTutorial)).length;
-    if (coPages.length + 1 >= gameTutsCount) {
+    if (selectedTutorial && coPages.length + 1 >= gameTutsCount) {
       postTutorialPages = flatPages.filter(p => p.includes(BLOCK_TUTORIALS.concat('.')));
     }
     return [...startingPages, ...firstTutorialPages, ...unlocks, ...postTutorialPages];
@@ -203,7 +203,7 @@ const MarkdownPages = ({
 
   const whieListedPages = useMemo(
     () =>
-      whiteList !== null && child !== null ? [...child[whiteList], ...checkOffUnlockedPages] : [],
+      child[whiteList] ? [...child[whiteList], ...checkOffUnlockedPages] : checkOffUnlockedPages,
     [child, whiteList, checkOffUnlockedPages]
   );
 

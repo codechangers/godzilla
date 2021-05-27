@@ -57,7 +57,6 @@ export const getLiveTutorialSelection = (childId, classId) => {
  * =============================== */
 
 const liveCheckOffListDataEffect = onSnapshotDataEffectBase(true, snap => snap.docs.map(toData));
-const liveTutorialSelectionDataEffect = onSnapshotDataEffectBase(
-  true,
-  snap => toData(snap.docs[0]) || ''
+const liveTutorialSelectionDataEffect = onSnapshotDataEffectBase(true, snap =>
+  snap.docs.length > 0 ? toData(snap.docs[0]) : null
 );
