@@ -87,13 +87,16 @@ const MarkdownPages = ({
     let unlocks = [];
     const selectedTutorial = tutorialTypeToText[tutorialSelection?.type];
     const flatPages = flattenPages(pages);
+    // Get a list of check points.
     const checkPoints = flatPages
       .filter(p => p.includes('✓'))
       .map(cp => ({ page: cp, index: flatPages.indexOf(cp) }));
+    // Get a list of checked off pages.
     const coPages = Object.values(checkOffs)
       .filter(co => (selectedTutorial ? co.page.includes(selectedTutorial) : false))
       .filter(co => co.approved)
       .map(co => co.page);
+    // Loop through check offs and concat unlocked pages.
     coPages.forEach(p => {
       const matchedCP = checkPoints.filter(cp => cp.page === p)[0] || null;
       const mcpIndex = checkPoints.indexOf(matchedCP);
@@ -102,8 +105,19 @@ const MarkdownPages = ({
         unlocks = [...unlocks, ...flatPages.slice(matchedCP.index + 1, nextCP.index + 1)];
       }
     });
+    // Add initial/global tutorials.
     const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
-    return [...startingPages, ...unlocks];
+    let firstTutorialPages = [];
+    // Conact the firt tutorial for the selected game.
+    if (selectedTutorial) {
+      const gameTutorials = Object.keys(pages[selectedTutorial]);
+      const i = flatPages.indexOf(`${selectedTutorial}.${gameTutorials[0]}`);
+      const j = flatPages.indexOf(
+        `${selectedTutorial}.${gameTutorials.filter(t => t.includes('✓'))[0]}`
+      );
+      firstTutorialPages = flatPages.slice(i, j + 1);
+    }
+    return [...startingPages, ...firstTutorialPages, ...unlocks];
   }
 
   const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages, tutorialSelection]);
