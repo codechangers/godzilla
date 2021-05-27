@@ -396,7 +396,7 @@ class ProfileInterface extends React.Component {
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={getSubHeader(
-              this.props.accounts.teachers ? 'Teacher Account' : 'Parent Account'
+              this.props.accounts.teachers ? 'Teacher Account' : 'Family Account'
             )}
             className={classes.root}
           >
