@@ -4,7 +4,7 @@ import { db, auth } from '../utils/firebase';
 import { onSnapshotDataEffectBase } from '../utils/effectBases';
 
 /* ===================
- * === Items Hooks ===
+ * === Pages Hooks ===
  * =================== */
 
 /**
@@ -29,8 +29,35 @@ export const getFilteredLiveCheckOffsData = (applyFilter = a => a, forTeacher = 
   return checkOffs;
 };
 
+/**
+ * This will subscribe to all tutorial selections for a given child and class.
+ * Theoretically this should only be a single document, but it will not fault
+ * if there are multiple.
+ */
+export const getLiveTutorialSelection = (childId, classId) => {
+  const [selection, setSelection] = useState('');
+  const refs = useMemo(
+    () =>
+      auth.currentUser?.uid
+        ? db
+            .collection('tutorialSelections')
+            .where('parentId', '==', auth.currentUser.uid)
+            .where('childId', '==', childId)
+            .where('classId', '==', classId)
+        : () => {},
+    [auth.currentUser]
+  );
+  const handleError = () => setSelection('');
+  useEffect(liveTutorialSelectionDataEffect(refs, setSelection, handleError), [refs]);
+  return selection;
+};
+
 /* ===============================
  * === Custom Reusable Effects ===
  * =============================== */
 
 const liveCheckOffListDataEffect = onSnapshotDataEffectBase(true, snap => snap.docs.map(toData));
+const liveTutorialSelectionDataEffect = onSnapshotDataEffectBase(
+  true,
+  snap => snap.docs[0]?.type || ''
+);
