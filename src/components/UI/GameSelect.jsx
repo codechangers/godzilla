@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { TextField, MenuItem, Button, makeStyles } from '@material-ui/core';
+import { getLiveTutorialSelection } from '../../hooks/pages';
 import { gameTypes } from '../../utils/globals';
 import { auth, db } from '../../utils/firebase';
 
@@ -13,11 +14,13 @@ const selectableTypes = { ...gameTypes };
 selectableTypes.default = 'Which game will you choose?';
 
 const GameSelect = ({ whoAmI, cls }) => {
+  const savedSelection = getLiveTutorialSelection(whoAmI.id, cls.id);
   const [selection, setSelection] = useState('default');
   const [error, setError] = useState('');
   const classes = useStyles();
 
-  // TODO: Pull their selection in and auto-populate form...
+  // Set saved value.
+  useEffect(() => setSelection(savedSelection), [savedSelection]);
 
   const saveSelection = () => {
     if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
@@ -62,8 +65,13 @@ const GameSelect = ({ whoAmI, cls }) => {
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit">
-        Save Choice
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        disabled={selection === savedSelection}
+      >
+        {selection === savedSelection ? 'Saved' : 'Save Choice'}
       </Button>
     </form>
   );
