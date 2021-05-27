@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, IconButton, Tooltip, makeStyles } from '@material-ui/core';
+import { History, Update } from '@material-ui/icons';
 import CheckOffKids from './Kids';
 import CheckOffList from './List';
 import Modal from '../../UI/Modal';
@@ -12,7 +13,7 @@ const propTypes = {
 };
 
 const CheckOffModal = ({ open, onClose, cls }) => {
-  const [showKidsUI] = useState(false);
+  const [showKidsUI, setShowKidsUI] = useState(false);
   const classes = useStyles();
   return (
     <Modal
@@ -23,9 +24,20 @@ const CheckOffModal = ({ open, onClose, cls }) => {
       className={classes.paper}
     >
       {showKidsUI ? <CheckOffKids childRefs={cls.children} /> : <CheckOffList cls={cls} />}
-      <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
-        Close
-      </Button>
+      <div className={classes.options}>
+        <div style={{ display: 'block', width: 48 }} />
+        <Button onClick={onClose} style={{ paddingLeft: 50, paddingRight: 50 }}>
+          Close
+        </Button>
+        <Tooltip title={showKidsUI ? 'Use New UI' : 'Use Old UI'}>
+          <IconButton
+            onClick={() => setShowKidsUI(!showKidsUI)}
+            color={showKidsUI ? 'secondary' : 'default'}
+          >
+            {showKidsUI ? <Update /> : <History />}
+          </IconButton>
+        </Tooltip>
+      </div>
     </Modal>
   );
 };
@@ -37,6 +49,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       padding: '0 4px 20px 4px'
     }
+  },
+  options: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 }));
 
