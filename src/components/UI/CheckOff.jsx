@@ -59,6 +59,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
         .doc()
         .set(data);
     }
+    // TODO: Set an error message in an else statement.
   };
 
   return checkOffs.length > 0 ? (
