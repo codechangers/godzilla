@@ -368,7 +368,7 @@ export const PICK_A_GAME = 'Pick a Game';
 export const RUNNER_TUTORIAL = 'Run Game Tutorial';
 export const SOCCER_TUTORIAL = 'Soccer Game Tutorial';
 export const ZOMBIE_TUTORIAL = 'Zombie Game Tutorial';
-export const BLOCK_TUTORIALS = 'Blocks';
+export const BLOCK_TUTORIALS = 'blocks';
 
 const tutorials = {
   'Download Code': savezip,
