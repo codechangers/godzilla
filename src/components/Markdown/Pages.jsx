@@ -17,7 +17,7 @@ import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
-import { getFilteredLiveCheckOffsData } from '../../hooks/pages';
+import { getFilteredLiveCheckOffsData, getLiveTutorialSelection } from '../../hooks/pages';
 import { toData, flattenPages } from '../../utils/helpers';
 import { PICK_A_GAME } from '../../resources/tutorials';
 
@@ -66,6 +66,8 @@ const MarkdownPages = ({
           a.where('childId', '==', whoAmI.id).where('classId', '==', selectedCls.id)
         )
       : [];
+  const tutorialSelection =
+    whoAmI !== null ? getLiveTutorialSelection(whoAmI.id, selectedCls.id) : '';
   const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
@@ -88,11 +90,12 @@ const MarkdownPages = ({
       }
     });
     // TODO: Skip to tutorial based on tutorialSelection...
+    console.log('tuts:', tutorialSelection);
     const startingPages = flatPages.slice(0, flatPages.indexOf(PICK_A_GAME) + 1);
     return [...startingPages, ...unlocks];
   }
 
-  const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages]);
+  const checkOffUnlockedPages = useMemo(concatUnlocks, [checkOffs, pages, tutorialSelection]);
 
   // Set page from url params.
   useEffect(() => {
