@@ -365,14 +365,17 @@ export const preFlight = {
 };
 
 export const PICK_A_GAME = 'Pick a Game';
+export const RUNNER_TUTORIAL = 'Run Game Tutorial';
+export const SOCCER_TUTORIAL = 'Soccer Game Tutorial';
+export const ZOMBIE_TUTORIAL = 'Zombie Game Tutorial';
 
 const tutorials = {
   'Download Code': savezip,
   'Upload Code': newgame,
   [PICK_A_GAME]: pickagame,
-  'Run Game Tutorial': runGame,
-  'Soccer Game Tutorial': soccerGame,
-  'Zombie Game Tutorial': zombieGame,
+  [RUNNER_TUTORIAL]: runGame,
+  [SOCCER_TUTORIAL]: soccerGame,
+  [ZOMBIE_TUTORIAL]: zombieGame,
   blocks,
   downloads,
   images,
