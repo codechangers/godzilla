@@ -143,7 +143,7 @@ const CheckOffState = ({ checkOff: { approved, page, feedback, ref } }) => {
 };
 CheckOffState.propTypes = { checkOff: PropTypes.object.isRequired };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   form: {
     width: '100%',
     padding: 20,
@@ -152,13 +152,24 @@ const useStyles = makeStyles({
     display: 'flex',
     flexGrow: 1,
     justifyContent: 'space-around',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      '& button': {
+        width: '100%'
+      }
+    }
   },
   select: {
     flexGrow: 1,
     flexShrink: 0,
-    marginRight: 30
+    marginRight: 30,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      marginRight: 0
+    }
   }
-});
+}));
 
 export default CheckOff;
