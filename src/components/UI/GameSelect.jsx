@@ -1,5 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { TextField, MenuItem, Button, makeStyles } from '@material-ui/core';
+import { gameTypes } from '../../utils/globals';
+import { auth } from '../../utils/firebase';
 
-const GameSelect = () => <h1>Game Select!!</h1>;
+const propTypes = {
+  whoAmI: PropTypes.object.isRequired,
+  cls: PropTypes.object.isRequired
+};
+
+const selectableTypes = { ...gameTypes };
+selectableTypes.default = 'Which game will you choose?';
+
+const GameSelect = ({ whoAmI, cls }) => {
+  const [selection, setSelection] = useState('default');
+  const classes = useStyles();
+
+  const saveSelection = () => {
+    if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
+      const data = {
+        type: selection,
+        parentId: auth.currentUser.uid,
+        childId: whoAmI.id,
+        classId: cls.id
+      };
+      console.log('Save selection:', data);
+    } else {
+      console.log('You need to make a valid selection!!!');
+    }
+  };
+
+  return (
+    <form
+      className={classes.form}
+      onSubmit={e => {
+        e.preventDefault();
+        saveSelection();
+      }}
+    >
+      <TextField
+        type="text"
+        label="Game Selection"
+        variant="outlined"
+        value={selection}
+        onChange={e => setSelection(e.target.value)}
+        className={classes.select}
+        select
+      >
+        {Object.entries(selectableTypes).map(([type, text]) => (
+          <MenuItem value={type} key={type}>
+            {text}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Button variant="contained" color="primary" type="submit">
+        Check Off
+      </Button>
+    </form>
+  );
+};
+GameSelect.propTypes = propTypes;
+
+const useStyles = makeStyles({
+  form: {
+    width: '100%',
+    padding: 20,
+    margin: 0,
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  select: {
+    flexGrow: 1,
+    flexShrink: 0,
+    marginRight: 30
+  }
+});
 
 export default GameSelect;
