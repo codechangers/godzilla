@@ -29,6 +29,7 @@ const CheckOff = ({ whoAmI, page, cls }) => {
   const childGames = useMemo(() => games.filter(g => g.child.id === whoAmI?.id), [games]);
   const [submitted, setSubmitted] = useState(false);
   const [gameId, setGameId] = useState('');
+  const [error, setError] = useState('');
   const classes = useStyles();
 
   useEffect(() => {
@@ -59,8 +60,9 @@ const CheckOff = ({ whoAmI, page, cls }) => {
       db.collection('checkOffs')
         .doc()
         .set(data);
+    } else {
+      setError('Invalid game selected!');
     }
-    // TODO: Set an error message in an else statement.
   };
 
   return checkOffs.length > 0 ? (
@@ -80,6 +82,8 @@ const CheckOff = ({ whoAmI, page, cls }) => {
         value={gameId}
         onChange={e => setGameId(e.target.value)}
         className={classes.select}
+        error={error !== ''}
+        helperText={error}
         select
       >
         {childGames.length === 0 && <MenuItem value="">You Don&apos;t Have Any Games...</MenuItem>}
@@ -89,7 +93,13 @@ const CheckOff = ({ whoAmI, page, cls }) => {
           </MenuItem>
         ))}
       </TextField>
-      <Button variant="contained" color="primary" type="submit" disabled={!validGID || submitted}>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        disabled={!validGID || submitted}
+        style={{ marginTop: 11 }}
+      >
         Check Off
       </Button>
     </form>
@@ -141,7 +151,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexGrow: 1,
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   select: {
     flexGrow: 1,
