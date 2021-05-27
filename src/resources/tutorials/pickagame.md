@@ -13,4 +13,6 @@ Play the games below to decide which one you would like to build.
 3. Zombie Game: [http://zombie.blobbert.io](http://zombie.blobbert.io/)
    ![Zombie Game Gif](/images/zombieGame)
 
+{% selectgame %}
+
 After you pick which template you want to use, you can start creating it!

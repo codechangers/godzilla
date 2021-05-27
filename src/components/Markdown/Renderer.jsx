@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import MarkdownLink from './Link';
 import CheckOff from '../UI/CheckOff';
+import GameSelect from '../UI/GameSelect';
 import CodeBlock from '../UI/CodeBlock';
 import { resolveImg } from '../../resources/images';
 
@@ -73,21 +74,35 @@ const MarkdownRenderer = ({ cls, whoAmI, pages, page, useLoading }) => {
    * Render custom text that allows for the use of Jekyll like file includes.
    */
   const text = ({ value }) => {
+    // Check for includes...
     if (value.startsWith('{% include') && value.endsWith('%}')) {
       return (
         <MarkdownRenderer page={fromInclude(value)} pages={pages} useLoading={[false, () => {}]} />
       );
     }
-    if (value.trim() === '{% checkoff %}') {
-      return whoAmI !== null ? (
-        <CheckOff page={page} whoAmI={whoAmI} cls={cls} />
-      ) : (
-        <Typography variant="h6" color="secondary">
-          A student check off will be displayed here.
-        </Typography>
-      );
+    // Return defaults to the text value.
+    let textReturn = value;
+    // Allow other tags to be checked.
+    function checkTag(tag, parentElem, teacherElem) {
+      if (value.trim() === tag) textReturn = whoAmI !== null ? parentElem : teacherElem;
     }
-    return value;
+    // Check for checkoff tags...
+    checkTag(
+      '{% checkoff %}',
+      <CheckOff page={page} whoAmI={whoAmI} cls={cls} />,
+      <Typography variant="h6" color="secondary">
+        Contestants will check off their game here.
+      </Typography>
+    );
+    // Check for selectgame tags...
+    checkTag(
+      '{% selectgame %}',
+      <GameSelect whoAmI={whoAmI} cls={cls} />,
+      <Typography variant="h6" color="secondary">
+        Contestants will select their game here.
+      </Typography>
+    );
+    return textReturn;
   };
   text.propTypes = { value: PropTypes.node.isRequired };
 
