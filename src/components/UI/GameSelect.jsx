@@ -20,7 +20,7 @@ const GameSelect = ({ whoAmI, cls }) => {
   const classes = useStyles();
 
   // Set saved value.
-  useEffect(() => setSelection(savedSelection), [savedSelection]);
+  useEffect(() => setSelection(savedSelection?.type || 'default'), [savedSelection]);
 
   const saveSelection = () => {
     if (selection !== 'default' && Object.keys(selectableTypes).includes(selection)) {
@@ -32,9 +32,16 @@ const GameSelect = ({ whoAmI, cls }) => {
         classId: cls.id
       };
       // TODO: Add a "Success" snackbar or something so they know it worked.
-      db.collection('tutorialSelections')
-        .doc()
-        .set(data);
+
+      if (savedSelection !== null) {
+        // Update Selection.
+        savedSelection.ref.set(data);
+      } else {
+        // Create Selection.
+        db.collection('tutorialSelections')
+          .doc()
+          .set(data);
+      }
     } else {
       setError('You need to choose a game to build!');
     }
@@ -69,9 +76,10 @@ const GameSelect = ({ whoAmI, cls }) => {
         variant="contained"
         color="primary"
         type="submit"
-        disabled={selection === savedSelection}
+        disabled={selection === savedSelection?.type || selection === 'default'}
+        style={{ marginTop: 11, width: 160 }}
       >
-        {selection === savedSelection ? 'Saved' : 'Save Choice'}
+        {selection === savedSelection?.type ? 'Saved' : 'Save Choice'}
       </Button>
     </form>
   );
@@ -87,7 +95,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexGrow: 1,
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   select: {
     flexGrow: 1,

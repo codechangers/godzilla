@@ -35,7 +35,7 @@ export const getFilteredLiveCheckOffsData = (applyFilter = a => a, forTeacher = 
  * if there are multiple.
  */
 export const getLiveTutorialSelection = (childId, classId) => {
-  const [selection, setSelection] = useState('');
+  const [selection, setSelection] = useState(null);
   const refs = useMemo(
     () =>
       auth.currentUser?.uid
@@ -59,5 +59,5 @@ export const getLiveTutorialSelection = (childId, classId) => {
 const liveCheckOffListDataEffect = onSnapshotDataEffectBase(true, snap => snap.docs.map(toData));
 const liveTutorialSelectionDataEffect = onSnapshotDataEffectBase(
   true,
-  snap => toData(snap.docs[0])?.type || ''
+  snap => toData(snap.docs[0]) || ''
 );
