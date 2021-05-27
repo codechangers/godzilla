@@ -200,7 +200,9 @@ const MarkdownPages = ({
 
   const whieListedPages = useMemo(
     () =>
-      child[whiteList] ? [...child[whiteList], ...checkOffUnlockedPages] : checkOffUnlockedPages,
+      child !== null && child[whiteList]
+        ? [...child[whiteList], ...checkOffUnlockedPages]
+        : checkOffUnlockedPages,
     [child, whiteList, checkOffUnlockedPages]
   );
 
