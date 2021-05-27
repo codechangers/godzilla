@@ -81,7 +81,14 @@ const CheckOffList = ({ cls }) => {
   return (
     <>
       <div className={classes.padTop} />
-      {gamesToRender.length === 0 && <Typography variant="h1">EMPTY</Typography>}
+      {gamesToRender.length === 0 && (
+        <>
+          <Typography variant="h5">You&apos;re all caught up on checkoffs!</Typography>
+          <Typography variant="body1" color="textSecondary">
+            Check again once there are submissions.
+          </Typography>
+        </>
+      )}
       {gamesToRender
         .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))
         .map(co => (
