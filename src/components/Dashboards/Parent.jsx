@@ -86,6 +86,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
         names={['Profile', 'Contests', 'Register', 'Pre Contest', 'Games'].concat(approvedRoutes)}
         baseRoute="/parent"
         appBarConfig={cab}
+        useIntercom
       />
       <StripeProvider apiKey={STRIPE_KEY}>
         <Elements>

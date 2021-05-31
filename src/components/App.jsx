@@ -4,6 +4,7 @@ import { Route } from 'react-router';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
+import { IntercomProvider } from 'react-use-intercom';
 import Login from './Pages/Login';
 import Help from './Pages/Help';
 import Teachers from './Pages/Teachers';
@@ -34,6 +35,8 @@ const pathToComponent = {
   '/admin': AdminDashboard,
   '/stripe': StripeHandler
 };
+
+const intercomAppId = process.env.REACT_APP_INTERCOM_ID;
 
 class App extends React.Component {
   constructor(props) {
@@ -93,27 +96,31 @@ class App extends React.Component {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <ThemeProvider theme={theme}>
-          <Router>
-            {Object.keys(pathToComponent).map((path, index) => (
-              <Route
-                exact={index === 0}
-                key={path}
-                path={path}
-                render={props => {
-                  const Comp = pathToComponent[path];
-                  return (
-                    <Comp
-                      {...props}
-                      user={this.state.user}
-                      accounts={this.state.accounts}
-                      updateAccounts={user => this.updateAccounts(user)}
-                      OAuthed={() => this.setState({ user: { ...this.state.user, OAuthed: true } })}
-                    />
-                  );
-                }}
-              />
-            ))}
-          </Router>
+          <IntercomProvider appId={intercomAppId}>
+            <Router>
+              {Object.keys(pathToComponent).map((path, index) => (
+                <Route
+                  exact={index === 0}
+                  key={path}
+                  path={path}
+                  render={props => {
+                    const Comp = pathToComponent[path];
+                    return (
+                      <Comp
+                        {...props}
+                        user={this.state.user}
+                        accounts={this.state.accounts}
+                        updateAccounts={user => this.updateAccounts(user)}
+                        OAuthed={() =>
+                          this.setState({ user: { ...this.state.user, OAuthed: true } })
+                        }
+                      />
+                    );
+                  }}
+                />
+              ))}
+            </Router>
+          </IntercomProvider>
         </ThemeProvider>
       </MuiPickersUtilsProvider>
     );
