@@ -60,7 +60,7 @@ const ClassSearchInterface = ({ useCustomAppBar, classes, location, user, accoun
         const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
         classesData.push(classData);
       });
-      classesData.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
+      classesData.sort((a, b) => a.startDate - b.startDate);
       setClassList(classesData);
       if (isLoading) {
         setIsLoading(false);

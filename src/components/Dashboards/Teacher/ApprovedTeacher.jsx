@@ -151,7 +151,7 @@ class ApprovedTeacher extends React.Component {
         const classData = { ...classDoc.data(), id: classDoc.id, ref: classDoc.ref };
         classes.push(classData);
         if (classes.length === classRefs.length) {
-          classes.sort((a, b) => b.endDate.seconds - a.endDate.seconds);
+          classes.sort((a, b) => a.startDate - b.startDate);
           this.setState({ classes, loadingClasses: false });
         }
       });
