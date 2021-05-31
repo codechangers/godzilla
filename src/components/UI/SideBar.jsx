@@ -24,12 +24,15 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import Logout from './Logout';
+import Intercom from './Intercom';
 import { Logo } from '../Images';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
+  useIntercom: PropTypes.bool,
+  whoAmI: PropTypes.object,
   width: PropTypes.string.isRequired,
   appBarConfig: PropTypes.shape({
     title: PropTypes.string,
@@ -44,6 +47,8 @@ const propTypes = {
 const defaultProps = {
   names: [],
   baseRoute: '/',
+  useIntercom: false,
+  whoAmI: null,
   appBarConfig: {
     title: 'Code Contest',
     content: null,
@@ -74,7 +79,7 @@ const nameToIcon = {
   'Admin Dash': SupervisorAccount
 };
 
-const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
+const SideBar = ({ names, baseRoute, useIntercom, whoAmI, location, width, appBarConfig }) => {
   const { title, content, action, clsname, wrap, wrappedContent } = {
     ...defaultABC,
     ...appBarConfig
@@ -112,6 +117,7 @@ const SideBar = ({ names, baseRoute, location, width, appBarConfig }) => {
 
   return (
     <>
+      {useIntercom && <Intercom show={!small || showMenu} whoAmI={whoAmI} />}
       <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
         <div className={classes.toolBarWrapper}>
           {small ? (
