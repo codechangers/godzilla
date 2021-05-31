@@ -371,10 +371,10 @@ export const preFlight = {
   '13) Pre Contest 13': preflight15,
   '14) Pre Contest 14': preflight16,
   '15) Pre Contest 15': preflight17,
-  '16) Pre Contest 16': preflight18,
   'Download Code': savezip,
   'Upload Code': newgame,
-  [PICK_A_GAME]: pickagame
+  [PICK_A_GAME]: pickagame,
+  'Pre Contest Complete': preflight18
 };
 
 const tutorials = {
