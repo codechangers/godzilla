@@ -27,6 +27,7 @@ import savezip from './tutorials/savezip.md';
 import newgame from './tutorials/newgame.md';
 import pickagame from './tutorials/pickagame.md';
 import splitScreen from './tutorials/splitScreen.md';
+import hello from './tutorials/hello.md';
 
 // Blocks
 import addAStore from './tutorials/blocks/addAStore.md';
@@ -343,7 +344,7 @@ const zombieGame = {
   'Zombie ✓': zombieGame12a
 };
 
-export const PICK_A_GAME = 'Pick a Game';
+export const PICK_A_GAME = 'Hello Contestant';
 export const RUNNER_TUTORIAL = 'Run Game Tutorial';
 export const SOCCER_TUTORIAL = 'Soccer Game Tutorial';
 export const ZOMBIE_TUTORIAL = 'Zombie Game Tutorial';
@@ -373,11 +374,12 @@ export const preFlight = {
   '15) Pre Contest 15': preflight17,
   'Download Code': savezip,
   'Upload Code': newgame,
-  [PICK_A_GAME]: pickagame,
+  'Pick a Game': pickagame,
   'Pre Contest Complete': preflight18
 };
 
 const tutorials = {
+  [PICK_A_GAME]: hello,
   [RUNNER_TUTORIAL]: runGame,
   [SOCCER_TUTORIAL]: soccerGame,
   [ZOMBIE_TUTORIAL]: zombieGame,
