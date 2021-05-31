@@ -10,15 +10,19 @@ const propTypes = {
   current: PropTypes.string.isRequired,
   pages: PropTypes.object.isRequired,
   locked: PropTypes.bool,
-  whiteList: PropTypes.arrayOf(PropTypes.string)
+  whiteList: PropTypes.arrayOf(PropTypes.string),
+  lastNext: PropTypes.func,
+  firstPrev: PropTypes.func
 };
 
 const defaultProps = {
   locked: false,
-  whiteList: []
+  whiteList: [],
+  lastNext: () => {},
+  firstPrev: () => {}
 };
 
-const NavButtons = ({ current, pages, locked, whiteList, onNav }) => {
+const NavButtons = ({ current, pages, locked, whiteList, onNav, lastNext, firstPrev }) => {
   const flatUnlocks = useMemo(() => flattenPages(locked ? filterPages(whiteList, pages) : pages), [
     pages,
     locked,
@@ -36,20 +40,23 @@ const NavButtons = ({ current, pages, locked, whiteList, onNav }) => {
     return i > 0 ? flatUnlocks[i - 1] : '';
   }, [current, flatUnlocks]);
 
+  const hasFirstPrev = firstPrev !== (() => {});
+  const hasLastNext = lastNext !== (() => {});
+
   return (
     <div className={classes.wrapper}>
       <Button
         variant="outlined"
-        onClick={() => onNav(prevPage)}
-        disabled={prevPage === ''}
+        onClick={() => (prevPage === '' && hasFirstPrev ? firstPrev() : onNav(prevPage))}
+        disabled={prevPage === '' && !hasFirstPrev}
         startIcon={<PrevIcon />}
       >
         Prev
       </Button>
       <Button
         variant="outlined"
-        onClick={() => onNav(nextPage)}
-        disabled={nextPage === ''}
+        onClick={() => (nextPage === '' && hasLastNext ? lastNext() : onNav(nextPage))}
+        disabled={nextPage === '' && !hasLastNext}
         endIcon={<NextIcon />}
       >
         Next

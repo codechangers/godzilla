@@ -36,6 +36,8 @@ const propTypes = {
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func,
+  firstPrev: PropTypes.func,
+  lastNext: PropTypes.func,
   doNotLock: PropTypes.bool,
   noClass: PropTypes.bool
 };
@@ -47,6 +49,8 @@ const defaultProps = {
   doNotLock: false,
   noClass: false,
   setWhoAmI: () => {},
+  firstPrev: () => {},
+  lastNext: () => {},
   useSelectedCls: () => [null]
 };
 
@@ -67,6 +71,8 @@ const MarkdownPages = ({
   useSelectedCls,
   whoAmI,
   setWhoAmI,
+  firstPrev,
+  lastNext,
   doNotLock,
   noClass
 }) => {
@@ -233,6 +239,8 @@ const MarkdownPages = ({
             pages={pages}
             locked={!doNotLock && child !== null}
             whiteList={whieListedPages}
+            firstPrev={firstPrev}
+            lastNext={lastNext}
           />
         )}
       </main>
