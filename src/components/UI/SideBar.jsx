@@ -32,6 +32,7 @@ const propTypes = {
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
   useIntercom: PropTypes.bool,
+  whoAmI: PropTypes.object,
   width: PropTypes.string.isRequired,
   appBarConfig: PropTypes.shape({
     title: PropTypes.string,
@@ -47,6 +48,7 @@ const defaultProps = {
   names: [],
   baseRoute: '/',
   useIntercom: false,
+  whoAmI: null,
   appBarConfig: {
     title: 'Code Contest',
     content: null,
@@ -77,7 +79,7 @@ const nameToIcon = {
   'Admin Dash': SupervisorAccount
 };
 
-const SideBar = ({ names, baseRoute, useIntercom, location, width, appBarConfig }) => {
+const SideBar = ({ names, baseRoute, useIntercom, whoAmI, location, width, appBarConfig }) => {
   const { title, content, action, clsname, wrap, wrappedContent } = {
     ...defaultABC,
     ...appBarConfig
@@ -115,7 +117,7 @@ const SideBar = ({ names, baseRoute, useIntercom, location, width, appBarConfig 
 
   return (
     <>
-      {useIntercom && <Intercom show={!small || showMenu} />}
+      {useIntercom && <Intercom show={!small || showMenu} whoAmI={whoAmI} />}
       <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
         <div className={classes.toolBarWrapper}>
           {small ? (
