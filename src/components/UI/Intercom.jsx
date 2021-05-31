@@ -49,6 +49,7 @@ const Intercom = ({ show, whoAmI }) => {
       setCurrent(name);
     } else if (show) setVisible(true);
     else setVisible(false);
+    return shutdown;
   }, [show, name]);
 
   return <div style={{ display: 'none' }} />;
