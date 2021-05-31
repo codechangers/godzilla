@@ -4,4 +4,4 @@
 
    ![rename](/images/rename)
 
-> **The new name saves autimatically, just click outside of the pop up screen to get back into your code. You will see the name change at the top.
+> **The new name saves automatically, just click outside of the pop up screen to get back into your code. You will see the name change at the top.
