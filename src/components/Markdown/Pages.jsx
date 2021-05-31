@@ -36,7 +36,8 @@ const propTypes = {
   whiteList: PropTypes.string,
   whoAmI: PropTypes.object,
   setWhoAmI: PropTypes.func,
-  doNotLock: PropTypes.bool
+  doNotLock: PropTypes.bool,
+  noClass: PropTypes.bool
 };
 
 const defaultProps = {
@@ -44,6 +45,7 @@ const defaultProps = {
   whiteList: null,
   whoAmI: null,
   doNotLock: false,
+  noClass: false,
   setWhoAmI: () => {},
   useSelectedCls: () => [null]
 };
@@ -65,7 +67,8 @@ const MarkdownPages = ({
   useSelectedCls,
   whoAmI,
   setWhoAmI,
-  doNotLock
+  doNotLock,
+  noClass
 }) => {
   const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
@@ -207,7 +210,7 @@ const MarkdownPages = ({
   );
 
   // Redirect to class select on whoAmI change.
-  if (whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
+  if (!noClass && whoAmI !== null && selectedCls === null) return <Redirect to="/parent" />;
 
   return (
     <div className={classes.wrapper}>
