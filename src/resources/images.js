@@ -3,6 +3,7 @@ import signup from './images/signup.png';
 import signupbutton from './images/signupbutton.png';
 import imagedrop from './images/imagedrop.png';
 import imagecheck from './images/imagecheck.png';
+import imgsfolder from './images/imgsfolder.png';
 import rename from './images/repl-rename.gif';
 import invite from './images/repl-invite.gif';
 import replImages from './images/repl-images.gif';
@@ -32,6 +33,7 @@ const images = {
   signupbutton,
   imagedrop,
   imagecheck,
+  imgsfolder,
   rename,
   invite,
   download,

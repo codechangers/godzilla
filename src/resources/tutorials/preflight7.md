@@ -1,6 +1,6 @@
 # Add Images to your Game
 
-##### 3. In the `init()` _function_ in `game.js` set the size of the game map, add boundaries for the camera, and add you rmain character to the game.
+##### 3. In the `init()` _function_ in `game.js` set the size of the game map, add boundaries for the camera, and add your main character to the game.
 
 ```javascript
 // File: game.js
