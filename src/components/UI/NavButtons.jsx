@@ -18,8 +18,8 @@ const propTypes = {
 const defaultProps = {
   locked: false,
   whiteList: [],
-  lastNext: () => {},
-  firstPrev: () => {}
+  lastNext: null,
+  firstPrev: null
 };
 
 const NavButtons = ({ current, pages, locked, whiteList, onNav, lastNext, firstPrev }) => {
@@ -40,23 +40,20 @@ const NavButtons = ({ current, pages, locked, whiteList, onNav, lastNext, firstP
     return i > 0 ? flatUnlocks[i - 1] : '';
   }, [current, flatUnlocks]);
 
-  const hasFirstPrev = firstPrev !== (() => {});
-  const hasLastNext = lastNext !== (() => {});
-
   return (
     <div className={classes.wrapper}>
       <Button
         variant="outlined"
-        onClick={() => (prevPage === '' && hasFirstPrev ? firstPrev() : onNav(prevPage))}
-        disabled={prevPage === '' && !hasFirstPrev}
+        onClick={() => (prevPage === '' && firstPrev !== null ? firstPrev() : onNav(prevPage))}
+        disabled={prevPage === '' && firstPrev === null}
         startIcon={<PrevIcon />}
       >
         Prev
       </Button>
       <Button
         variant="outlined"
-        onClick={() => (nextPage === '' && hasLastNext ? lastNext() : onNav(nextPage))}
-        disabled={nextPage === '' && !hasLastNext}
+        onClick={() => (nextPage === '' && lastNext !== null ? lastNext() : onNav(nextPage))}
+        disabled={nextPage === '' && lastNext === null}
         endIcon={<NextIcon />}
       >
         Next

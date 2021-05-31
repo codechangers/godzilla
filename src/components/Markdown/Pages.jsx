@@ -49,8 +49,8 @@ const defaultProps = {
   doNotLock: false,
   noClass: false,
   setWhoAmI: () => {},
-  firstPrev: () => {},
-  lastNext: () => {},
+  firstPrev: null,
+  lastNext: null,
   useSelectedCls: () => [null]
 };
 
