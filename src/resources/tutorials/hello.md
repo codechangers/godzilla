@@ -1,6 +1,6 @@
 # Welcome To CodeContest
 
-> **Before continuing, make sure you have completed the `Pre Contest` tutorial!**
+###### **Before continuing, make sure you have completed the `Pre Contest` tutorial!**
 
 ### Intro
 
