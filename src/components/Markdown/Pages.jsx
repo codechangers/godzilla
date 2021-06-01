@@ -15,6 +15,7 @@ import { Redirect, Link, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
+import HelpModal from '../Interfaces/interfaceHelpers/HelpModal';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { getFilteredLiveCheckOffsData, getLiveTutorialSelection } from '../../hooks/pages';
@@ -79,6 +80,7 @@ const MarkdownPages = ({
   const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
   const checkOffs = getFilteredLiveCheckOffsData(a =>
@@ -159,9 +161,9 @@ const MarkdownPages = ({
             <Link to="/teachers" className={classes.navLink}>
               Teachers
             </Link>
-            <Link to="/help" className={classes.navLink}>
+            <button onClick={() => setShowHelp(true)} className={classes.navLink}>
               Help!
-            </Link>
+            </button>
             {child !== null && (
               <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} className={classes.profButton} />
             )}
@@ -262,6 +264,7 @@ const MarkdownPages = ({
         locked={!doNotLock && child !== null}
         whiteList={whieListedPages}
       />
+      <HelpModal open={showHelp} onClose={() => setShowHelp(false)} />
     </div>
   );
 };
@@ -295,9 +298,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   navLink: {
+    fontSize: 16,
+    margin: '0 14px',
     color: 'inherit',
     textDecoration: 'none',
-    margin: '0 14px',
+    background: 'none',
+    border: 'none',
     '&:hover': {
       textDecoration: 'underline'
     }
