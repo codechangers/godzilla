@@ -11,7 +11,7 @@ export const AccountType = styled.div({
   flexDirection: 'column',
   justifyContent: 'center',
   padding: '30px 64px',
-  overflow: 'scroll',
+  overflow: 'auto',
   [breakpoints.down.xs]: {
     padding: '30px 20px'
   }

@@ -288,7 +288,7 @@ const styles = theme => ({
     },
     minWidth: '300px',
     height: '100%',
-    overflow: 'scroll',
+    overflow: 'auto',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
