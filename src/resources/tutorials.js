@@ -48,6 +48,7 @@ import uploadImage from './tutorials/blocks/uploadImage.md';
 import useBarrier from './tutorials/blocks/useBarrier.md';
 import useItems from './tutorials/blocks/useItems.md';
 import stop from './tutorials/blocks/stop.md';
+import gameDemos from './tutorials/blocks/gameDemos.md';
 // Run Game
 import runGame1a from './tutorials/examples/runGame1a.md';
 import runGame1b from './tutorials/examples/runGame1b.md';
@@ -201,7 +202,8 @@ const blocks = {
   uploadImage,
   useBarrier,
   useItems,
-  stop
+  stop,
+  gameDemos
 };
 
 const runGame = {
