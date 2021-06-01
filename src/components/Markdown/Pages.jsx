@@ -314,6 +314,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     textDecoration: 'none',
     background: 'none',
+    outline: 'none',
     border: 'none',
     '&:hover': {
       textDecoration: 'underline'
