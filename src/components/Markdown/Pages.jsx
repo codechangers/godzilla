@@ -41,7 +41,8 @@ const propTypes = {
   firstPrev: PropTypes.func,
   lastNext: PropTypes.func,
   doNotLock: PropTypes.bool,
-  noClass: PropTypes.bool
+  noClass: PropTypes.bool,
+  includes: PropTypes.object
 };
 
 const defaultProps = {
@@ -53,7 +54,8 @@ const defaultProps = {
   setWhoAmI: () => {},
   firstPrev: null,
   lastNext: null,
-  useSelectedCls: () => [null]
+  useSelectedCls: () => [null],
+  includes: {}
 };
 
 const tutorialTypeToText = {
@@ -76,7 +78,8 @@ const MarkdownPages = ({
   firstPrev,
   lastNext,
   doNotLock,
-  noClass
+  noClass,
+  includes
 }) => {
   const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
@@ -230,7 +233,7 @@ const MarkdownPages = ({
         })}
       >
         <MarkdownRenderer
-          pages={pages}
+          pages={{ ...includes, ...pages }}
           page={page}
           useLoading={[loading, setLoading]}
           whoAmI={whoAmI}
