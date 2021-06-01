@@ -232,6 +232,7 @@ const MarkdownPages = ({
           whoAmI={whoAmI}
           cls={selectedCls}
         />
+        <div className={classes.fillPage} />
         {!loading && (
           <NavButtons
             onNav={setUrlPage}
@@ -270,6 +271,7 @@ MarkdownPages.defaultProps = defaultProps;
 const useStyles = makeStyles(theme => ({
   wrapper: {
     width: '100%',
+    minHeight: 'calc(100vh - 64px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -321,6 +323,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       maxWidth: '100%'
     },
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -395,6 +400,12 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '-96px !important'
       }
     }
+  },
+  fillPage: {
+    width: '100%',
+    display: 'block',
+    flexGrow: 1,
+    opacity: 0
   }
 }));
 
