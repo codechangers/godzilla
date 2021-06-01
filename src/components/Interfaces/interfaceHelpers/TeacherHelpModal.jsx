@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Typography, makeStyles } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
-import { Link } from 'react-router-dom';
 import Modal from '../../UI/Modal';
 import flowchart from '../../../assets/images/flowchart.png';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  gotoHelp: PropTypes.func.isRequired
 };
 
-const TeacherHelpModal = ({ open, onClose }) => {
+const TeacherHelpModal = ({ open, onClose, gotoHelp }) => {
   const classes = useStyles();
   return (
     <Modal
@@ -64,8 +64,11 @@ const TeacherHelpModal = ({ open, onClose }) => {
       </Typography>
       <Typography variant="h3">Mentor help</Typography>
       <Typography variant="body1">
-        1. Competitors can access their mentors by visiting{' '}
-        <Link to="/help">https://go.codecontest.org/help</Link>{' '}
+        1. Competitors can access their mentors by visiting the{' '}
+        <button className={classes.linkButton} onClick={gotoHelp}>
+          Help!
+        </button>{' '}
+        modal.
       </Typography>
       <Typography variant="body1">
         2. Click on the zoom link, and wait in the waiting room for a mentor to assign a breakout
@@ -109,6 +112,18 @@ const useStyles = makeStyles({
       maxWidth: '99%',
       maxHeight: '90vh'
     }
+  },
+  linkButton: {
+    margin: 0,
+    padding: 0,
+    alignSelf: 'auto',
+    background: 'none',
+    border: 'none',
+    outline: 'none',
+    cursor: 'pointer',
+    color: 'var(--pink-color)',
+    textDecoration: 'underline',
+    fontSize: 18
   }
 });
 

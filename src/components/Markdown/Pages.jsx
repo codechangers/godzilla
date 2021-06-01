@@ -267,7 +267,14 @@ const MarkdownPages = ({
         whiteList={whieListedPages}
       />
       <HelpModal open={showHelp} onClose={() => setShowHelp(false)} />
-      <TeachersModal open={showTeachers} onClose={() => setShowTeachers(false)} />
+      <TeachersModal
+        open={showTeachers}
+        onClose={() => setShowTeachers(false)}
+        gotoHelp={() => {
+          setShowTeachers(false);
+          setShowHelp(true);
+        }}
+      />
     </div>
   );
 };
@@ -304,6 +311,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 16,
     margin: '0 14px',
     color: 'inherit',
+    cursor: 'pointer',
     textDecoration: 'none',
     background: 'none',
     border: 'none',
