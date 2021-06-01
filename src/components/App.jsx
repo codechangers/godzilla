@@ -6,7 +6,6 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import { IntercomProvider } from 'react-use-intercom';
 import Login from './Pages/Login';
-import Help from './Pages/Help';
 import Teachers from './Pages/Teachers';
 import SignUp from './Pages/SignUp';
 import Search from './Pages/Search';
@@ -25,7 +24,6 @@ let authSubscription = () => {};
 const pathToComponent = {
   '/': Login,
   '/login': Login,
-  '/help': Help,
   '/teachers': Teachers,
   '/signup': SignUp,
   '/search': Search,
