@@ -87,7 +87,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
         baseRoute="/parent"
         appBarConfig={cab}
         whoAmI={whoAmI}
-        useIntercom
+        enableIntercom
       />
       <StripeProvider apiKey={STRIPE_KEY}>
         <Elements>

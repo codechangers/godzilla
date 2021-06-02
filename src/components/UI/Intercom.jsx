@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useIntercom } from 'react-use-intercom';
 import { auth } from '../../utils/firebase';
 
 const propTypes = {
+  api: PropTypes.object.isRequired,
   show: PropTypes.bool,
   whoAmI: PropTypes.object
 };
@@ -13,9 +13,9 @@ const defaultProps = {
   whoAmI: null
 };
 
-const Intercom = ({ show, whoAmI }) => {
+const Intercom = ({ api, show, whoAmI }) => {
   const [currentName, setCurrent] = useState('');
-  const { boot, shutdown } = useIntercom();
+  const { boot, shutdown } = api;
 
   // Get name from data.
   const name = useMemo(() => {
@@ -49,7 +49,6 @@ const Intercom = ({ show, whoAmI }) => {
       setCurrent(name);
     } else if (show) setVisible(true);
     else setVisible(false);
-    return shutdown;
   }, [show, name]);
 
   return <div style={{ display: 'none' }} />;

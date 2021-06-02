@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dashboard,
@@ -22,6 +22,7 @@ import {
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
+import { useIntercom } from 'react-use-intercom';
 import clsx from 'clsx';
 import Logout from './Logout';
 import Intercom from './Intercom';
@@ -31,7 +32,7 @@ const propTypes = {
   location: PropTypes.object.isRequired,
   names: PropTypes.arrayOf(PropTypes.string),
   baseRoute: PropTypes.string,
-  useIntercom: PropTypes.bool,
+  enableIntercom: PropTypes.bool,
   whoAmI: PropTypes.object,
   width: PropTypes.string.isRequired,
   appBarConfig: PropTypes.shape({
@@ -47,7 +48,7 @@ const propTypes = {
 const defaultProps = {
   names: [],
   baseRoute: '/',
-  useIntercom: false,
+  enableIntercom: false,
   whoAmI: null,
   appBarConfig: {
     title: 'Code Contest',
@@ -79,12 +80,16 @@ const nameToIcon = {
   'Admin Dash': SupervisorAccount
 };
 
-const SideBar = ({ names, baseRoute, useIntercom, whoAmI, location, width, appBarConfig }) => {
+const SideBar = ({ names, baseRoute, enableIntercom, whoAmI, location, width, appBarConfig }) => {
   const { title, content, action, clsname, wrap, wrappedContent } = {
     ...defaultABC,
     ...appBarConfig
   };
   const [showMenu, setShowMenu] = useState(false);
+
+  // Handle Intercom Unmount.
+  const intercomAPI = useIntercom();
+  useEffect(() => intercomAPI.shutdown, [intercomAPI]);
 
   const nameToRoute = {
     Dashboard: baseRoute,
@@ -117,7 +122,7 @@ const SideBar = ({ names, baseRoute, useIntercom, whoAmI, location, width, appBa
 
   return (
     <>
-      {useIntercom && <Intercom show={!small || showMenu} whoAmI={whoAmI} />}
+      {enableIntercom && <Intercom show={!small || showMenu} whoAmI={whoAmI} api={intercomAPI} />}
       <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
         <div className={classes.toolBarWrapper}>
           {small ? (
