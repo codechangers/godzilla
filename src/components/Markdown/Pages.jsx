@@ -11,10 +11,12 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Help, School, Menu } from '@material-ui/icons';
-import { Redirect, Link, useLocation, useHistory } from 'react-router-dom';
+import { Redirect, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import MarkdownRenderer from './Renderer';
 import WhoAmIButton from '../Interfaces/interfaceHelpers/WhoAmIButton';
+import HelpModal from '../Interfaces/interfaceHelpers/HelpModal';
+import TeachersModal from '../Interfaces/interfaceHelpers/TeacherHelpModal';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { getFilteredLiveCheckOffsData, getLiveTutorialSelection } from '../../hooks/pages';
@@ -79,6 +81,8 @@ const MarkdownPages = ({
   const [selectedCls] = useSelectedCls();
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showTeachers, setShowTeachers] = useState(false);
   const [page, setPage] = useState(homePage);
   const [child, setChild] = useState(whoAmI);
   const checkOffs = getFilteredLiveCheckOffsData(a =>
@@ -156,12 +160,12 @@ const MarkdownPages = ({
         wrap: true,
         content: (
           <>
-            <Link to="/teachers" className={classes.navLink}>
+            <button onClick={() => setShowTeachers(true)} className={classes.navLink}>
               Teachers
-            </Link>
-            <Link to="/help" className={classes.navLink}>
+            </button>
+            <button onClick={() => setShowHelp(true)} className={classes.navLink}>
               Help!
-            </Link>
+            </button>
             {child !== null && (
               <WhoAmIButton whoAmI={child} setWhoAmI={setWhoAmI} className={classes.profButton} />
             )}
@@ -169,13 +173,13 @@ const MarkdownPages = ({
         ),
         wrappedContent: (
           <List className={classes.linksList}>
-            <ListItem divider button onClick={() => history.push('/teachers')}>
+            <ListItem divider button onClick={() => setShowTeachers(true)}>
               <ListItemIcon>
                 <School />
               </ListItemIcon>
               <ListItemText primary="Teachers" />
             </ListItem>
-            <ListItem divider={child !== null} button onClick={() => history.push('/help')}>
+            <ListItem divider={child !== null} button onClick={() => setShowHelp(true)}>
               <ListItemIcon>
                 <Help />
               </ListItemIcon>
@@ -262,6 +266,15 @@ const MarkdownPages = ({
         locked={!doNotLock && child !== null}
         whiteList={whieListedPages}
       />
+      <HelpModal open={showHelp} onClose={() => setShowHelp(false)} />
+      <TeachersModal
+        open={showTeachers}
+        onClose={() => setShowTeachers(false)}
+        gotoHelp={() => {
+          setShowTeachers(false);
+          setShowHelp(true);
+        }}
+      />
     </div>
   );
 };
@@ -295,9 +308,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   navLink: {
-    color: 'inherit',
-    textDecoration: 'none',
+    fontSize: 16,
     margin: '0 14px',
+    color: 'inherit',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    background: 'none',
+    outline: 'none',
+    border: 'none',
     '&:hover': {
       textDecoration: 'underline'
     }

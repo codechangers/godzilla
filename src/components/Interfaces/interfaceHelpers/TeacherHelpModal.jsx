@@ -1,12 +1,26 @@
 import React from 'react';
-import { Typography, makeStyles } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import flowchart from '../../assets/images/flowchart.png';
+import PropTypes from 'prop-types';
+import { Button, Typography, makeStyles } from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import Modal from '../../UI/Modal';
+import flowchart from '../../../assets/images/flowchart.png';
 
-const Teachers = () => {
+const propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  gotoHelp: PropTypes.func.isRequired
+};
+
+const TeacherHelpModal = ({ open, onClose, gotoHelp }) => {
   const classes = useStyles();
   return (
-    <div className={classes.wrapper}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      className={classes.wrapper}
+      title="Help Modal"
+      description="Need help with something during your code contest?"
+    >
       <Typography variant="h2">Teacher Support Page</Typography>
       <Typography variant="h3">Want to help?</Typography>
       <Typography variant="body1">
@@ -50,8 +64,11 @@ const Teachers = () => {
       </Typography>
       <Typography variant="h3">Mentor help</Typography>
       <Typography variant="body1">
-        1. Competitors can access their mentors by visiting{' '}
-        <Link to="/help">https://go.codecontest.org/help</Link>{' '}
+        1. Competitors can access their mentors by visiting the{' '}
+        <button className={classes.linkButton} onClick={gotoHelp}>
+          Help!
+        </button>{' '}
+        modal.
       </Typography>
       <Typography variant="body1">
         2. Click on the zoom link, and wait in the waiting room for a mentor to assign a breakout
@@ -69,26 +86,45 @@ const Teachers = () => {
       <Typography variant="h5">
         Send us an email, <a href="mailto:madi@codecontest.org">madi@codecontest.org</a>
       </Typography>
-    </div>
+      <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
+        Okay
+      </Button>
+    </Modal>
   );
 };
+TeacherHelpModal.propTypes = propTypes;
 
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    maxWidth: '1000px',
-    minHeight: '100vh',
-    margin: 'auto',
-    boxSizing: 'border-box',
-    padding: '20px 8px 60px 8px',
+    alignItems: 'flex-start',
     '& h2': { margin: '14px 0' },
     '& h3': { margin: '12px 0 ' },
     '& p': { margin: '10px 0' },
     '& a': { color: 'var(--pink-color)' },
-    '& img': { alignSelf: 'center ', border: '1px solid #fff' }
+    '& button': { margin: '10px 0', alignSelf: 'flex-end' },
+    '& img': {
+      alignSelf: 'center ',
+      border: '1px solid #fff',
+      boxSizing: 'border-box',
+      margin: '12px 0',
+      maxWidth: '99%',
+      maxHeight: '90vh'
+    }
+  },
+  linkButton: {
+    margin: 0,
+    padding: 0,
+    alignSelf: 'auto',
+    background: 'none',
+    border: 'none',
+    outline: 'none',
+    cursor: 'pointer',
+    color: 'var(--pink-color)',
+    textDecoration: 'underline',
+    fontSize: 18
   }
 });
 
-export default Teachers;
+export default TeacherHelpModal;

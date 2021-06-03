@@ -1,10 +1,24 @@
 import React from 'react';
-import { Typography, makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Button, Typography, makeStyles } from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import Modal from '../../UI/Modal';
 
-const Help = () => {
+const propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
+
+const HelpModal = ({ open, onClose }) => {
   const classes = useStyles();
   return (
-    <div className={classes.wrapper}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      className={classes.wrapper}
+      title="Help Modal"
+      description="Need help with something during your code contest?"
+    >
       <Typography variant="h2">Need Help?</Typography>
       <Typography variant="h3">Follow These Steps</Typography>
       <Typography variant="body1">
@@ -39,25 +53,25 @@ const Help = () => {
       <Typography variant="body1">
         The passcode for your call is: <strong>GWA</strong>
       </Typography>
-    </div>
+      <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
+        Okay
+      </Button>
+    </Modal>
   );
 };
+HelpModal.propTypes = propTypes;
 
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    maxWidth: '1000px',
-    minHeight: '100vh',
-    margin: 'auto',
-    boxSizing: 'border-box',
-    padding: '20px 8px 60px 8px',
+    alignItems: 'flex-start',
     '& h2': { margin: '14px 0' },
     '& h3': { margin: '12px 0 ' },
     '& p': { margin: '10px 0' },
-    '& a': { color: 'var(--pink-color)' }
+    '& a': { color: 'var(--pink-color)' },
+    '& button': { margin: '10px 0', alignSelf: 'flex-end' }
   }
 });
 
-export default Help;
+export default HelpModal;
