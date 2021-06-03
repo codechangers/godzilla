@@ -17,7 +17,8 @@ import {
   Description,
   MenuBook,
   VideogameAsset,
-  Assignment
+  Assignment,
+  DoneAll
 } from '@material-ui/icons';
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -75,6 +76,7 @@ const nameToIcon = {
   Tutorials: MenuBook,
   'Pre Contest': Assignment,
   Games: VideogameAsset,
+  Submit: DoneAll,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
   'Admin Dash': SupervisorAccount
@@ -105,6 +107,7 @@ const SideBar = ({ names, baseRoute, enableIntercom, whoAmI, location, width, ap
     Tutorials: `${baseRoute}/tutorials`,
     'Pre Contest': `${baseRoute}/preflight`,
     Games: `${baseRoute}/games`,
+    Submit: `${baseRoute}/submit`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
     'Admin Dash': '/admin'

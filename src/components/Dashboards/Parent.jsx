@@ -14,6 +14,7 @@ import TutorialsInterface from '../Interfaces/Tutorials';
 import PreFlightTutorialsInterface from '../Interfaces/PreFlightTutorials';
 import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
+import SubmitInterface from '../Interfaces/Submit';
 import { STRIPE_KEY } from '../../utils/globals';
 import { useAccountData } from '../../hooks/accounts';
 
@@ -32,7 +33,8 @@ const routeToInterface = {
   '/parent/docs': DocumentationInterface,
   '/parent/tutorials': TutorialsInterface,
   '/parent/preflight': PreFlightTutorialsInterface,
-  '/parent/games': GamesInterface
+  '/parent/games': GamesInterface,
+  '/parent/submit': SubmitInterface
 };
 
 const whoAmIRoutes = [
@@ -40,7 +42,8 @@ const whoAmIRoutes = [
   '/parent/docs',
   '/parent/tutorials',
   '/parent/preflight',
-  '/parent/games'
+  '/parent/games',
+  '/parent/submit'
 ];
 
 const ParentDashboard = ({ user, accounts, location }) => {
@@ -83,7 +86,9 @@ const ParentDashboard = ({ user, accounts, location }) => {
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'Contests', 'Register', 'Pre Contest', 'Games'].concat(approvedRoutes)}
+        names={['Profile', 'Contests', 'Register', 'Pre Contest', 'Games', 'Submit'].concat(
+          approvedRoutes
+        )}
         baseRoute="/parent"
         appBarConfig={cab}
         whoAmI={whoAmI}
