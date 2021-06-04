@@ -1,6 +1,6 @@
 # Setup Up Game Over
 
-##### 13. In the `onLeave()` _function_ in `room.js` add a function so that when a player dies it's deleted from the game.
+##### 13. In the `onLeave()` _function_ in `room.js` add a function so that when a player dies, it is deleted from the game.
 
 ```javascript
 // File: room.js

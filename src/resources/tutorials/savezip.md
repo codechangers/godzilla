@@ -1,11 +1,11 @@
 # Download Your Code
 
-Now that you've completed your preflight code, it's time to upload it to a server and test out your game!
+Now that you've completed your Pre Contest code, it's time to upload it to a server and test out your game!
 
 You can download your code with the following simple steps:
 
 ###### 1. On replit.com open the _Files_ tab.
-###### 2. Click the _menu_ button (tripple dots) in the top right hand corner of that tab.
+###### 2. Click the _menu_ button (triple dots) in the top right hand corner of that tab.
 ###### 3. Click the _Download as zip_ button.
 
 ![Download Demo](/images/download)
