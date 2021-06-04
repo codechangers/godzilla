@@ -38,7 +38,7 @@ const HelpModal = ({ open, onClose }) => {
       <Typography variant="body1">
         Click{' '}
         <a
-          href="https://us02web.zoom.us/j/83598664504?pwd=bmJoZ25ldzBsVjJrT3lDVFkzNTR3dz09"
+          href="https://us02web.zoom.us/j/81684325483?pwd=Wi9qRHhzWU9ZVGphRm9ReDBnc3BzQT09"
           target="_blank"
           rel="noreferrer"
         >
@@ -51,7 +51,7 @@ const HelpModal = ({ open, onClose }) => {
         you join, click the Join with Computer Audio button
       </Typography>
       <Typography variant="body1">
-        The passcode for your call is: <strong>GWA</strong>
+        The passcode for your call is: <strong>UVUPREP</strong>
       </Typography>
       <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
         Okay

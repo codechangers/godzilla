@@ -28,39 +28,61 @@ const TeacherHelpModal = ({ open, onClose, gotoHelp }) => {
         helpful hints for teachers and room supervisors!
       </Typography>
       <img src={flowchart} alt="flowchart" width="500" />
-      <Typography variant="h3">Tutorial Process:</Typography>
+      <Typography variant="h3">Pre Contest Setup Process:</Typography>
       <Typography variant="body1">1. Visit replit.com and make an account</Typography>
       <Typography variant="body1">
         2. Once created, paste in this tutorial link into the search bar{' '}
-        <a href="https://replit.com/@codechangers/io-template" target="_blank" rel="noreferrer">
-          https://replit.com/@codechangers/io-template
+        <a href="https://replit.com/@macuyler/pre-starter/#game.js" target="_blank" rel="noreferrer">
+        https://replit.com/@macuyler/pre-starter/#game.js
         </a>{' '}
       </Typography>
       <Typography variant="body1">3. Click “Fork” </Typography>
+      <Typography variant="h3">Code and Download</Typography>
+      <Typography variant="body1">1. Follow the tutorials from the Pre Contest page to start coding on the template that was forked on replit.com</Typography>
+      <Typography variant="body1">Download the code from replit.com as a zip using the three dots on the left</Typography>
+      <Typography variant="h3">Create a Game</Typography>
       <Typography variant="body1">
-        4. On the top left side of the screen, click the three dots and “Download as Zip”
-      </Typography>
-      <Typography variant="h3">Create a blobbert.io account</Typography>
-      <Typography variant="body1">1. Visit blobbert.io and make an account </Typography>
-      <Typography variant="body1">2. Click “New Game” </Typography>
-      <Typography variant="body1">3. Name the game (i.e. testgame, systemcheck, etc.)</Typography>
-      <Typography variant="body1">4. Click “Default Template” </Typography>
-      <Typography variant="body1">
-        5. Click and drag the code downloaded from replit.com into the code box on the website
+        1. Click on the Games tab in the side bar.
       </Typography>
       <Typography variant="body1">
-        6. Wait for the server to go online (up to 10 minutes)
-      </Typography>
-      <Typography variant="h3">Code and test the game</Typography>
-      <Typography variant="body1">
-        1. Follow the tutorials from the tutorial link to start coding on the template that was
-        forked on replit.com
+        2. Click the New Game button in the top bar. 
       </Typography>
       <Typography variant="body1">
-        2. Download the code from replit.com as a zip using the three dots on the left
+      (You should now see the Create a New Game form)
       </Typography>
       <Typography variant="body1">
-        3. Upload the edited code into the game you created on the blobbert.io website
+        1. In the Name field, enter a name for your game.
+      </Typography>
+      <Typography variant="body1">
+        2. Game names need to be all lower case letters, no numbers, symbols, or spaces.
+      </Typography>
+      <Typography variant="body1">
+        3. In the Type field, select Default Template.
+      </Typography>
+      <Typography variant="body1">
+        4. In the Code File field, upload the zip file that you downloaded from Repl.
+      </Typography>
+      <Typography variant="body1">
+        5. Finally you can click the SUBMIT button to create your game!
+      </Typography>
+      <Typography variant="h3">Code Contest Process (Students must finish the Pre Contest Course before starting!): </Typography>
+      <Typography variant="body1">
+        1. Login to go.codecontest.org
+      </Typography>
+      <Typography variant="body1">
+        2. Click on the student name
+      </Typography>
+      <Typography variant="body1">
+        3. Click on “Contests” 
+      </Typography>
+      <Typography variant="body1">
+        4. Click on “Start” 
+      </Typography>
+      <Typography variant="body1">
+        5. Choose a game
+      </Typography>
+      <Typography variant="body1">
+        6. Follow along with the tutorials to code on replit.com and upload the game to test 
       </Typography>
       <Typography variant="h3">Mentor help</Typography>
       <Typography variant="body1">
@@ -71,20 +93,18 @@ const TeacherHelpModal = ({ open, onClose, gotoHelp }) => {
         modal.
       </Typography>
       <Typography variant="body1">
-        2. Click on the zoom link, and wait in the waiting room for a mentor to assign a breakout
-        room for help!
+        2. Click on the zoom link, and wait in the waiting room for a mentor to assign a breakout room for help! A help chat button is also available for times when a mentor is not online. 
       </Typography>
       <Typography variant="h3">Troubleshooting</Typography>
       <Typography variant="body1">
-        1. Proofread, proofread, proofread! Most mistakes are spelling errors!{' '}
+        1. Proofread, proofread, proofread! Most mistakes are spelling errors!
       </Typography>
       <Typography variant="body1">
-        2. If the sites won’t load, please contact us! Most of the time this is a wifi or firewall
-        issue and we can work with your site to get it resolved.
+        2. If the sites won’t load, please contact us! Most of the time this is a wifi or firewall issue and we can work with your site to get it resolved.
       </Typography>
       <Typography variant="h3">Still Have Questions?</Typography>
       <Typography variant="h5">
-        Send us an email, <a href="mailto:madi@codecontest.org">madi@codecontest.org</a>
+        Send us a chat question in the bubble below, or shoot us an email to, <a href="mailto:madi@codecontest.org">madi@codecontest.org</a>
       </Typography>
       <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
         Okay

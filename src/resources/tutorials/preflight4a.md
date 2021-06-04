@@ -7,3 +7,7 @@ During the Pre Contest Course, we have provided a template in replit.com. The go
 We have provided two photos in the template, one for your game background, and one for your main character. Both images are located in the `imgs` folder. Later on this folder is where you will add all images.
 
   ![imgsfolder](/images/imgsfolder)
+
+At the end of the Pre Contest Course, you will have a basic game that has a main character that can be moved around the screen.
+
+> **To reload the code animation, click on the Pages Menu on the right.

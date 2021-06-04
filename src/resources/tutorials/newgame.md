@@ -1,6 +1,6 @@
 # Upload Your Code
 
-##### In order to see your project in action and to test it out you need to upload it to a server.
+##### In order to see your project in action and to test it out, you need to upload it to a server.
 
 The Code Contest platform allows you to run your games on a server so you can play online with your friends.
 
@@ -11,23 +11,23 @@ The Code Contest platform allows you to run your games on a server so you can pl
 You should now see the _Create a New Game_ form.
 
 3. In the `Name` field, enter a name for your game.
-    > Game names need to be all lower case letters, no numbers, symbols, or spaces.
+    > Game names need to be all lowercase letters, no numbers, symbols, or spaces.
 
 4. In the `Type` field, select **Default Template**.
 
-5. In the `Code File` field, upload the zip file that you downloaded from _Repl_.
+5. In the `CodeFile` field, upload the zip file that you downloaded from _Repl_.
 
-6. Finally you can click the `SUBMIT` button to create your game!
+6. Finally, you can click the `SUBMIT` button to create your game!
 
 ![Upload code demo](/images/upload)
 
-You should now see your game on the games screen. Before you can play your game, the server has to be built, this process can take a few minutes.
+You should now see your game on the games screen. Before you can play your game, the server has to be built. This process can take a few minutes.
 
-First, the server downloads the code, then it builds the code so it can run the game, then it sets up the project onto a url so it can connect to the game that is running. After that, you (and your friends) are able to connect to your game and play it!
+First, the server downloads the code, then it builds the code so it can run the game, then it sets up the project onto a url so it can connect to the game that is running. After that, you (and your friends) are able to connect to your game and play it by typing in the url on any computer!
 
-> _If you see an error on your url refresh the screen every once in a while, until the full build process is complete._
+> _If you see an error on your url, refresh the screen every once in a while until the full build process is complete._
 
-> _You can see the build status by clicking the `?` button on the status line._
+> _You can see the build status by clicking the ? button on the status line._
 
 
 ### Errors
