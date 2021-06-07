@@ -19,7 +19,7 @@ g.attachTo('players', client.sessionId, {
 onJoin(client, data) {
 	const x = Math.floor(Math.random() * GAME_WIDTH);
 	const y = Math.floor(Math.random() * GAME_HEIGHT);
-	g.createACharacter('players', client.sessionId,  { x:  270, y:  1990, safe:  false, speed:  5, spriteName:  "players"  });/*[*/
+	g.createACharacter('players', client.sessionId, { x, y, ...data });/*[*/
 	g.attachTo('players', client.sessionId, {  
 		name: 'healthBar',
 		x: -50,

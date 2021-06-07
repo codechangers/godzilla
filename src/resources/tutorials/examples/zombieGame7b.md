@@ -14,6 +14,15 @@ g.attachTo('players', client.sessionId, {
 	text: data.name
 });
 // End Copy
+onJoin(client, data) {
+	const x = Math.floor(Math.random() * GAME_WIDTH);
+	const y = Math.floor(Math.random() * GAME_HEIGHT);
+	g.createACharacter('players', client.sessionId, { x, y, ...data });
+	g.attachTo('players', client.sessionId, {
+		name: 'healthBar',
+		x: -50,
+		y: 40,
+		width: 100,
 		height: 10,
 		type: 'bar',
 		filled: 100
@@ -26,6 +35,5 @@ g.attachTo('players', client.sessionId, {
 		text: data.name
 	});/*]*/
 }
-
 ```
 > **Make sure to add the NameTag after the healthBar code at the bottom of the `onJoin()` function.**
