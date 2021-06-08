@@ -168,10 +168,10 @@ import zombieGame4g from './tutorials/examples/zombieGame4g.md';
 import zombieGame4h from './tutorials/examples/zombieGame4h.md';
 import zombieGame4i from './tutorials/examples/zombieGame4i.md';
 import zombieGame4j from './tutorials/examples/zombieGame4j.md';
-import zombieGame7a from './tutorials/examples/zombieGame7a.md';
-import zombieGame7b from './tutorials/examples/zombieGame7b.md';
-import zombieGame7c from './tutorials/examples/zombieGame7c.md';
-import zombieGame7d from './tutorials/examples/zombieGame7d.md';
+import zombieGame5a from './tutorials/examples/zombieGame5a.md';
+import zombieGame5b from './tutorials/examples/zombieGame5b.md';
+import zombieGame5c from './tutorials/examples/zombieGame5c.md';
+import zombieGame5d from './tutorials/examples/zombieGame5d.md';
 import zombieGame8a from './tutorials/examples/zombieGame8a.md';
 import zombieGame8b from './tutorials/examples/zombieGame8b.md';
 import zombieGame8c from './tutorials/examples/zombieGame8c.md';
@@ -329,10 +329,10 @@ const zombieGame = {
   'Zombie 4H': zombieGame4h,
   'Zombie 4I': zombieGame4i,
   'Zombie 4✓': zombieGame4j,
-  'Zombie 5A': zombieGame7a,
-  'Zombie 5B': zombieGame7b,
-  'Zombie 5C': zombieGame7c,
-  'Zombie 5✓': zombieGame7d,
+  'Zombie 5A': zombieGame5a,
+  'Zombie 5B': zombieGame5b,
+  'Zombie 5C': zombieGame5c,
+  'Zombie 5✓': zombieGame5d,
   'Zombie 6A': zombieGame8a,
   'Zombie 6B': zombieGame8b,
   'Zombie 6✓': zombieGame8c,
