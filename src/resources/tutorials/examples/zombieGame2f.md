@@ -13,11 +13,11 @@ This will spawn zombies into our game in waves.
 // File: room.js
 // Copy
 const waveTimer = 2500;
-setInterval(() => g.createACharacter('zombies',
-	g.nextCharacterId('zombies'), {
-		x: Math.floor((Math.random() * GAME_WIDTH) + 1),
-		y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
-	}), waveTimer);
+		setInterval(() => g.createACharacter('zombies',
+			g.nextCharacterId('zombies'), {
+				x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+				y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+			}), waveTimer);
 // End Copy
 onInit() {
 	g.setup(this);
