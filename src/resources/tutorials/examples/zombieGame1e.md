@@ -6,7 +6,7 @@
 
 ### Set the client game width.
 
-In `game.js`, Change the game width in the top of the file from **2000** to **600**.
+In `game.js`, Change the game width in the top of the file from **2000** to **4000**.
 
 ```javascript
 // File: game.js
@@ -25,7 +25,7 @@ const keyCodes = Phaser.Input.Keyboard.KeyCodes;
 
 ### Set the server game width.
 
-In `room.js`, Change the game width in the top of the file from **2000** to **600**.
+In `room.js`, Change the game width in the top of the file from **2000** to **4000**.
 
 ```javascript
 // File: room.js

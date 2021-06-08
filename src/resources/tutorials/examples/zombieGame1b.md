@@ -2,11 +2,11 @@
 
 ## Add a new background and character to your game.
 
-**(Step 2/5)** Load the new backgroun into your game.
+**(Step 2/5)** Load the new background into your game.
 
 ### Update the image path.
 
-In `game.js`, Change the path to the background image in the `preload()` _method_.
+In `game.js`, Change the path to the background image in the `preload` _method_.
 
 ```javascript
 // File: game.js
