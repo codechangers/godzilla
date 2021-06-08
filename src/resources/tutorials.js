@@ -180,8 +180,8 @@ import zombieGame7b from './tutorials/examples/zombieGame7b.md';
 import zombieGame8a from './tutorials/examples/zombieGame8a.md';
 import zombieGame8b from './tutorials/examples/zombieGame8b.md';
 import zombieGame8c from './tutorials/examples/zombieGame8c.md';
-import zombieGame11a from './tutorials/examples/zombieGame11a.md';
-import zombieGame11b from './tutorials/examples/zombieGame11b.md';
+import zombieGame9a from './tutorials/examples/zombieGame9a.md';
+import zombieGame9b from './tutorials/examples/zombieGame9b.md';
 import zombieGame12a from './tutorials/examples/zombieGame12a.md';
 
 const blocks = {
@@ -341,8 +341,8 @@ const zombieGame = {
   'Zombie 8A': zombieGame8a,
   'Zombie 8B': zombieGame8b,
   'Zombie 8✓': zombieGame8c,
-  'Zombie 9A': zombieGame11a,
-  'Zombie 9✓': zombieGame11b,
+  'Zombie 9A': zombieGame9a,
+  'Zombie 9✓': zombieGame9b,
   'Zombie ✓': zombieGame12a
 };
 
