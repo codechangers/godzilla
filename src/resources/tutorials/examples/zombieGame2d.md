@@ -1,20 +1,23 @@
-# 2. Add Zombies
-(Step 4/7)
+# Zombie Game - 2.D
 
-##### 4. In `game.js`, Add `getCharacters()` function in the `create()` function.
+## Add zombies into your game.
+
+**(Step 4/7)** Setup your zombie characters on the server.
+
+### Setup your zombie characters.
+
+In `room.js`, we need to add a new `setupCharacters` _function_ to the `onInit` _method_.
+This will setup our zombie characters on the server!
 
 ``` javascript
-// File: code/client/src/game.js
+// File: room.js
 // Copy
-g.getCharacters('zombies');
+g.setupCharacters('zombies');
 // End Copy
-g.drawBackground('background');
-g.setupKeys(keys);
-g.useLoginScreen((name) => g.connect({ name }));
-g.getCharacters('players', (player) => {
-	if (player.id === g.myId()) {
-		g.cameraFollow(player.sprite);
-	}
-});/*[*/
-g.getCharacters('zombies');/*]*/
+onInit() {
+	g.setup(this);
+	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+	g.setupCharacters('players');/*[*/
+	g.setupCharacters('zombies');/*]*/
+}
 ```

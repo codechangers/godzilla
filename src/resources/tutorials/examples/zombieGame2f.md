@@ -1,16 +1,37 @@
-# 2. Add Zombies
-(Step 6/7)
+# Zombie Game - 2.F
 
-##### 6. In `room.js`, add the `follow()` function inside the `onUpdate()` function so that zombies will follow you.
+## Add zombies into your game.
+
+**(Step 6/7)** Spawn zombies in waves throughout the game.
+
+### Create zombies in waves.
+
+In `room.js`, we need to use the `setInterval` _function_ along with the `createACharacter` _function_ inside the `onInit` _method_.
+This will spawn zombies into our game in waves.
+
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-g.follow('players', 'zombies', 1, 0.1);
+const waveTimer = 2500;
+setInterval(() => g.createACharacter('zombies',
+	g.nextCharacterId('zombies'), {
+		x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+		y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+	}), waveTimer);
 // End Copy
-onUpdate(dt) {
-	/*[*/g.follow('players', 'zombies', 1, 0.1);/*]*/
-}
+onInit() {
+	g.setup(this);
+	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+	g.setupCharacters('players');
+	g.setupCharacters('zombies');/*[*/
 
+	const waveTimer = 2500;
+	setInterval(() => g.createACharacter('zombies',
+		g.nextCharacterId('zombies'), {
+			x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+			y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+		}), waveTimer);/*]*/
+}
 ```
 
-> **You can change the numbers to change the distance the zombies will come to your character, and the speed of the zombies.**
+> **The `waveTimer` will determine how long each wave of zombies lasts. The example is `2500` which would make the waves last 2.5 seconds.**

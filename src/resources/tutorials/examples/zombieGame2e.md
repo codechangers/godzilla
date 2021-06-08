@@ -1,29 +1,29 @@
-# 2. Add Zombies
-(Step 5/7)
+# Zombie Game - 2.E
 
-##### 5. In `room.js`, add a `setInterval()` function to randomly spawn zombies across the map inside the `onInit()` function.
+## Add zombies into your game.
+
+**(Step 5/7)** Subscribe to the zombie state from the server.
+
+### Get the zombies from the server.
+
+In `game.js`, we need to add a new `getCharacters` _function_ to the `create` _method_.
+This will get the zombies state from the server!
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: game.js
 // Copy
-setInterval(() => g.createACharacter('zombies',
-	g.nextCharacterId('zombies'), {
-		x: Math.floor((Math.random() * 2000) + 1),
-		y: Math.floor((Math.random() * 2000) + 1)
-	}), 2500);
+g.getCharacters('zombies');
 // End Copy
-onInit() {
-	g.setup(this);
-	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-	g.setupCharacters('players');
-	g.setupCharacters('zombies', 0.5);/*[*/
-	setInterval(() => g.createACharacter('zombies',
-	g.nextCharacterId('zombies'), {
-	x: Math.floor((Math.random() * 2000) + 1),
-	y: Math.floor((Math.random() * 2000) + 1)
-}), 2500);/*]*/
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name) => g.connect({ name }));
+	g.useStore('The Store', []);
+	g.drawBackground('background');
+	g.getCharacters('players', (player) => {
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});/*[*/
+	g.getCharacters('zombies');/*]*/
 }
-
 ```
-
-> **The number at the end will determine how long to wait until it spawns another zombie, and the two 2000 numbers are the bounds for where the zombies should spawn.**
