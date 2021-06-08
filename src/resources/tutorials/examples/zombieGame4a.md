@@ -1,10 +1,15 @@
-# 4. Setup Bullets
- (Step 1/10)
+# Run Game - 4.A
 
-##### 1. in `game.js`, Create bullets using the `addCharacters()` function inside the `init()` function.  
+## Add shooting to the game.
+
+**(Step 1/9)** Add bullet characters to the game.
+
+### Add bullet characters.
+
+In `game.js`, we need to add another `addCharacters` _function_ to the `init` _method_. This will add the bullet characters to our game.
 
 ``` javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.addCharacters('bullets', 0.5);
 // End Copy

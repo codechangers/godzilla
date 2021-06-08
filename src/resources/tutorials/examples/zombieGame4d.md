@@ -1,10 +1,15 @@
-# 4. Setup Bullets
- (Step 4/10)
+# Run Game - 4.D
 
-##### 4. In `room.js`, Create a `setupCharacters()` function inside the `onInit()` function to set them up on the server.
+## Add shooting to the game.
+
+**(Step 4/9)** Setup the bullet characters on the server.
+
+### Setup the bullet characters.
+
+In `room.js`, we need to add another `setupCharacters` _function_ to the `onInit` _method_. This will setup our bullet characters.
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.setupCharacters('bullets');
 // End Copy
@@ -12,14 +17,14 @@ onInit() {
 	g.setup(this);
 	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
 	g.setupCharacters('players');
-	g.setupCharacters('zombies', 0.5);/*[*/
+	g.setupCharacters('zombies');/*[*/
 	g.setupCharacters('bullets');/*]*/
-	g.setupCharacters('bullets');
-    setInterval(() => g.createACharacter('zombies',
-	    g.nextCharacterId('zombies'), {
-		  x: Math.floor((Math.random() * 2000) + 1),
-		  y: Math.floor((Math.random() * 2000) + 1)
-	  }), 2500);
-```
 
-    
+	const waveTimer = 2500;
+	setInterval(() => g.createACharacter('zombies',
+		g.nextCharacterId('zombies'), {
+			x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+			y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+		}), waveTimer);
+}
+```

@@ -1,20 +1,25 @@
-# 4. Setup Bullets
- (Step 8/10)
+# Run Game - 4.H
 
-##### 8. In `room.js`, add the `handleAnimations()` function in the `onUpdate()` function.
+## Add shooting to the game.
+
+**(Step 8/9)** Handle the bullet animations when the server updates.
+
+### Handle bullet animations.
+
+In `room.js`, we need to add a `handleAnimations` _function_ to the `onUpdate` _method_. This will handle our bullet animations!
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.handleAnimations('bullets');
 // End Copy
 onUpdate(dt) {
-	g.follow('players', 'zombies', 1, 0.1);/*[*/
-	g.handleAnimations('bullets');/*]*/
+	g.follow('players', 'zombies', 1, 0.1);
 	g.handleCollision('players', 'zombies', (player) => {
 		if (player.healthBar.filled > 0) {
 			player.healthBar.filled -= 0.1;
 		}
-	});
+	});/*[*/
+	g.handleAnimations('bullets');/*]*/
 }
 ```

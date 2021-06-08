@@ -1,17 +1,22 @@
-# 4. Setup Bullets
- (Step 2/10)
+# Run Game - 4.B
 
-##### 2. in `game.js`, Create `loadImage()` function to load the image for the bullets in the `preload()` function.
+## Add shooting to the game.
+
+**(Step 2/9)** Load the bullet image into the game.
+
+### Load the bullet image.
+
+In `game.js`, we need to add another `loadImage` _function_ to the `preload` _method_. This will load our bullet image into the game.
 
 ``` javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
 g.loadImage('bullets', 'bullet.png');
 // End Copy
 preload() {
-	g.loadImage('background', 'bg.png');
-	g.loadImage('players', 'logo.png');
-	g.loadImage('zombies', 'zombies.png');/*[*/
+	g.loadImage('background', 'new-background.png');
+	g.loadImage('players', 'new-player.png');
+	g.loadImage('zombies', 'zombie.png');/*[*/
 	g.loadImage('bullets', 'bullet.png');/*]*/
 }
 ```

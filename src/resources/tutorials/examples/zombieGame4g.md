@@ -1,16 +1,19 @@
-# 4. Setup Bullets
- (Step 7/10)
+# Run Game - 4.G
 
-##### 7. In `game.js`, Add the `sendAction()` function inside the `click()` function near the bottom of the page.
+## Add shooting to the game.
+
+**(Step 7/9)** Send the click action when the mouse is clicked.
+
+### Send click actions from player.
+
+In `game.js`, we need to add a `sendAction` _function_ to the `click` _method_. This will send our click action when we click with our mouse.
 
 ``` javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.sendAction('click', {x, y});
+g.sendAction('click', { x, y });
 // End Copy
 click(x, y) {  
-	/*[*/g.sendAction('click', {x, y});/*]*/
+	/*[*/g.sendAction('click', { x, y });/*]*/
 }
 ```
-
-Now there is only two more things we need to do to make our bullets shoot, first check and make sure your **game.js** file has a `click` _method_ that looks like this:

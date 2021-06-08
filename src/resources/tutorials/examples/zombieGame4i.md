@@ -1,25 +1,32 @@
-# 4. Setup Bullets
- (Step 9/10)
+# Run Game - 4.I
 
-##### 9. In `room.js`, Add code to handle the collision and delete the zombies if they collide with the bullets in the `onUpdate()` function.
+## Add shooting to the game.
+
+**(Step 9/9)** Delete zombies when they are hit by a bullet.
+
+### Make it so bullets hit zombies.
+
+In `room.js`, we need to add another `handleCollision` _function_ to our `onUpdate` _method_. This will make it so zombies are deleted when they get hit by a bullet.
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
-	g.deleteACharacter('zombies', zombie.id);
-	g.deleteACharacter('bullets', bullet.id);
-});
+			g.deleteACharacter('zombies', zombie.id);
+			g.deleteACharacter('bullets', bullet.id);
+		});
 // End Copy
 onUpdate(dt) {
 	g.follow('players', 'zombies', 1, 0.1);
+	g.handleCollision('players', 'zombies', (player) => {
+		if (player.healthBar.filled > 0) {
+			player.healthBar.filled -= 0.1;
+		}
+	});
 	g.handleAnimations('bullets');/*[*/
 	g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
-	g.deleteACharacter('zombies', zombie.id);
-	g.deleteACharacter('bullets', bullet.id);
-});/*]*/
-  }
-
+		g.deleteACharacter('zombies', zombie.id);
+		g.deleteACharacter('bullets', bullet.id);
+	});/*]*/
+}
 ```
-
-Now you should have working bullets that can kill the zombies when you shoot!
