@@ -158,16 +158,16 @@ import zombieGame2g from './tutorials/examples/zombieGame2g.md';
 import zombieGame3a from './tutorials/examples/zombieGame3a.md';
 import zombieGame3b from './tutorials/examples/zombieGame3b.md';
 import zombieGame3c from './tutorials/examples/zombieGame3c.md';
-import zombieGame6a from './tutorials/examples/zombieGame6a.md';
-import zombieGame6b from './tutorials/examples/zombieGame6b.md';
-import zombieGame6c from './tutorials/examples/zombieGame6c.md';
-import zombieGame6d from './tutorials/examples/zombieGame6d.md';
-import zombieGame6e from './tutorials/examples/zombieGame6e.md';
-import zombieGame6f from './tutorials/examples/zombieGame6f.md';
-import zombieGame6g from './tutorials/examples/zombieGame6g.md';
-import zombieGame6h from './tutorials/examples/zombieGame6h.md';
-import zombieGame6i from './tutorials/examples/zombieGame6i.md';
-import zombieGame6j from './tutorials/examples/zombieGame6j.md';
+import zombieGame4a from './tutorials/examples/zombieGame4a.md';
+import zombieGame4b from './tutorials/examples/zombieGame4b.md';
+import zombieGame4c from './tutorials/examples/zombieGame4c.md';
+import zombieGame4d from './tutorials/examples/zombieGame4d.md';
+import zombieGame4e from './tutorials/examples/zombieGame4e.md';
+import zombieGame4f from './tutorials/examples/zombieGame4f.md';
+import zombieGame4g from './tutorials/examples/zombieGame4g.md';
+import zombieGame4h from './tutorials/examples/zombieGame4h.md';
+import zombieGame4i from './tutorials/examples/zombieGame4i.md';
+import zombieGame4j from './tutorials/examples/zombieGame4j.md';
 import zombieGame7a from './tutorials/examples/zombieGame7a.md';
 import zombieGame7b from './tutorials/examples/zombieGame7b.md';
 import zombieGame7c from './tutorials/examples/zombieGame7c.md';
@@ -319,16 +319,16 @@ const zombieGame = {
   'Zombie 3A': zombieGame3a,
   'Zombie 3B': zombieGame3b,
   'Zombie 3✓': zombieGame3c,
-  'Zombie 4A': zombieGame6a,
-  'Zombie 4B': zombieGame6b,
-  'Zombie 4C': zombieGame6c,
-  'Zombie 4D': zombieGame6d,
-  'Zombie 4E': zombieGame6e,
-  'Zombie 4F': zombieGame6f,
-  'Zombie 4G': zombieGame6g,
-  'Zombie 4H': zombieGame6h,
-  'Zombie 4I': zombieGame6i,
-  'Zombie 4✓': zombieGame6j,
+  'Zombie 4A': zombieGame4a,
+  'Zombie 4B': zombieGame4b,
+  'Zombie 4C': zombieGame4c,
+  'Zombie 4D': zombieGame4d,
+  'Zombie 4E': zombieGame4e,
+  'Zombie 4F': zombieGame4f,
+  'Zombie 4G': zombieGame4g,
+  'Zombie 4H': zombieGame4h,
+  'Zombie 4I': zombieGame4i,
+  'Zombie 4✓': zombieGame4j,
   'Zombie 5A': zombieGame7a,
   'Zombie 5B': zombieGame7b,
   'Zombie 5C': zombieGame7c,
