@@ -1,24 +1,28 @@
-# 3. Add a Health Bar
- (Step 2/3)
+# Run Game - 3.B
 
-##### 2. In `room.js`, Create a `handleCollision()` function inside the `onUpdate()` function so that our health bar will update when we collide with zombies.
+## Add player health bars.
+
+**(Step 2/2)** Decrease player health when they get hit by a zombie.
+
+### Make players take damage from zombies.
+
+In `room.js`, we need to add a `handleCollision` _function_ to the `onUpdate` _method_. This will make it so the players take damage when they get hit by a zombie.
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.handleCollision('players', 'zombies', (player) => {
-	if (player.healthBar.filled > 0) {
-		player.healthBar.filled -= 0.1;
-	}
-});
+			if (player.healthBar.filled > 0) {
+				player.healthBar.filled -= 0.1;
+			}
+		});
 // End Copy
 onUpdate(dt) {
 	g.follow('players', 'zombies', 1, 0.1);/*[*/
 	g.handleCollision('players', 'zombies', (player) => {
-	if (player.healthBar.filled > 0) {
-		player.healthBar.filled -= 0.1;
-	}
-});/*]*/
+		if (player.healthBar.filled > 0) {
+			player.healthBar.filled -= 0.1;
+		}
+	});/*]*/
 }
-
 ```

@@ -1,7 +1,6 @@
-# 3. Add a Health Bar
- (Step 3/3)
- 
-After completing the steps below, you should see your new background in the game!
+# Added Player Health Bars
+
+After completing the steps below, players in your game should have health bars that are depleted by touching zombies!
 
 {% include blocks/stop.md %}
 

@@ -1,20 +1,25 @@
-# 3. Add a Health Bar
- (Step 1/3)
+# Run Game - 3.A
 
-##### 1. In `room.js` Create an `attachTo()` function inside the `onJoin()` function to add a health bar
+## Add player health bars.
+
+**(Step 1/2)** Attach a health bar to players when they join the game.
+
+### Attach a health bar to players.
+
+In `room.js`, we need to add an `attachTo` _function_ to the `onJoin` _method_. This will attach a health bar to players when they join the game!
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
 g.attachTo('players', client.sessionId, {  
-	name: 'healthBar',
-	x: -50,
-	y: 40,
-	width: 100,
-	height: 10,
-	type: 'bar',
-	filled: 100
-});
+			name: 'healthBar',
+			x: -50,
+			y: 40,
+			width: 100,
+			height: 10,
+			type: 'bar',
+			filled: 100
+		});
 // End Copy
 onJoin(client, data) {
 	const x = Math.floor(Math.random() * GAME_WIDTH);
