@@ -148,13 +148,13 @@ import zombieGame1c from './tutorials/examples/zombieGame1c.md';
 import zombieGame1d from './tutorials/examples/zombieGame1d.md';
 import zombieGame1e from './tutorials/examples/zombieGame1e.md';
 import zombieGame1g from './tutorials/examples/zombieGame1g.md';
-import zombieGame4a from './tutorials/examples/zombieGame4a.md';
-import zombieGame4b from './tutorials/examples/zombieGame4b.md';
-import zombieGame4c from './tutorials/examples/zombieGame4c.md';
-import zombieGame4d from './tutorials/examples/zombieGame4d.md';
-import zombieGame4e from './tutorials/examples/zombieGame4e.md';
-import zombieGame4f from './tutorials/examples/zombieGame4f.md';
-import zombieGame4g from './tutorials/examples/zombieGame4g.md';
+import zombieGame2a from './tutorials/examples/zombieGame2a.md';
+import zombieGame2b from './tutorials/examples/zombieGame2b.md';
+import zombieGame2c from './tutorials/examples/zombieGame2c.md';
+import zombieGame2d from './tutorials/examples/zombieGame2d.md';
+import zombieGame2e from './tutorials/examples/zombieGame2e.md';
+import zombieGame2f from './tutorials/examples/zombieGame2f.md';
+import zombieGame2g from './tutorials/examples/zombieGame2g.md';
 import zombieGame5a from './tutorials/examples/zombieGame5a.md';
 import zombieGame5b from './tutorials/examples/zombieGame5b.md';
 import zombieGame5c from './tutorials/examples/zombieGame5c.md';
@@ -309,13 +309,13 @@ const zombieGame = {
   'Zombie 1D': zombieGame1d,
   'Zombie 1E': zombieGame1e,
   'Zombie 1✓': zombieGame1g,
-  'Zombie 2A': zombieGame4a,
-  'Zombie 2B': zombieGame4c,
-  'Zombie 2C': zombieGame4b,
-  'Zombie 2D': zombieGame4d,
-  'Zombie 2E': zombieGame4e,
-  'Zombie 2F': zombieGame4f,
-  'Zombie 2✓': zombieGame4g,
+  'Zombie 2A': zombieGame2a,
+  'Zombie 2B': zombieGame2c,
+  'Zombie 2C': zombieGame2b,
+  'Zombie 2D': zombieGame2d,
+  'Zombie 2E': zombieGame2e,
+  'Zombie 2F': zombieGame2f,
+  'Zombie 2✓': zombieGame2g,
   'Zombie 3A': zombieGame5a,
   'Zombie 3B': zombieGame5b,
   'Zombie 3✓': zombieGame5c,
