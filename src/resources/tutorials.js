@@ -169,6 +169,7 @@ import zombieGame4g from './tutorials/examples/zombieGame4g.md';
 import zombieGame4h from './tutorials/examples/zombieGame4h.md';
 import zombieGame4i from './tutorials/examples/zombieGame4i.md';
 import zombieGame4j from './tutorials/examples/zombieGame4j.md';
+import zombieGame4k from './tutorials/examples/zombieGame4k.md';
 import zombieGame5a from './tutorials/examples/zombieGame5a.md';
 import zombieGame5b from './tutorials/examples/zombieGame5b.md';
 import zombieGame5c from './tutorials/examples/zombieGame5c.md';
@@ -330,7 +331,8 @@ const zombieGame = {
   'Zombie 4G': zombieGame4g,
   'Zombie 4H': zombieGame4h,
   'Zombie 4I': zombieGame4i,
-  'Zombie 4✓': zombieGame4j,
+  'Zombie 4J': zombieGame4j,
+  'Zombie 4✓': zombieGame4k,
   'Zombie 5A': zombieGame5a,
   'Zombie 5B': zombieGame5b,
   'Zombie 5C': zombieGame5c,

@@ -2,18 +2,49 @@
 
 ## Add shooting to the game.
 
-**(Step 7/9)** Send the click action when the mouse is clicked.
+**(Step 7/10)** Create a bullet and launch it when the click action is called.
 
-### Send click actions from player.
+### Create bullets in the click action.
 
-In `game.js`, we need to add a `sendAction` _function_ to the `click` _method_. This will send our click action when we click with our mouse.
+In `room.js`, we need to add a `createACharacter` _function_ inside our `click` _action_ from the previous step, inside the `onMessage` _method_.
 
 ``` javascript
-// File: game.js
+// File: room.js
 // Copy
-g.sendAction('click', { x, y });
+const bulletSpeed = 500;
+				const bulletDuration = 2000;
+				const index = g.nextCharacterId('bullets');
+				g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
+				let newCharacter = g.getACharacter('bullets', index);
+				g.playAnimation(newCharacter, 'x',
+					g.getXTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+				g.playAnimation(newCharacter, 'y',
+					g.getYTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+				setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), bulletDuration);
 // End Copy
-click(x, y) {  
-	/*[*/g.sendAction('click', { x, y });/*]*/
+onMessage(client, data) {
+	const player = g.getACharacter('players', client.sessionId);
+	const speed = 10;
+	const actions = {
+		moveUp: () => g.move(player, 'y', -speed),
+		moveDown: () => g.move(player, 'y', speed),
+		moveLeft: () => g.move(player, 'x', -speed),
+		moveRight: () => g.move(player, 'x', speed),
+		click: () => {/*{*/},/*}[*/
+			const bulletSpeed = 500;
+			const bulletDuration = 2000;
+			const index = g.nextCharacterId('bullets');
+			g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
+			let newCharacter = g.getACharacter('bullets', index);
+			g.playAnimation(newCharacter, 'x',
+				g.getXTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+			g.playAnimation(newCharacter, 'y',
+				g.getYTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+			setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), bulletDuration);
+		},/*]*/
+	};
+	g.handleActions(actions, data);
 }
 ```
+
+> **Note:** You can change the `bulletSpeed` and `bulletDuration` to affect how fast, and how far your bullet goes.

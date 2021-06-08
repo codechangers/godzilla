@@ -2,7 +2,7 @@
 
 ## Add shooting to the game.
 
-**(Step 2/9)** Load the bullet image into the game.
+**(Step 2/10)** Load the bullet image into the game.
 
 ### Load the bullet image.
 

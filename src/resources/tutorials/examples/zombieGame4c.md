@@ -2,28 +2,22 @@
 
 ## Add shooting to the game.
 
-**(Step 3/9)** Get the bullets state from the server.
+**(Step 3/10)** Add bullet characters to the game.
 
-### Get bullets from the server.
+### Add bullet characters.
 
-In `game.js`, we need to add another `getCharacter` _function_ to the `create` _method_. This will get the bullets state from the server.
+In `game.js`, we need to add another `addCharacters` _function_ to the `init` _method_. This will add the bullet characters to our game.
 
 ``` javascript
 // File: game.js
 // Copy
-g.getCharacters('bullets');
+g.addCharacters('bullets', 0.5);
 // End Copy
-create() {
-	g.setupKeys(keys);
-	g.useLoginScreen((name) => g.connect({ name }));
-	g.useStore('The Store', []);
-	g.drawBackground('background');
-	g.getCharacters('players', (player) => {
-		if (player.id === g.myId()) {
-			g.cameraFollow(player.sprite);
-		}
-	});
-	g.getCharacters('zombies');/*[*/
-	g.getCharacters('bullets');/*]*/
+init() {
+	g.setup(this);
+	g.setSize(GAME_WIDTH, GAME_HEIGHT);
+	g.addCharacters('players', 0.5);
+	g.addCharacters('zombies', 0.5);/*[*/
+	g.addCharacters('bullets', 0.5);/*]*/
 }
 ```

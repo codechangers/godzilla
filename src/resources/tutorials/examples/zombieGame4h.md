@@ -2,24 +2,18 @@
 
 ## Add shooting to the game.
 
-**(Step 8/9)** Handle the bullet animations when the server updates.
+**(Step 8/10)** Send the click action when the mouse is clicked.
 
-### Handle bullet animations.
+### Send click actions from player.
 
-In `room.js`, we need to add a `handleAnimations` _function_ to the `onUpdate` _method_. This will handle our bullet animations!
+In `game.js`, we need to add a `sendAction` _function_ to the `click` _method_. This will send our click action when we click with our mouse.
 
 ``` javascript
-// File: room.js
+// File: game.js
 // Copy
-g.handleAnimations('bullets');
+g.sendAction('click', { x, y });
 // End Copy
-onUpdate(dt) {
-	g.follow('players', 'zombies', 1, 0.1);
-	g.handleCollision('players', 'zombies', (player) => {
-		if (player.healthBar.filled > 0) {
-			player.healthBar.filled -= 0.1;
-		}
-	});/*[*/
-	g.handleAnimations('bullets');/*]*/
+click(x, y) {
+	/*[*/g.sendAction('click', { x, y });/*]*/
 }
 ```

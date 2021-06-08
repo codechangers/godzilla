@@ -2,27 +2,29 @@
 
 ## Add shooting to the game.
 
-**(Step 5/9)** Create a new action called click!
+**(Step 5/10)** Setup the bullet characters on the server.
 
-### Create the click action.
+### Setup the bullet characters.
 
-In `room.js`, we need to add a new _value_ to our `actions` _object_ inside the `onMessage` _method_.
+In `room.js`, we need to add another `setupCharacters` _function_ to the `onInit` _method_. This will setup our bullet characters.
 
 ``` javascript
 // File: room.js
 // Copy
-click: () => {},
+g.setupCharacters('bullets');
 // End Copy
-onMessage(client, data) {
-	const player = g.getACharacter('players', client.sessionId);
-	const speed = 10;
-	const actions = {
-		moveUp: () => g.move(player, 'y', -speed),
-		moveDown: () => g.move(player, 'y', speed),
-		moveLeft: () => g.move(player, 'x', -speed),
-		moveRight: () => g.move(player, 'x', speed),/*[*/
-		click: () => {},/*]*/
-	};
-	g.handleActions(actions, data);
+onInit() {
+	g.setup(this);
+	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
+	g.setupCharacters('players');
+	g.setupCharacters('zombies');/*[*/
+	g.setupCharacters('bullets');/*]*/
+
+	const waveTimer = 2500;
+	setInterval(() => g.createACharacter('zombies',
+		g.nextCharacterId('zombies'), {
+			x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+			y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+		}), waveTimer);
 }
 ```

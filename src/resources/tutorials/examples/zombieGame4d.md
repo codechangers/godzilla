@@ -2,29 +2,28 @@
 
 ## Add shooting to the game.
 
-**(Step 4/9)** Setup the bullet characters on the server.
+**(Step 4/10)** Get the bullets state from the server.
 
-### Setup the bullet characters.
+### Get bullets from the server.
 
-In `room.js`, we need to add another `setupCharacters` _function_ to the `onInit` _method_. This will setup our bullet characters.
+In `game.js`, we need to add another `getCharacter` _function_ to the `create` _method_. This will get the bullets state from the server.
 
 ``` javascript
-// File: room.js
+// File: game.js
 // Copy
-g.setupCharacters('bullets');
+g.getCharacters('bullets');
 // End Copy
-onInit() {
-	g.setup(this);
-	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
-	g.setupCharacters('players');
-	g.setupCharacters('zombies');/*[*/
-	g.setupCharacters('bullets');/*]*/
-
-	const waveTimer = 2500;
-	setInterval(() => g.createACharacter('zombies',
-		g.nextCharacterId('zombies'), {
-			x: Math.floor((Math.random() * GAME_WIDTH) + 1),
-			y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
-		}), waveTimer);
+create() {
+	g.setupKeys(keys);
+	g.useLoginScreen((name) => g.connect({ name }));
+	g.useStore('The Store', []);
+	g.drawBackground('background');
+	g.getCharacters('players', (player) => {
+		if (player.id === g.myId()) {
+			g.cameraFollow(player.sprite);
+		}
+	});
+	g.getCharacters('zombies');/*[*/
+	g.getCharacters('bullets');/*]*/
 }
 ```
