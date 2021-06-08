@@ -1,22 +1,33 @@
-# 1 Setup Camera Follow
- (Step 1/2)
+# 3. Add a Health Bar
+ (Step 1/3)
 
-##### 1. In `game.js`, Setup the camera follow function in the `create()` function.
+##### 1. In `room.js` Create an `attachTo()` function inside the `onJoin()` function to add a health bar
 
 ``` javascript
-// File: code/client/src/game.js
+// File: code/server/rooms/room.js
 // Copy
-g.getCharacters('players', (player) => {
-	if (player.id === g.myId()) {
-		g.cameraFollow(player.sprite);
-	}
+g.attachTo('players', client.sessionId, {  
+	name: 'healthBar',
+	x: -50,
+	y: 40,
+	width: 100,
+	height: 10,
+	type: 'bar',
+	filled: 100
 });
 // End Copy
-	/*[*/g.getCharacters('players', (player) => {
-	if (player.id === g.myId()) {
-		g.cameraFollow(player.sprite);
-	}
-});/*]*/
+onJoin(client, data) {
+	const x = Math.floor(Math.random() * GAME_WIDTH);
+	const y = Math.floor(Math.random() * GAME_HEIGHT);
+	g.createACharacter('players', client.sessionId, { x, y, ...data });/*[*/
+	g.attachTo('players', client.sessionId, {  
+		name: 'healthBar',
+		x: -50,
+		y: 40,
+		width: 100,
+		height: 10,
+		type: 'bar',
+		filled: 100
+	});/*]*/
+}
 ```
-
-> **Make sure that you **don't** write a new [getCharacters](/docs/getCharacters/) _function_, just change the one you already had for `'players'`.**
