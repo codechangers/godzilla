@@ -182,7 +182,7 @@ import zombieGame8b from './tutorials/examples/zombieGame8b.md';
 import zombieGame8c from './tutorials/examples/zombieGame8c.md';
 import zombieGame9a from './tutorials/examples/zombieGame9a.md';
 import zombieGame9b from './tutorials/examples/zombieGame9b.md';
-import zombieGame12a from './tutorials/examples/zombieGame12a.md';
+import zombieGame10a from './tutorials/examples/zombieGame10a.md';
 
 const blocks = {
   addAStore,
@@ -343,7 +343,7 @@ const zombieGame = {
   'Zombie 8✓': zombieGame8c,
   'Zombie 9A': zombieGame9a,
   'Zombie 9✓': zombieGame9b,
-  'Zombie ✓': zombieGame12a
+  'Zombie ✓': zombieGame10a
 };
 
 export const PICK_A_GAME = 'Hello Contestant';
