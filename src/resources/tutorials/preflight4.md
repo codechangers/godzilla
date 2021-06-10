@@ -1,6 +1,6 @@
 # Add Images to your Game
 
-##### 1. Go into the `preload` _function_ in `game.js` and add your background image to your game.
+##### 1. Go into the `preload` _function_ in `game.js` and change the name of your background image. Have it match the name of the image you just added into the `imgs` folder.
 
 ```javascript
 // File: game.js
@@ -8,8 +8,8 @@
 g.loadImage('background', 'bg.png');
 // End Copy
 preload() {
-   /*[*/g.loadImage('background', 'bg.png');/*]*/
+   g.loadImage('background', /*{*/'bg.png'/*}[*/'newimage.png');/*]*/
 }
 ```
 
-> **Make sure to change the names of the image to match the names of the images you added to the `img` folder. Leave the name `background` the same.
+###### Make sure to only us `.png` or `.jpg` files, `.jpeg` and `.gif` will not load in your game.
