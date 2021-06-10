@@ -7,21 +7,9 @@ import fork1 from './tutorials/fork1.md';
 import fork2 from './tutorials/fork2.md';
 import fork3 from './tutorials/fork3.md';
 import fork4 from './tutorials/fork4.md';
-import preflight4a from './tutorials/preflight4a.md';
 import preflight4 from './tutorials/preflight4.md';
-import preflight5 from './tutorials/preflight5.md';
-import preflight6 from './tutorials/preflight6.md';
-import preflight7 from './tutorials/preflight7.md';
-import preflight8 from './tutorials/preflight8.md';
-import preflight9 from './tutorials/preflight9.md';
-import preflight10 from './tutorials/preflight10.md';
-import preflight11 from './tutorials/preflight11.md';
-import preflight12 from './tutorials/preflight12.md';
-import preflight13 from './tutorials/preflight13.md';
-import preflight14 from './tutorials/preflight14.md';
-import preflight15 from './tutorials/preflight15.md';
-import preflight16 from './tutorials/preflight16.md';
-import preflight17 from './tutorials/preflight17.md';
+import preflight4a from './tutorials/preflight4a.md';
+import preflight4b from './tutorials/preflight4b.md';
 import preflight18 from './tutorials/preflight18.md';
 import savezip from './tutorials/savezip.md';
 import newgame from './tutorials/newgame.md';
@@ -361,19 +349,7 @@ export const preFlight = {
   '4) Fork 4': fork4,
   '1) Pre Contest 1': preflight4a,
   '2) Pre Contest 2': preflight4,
-  '3) Pre Contest 3': preflight5,
-  '4) Pre Contest 4': preflight6,
-  '5) Pre Contest 5': preflight7,
-  '6) Pre Contest 6': preflight8,
-  '7) Pre Contest 7': preflight9,
-  '8) Pre Contest 8': preflight10,
-  '9) Pre Contest 9': preflight11,
-  '10) Pre Contest 10': preflight12,
-  '11) Pre Contest 11': preflight13,
-  '12) Pre Contest 12': preflight14,
-  '13) Pre Contest 13': preflight15,
-  '14) Pre Contest 14': preflight16,
-  '15) Pre Contest 15': preflight17,
+  '3) Pre Contest 3': preflight4b,
   'Download Code': savezip,
   'Upload Code': newgame,
   'Pick a Game': pickagame,
