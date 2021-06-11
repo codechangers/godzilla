@@ -28,10 +28,13 @@ const HelpModal = ({ open, onClose }) => {
         Step 2: Ask a classmate, check the tutorial again, look at the Docs section on the website,
         and then ask your teacher or room supervisor!
       </Typography>
-      <Typography variant="body1">Step 3: Message Mentors by clicking on the chat bubble on the bottom right of your screen!</Typography>
+      <Typography variant="body1">
+        Step 3: Message Mentors by clicking on the chat bubble on the bottom right of your screen!
+      </Typography>
       <Typography variant="h3">Important!</Typography>
       <Typography variant="body1">
-        Make sure to check your chat often. Be ready to add the mentor to your repl and also be ready to paste the link to your repl in the chat so the mentor can look at your code.
+        Make sure to check your chat often. Be ready to add the mentor to your repl and also be
+        ready to paste the link to your repl in the chat so the mentor can look at your code.
       </Typography>
       <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
         Okay
