@@ -1,18 +1,14 @@
-# 4. Setup Bullets
- (Step 1/10)
+# 6. Set Players Rotation
+ (Step 1/3) Our next step is to get our character to rotate so that it will always face towards our mouse. 
 
-##### 1. in `game.js`, Create bullets using the `addCharacters()` function inside the `init()` function.  
+##### In `game.js`, add the `sendAction()` function into the `mousemove` method.
 
-``` javascript
+```javascript
 // File: code/client/src/game.js
 // Copy
-g.addCharacters('bullets', 0.5);
+g.sendAction('mousemove', {x, y});
 // End Copy
-init() {
-	g.setup(this);
-	g.setSize(GAME_WIDTH, GAME_HEIGHT);
-	g.addCharacters('players', 0.5);
-	g.addCharacters('zombies', 0.5);/*[*/
-	g.addCharacters('bullets', 0.5);/*]*/
+mousemove(x, y) {
+	/*[*/g.sendAction('mousemove', {x, y});/*]*/
 }
 ```

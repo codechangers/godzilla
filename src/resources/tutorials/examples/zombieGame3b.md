@@ -1,17 +1,28 @@
-# STOP!!!!
-<hr>
+# Run Game - 3.B
 
-##### MAKE SURE TO DO THE FOLLOWING STEPS BEFORE YOU MOVE ON
+## Add player health bars.
 
-1. Download your .zip from Repl
-2. Upload your .zip to Blobbert.io
-3. Make sure the new features work on your url
-4. If it's not working get help.
-5. If you have verified it is working you can move on!
-<hr>
+**(Step 2/2)** Decrease player health when they get hit by a zombie.
 
-# STOP!!!!
+### Make players take damage from zombies.
 
-**Do not move on unless you have followed these steps and verified your game is working up to this point!**
+In `room.js`, we need to add a `handleCollision` _function_ to the `onUpdate` _method_. This will make it so the players take damage when they get hit by a zombie.
 
-{% checkoff %}
+``` javascript
+// File: room.js
+// Copy
+g.handleCollision('players', 'zombies', (player) => {
+			if (player.healthBar.filled > 0) {
+				player.healthBar.filled -= 0.1;
+			}
+		});
+// End Copy
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1);/*[*/
+	g.handleCollision('players', 'zombies', (player) => {
+		if (player.healthBar.filled > 0) {
+			player.healthBar.filled -= 0.1;
+		}
+	});/*]*/
+}
+```

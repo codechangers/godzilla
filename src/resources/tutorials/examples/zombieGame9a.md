@@ -1,32 +1,33 @@
-# 1 Add HowTo Screen
+# 9. Set Zombies Rotation
  (Step 1/2)
 
-##### 1. In `game.js`, add the howTo screen in the `create()` function.
+##### 1. in `room.js` in the `onUpdate()`, Delete the old `follow()` function and add the following `follow()` function with updated data.
+
 ``` javascript
-// File: code/client/src/game.js
+// File: room.js
 // Copy
-g.useHowToScreen('How to play', {
-		'Move Mouse': 'To aim at the zombies',
-		'Click Mouse': 'To shoot at the zombies'
-	}, {
-		'Blobbert': 'Planning/Coding/Fixing',
-		'Grunch': 'Coding/Testing/Fixing',  
-		'Nimbo': 'Planning/Designing/Testing',
+g.follow('players', 'zombies', 1, 0.1,
+	(player, zombie) => {
+		zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
 	});
 // End Copy
-g.getCharacters('zombies');
-g.getCharacters('bullets');/*[*/
-g.useHowToScreen('How to play', {
-		'Move Mouse': 'To aim at the zombies',
-		'Click Mouse': 'To shoot at the zombies'
-	}, {
-		'Blobbert': 'Planning/Coding/Fixing',
-		'Grunch': 'Coding/Testing/Fixing',  
-		'Nimbo': 'Planning/Designing/Testing',
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1/*[*/,
+		(player, zombie) => {
+			zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
+		}/*]*/);
+	g.handleAnimations('bullets');
+	g.handleCollision('players', 'zombies', (player) => {
+		if (player.healthBar.filled > 0) {
+			player.healthBar.filled -= 0.1;
+		}
 	});
-});/*]*/
+	g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
+		g.deleteACharacter('zombies', zombie.id);
+		g.deleteACharacter('bullets', bullet.id);
+		g.getACharacter('players', bullet.playerId).score += 100;
+	});
+}
 ```
 
-Change the names and the roles in the code you just copied to your team member's names and also what job you did in the project.
-
-When you write yours, you will need to keep adding to your list of controls, and your contributors until you have added everything needed for your game.
+> We should now have a fully functioning game! Customize it and change or add whatever you like!

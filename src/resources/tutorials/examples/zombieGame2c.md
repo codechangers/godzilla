@@ -1,20 +1,24 @@
-# Zombie Game - 1.D
+# Zombie Game - 2.C
 
-## Add a new background and character to your game.
+## Add zombies into your game.
 
-**(Step 4/5)** Load your new character image into the game.
+**(Step 3/7)** Add the zombie characters into your game.
 
-### Update the character image path.
+### Add the zombie characters.
 
-In `game.js`, Change the path to the players image in the `preload()` _method_.
+In `game.js`, we need to add a new `addCharacters` _function_ to the `init` _method_.
+This will add the zombie characters to our game.
 
-```javascript
+``` javascript
 // File: game.js
 // Copy
-g.loadImage('players', 'new-player.png');
+g.addCharacters('zombies', 0.5);
 // End Copy
-preload() {
-    g.loadImage('background', 'new-background.png');
-    g.loadImage('players', /*{*/'logo.png'/*}[*/'new-player.png'/*]*/);
+init() {
+	g.setup(this);
+	g.setSize(GAME_WIDTH, GAME_HEIGHT);
+	g.cameraBounds();
+	g.addCharacters('players', 0.5);/*[*/
+	g.addCharacters('zombies', 0.5);/*]*/
 }
 ```

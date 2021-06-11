@@ -1,14 +1,32 @@
-# 5. Setup Login Screen
- (Step 1/4)
+# 1 Add HowTo Screen
+ (Step 1/2)
 
-##### 1. In `game.js`, delete `g.connect();` and replace it with login screen code.
-
+##### 1. In `game.js`, add the howTo screen in the `create()` function.
 ``` javascript
 // File: code/client/src/game.js
 // Copy
-g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');
+g.useHowToScreen('How to play', {
+		'Move Mouse': 'To aim at the zombies',
+		'Click Mouse': 'To shoot at the zombies'
+	}, {
+		'Blobbert': 'Planning/Coding/Fixing',
+		'Grunch': 'Coding/Testing/Fixing',  
+		'Nimbo': 'Planning/Designing/Testing',
+	});
 // End Copy
-create() {
-	g.setupKeys(keys);
-	/*{*/g.useLoginScreen((name) => g.connect({ name }));/*}[*/g.useLoginScreen(name => g.connect ({name}), 'Zombies', 'Username', 'Start!');/*]*/
+g.getCharacters('zombies');
+g.getCharacters('bullets');/*[*/
+g.useHowToScreen('How to play', {
+		'Move Mouse': 'To aim at the zombies',
+		'Click Mouse': 'To shoot at the zombies'
+	}, {
+		'Blobbert': 'Planning/Coding/Fixing',
+		'Grunch': 'Coding/Testing/Fixing',  
+		'Nimbo': 'Planning/Designing/Testing',
+	});
+});/*]*/
 ```
+
+Change the names and the roles in the code you just copied to your team member's names and also what job you did in the project.
+
+When you write yours, you will need to keep adding to your list of controls, and your contributors until you have added everything needed for your game.

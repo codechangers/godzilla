@@ -1,18 +1,11 @@
-# 2. Add Zombies
-(Step 1/7) Find an Image for the Zombies in Your Game
+# Zombie Game - 4.A
 
-##### 1. In `game.js` Use `loadImage()` function to add some Zombies inside the `preload()` function.
+## Add shooting to the game.
 
-``` javascript
-// File: code/client/src/game.js
-// Copy
-g.loadImage('zombies', 'zombie.png');
-// End Copy
-preload() {
-	g.loadImage('players', 'logo.png');
-	g.loadImage('grass', 'grass.png');/*[*/
-	g.loadImage('zombies', 'zombie.png');/*]*/
-}
-```
+**(Step 1/10)** Upload a bullet image to repl.
 
-> **You will need to uplaod an new image for the zombies. Make sure the image name you add in this step matches the image name in the `imgs` folder.
+### Get a bullet image.
+
+First, find or create an image that you want to use for your **bullets** and download it to your computer. [Need help?](/tutorials/images/)
+
+{% include blocks/uploadImage.md %}

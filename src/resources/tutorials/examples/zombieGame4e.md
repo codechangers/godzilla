@@ -1,29 +1,30 @@
-# 2. Add Zombies
-(Step 5/7)
+# Run Game - 4.E
 
-##### 5. In `room.js`, add a `setInterval()` function to randomly spawn zombies across the map inside the `onInit()` function.
+## Add shooting to the game.
+
+**(Step 5/10)** Setup the bullet characters on the server.
+
+### Setup the bullet characters.
+
+In `room.js`, we need to add another `setupCharacters` _function_ to the `onInit` _method_. This will setup our bullet characters.
 
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-setInterval(() => g.createACharacter('zombies',
-	g.nextCharacterId('zombies'), {
-		x: Math.floor((Math.random() * 2000) + 1),
-		y: Math.floor((Math.random() * 2000) + 1)
-	}), 2500);
+g.setupCharacters('bullets');
 // End Copy
 onInit() {
 	g.setup(this);
 	g.setBounds(GAME_WIDTH, GAME_HEIGHT);
 	g.setupCharacters('players');
-	g.setupCharacters('zombies', 0.5);/*[*/
+	g.setupCharacters('zombies');/*[*/
+	g.setupCharacters('bullets');/*]*/
+
+	const waveTimer = 2500;
 	setInterval(() => g.createACharacter('zombies',
-	g.nextCharacterId('zombies'), {
-	x: Math.floor((Math.random() * 2000) + 1),
-	y: Math.floor((Math.random() * 2000) + 1)
-}), 2500);/*]*/
+		g.nextCharacterId('zombies'), {
+			x: Math.floor((Math.random() * GAME_WIDTH) + 1),
+			y: Math.floor((Math.random() * GAME_HEIGHT) + 1)
+		}), waveTimer);
 }
-
 ```
-
-> **The number at the end will determine how long to wait until it spawns another zombie, and the two 2000 numbers are the bounds for where the zombies should spawn.**

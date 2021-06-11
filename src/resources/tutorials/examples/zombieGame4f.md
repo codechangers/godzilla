@@ -1,16 +1,28 @@
-# 2. Add Zombies
-(Step 6/7)
+# Run Game - 4.F
 
-##### 6. In `room.js`, add the `follow()` function inside the `onUpdate()` function so that zombies will follow you.
+## Add shooting to the game.
+
+**(Step 6/10)** Create a new action called click!
+
+### Create the click action.
+
+In `room.js`, we need to add a new _value_ to our `actions` _object_ inside the `onMessage` _method_.
+
 ``` javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-g.follow('players', 'zombies', 1, 0.1);
+click: () => {},
 // End Copy
-onUpdate(dt) {
-	/*[*/g.follow('players', 'zombies', 1, 0.1);/*]*/
+onMessage(client, data) {
+	const player = g.getACharacter('players', client.sessionId);
+	const speed = 10;
+	const actions = {
+		moveUp: () => g.move(player, 'y', -speed),
+		moveDown: () => g.move(player, 'y', speed),
+		moveLeft: () => g.move(player, 'x', -speed),
+		moveRight: () => g.move(player, 'x', speed),/*[*/
+		click: () => {},/*]*/
+	};
+	g.handleActions(actions, data);
 }
-
 ```
-
-> **You can change the numbers to change the distance the zombies will come to your character, and the speed of the zombies.**

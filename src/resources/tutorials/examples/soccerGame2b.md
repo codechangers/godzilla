@@ -6,7 +6,7 @@
 
 ### Update the image path.
 
-In `game.js`, Change the path to the background image in the `preload()` _method_.
+In `game.js`, Change the path to the background image in the `preload` _method_.
 
 ```javascript
 // File: game.js

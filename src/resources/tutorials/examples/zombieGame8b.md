@@ -1,23 +1,30 @@
-# 6. Set Players Rotation
+# 8. Create a Scoreboard
  (Step 2/3)
 
-##### 2. In `room.js`, create a `mousemove` action under the `click` action.
+##### 2. In `room.js`, in the `onUpdate()` function, inside of your handleCollision method, add a character with a score of 100 using the `getACharacter()` function.
 
 ```javascript
-// File: code/server/rooms/room.js
+// File: room.js
 // Copy
-mousemove: () => {
-	player.rotation = g.getRotationTowards(player, data.x, data.y); 
-},
+g.getACharacter('players', bullet.playerId).score += 100;
 // End Copy
-	g.getYTowards(newCharacter, data.x, data.y) * 500, 2000);
-	setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), 2000);
-},
-/*[*/mousemove: () => {
-	player.rotation = g.getRotationTowards(player, data.x, data.y); 
-},/*]*/
+onUpdate(dt) {
+	g.follow('players', 'zombies', 1, 0.1,
+	(player, zombie) => {
+		zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
+	});
+	g.handleAnimations('bullets');
+	g.handleCollision('players', 'zombies', (player) => {
+		if (player.healthBar.filled > 0) {
+			player.healthBar.filled -= 0.1;
+		}
+	});
+	g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
+		g.deleteACharacter('zombies', zombie.id);
+		g.deleteACharacter('bullets', bullet.id);/*[*/
+		g.getACharacter('players', bullet.playerId).score += 100;/*]*/
+	});
+}
 ```
 
-Inside of the brackets in our `mousemove` action has the code to change the rotation of our player to follow the mouse.
-
-Now our player will always be facing towards the direction of our mouse.
+> Now the scoreboard should be set up and our game is almost finished!

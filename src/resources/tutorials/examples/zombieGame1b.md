@@ -1,8 +1,8 @@
-# Run Game - 1.B
+# Zombie Game - 1.B
 
-## Add a new background to your game.
+## Add a new background and character to your game.
 
-**(Step 2/3)** Load the new background image into your game.
+**(Step 2/5)** Load the new background into your game.
 
 ### Update the image path.
 

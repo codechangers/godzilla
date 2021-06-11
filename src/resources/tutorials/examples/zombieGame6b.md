@@ -1,17 +1,23 @@
-# 4. Setup Bullets
- (Step 2/10)
+# 6. Set Players Rotation
+ (Step 2/3)
 
-##### 2. in `game.js`, Create `loadImage()` function to load the image for the bullets in the `preload()` function.
+##### 2. In `room.js`, create a `mousemove` action under the `click` action.
 
-``` javascript
-// File: code/client/src/game.js
+```javascript
+// File: code/server/rooms/room.js
 // Copy
-g.loadImage('bullets', 'bullet.png');
+mousemove: () => {
+	player.rotation = g.getRotationTowards(player, data.x, data.y); 
+},
 // End Copy
-preload() {
-	g.loadImage('background', 'bg.png');
-	g.loadImage('players', 'logo.png');
-	g.loadImage('zombies', 'zombies.png');/*[*/
-	g.loadImage('bullets', 'bullet.png');/*]*/
-}
+	g.getYTowards(newCharacter, data.x, data.y) * 500, 2000);
+	setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), 2000);
+},
+/*[*/mousemove: () => {
+	player.rotation = g.getRotationTowards(player, data.x, data.y); 
+},/*]*/
 ```
+
+Inside of the brackets in our `mousemove` action has the code to change the rotation of our player to follow the mouse.
+
+Now our player will always be facing towards the direction of our mouse.

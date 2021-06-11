@@ -1,13 +1,8 @@
-# 4. Setup Bullets
- (Step 3/10)
+# 6. Set Players Rotation
+ (Step 3/3)
 
-##### 3. In `game.js`, Create a `getCharacters()` function to add the bullets to the game in the `create()` function.
+After completing the steps below, you should see your new background in the game!
 
-``` javascript
-// File: code/client/src/game.js
-// Copy
-g.getCharacters('bullets');
-// End Copy
-g.getCharacters('zombies');/*[*/
-g.getCharacters('bullets');/*]*/
-```
+{% include blocks/stop.md %}
+
+{% checkoff %}

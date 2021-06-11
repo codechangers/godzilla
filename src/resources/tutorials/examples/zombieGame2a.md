@@ -1,20 +1,11 @@
-# Zombie Game - 1.B
+# Zombie Game - 2.A
 
-## Add a new background and character to your game.
+## Add zombies into your game.
 
-**(Step 2/5)** Load the new backgroun into your game.
+**(Step 1/7)** Upload a zombie image to repl.
 
-### Update the image path.
+### Get a zombie image.
 
-In `game.js`, Change the path to the background image in the `preload()` _method_.
+First, find or create an image that you want to use for your **zombies** and download it to your computer. [Need help?](/tutorials/images/)
 
-```javascript
-// File: game.js
-// Copy
-g.loadImage('background', 'new-background.png');
-// End Copy
-preload() {
-    g.loadImage('background', /*{*/'bg.png'/*}[*/'new-background.png'/*]*/);
-    g.loadImage('players', 'logo.png');
-}
-```
+{% include blocks/uploadImage.md %}

@@ -17,7 +17,7 @@ create() {
 	g.setupKeys(keys);
 	g.useLoginScreen((name) => g.connect({ name }));
 	g.useStore('The Store', []);
-	g.drawBackground('background'/*[*/, 0.8/*]*/);
+	/*[*/g.drawBackground('background', 0.8);/*]*/
 	g.getCharacters('players', (player) => {
 		if (player.id === g.myId()) {
 			g.cameraFollow(player.sprite);

@@ -52,6 +52,5 @@ To save your art complete the following steps:
 Now that you've found or designed your image, you need to finish them on your computer and drag + drop them into the assets folder within your repl project.
 
 1. Find the downloaded images. [Need help?](/tutorials/downloads/)
-2. Open the asset folder in repl, click: `code > client > asset`
-   ![Repl Asset](/images/replAsset)
-3. Click and drag your files into this folder. Make sure your files are named something very easy and obvious (it is best to not use spaces or symbols), for example "zombies.png" or "shark.png". You will resize the images within the code, so don't worry if it seems to big or small right now.
+2. Open the asset folder in repl, click on `img` folder.
+3. Drag your files into this folder. Make sure your files are named something very easy and obvious (it is best to not use spaces or symbols), for example "zombies.png" or "shark.png". You will resize the images within the code, so don't worry if it seems to big or small right now.
