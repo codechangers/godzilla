@@ -1,4 +1,4 @@
-# Run Game - 8.A
+# Zombie Game - 8.A
 
 ## Add a game over condition.
 

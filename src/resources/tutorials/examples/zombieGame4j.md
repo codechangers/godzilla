@@ -1,4 +1,4 @@
-# Run Game - 4.J
+# Zombie Game - 4.J
 
 ## Add shooting to the game.
 

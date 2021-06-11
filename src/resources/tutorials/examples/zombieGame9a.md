@@ -1,4 +1,4 @@
-# Run Game - 9.A
+# Zombie Game - 9.A
 
 ## Add zombie rotation.
 

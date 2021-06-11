@@ -1,4 +1,4 @@
-# Run Game - 4.E
+# Zombie Game - 4.E
 
 ## Add shooting to the game.
 

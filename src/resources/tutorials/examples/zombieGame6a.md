@@ -1,4 +1,4 @@
-# Run Game - 6.A
+# Zombie Game - 6.A
 
 ## Add character rotation.
 

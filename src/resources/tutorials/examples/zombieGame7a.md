@@ -1,4 +1,4 @@
-# Run Game - 7.A
+# Zombie Game - 7.A
 
 ## Customize the how to play screen.
 

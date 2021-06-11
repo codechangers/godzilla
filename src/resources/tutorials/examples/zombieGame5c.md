@@ -1,4 +1,4 @@
-# Run Game - 5.C
+# Zombie Game - 5.C
 
 ## Customize the login screen.
 
