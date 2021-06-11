@@ -1,27 +1,32 @@
-# 9. Set Zombies Rotation
- (Step 1/2)
+# Run Game - 9.A
 
-##### 1. in `room.js` in the `onUpdate()`, Delete the old `follow()` function and add the following `follow()` function with updated data.
+## Add zombie rotation.
+
+**(Step 1/1)** Zombies face the player they are chasing.
+
+### Zombies rotate.
+
+In `room.js`, we need to add a `getRotationTowards` _function_ to our `follow` _function_ in the `onUpdate` _function_.
 
 ``` javascript
 // File: room.js
 // Copy
 g.follow('players', 'zombies', 1, 0.1,
-	(player, zombie) => {
-		zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
-	});
+			(player, zombie) => {
+				zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
+			});
 // End Copy
 onUpdate(dt) {
-	g.follow('players', 'zombies', 1, 0.1/*[*/,
+	g.follow('players', 'zombies', 1, 0.1/*{*/);/*}[*/,
 		(player, zombie) => {
 			zombie.rotation = g.getRotationTowards(zombie, player.x, player.y);
-		}/*]*/);
-	g.handleAnimations('bullets');
+		});/*]*/
 	g.handleCollision('players', 'zombies', (player) => {
 		if (player.healthBar.filled > 0) {
 			player.healthBar.filled -= 0.1;
 		}
 	});
+	g.handleAnimations('bullets');
 	g.handleCollision('bullets', 'zombies', (bullet, zombie) => {
 		g.deleteACharacter('zombies', zombie.id);
 		g.deleteACharacter('bullets', bullet.id);

@@ -1,6 +1,6 @@
-# 9. Set Zombies Rotation
-  (Step 2/2)
-After completing the steps below, you should see your new background in the game!
+# Added Zombie Rotation
+
+After completing the steps below, the zombies should rotate towards your character while they chase you!
 
 {% include blocks/stop.md %}
 
