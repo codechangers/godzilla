@@ -22,6 +22,7 @@ const CheckOffList = ({ cls }) => {
   const checkOffs = getFilteredLiveCheckOffsData(a => a.where('classId', '==', cls.id), true);
   const gameRefs = useMemo(() => checkOffs.map(co => co.gameRef), [checkOffs]);
   const games = useLiveGames(gameRefs);
+  const [selectedCO, setSelection] = useState('');
 
   const checkOffsWithGameData = useMemo(() => {
     const gamesMap = {};
@@ -92,7 +93,12 @@ const CheckOffList = ({ cls }) => {
       {gamesToRender
         .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))
         .map(co => (
-          <Accordion key={co.id} classes={{ root: classes.accTop }}>
+          <Accordion
+            key={co.id}
+            classes={{ root: classes.accTop }}
+            expanded={co.id === selectedCO}
+            onChange={(e, toOpen) => setSelection(toOpen ? co.id : '')}
+          >
             <AccordionSummary>
               <Typography variant="body1">
                 {co.game.name.toUpperCase()} @ {pageToStep(co.page)}
