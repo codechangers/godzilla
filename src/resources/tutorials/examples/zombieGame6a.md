@@ -1,14 +1,23 @@
-# 6. Set Players Rotation
- (Step 1/3) Our next step is to get our character to rotate so that it will always face towards our mouse. 
+# Run Game - 6.A
 
-##### In `game.js`, add the `sendAction()` function into the `mousemove` method.
+## Add character rotation.
+
+**(Step 1/2)** Send _mousemove_ action when the mouse is moved.
+
+### Detect mouse movement.
+
+In `game.js`, we need to add a `sendAction` _function_ to the `mousemove` _method_.
 
 ```javascript
-// File: code/client/src/game.js
+// File: game.js
 // Copy
-g.sendAction('mousemove', {x, y});
+if (g.canSend()) {
+      g.sendAction('mousemove', { x, y });
+    }
 // End Copy
 mousemove(x, y) {
-	/*[*/g.sendAction('mousemove', {x, y});/*]*/
+    /*[*/if (g.canSend()) {
+        g.sendAction('mousemove', { x, y });
+    }/*]*/
 }
 ```
