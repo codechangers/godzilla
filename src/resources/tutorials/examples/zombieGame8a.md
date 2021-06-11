@@ -20,9 +20,8 @@ g.getCharacters('players', (player) => {
 		(id, attr, value) => {
 			if (
 				attr === 'filled' &&
-				id === 'filled' &&
-				value <= 1 &&
-				player.id === g.myId()
+				id === g.myId() &&
+				value <= 1
 			) {
 				location.reload();
 			}
@@ -51,9 +50,8 @@ create() {
 	(id, attr, value) => {
 		if (
 			attr === 'filled' &&
-			id === 'filled' &&
-			value <= 1 &&
-			player.id === g.myId()
+			id === g.myId() &&
+			value <= 1
 		) {
 			location.reload();
 		}
