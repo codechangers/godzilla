@@ -1,7 +1,6 @@
-# 7. Add HowTo Screen
-(Step 2/2)
+# Added How To Play Screen
 
-After completing the steps below, you should see your new background in the game!
+After completing the steps below, you should have a cool customized how to play screen!
 
 {% include blocks/stop.md %}
 
