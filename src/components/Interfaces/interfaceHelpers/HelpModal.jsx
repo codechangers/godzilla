@@ -28,30 +28,10 @@ const HelpModal = ({ open, onClose }) => {
         Step 2: Ask a classmate, check the tutorial again, look at the Docs section on the website,
         and then ask your teacher or room supervisor!
       </Typography>
-      <Typography variant="body1">Step 3: Hop on the Mentor Help Line!</Typography>
+      <Typography variant="body1">Step 3: Message Mentors by clicking on the chat bubble on the bottom right of your screen!</Typography>
       <Typography variant="h3">Important!</Typography>
       <Typography variant="body1">
-        Wait in the meeting room for a mentor to put you into a breakout room for help. If you do
-        not see any mentors, they are helping others, but will be back to help you shortly! Be
-        patient and read through your code again while you wait!
-      </Typography>
-      <Typography variant="body1">
-        Click{' '}
-        <a
-          href="https://us02web.zoom.us/j/81684325483?pwd=Wi9qRHhzWU9ZVGphRm9ReDBnc3BzQT09"
-          target="_blank"
-          rel="noreferrer"
-        >
-          this link
-        </a>{' '}
-        to access the Zoom call.
-      </Typography>
-      <Typography variant="body1">
-        Make sure to choose the option on the Zoom meeting that says Join From Browser and then once
-        you join, click the Join with Computer Audio button
-      </Typography>
-      <Typography variant="body1">
-        The passcode for your call is: <strong>UVUPREP</strong>
+        Make sure to check your chat often. Be ready to add the mentor to your repl and also be ready to paste the link to your repl in the chat so the mentor can look at your code.
       </Typography>
       <Button variant="outlined" onClick={onClose} endIcon={<DoneIcon />}>
         Okay
