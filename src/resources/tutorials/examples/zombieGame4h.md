@@ -11,9 +11,13 @@ In `game.js`, we need to add a `sendAction` _function_ to the `click` _method_. 
 ``` javascript
 // File: game.js
 // Copy
-g.sendAction('click', { x, y });
+if (g.canSend()) {
+      g.sendAction('click', { x, y });
+    }
 // End Copy
 click(x, y) {
-	/*[*/g.sendAction('click', { x, y });/*]*/
+    /*[*/if (g.canSend()) {
+        g.sendAction('click', { x, y });
+    }/*]*/
 }
 ```
