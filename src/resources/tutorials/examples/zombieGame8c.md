@@ -1,6 +1,6 @@
-# 8. Create a Scoreboard
- (Step 3/3)
-After completing the steps below, you should see your new background in the game!
+# Added Game Over
+
+After completing the steps below, you should get 100 points for shooting a zombie and you should game over when you run out of health.
 
 {% include blocks/stop.md %}
 
