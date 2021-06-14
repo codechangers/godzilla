@@ -23,18 +23,7 @@ onMessage(client, data) {
 		moveDown: () => g.move(player, 'y', speed),
 		moveLeft: () => g.move(player, 'x', -speed),
 		moveRight: () => g.move(player, 'x', speed),
-		click: () => {
-			const bulletSpeed = 500;
-			const bulletDuration = 2000;
-			const index = g.nextCharacterId('bullets');
-			g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
-			let newCharacter = g.getACharacter('bullets', index);
-			g.playAnimation(newCharacter, 'x',
-				g.getXTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
-			g.playAnimation(newCharacter, 'y',
-				g.getYTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
-			setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), bulletDuration);
-		},/*[*/
+		click: () => this.shootBullet(player),/*[*/
 		mousemove: () => {
 			player.rotation = g.getRotationTowards(player, data.x, data.y);
 		},/*]*/
