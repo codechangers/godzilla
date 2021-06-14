@@ -2,27 +2,45 @@
 
 ## Add shooting to the game.
 
-**(Step 6/10)** Create a new action called click!
+**(Step 6/10)** Create a new method called shoot bullet.
 
-### Create the click action.
+### Create the shoot bullet logic.
 
-In `room.js`, we need to add a new _value_ to our `actions` _object_ inside the `onMessage` _method_.
+In `room.js`, we need to create a new _method_ called `shootBullet` right below our `onLeave` _method_.
 
 ``` javascript
 // File: room.js
 // Copy
-click: () => {},
+shootBullet(player) {
+		const bulletSpeed = 500;
+		const bulletDuration = 2000;
+		const index = g.nextCharacterId('bullets');
+		g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
+		let newCharacter = g.getACharacter('bullets', index);
+		g.playAnimation(newCharacter, 'x',
+			g.getXTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+		g.playAnimation(newCharacter, 'y',
+			g.getYTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+		setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), bulletDuration);
+	}
 // End Copy
-onMessage(client, data) {
-	const player = g.getACharacter('players', client.sessionId);
-	const speed = 10;
-	const actions = {
-		moveUp: () => g.move(player, 'y', -speed),
-		moveDown: () => g.move(player, 'y', speed),
-		moveLeft: () => g.move(player, 'x', -speed),
-		moveRight: () => g.move(player, 'x', speed),/*[*/
-		click: () => {},/*]*/
-	};
-	g.handleActions(actions, data);
-}
+	onLeave(client) {
+		g.deleteACharacter('players', client.sessionId);
+	}/*[*/
+
+	shootBullet(player) {
+		const bulletSpeed = 500;
+		const bulletDuration = 2000;
+		const index = g.nextCharacterId('bullets');
+		g.createACharacter('bullets', index, { x: player.x, y: player.y, playerId: player.id });
+		let newCharacter = g.getACharacter('bullets', index);
+		g.playAnimation(newCharacter, 'x',
+			g.getXTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+		g.playAnimation(newCharacter, 'y',
+			g.getYTowards(newCharacter, data.x, data.y) * bulletSpeed, bulletDuration);
+		setTimeout(() => g.deleteACharacter('bullets', newCharacter.id), bulletDuration);
+	}/*]*/
+};
 ```
+
+> **Note:** You can change the `bulletSpeed` and `bulletDuration` to affect how fast, and how far your bullet goes.
