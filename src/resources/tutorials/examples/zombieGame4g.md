@@ -11,7 +11,7 @@ In `room.js`, we need to add a new `click` _value_ to our `actions` _object_ ins
 ``` javascript
 // File: room.js
 // Copy
-click: () => this.shootBullet(player),
+click: () => this.shootBullet(player, data),
 // End Copy
 onMessage(client, data) {
 	const player = g.getACharacter('players', client.sessionId);
@@ -21,7 +21,7 @@ onMessage(client, data) {
 		moveDown: () => g.move(player, 'y', speed),
 		moveLeft: () => g.move(player, 'x', -speed),
 		moveRight: () => g.move(player, 'x', speed),/*[*/
-		click: () => this.shootBullet(player),/*]*/
+		click: () => this.shootBullet(player, data),/*]*/
 	};
 	g.handleActions(actions, data);
 }
