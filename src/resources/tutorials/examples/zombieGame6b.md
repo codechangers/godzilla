@@ -23,7 +23,7 @@ onMessage(client, data) {
 		moveDown: () => g.move(player, 'y', speed),
 		moveLeft: () => g.move(player, 'x', -speed),
 		moveRight: () => g.move(player, 'x', speed),
-		click: () => this.shootBullet(player),/*[*/
+		click: () => this.shootBullet(player, data),/*[*/
 		mousemove: () => {
 			player.rotation = g.getRotationTowards(player, data.x, data.y);
 		},/*]*/

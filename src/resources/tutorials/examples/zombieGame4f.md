@@ -11,7 +11,7 @@ In `room.js`, we need to create a new _method_ called `shootBullet` right below 
 ``` javascript
 // File: room.js
 // Copy
-shootBullet(player) {
+shootBullet(player, data) {
 		const bulletSpeed = 500;
 		const bulletDuration = 2000;
 		const index = g.nextCharacterId('bullets');
@@ -28,7 +28,7 @@ shootBullet(player) {
 		g.deleteACharacter('players', client.sessionId);
 	}/*[*/
 
-	shootBullet(player) {
+	shootBullet(player, data) {
 		const bulletSpeed = 500;
 		const bulletDuration = 2000;
 		const index = g.nextCharacterId('bullets');
