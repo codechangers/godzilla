@@ -35,11 +35,11 @@ const DoubleCheck = ({ page }) => {
       <Typography variant="h6">Double Check Your Code!</Typography>
       <Typography variant="body1">
         Here is what our code looked like after completing this step:{' '}
-        <Button variant="outlined" onClick={() => open(gameSrc, 'game.js')}>
+        <Button variant="contained" color="primary" onClick={() => open(gameSrc, 'game.js')}>
           game.js
         </Button>{' '}
         -{' '}
-        <Button variant="outlined" onClick={() => open(roomSrc, 'room.js')}>
+        <Button variant="contained" color="primary" onClick={() => open(roomSrc, 'room.js')}>
           room.js
         </Button>
       </Typography>
@@ -101,4 +101,5 @@ const useStyles = makeStyles(theme => ({
     padding: '5px 24px'
   }
 }));
+
 export default DoubleCheck;
