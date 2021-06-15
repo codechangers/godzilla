@@ -7,6 +7,7 @@ import MarkdownLink from './Link';
 import CheckOff from '../UI/CheckOff';
 import GameSelect from '../UI/GameSelect';
 import CodeBlock from '../UI/CodeBlock';
+import DoubleCheck from '../UI/DoubleCheck';
 import { resolveImg } from '../../resources/images';
 
 const propTypes = {
@@ -102,6 +103,9 @@ const MarkdownRenderer = ({ cls, whoAmI, pages, page, useLoading }) => {
         Contestants will select their game here.
       </Typography>
     );
+    // Check for doublecheck tags...
+    const doubleCheck = <DoubleCheck page={page} />;
+    checkTag('{% doublecheck %}', doubleCheck, doubleCheck);
     return textReturn;
   };
   text.propTypes = { value: PropTypes.node.isRequired };
