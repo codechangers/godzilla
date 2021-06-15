@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Button, Typography, makeStyles } from '@material-ui/core';
 import Modal from './Modal';
 import codeImgs from '../../resources/codeImgs';
 
@@ -17,12 +17,14 @@ const toImg = page => {
 const DoubleCheck = ({ page }) => {
   const [show, setShow] = useState(false);
   const [current, setCurrent] = useState(null);
+  const [title, setTitle] = useState('');
   const [gameSrc, roomSrc] = useMemo(() => toImg(page), [page]);
   const classes = useStyles();
 
-  const open = src => {
+  const open = (src, t) => {
     setCurrent(src);
     setShow(true);
+    setTitle(t);
   };
 
   return (
@@ -30,11 +32,15 @@ const DoubleCheck = ({ page }) => {
       <Typography variant="h6">Double Check Your Code!</Typography>
       <Typography variant="body1">
         Here is what our code looked like after completing this step:{' '}
-        <button onClick={() => open(gameSrc)}>game.js</button> -{' '}
-        <button onClick={() => open(roomSrc)}>room.js</button>
+        <button onClick={() => open(gameSrc, 'game.js')}>game.js</button> -{' '}
+        <button onClick={() => open(roomSrc, 'room.js')}>room.js</button>
       </Typography>
-      <Modal open={show} onClose={() => setShow(false)}>
+      <Modal open={show} onClose={() => setShow(false)} className={classes.modal}>
+        <Typography variant="h2">{title}</Typography>
         <img src={current} alt="Code Example" />
+        <Button variant="outlined" onClick={() => setShow(false)} className={classes.closeBtn}>
+          Close
+        </Button>
       </Modal>
     </div>
   );
@@ -54,6 +60,20 @@ const useStyles = makeStyles({
       margin: 'none',
       outline: 'none'
     }
+  },
+  modal: {
+    backgroundColor: '#1D2333',
+    padding: '5px 0',
+    '& img': {
+      width: '100%'
+    },
+    '& h2': {
+      margin: '12px 0 20px 0'
+    }
+  },
+  closeBtn: {
+    marginBottom: 20,
+    padding: '5px 24px'
   }
 });
 export default DoubleCheck;
