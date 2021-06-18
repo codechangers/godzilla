@@ -4,4 +4,6 @@ After completing the steps below, you should be able to place your blocks down, 
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

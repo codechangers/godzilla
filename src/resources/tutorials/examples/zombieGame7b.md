@@ -4,4 +4,6 @@ After completing the steps below, you should have a cool customized how to play 
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

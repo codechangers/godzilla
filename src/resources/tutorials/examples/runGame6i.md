@@ -4,4 +4,6 @@ After completing the steps below, you shouldn't notice anything new in your game
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

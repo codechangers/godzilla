@@ -4,4 +4,6 @@ After completing the steps below, you should see a goal for each player who join
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

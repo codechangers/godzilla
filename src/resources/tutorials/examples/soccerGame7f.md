@@ -4,4 +4,6 @@ After completing the steps below, you should see your score increase on the scor
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

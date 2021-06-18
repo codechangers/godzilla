@@ -4,4 +4,6 @@ After completing the steps below, you be able to select the character you want t
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

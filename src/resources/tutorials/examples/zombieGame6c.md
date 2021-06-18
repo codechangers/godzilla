@@ -4,4 +4,6 @@ After completing the steps below, your player should rotate to follow your mouse
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

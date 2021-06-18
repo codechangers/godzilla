@@ -4,4 +4,6 @@ After completing the steps below, you see soccer balls added to the game when yo
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}
