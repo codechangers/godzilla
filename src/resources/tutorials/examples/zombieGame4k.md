@@ -4,4 +4,6 @@ After completing the steps below, you should now be able to shoot bullets at the
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

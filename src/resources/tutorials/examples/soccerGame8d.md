@@ -6,4 +6,6 @@ After completing the steps below, you should be able to buy blocks from the stor
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

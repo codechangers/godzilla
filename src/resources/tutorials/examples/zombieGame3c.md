@@ -4,4 +4,6 @@ After completing the steps below, players in your game should have health bars t
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

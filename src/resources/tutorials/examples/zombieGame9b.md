@@ -4,4 +4,6 @@ After completing the steps below, the zombies should rotate towards your charact
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

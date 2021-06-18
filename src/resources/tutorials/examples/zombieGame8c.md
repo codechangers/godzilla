@@ -4,4 +4,6 @@ After completing the steps below, you should get 100 points for shooting a zombi
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

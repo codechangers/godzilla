@@ -4,4 +4,6 @@ After completing the steps below, you should be safe from the enemies while you 
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}

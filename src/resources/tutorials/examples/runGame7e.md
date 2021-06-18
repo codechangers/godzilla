@@ -4,4 +4,6 @@ After completing the steps below, you should now be able to play your game with 
 
 {% include blocks/stop.md %}
 
+{% doublecheck %}
+
 {% checkoff %}
