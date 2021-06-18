@@ -8,7 +8,7 @@ const SubmitInterface = () => {
       <Typography variant="h2" align="center" className={classes.heading}>
         Submit your Game!
       </Typography>
-      <a href="https://forms.gle/rMAT3RtD6JjuKEeC8" target="blank" rel="noreferrer noopener">
+      <a href="https://forms.gle/sfVA4SnMVwvVdLH9A" target="blank" rel="noreferrer noopener">
         <Button variant="contained" color="primary" className={classes.button}>
           Go to form
         </Button>
