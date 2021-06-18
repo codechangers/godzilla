@@ -11,12 +11,14 @@ const propTypes = {
 };
 
 const toImg = page => {
+  const none = [null, null];
   if (page && page.includes('✓')) {
     const parts = page.split('.');
     const a = parts[parts.length - 1].replace(/\s+/g, '').replace('✓', '');
-    return codeImgs[a];
+    if (Object.keys(codeImgs).includes(a)) return codeImgs[a];
+    return none;
   }
-  return [null, null];
+  return none;
 };
 
 const DoubleCheck = ({ page }) => {
