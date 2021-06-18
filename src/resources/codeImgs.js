@@ -1,4 +1,3 @@
-import soccerTest from './codeImgs/test_soccer.png';
 import zombie1game from './codeImgs/zombie1game.png';
 import zombie1room from './codeImgs/zombie1room.png';
 import zombie2game from './codeImgs/zombie2game.png';
@@ -33,6 +32,8 @@ import soccer8game from './codeImgs/soccer8game.png';
 import soccer8room from './codeImgs/soccer8room.png';
 import soccer9game from './codeImgs/soccer9game.png';
 import soccer9room from './codeImgs/soccer9room.png';
+import run1game from './codeImgs/run1game.png';
+import run1room from './codeImgs/run1room.png';
 import run2game from './codeImgs/run2game.png';
 import run2room from './codeImgs/run2room.png';
 import run3game from './codeImgs/run3game.png';
@@ -60,7 +61,6 @@ import run7room from './codeImgs/run7room.png';
  *  when you use the {% doublecheck %} tag on that page.
  */
 const codeImgs = {
-  RunGame1: [soccerTest, soccerTest],
   Zombie1: [zombie1game, zombie1room],
   Zombie2: [zombie2game, zombie2room],
   Zombie3: [zombie3game, zombie3room],
@@ -78,6 +78,7 @@ const codeImgs = {
   SoccerGame7: [soccer7game, soccer7room],
   SoccerGame8: [soccer8game, soccer8room],
   SoccerGame9: [soccer9game, soccer9room],
+  RunGame1: [run1game, run1room],
   RunGame2: [run2game, run2room],
   RunGame3: [run3game, run3room],
   RunGame4: [run4game, run4room],
