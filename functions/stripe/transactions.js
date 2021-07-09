@@ -1,5 +1,5 @@
 const { atLeastZero, UnwrapError } = require('./helpers');
-const { isPromoValid } = require('./promo');
+const { isPromoValid } = require('./promos');
 
 /**
  * Safely unwrap all snapshot data required for a transaction.

@@ -8,7 +8,7 @@ const stripe = require('./stripe');
 // Handle Registration.
 exports.handleRegistrationPayment = functions.firestore
   .document('/env/{env}/payments/{paymentId}')
-  .onCreate(stripe.payment.handleRegistration);
+  .onCreate(stripe.payments.handleRegistration);
 
 /* ============================
  * == Stripe Seller Accounts ==
@@ -17,14 +17,14 @@ exports.handleRegistrationPayment = functions.firestore
 // Handle Create.
 exports.createStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onCreate(stripe.seller.connect);
+  .onCreate(stripe.sellers.connect);
 
 // Handle Retry.
 exports.retryStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onUpdate(stripe.seller.retryConnect);
+  .onUpdate(stripe.sellers.retryConnect);
 
 // Handle Delete.
 exports.deleteStripeSellerAccount = functions.firestore
   .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(stripe.seller.disconnect);
+  .onDelete(stripe.sellers.disconnect);

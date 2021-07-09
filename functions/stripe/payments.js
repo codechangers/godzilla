@@ -1,7 +1,7 @@
 const { Stripe } = require('stripe');
-const { tickPromo } = require('./promo');
+const { tickPromo } = require('./promos');
 const { registerForClass, UnwrapError, UnwrapMessages } = require('./helpers');
-const { getTransactionData, getTotalWithDiscount } = require('./transaction');
+const { getTransactionData, getTotalWithDiscount } = require('./transactions');
 const { envCreds } = require('../utils/creds');
 
 /**
