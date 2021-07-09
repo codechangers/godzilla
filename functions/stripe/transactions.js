@@ -65,4 +65,4 @@ function getTotalWithDiscount(data) {
   return [total, numOfDiscounts];
 }
 
-exports = { getTransactionData, getTotalWithDiscount };
+module.exports = { getTransactionData, getTotalWithDiscount };

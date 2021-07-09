@@ -65,4 +65,4 @@ async function disconnect(snap, context) {
   else console.log('Successfully Deleted Stripe Seller Account.', snap.id);
 }
 
-exports = { connect, retryConnect, disconnect };
+module.exports = { connect, retryConnect, disconnect };

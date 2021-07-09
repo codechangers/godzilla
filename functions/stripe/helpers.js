@@ -40,4 +40,4 @@ class UnwrapError extends Error {
   }
 }
 
-exports = { atLeastZero, registerForClass, UnwrapMessages, UnwrapError };
+module.exports = { atLeastZero, registerForClass, UnwrapMessages, UnwrapError };

@@ -83,4 +83,4 @@ async function handleRegistration(snap, context) {
   }
 }
 
-exports = { handleRegistration };
+module.exports = { handleRegistration };

@@ -4,4 +4,4 @@ const sellers = require('./sellers');
 /**
  * Export all stripe cloud functions.
  */
-exports = { payments, sellers };
+module.exports = { payments, sellers };

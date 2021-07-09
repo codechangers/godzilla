@@ -28,4 +28,4 @@ async function tickPromo(numOfDiscounts, promoRef, { uses, startUses, limited })
   }
 }
 
-exports = { isPromoValid, tickPromo };
+module.exports = { isPromoValid, tickPromo };
