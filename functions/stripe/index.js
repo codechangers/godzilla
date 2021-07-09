@@ -1,16 +1,7 @@
-const { handleRegistraionPayment } = require('./payment');
-const {
-  createStripeSellerAccount,
-  retryStripeSellerAccount,
-  deleteStripeSellerAccount
-} = require('./seller');
+const payment = require('./payment');
+const seller = require('./seller');
 
 /**
  * Export all stripe cloud functions.
  */
-exports = {
-  handleRegistraionPayment,
-  createStripeSellerAccount,
-  retryStripeSellerAccount,
-  deleteStripeSellerAccount
-};
+exports = { payment, seller };

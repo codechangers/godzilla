@@ -1,4 +1,3 @@
-const functions = require('firebase-functions');
 const fetch = require('node-fetch');
 const { envCreds } = require('../utils/creds');
 
@@ -6,7 +5,7 @@ const { envCreds } = require('../utils/creds');
  * Get the stripe user id of a seller when they connect their stripe account to
  * the Code Contest marketplace and store it in the stripeSellers collection.
  */
-const connectStripeSeller = async (snap, context) => {
+async function connect(snap, context) {
   const { authCode } = snap.data();
   const { secret } = envCreds(context);
 
@@ -37,38 +36,33 @@ const connectStripeSeller = async (snap, context) => {
   } catch (error) {
     handleError(error);
   }
-};
+}
 
-// Run connect onCreate
-exports.createStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onCreate(connectStripeSeller);
-
-// Allow retry connect onUpdate
-exports.retryStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onUpdate(({ after }, context) => {
-    if (!after.data().stripeID) connectStripeSeller(after, context);
-    return 0;
-  });
+/**
+ * After an unsuccessful attempt, retry to connect the stripe seller account.
+ */
+function retryConnect({ after }, context) {
+  if (!after.data().stripeID) connect(after, context);
+  return 0;
+}
 
 /**
  * Deauthorize the stripe account of a seller when they delete their account.
  */
-exports.deleteStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(async (snap, context) => {
-    const { stripeID } = snap.data();
-    const { clientId, secret } = envCreds(context);
-    let res = await fetch('https://connect.stripe.com/oauth/deauthorize', {
-      method: 'POST',
-      body: JSON.stringify({ client_id: clientId, stripe_user_id: stripeID }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${secret}`
-      }
-    });
-    res = await res.json();
-    if (res.error) console.error('Delete Stripe Seller Account Failed!', res.error);
-    else console.log('Successfully Deleted Stripe Seller Account.', snap.id);
+async function disconnect(snap, context) {
+  const { stripeID } = snap.data();
+  const { clientId, secret } = envCreds(context);
+  let res = await fetch('https://connect.stripe.com/oauth/deauthorize', {
+    method: 'POST',
+    body: JSON.stringify({ client_id: clientId, stripe_user_id: stripeID }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${secret}`
+    }
   });
+  res = await res.json();
+  if (res.error) console.error('Delete Stripe Seller Account Failed!', res.error);
+  else console.log('Successfully Deleted Stripe Seller Account.', snap.id);
+}
+
+exports = { connect, retryConnect, disconnect };

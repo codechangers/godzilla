@@ -44,7 +44,6 @@ async function getTransactionData(snapData) {
   data.validPromo = isPromoValid(snapData.promo, data, documents);
   return data;
 }
-exports.getTransactionData = getTransactionData;
 
 /**
  * Calculate the total price of a transaction with discounts.
@@ -65,4 +64,5 @@ function getTotalWithDiscount(data) {
   numOfDiscounts = atLeastZero(numOfDiscounts);
   return [total, numOfDiscounts];
 }
-exports.getTotalWithDiscount = getTotalWithDiscount;
+
+exports = { getTransactionData, getTotalWithDiscount };
