@@ -37,7 +37,7 @@ const AccountType = ({ setAccountType, next, width }) => (
               component="p"
               style={{ fontSize: '18px', marginBottom: 20 }}
             >
-              Register your kids for a Code Contest today!
+              Register your kids for a CodeChangers event today!
             </Typography>
             <Button
               onClick={() => {

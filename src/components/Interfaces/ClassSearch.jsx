@@ -30,7 +30,7 @@ const ClassSearchInterface = ({ useCustomAppBar, classes, location, user, accoun
   const [isLoading, setIsLoading] = useState(true);
 
   // Customize App Bar
-  useEffect(() => useCustomAppBar({ title: 'Register for a Code Contest' }), [classList]);
+  useEffect(() => useCustomAppBar({ title: 'Register for a CodeChangers event' }), [classList]);
 
   useEffect(() => {
     let { pathname } = location;
