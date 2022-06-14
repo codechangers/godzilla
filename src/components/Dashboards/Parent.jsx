@@ -9,12 +9,7 @@ import ClassInfoInterface from '../Interfaces/ClassInfo';
 import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
-import DocumentationInterface from '../Interfaces/Documentation';
-import TutorialsInterface from '../Interfaces/Tutorials';
-import PreFlightTutorialsInterface from '../Interfaces/PreFlightTutorials';
-import GamesInterface from '../Interfaces/Games';
 import WhoAmInterface from '../Interfaces/WhoAmI';
-import SubmitInterface from '../Interfaces/Submit';
 import { STRIPE_KEY } from '../../utils/globals';
 import { useAccountData } from '../../hooks/accounts';
 
@@ -29,22 +24,10 @@ const routeToInterface = {
   '/parent/signup': ClassInfoInterface,
   '/parent/search': ClassSearchInterface,
   '/parent/profile': Profile,
-  '/parent/settings': SettingsInterface,
-  '/parent/docs': DocumentationInterface,
-  '/parent/tutorials': TutorialsInterface,
-  '/parent/preflight': PreFlightTutorialsInterface,
-  '/parent/games': GamesInterface,
-  '/parent/submit': SubmitInterface
+  '/parent/settings': SettingsInterface
 };
 
-const whoAmIRoutes = [
-  '/parent',
-  '/parent/docs',
-  '/parent/tutorials',
-  '/parent/preflight',
-  '/parent/games',
-  '/parent/submit'
-];
+const whoAmIRoutes = ['/parent'];
 
 const ParentDashboard = ({ user, accounts, location }) => {
   const [whoAmI, setWhoAmI] = useState(null);
@@ -86,9 +69,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
   return user.isSignedIn ? (
     <PageWrapper>
       <SideBar
-        names={['Profile', 'Contests', 'Register', 'Pre Contest', 'Games', 'Submit'].concat(
-          approvedRoutes
-        )}
+        names={['Profile', 'Contests', 'Register'].concat(approvedRoutes)}
         baseRoute="/parent"
         appBarConfig={cab}
         whoAmI={whoAmI}
