@@ -47,7 +47,6 @@ export const months = [
 ];
 
 export const programTypeToText = {
-  contest: 'Code Contest', // TODO: DELETE ME!
   camp: 'Camp',
   'after-school': 'After School Program',
   'special-event': 'Special Event'
