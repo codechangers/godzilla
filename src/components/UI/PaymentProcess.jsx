@@ -28,7 +28,7 @@ const PaymentProcess = ({ payment, onClose, waiver }) => {
       </Typography>
       {payment.succeeded ? (
         <Typography variant="body2" className={classes.mainText}>
-          You can find more information regarding this class in the &quot;Contests&quot; Section of
+          You can find more information regarding this class in the &quot;Events&quot; Section of
           your dashboard.
         </Typography>
       ) : payment.failed ? (
@@ -59,7 +59,7 @@ const PaymentProcess = ({ payment, onClose, waiver }) => {
             <div />
           )}
           {payment.succeeded && waiver && (
-            <div className={classes.waiver}>Fill out the contest waiver</div>
+            <div className={classes.waiver}>Fill out the event waiver</div>
           )}
         </Fab>
         {!(payment.succeeded || payment.failed) && (

@@ -74,7 +74,7 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSele
       );
     }
     useCustomAppBar({
-      title: `${whoAmI.fName}'s Contests`,
+      title: `${whoAmI.fName}'s Events`,
       wrap: true,
       content: <WhoAmIButton whoAmI={whoAmI} setWhoAmI={setWhoAmI} />,
       wrappedContent: (
@@ -120,7 +120,7 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSele
       {filteredClasses.length === 0 && (
         <>
           <Typography variant="h4" className={classes.empty}>
-            You aren&apos;t registered for any contests!
+            You aren&apos;t registered for any events!
           </Typography>
           <Button
             variant="contained"
