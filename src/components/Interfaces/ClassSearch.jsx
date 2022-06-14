@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Paper, Button, Typography, CircularProgress } from '@material-ui/core';
 import { withRouter, Redirect, Link } from 'react-router-dom';
 import { db } from '../../utils/firebase';
+import { rgb } from '../../utils/helpers';
 import * as Styled from './styles';
 
 import InfoCardHeader from '../Classes/InfoCardHeader';
@@ -144,7 +145,7 @@ const styles = theme => ({
   },
   button: {
     textDecoration: 'none',
-    color: '#fff',
+    color: rgb(255, 255, 255),
     width: '40%'
   },
   spinnerWrapper: {

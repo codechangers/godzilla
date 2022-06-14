@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
 import clsx from 'clsx';
-import { getDateString, getTime } from '../../utils/helpers';
+import { getDateString, getTime, rgb } from '../../utils/helpers';
 import { programTypeToText } from '../../utils/globals';
 import { Template2 } from '../Images';
 import ScheduleModal from '../UI/ScheduleModal';
@@ -13,7 +13,7 @@ import { db } from '../../utils/firebase';
 const SignUpsProgress = withStyles({
   root: {
     height: 6,
-    backgroundColor: '#a4a4a4',
+    backgroundColor: rgb(164, 164, 164),
     borderRadius: 8
   },
   bar: {
@@ -261,7 +261,7 @@ const styles = theme => ({
   programType: {
     backgroundColor: 'var(--secondary-color)',
     fontSize: '0.8rem',
-    color: '#fff',
+    color: rgb(255, 255, 255),
     padding: '2px 8px',
     lineHeight: '23px',
     borderRadius: '4px',
@@ -356,7 +356,7 @@ const styles = theme => ({
     width: '100%',
     height: 0,
     marginTop: 40 + 22,
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: `1px solid ${rgb(224, 224, 224)}`,
     [theme.breakpoints.down('md')]: {
       display: 'none'
     }

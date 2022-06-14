@@ -34,7 +34,7 @@ import {
   Close
 } from '@material-ui/icons';
 import { dataMemberToValidation } from '../../utils/globals';
-import { getDateFromTimestamp } from '../../utils/helpers';
+import { getDateFromTimestamp, rgb } from '../../utils/helpers';
 import autoBind from '../../utils/autoBind';
 import { auth, db } from '../../utils/firebase';
 import * as Styled from './styles';
@@ -490,7 +490,7 @@ class ProfileInterface extends React.Component {
         >
           <SnackbarContent
             style={{
-              color: '#fff',
+              color: rgb(255, 255, 255),
               backgroundColor: this.state.passwordReset.includes('Failed') ? '#B7300F' : '#0EA90B'
             }}
             aria-describedby="client-snackbar"

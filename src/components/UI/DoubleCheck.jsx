@@ -5,6 +5,7 @@ import { AspectRatio } from '@material-ui/icons';
 import clsx from 'clsx';
 import Modal from './Modal';
 import codeImgs from '../../resources/codeImgs';
+import { rgb } from '../../utils/helpers';
 
 const propTypes = {
   page: PropTypes.string.isRequired
@@ -74,7 +75,7 @@ DoubleCheck.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   modal: {
-    backgroundColor: '#1D2333',
+    backgroundColor: rgb(29, 35, 51),
     transition: 'all 200ms ease',
     padding: '5px 0',
     '& img': {

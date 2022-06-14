@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, makeStyles } from '@material-ui/core';
-import { getAgeFromBirthday } from '../../utils/helpers';
+import { getAgeFromBirthday, rgb } from '../../utils/helpers';
 
 const StudentInfo = ({ showLabels, student }) => {
   const classes = useStyles();
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderBottom: '1px solid #f2f2f2',
+    borderBottom: `1px solid ${rgb(242, 242, 242)}`,
     padding: '16px',
     '& p': {
       marginRight: 32

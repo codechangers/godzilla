@@ -4,6 +4,7 @@ import { makeStyles, Paper, Typography, Button } from '@material-ui/core';
 import { Autorenew, CheckCircle, Error, FiberManualRecord } from '@material-ui/icons';
 import { getGameStatus, statusLine } from '../../utils/gamesHelpers';
 import { defaultStatus, GREEN } from '../../utils/globals';
+import { rgb } from '../../utils/helpers';
 
 const propTypes = {
   gameId: PropTypes.string.isRequired,
@@ -159,7 +160,7 @@ const GameStatus = forwardRef(({ gameId, games, onClose }, ref) => {
 GameStatus.propTypes = propTypes;
 
 const StatusIcon = ({ status }) => {
-  const colors = ['#a2a2a2', 'inherit', GREEN, 'inherit'];
+  const colors = [rgb(162, 162, 162), 'inherit', GREEN, 'inherit'];
   const classes = useStyles();
   return (
     <span style={{ color: colors[status] }} className={status === 1 ? classes.spinner : null}>

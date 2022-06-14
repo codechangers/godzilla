@@ -4,6 +4,7 @@ import { Button, Typography, makeStyles } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import Modal from '../../UI/Modal';
 import flowchart from '../../../assets/images/flowchart.png';
+import { rgb } from '../../utils/helpers';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -120,7 +121,7 @@ const useStyles = makeStyles({
     '& button': { margin: '10px 0', alignSelf: 'flex-end' },
     '& img': {
       alignSelf: 'center ',
-      border: '1px solid #fff',
+      border: `1px solid ${rgb(255, 255, 255)}`,
       boxSizing: 'border-box',
       margin: '12px 0',
       maxWidth: '99%',

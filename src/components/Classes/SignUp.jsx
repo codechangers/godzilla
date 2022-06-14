@@ -20,7 +20,7 @@ import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
 import { db } from '../../utils/firebase';
 import { useParentsLiveChildren } from '../../hooks/children';
-import { rgba } from '../../utils/helpers';
+import { rgb, rgba } from '../../utils/helpers';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -233,7 +233,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
                 className={classes.cardInfo}
                 style={invalidPayment ? { border: '1px solid red' } : null}
               >
-                <CardElement style={{ base: { color: '#fafafa' } }} />
+                <CardElement style={{ base: { color: rgb(250, 250, 250) } }} />
               </div>
             </>
           )}

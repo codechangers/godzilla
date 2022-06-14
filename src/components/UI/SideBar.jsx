@@ -28,7 +28,7 @@ import clsx from 'clsx';
 import Logout from './Logout';
 import Intercom from './Intercom';
 import { Logo } from '../Images';
-import { rgba } from '../../utils/helpers';
+import { rgb, rgba } from '../../utils/helpers';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -262,7 +262,7 @@ const useStyles = makeStyles(theme => ({
       color: rgba(200, 200, 200, 0.8)
     },
     '& > a > div.selected': {
-      color: '#fff'
+      color: rgb(255, 255, 255)
     }
   },
   sidebarBorder: {

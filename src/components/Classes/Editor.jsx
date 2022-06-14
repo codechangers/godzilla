@@ -17,7 +17,8 @@ import {
   validateFields,
   getErrorStatus,
   getDateFromTimestamp,
-  rgba
+  rgba,
+  rgb
 } from '../../utils/helpers';
 import { programTypeToText, weekDays } from '../../utils/globals';
 import autoBind from '../../utils/autoBind';
@@ -520,7 +521,7 @@ const styles = theme => ({
   boldIcon: {
     '& p': {
       fontWeight: 700,
-      color: '#757575'
+      color: rgb(117, 117, 117)
     }
   },
   bold: {
