@@ -340,7 +340,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   },
   logoutButton: {
-    color: 'white',
+    color: rgb(255, 255, 255),
     width: '80px'
   },
   openSidebar: {
