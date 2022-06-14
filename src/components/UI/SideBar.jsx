@@ -13,12 +13,7 @@ import {
   Menu,
   AccountTree,
   SupervisorAccount,
-  School,
-  Description,
-  MenuBook,
-  VideogameAsset,
-  Assignment,
-  DoneAll
+  School
 } from '@material-ui/icons';
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -66,18 +61,13 @@ const defaultABC = defaultProps.appBarConfig;
 const nameToIcon = {
   Dashboard,
   Curriculum: ImportContacts,
-  Contests: Event,
+  Events: Event,
   Payments: AttachMoney,
   Profile: AccountCircle,
   'Sign up': Edit,
   Register: Search,
   'Promo Codes': CardGiftcard,
   Settings,
-  Docs: Description,
-  Tutorials: MenuBook,
-  'Pre Contest': Assignment,
-  Games: VideogameAsset,
-  Submit: DoneAll,
   'Parent Dash': AccountTree,
   'Teacher Dash': School,
   'Admin Dash': SupervisorAccount
@@ -96,7 +86,7 @@ const SideBar = ({ names, baseRoute, enableIntercom, whoAmI, location, width, ap
 
   const nameToRoute = {
     Dashboard: baseRoute,
-    Contests: baseRoute,
+    Events: baseRoute,
     Curriculum: `${baseRoute}/curriculum`,
     Payments: `${baseRoute}/payments`,
     Profile: `${baseRoute}/profile`,
@@ -104,11 +94,6 @@ const SideBar = ({ names, baseRoute, enableIntercom, whoAmI, location, width, ap
     Register: `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`,
-    Docs: `${baseRoute}/docs`,
-    Tutorials: `${baseRoute}/tutorials`,
-    'Pre Contest': `${baseRoute}/preflight`,
-    Games: `${baseRoute}/games`,
-    Submit: `${baseRoute}/submit`,
     'Parent Dash': '/parent',
     'Teacher Dash': '/teacher',
     'Admin Dash': '/admin'
