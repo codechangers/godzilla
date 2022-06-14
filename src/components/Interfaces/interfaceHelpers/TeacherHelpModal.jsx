@@ -4,7 +4,7 @@ import { Button, Typography, makeStyles } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import Modal from '../../UI/Modal';
 import flowchart from '../../../assets/images/flowchart.png';
-import { rgb } from '../../utils/helpers';
+import { rgb } from '../../../utils/helpers';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
