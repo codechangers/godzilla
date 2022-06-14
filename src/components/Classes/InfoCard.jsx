@@ -13,6 +13,7 @@ import InfoCardHeader from './InfoCardHeader';
 import StudentInfo from './StudentInfo';
 import { useChildren } from '../../hooks/children';
 import CheckOffModal from './CheckOff/Modal';
+import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   cls: PropTypes.object.isRequired,
@@ -128,7 +129,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: 16,
       fontSize: 12,
       [theme.breakpoints.up('md')]: {
-        color: 'rgba(0, 0, 0, 0.6)'
+        color: rgba(0, 0, 0, 0.6)
       },
       '& svg': {
         marginRight: 8,

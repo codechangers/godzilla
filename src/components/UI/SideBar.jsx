@@ -28,6 +28,7 @@ import clsx from 'clsx';
 import Logout from './Logout';
 import Intercom from './Intercom';
 import { Logo } from '../Images';
+import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   location: PropTypes.object.isRequired,
@@ -255,10 +256,10 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: 'rgba(255, 255, 255, 0.8)'
+      color: rgba(255, 255, 255, 0.8)
     },
     '& > a > div:hover': {
-      color: 'rgba(200, 200, 200, 0.8)'
+      color: rgba(200, 200, 200, 0.8)
     },
     '& > a > div.selected': {
       color: '#fff'
@@ -269,7 +270,7 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'flex-end',
     width: 1,
     height: 'calc(100% - 64px)',
-    background: 'rgba(255, 255, 255, 0.12)'
+    background: rgba(255, 255, 255, 0.12)
   },
   appBar: {
     backgroundColor: 'var(--background-color)',
@@ -291,7 +292,7 @@ const useStyles = makeStyles(theme => ({
   appBarBorder: {
     alignSelf: 'flex-end',
     width: 'calc(100% - 96px + 1px)',
-    background: 'rgba(255, 255, 255, 0.12)',
+    background: rgba(255, 255, 255, 0.12),
     height: 1,
     [theme.breakpoints.down('xs')]: {
       width: '100%'
@@ -305,7 +306,7 @@ const useStyles = makeStyles(theme => ({
   },
   secondaryInner: {
     backgroundColor: 'var(--background-color)',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
+    border: `1px solid ${rgba(255, 255, 255, 0.12)}`,
     borderRight: 'none',
     width: '100%',
     display: 'flex',
@@ -355,7 +356,7 @@ const useStyles = makeStyles(theme => ({
       top: 0,
       left: 0,
       zIndex: 9,
-      backgroundColor: 'rgba(0,0,0,0.7)'
+      backgroundColor: rgba(0, 0, 0, 0.7)
     }
   }
 }));

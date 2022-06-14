@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { breakpoints } from '../../utils/globals';
+import { rgba } from '../../utils/helpers';
 
 // AccountType styles
 export const AccountType = styled.div({
@@ -185,7 +186,7 @@ export const ActionInner = styled.div({
 
 export const ListItem = styled.div({
   backgroundColor: '#120d26',
-  border: '0.5px solid rgba(255, 255, 255, 0.2)',
+  border: `0.5px solid ${rgba(255, 255, 255, 0.2)}`,
   borderRadius: 0,
   '@media (max-width: 420px)': {
     paddingBottom: '56px'

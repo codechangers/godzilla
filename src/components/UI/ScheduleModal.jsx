@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, makeStyles } from '@material-ui/core';
 import Modal from './Modal';
-import { getDateFromTimestamp, getHrMn, getOrdinal } from '../../utils/helpers';
+import { getDateFromTimestamp, getHrMn, getOrdinal, rgba } from '../../utils/helpers';
 import { months, fullWeekDays, weekDays } from '../../utils/globals';
 
 const propTypes = {
@@ -62,8 +62,8 @@ const ScheduleModal = ({ showModal, onClose, cls }) => {
           variant="body1"
           style={
             date >= Date.now()
-              ? { backgroundColor: 'rgba(200, 200, 200, 0.3)' }
-              : { backgroundColor: 'rgba(60, 60, 60, 0.3)' }
+              ? { backgroundColor: rgba(200, 200, 200, 0.3) }
+              : { backgroundColor: rgba(60, 60, 60, 0.3) }
           }
         >
           {str}
@@ -87,7 +87,7 @@ const useStyles = makeStyles({
   },
   scheduleLine: {
     margin: '2px 30px',
-    border: '1px solid rgba(200, 200, 200, 0.3)',
+    border: `1px solid ${rgba(200, 200, 200, 0.3)}`,
     boxSizing: 'border-box',
     padding: '10px 20px',
     borderRadius: '6px',

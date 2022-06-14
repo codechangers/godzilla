@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell
 } from '@material-ui/core';
-import { getDate, getTime, getWeekDays, calcSessions } from '../../utils/helpers';
+import { getDate, getTime, getWeekDays, calcSessions, rgba } from '../../utils/helpers';
 
 const propTypes = {
   cls: PropTypes.object.isRequired
@@ -17,7 +17,7 @@ const propTypes = {
 
 const HeadTableCell = withStyles({
   head: {
-    backgroundColor: 'rgba(31, 31, 31, 0.5)'
+    backgroundColor: rgba(31, 31, 31, 0.5)
   }
 })(TableCell);
 
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    border: '1px solid rgba(31, 31, 31, 0.5)',
+    border: `1px solid ${rgba(31, 31, 31, 0.5)}`,
     '& *': {
       borderBottom: 'none'
     },

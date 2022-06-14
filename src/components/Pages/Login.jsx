@@ -17,7 +17,7 @@ import {
 import autoBind from '../../utils/autoBind';
 import { LogoText } from '../Images';
 import { auth, googleSignIn } from '../../utils/firebase';
-import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
+import { getUserData, validateFields, getErrorStatus, rgba } from '../../utils/helpers';
 import GoogleIcon from '../../assets/images/googleIcon.svg';
 
 const errorCodeToMessage = {
@@ -238,7 +238,7 @@ class Login extends React.Component {
                 </Button>
                 <Button
                   onClick={googleSignIn}
-                  style={{ backgroundColor: '#fff', color: 'rgba(0, 0, 0, 0.6)' }}
+                  style={{ backgroundColor: '#fff', color: rgba(0, 0, 0, 0.6) }}
                   variant="contained"
                 >
                   <img src={GoogleIcon} alt="G" style={{ marginRight: '11px' }} />

@@ -20,7 +20,7 @@ import TeachersModal from '../Interfaces/interfaceHelpers/TeacherHelpModal';
 import NavDrawer from '../UI/NavDrawer';
 import NavButtons from '../UI/NavButtons';
 import { getFilteredLiveCheckOffsData, getLiveTutorialSelection } from '../../hooks/pages';
-import { toData, flattenPages } from '../../utils/helpers';
+import { toData, flattenPages, rgba } from '../../utils/helpers';
 import {
   PICK_A_GAME,
   RUNNER_TUTORIAL,
@@ -400,7 +400,11 @@ const useStyles = makeStyles(theme => ({
       alignSelf: 'center'
     },
     '& > span': { width: '100%', display: 'flex', justifyContent: 'center' },
-    '& iframe': { maxWidth: '100%', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 3 }
+    '& iframe': {
+      maxWidth: '100%',
+      border: `1px solid ${rgba(255, 255, 255, 0.2)}`,
+      borderRadius: 3
+    }
   },
   contentShift: {
     transition: theme.transitions.create('margin', {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, TextField } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import { codeInfo } from '../../utils/gamesHelpers';
+import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   value: PropTypes.string.isRequired,
@@ -76,22 +77,22 @@ const ChooseFile = ({ value, onChange, onUpdate, error, helperText }) => {
 ChooseFile.propTypes = propTypes;
 ChooseFile.defaultProps = defaultProps;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   wrapper: {
     width: '80%'
   },
   input: {
     width: '100%',
     '& input': {
-      color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.87)' : 'rgba(255, 255, 255, 1)'
+      color: rgba(255, 255, 255, 0.87)
     }
   },
   inputLight: {
     width: '100%',
     '& input': {
-      color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.7)'
+      color: rgba(255, 255, 255, 0.6)
     }
   }
-}));
+});
 
 export default ChooseFile;

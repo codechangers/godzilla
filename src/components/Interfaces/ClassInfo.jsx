@@ -29,6 +29,7 @@ import FAQModal from './interfaceHelpers/FAQModal';
 import ClassSignUp from '../Classes/SignUp';
 import { useIdClass } from '../../hooks/classes';
 import { db } from '../../utils/firebase';
+import { rgba } from '../../utils/helpers';
 import * as Styled from './styles';
 
 const propTypes = {
@@ -245,7 +246,7 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
           {(classInfo.title || classInfo.about || classInfo.youtube || isEditing) && (
             <div
               className={classes.cardWrapper}
-              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+              style={{ borderTop: `2px solid ${rgba(150, 150, 150, 0.3)}` }}
             >
               {(isEditing && (
                 <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
@@ -316,7 +317,7 @@ const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }
           {(classInfo.faqs.length > 0 || isEditing) && (
             <div
               className={classes.faqWrapper}
-              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+              style={{ borderTop: `2px solid ${rgba(150, 150, 150, 0.3)}` }}
             >
               <Typography variant="h4" className={classes.faqHeader}>
                 Important Information
@@ -464,7 +465,7 @@ const EditButton = ({ isEditing, title, onClick }) =>
         size="small"
         style={{
           margin: '2px 0 0 -32px',
-          backgroundColor: 'rgba(190, 190, 190, 0.7)'
+          backgroundColor: rgba(190, 190, 190, 0.7)
         }}
         onClick={onClick}
       >
@@ -631,8 +632,8 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
     height: '250px',
     borderRadius: '3px',
-    border: '2px solid rgba(120,120,120,0.3)',
-    backgroundColor: 'rgba(120,120,120,0.3)',
+    border: `2px solid ${rgba(120, 120, 120, 0.3)}`,
+    backgroundColor: rgba(120, 120, 120, 0.3),
     [theme.breakpoints.down('md')]: {
       width: '90%'
     }
@@ -666,8 +667,8 @@ const useStyles = makeStyles(theme => ({
     width: '90%',
     height: '350px',
     borderRadius: '3px',
-    border: '2px solid rgba(120,120,120,0.3)',
-    backgroundColor: 'rgba(120,120,120,0.3)',
+    border: `2px solid ${rgba(120, 120, 120, 0.3)}`,
+    backgroundColor: rgba(120, 120, 120, 0.3),
     [theme.breakpoints.down('xs')]: {
       height: '200px'
     }
@@ -689,7 +690,7 @@ const useStyles = makeStyles(theme => ({
   },
   faqPanelOutline: {
     boxSizing: 'border-box',
-    border: '1px solid rgba(255, 255, 255, 0.23)',
+    border: `1px solid ${rgba(255, 255, 255, 0.23)}`,
     boxShadow: 'none'
   },
   faqHeader: {

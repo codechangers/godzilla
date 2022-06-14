@@ -20,6 +20,7 @@ import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
 import { db } from '../../utils/firebase';
 import { useParentsLiveChildren } from '../../hooks/children';
+import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
@@ -305,7 +306,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardInfo: {
     width: 'calc(100% - 30px)',
-    border: '1px solid rgba(224, 224, 224, 1)',
+    border: `1px solid ${rgba(224, 224, 224, 1)}`,
     padding: 14,
     marginBottom: 20
   },

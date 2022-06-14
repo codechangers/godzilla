@@ -17,6 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ChildInfo from './ChildInfo';
 import autoBind from '../../utils/autoBind';
 import { db, auth } from '../../utils/firebase';
+import { rgba } from '../../utils/helpers';
 
 import * as Styled from './styles';
 
@@ -111,7 +112,7 @@ class ParentSignUp extends React.Component {
             style={{
               border:
                 this.state.childrenData.length > 0
-                  ? '0.5px solid rgba(255, 255, 255, 0.2)'
+                  ? `0.5px solid ${rgba(255, 255, 255, 0.2)}`
                   : 'none',
               padding: 0,
               marginTop: 8,

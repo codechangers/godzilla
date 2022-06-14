@@ -1,4 +1,5 @@
 import { dataMemberToValidation, months, weekDays, STATUS } from './globals';
+import theme from '../components/theme';
 
 /*
  * For all functions that need to be binded to a component, ES5 functions must be used,
@@ -39,6 +40,15 @@ export function validateFields(fields) {
   this.setState({ errors });
   return formValid;
 }
+
+export const atLeastZero = x => (x > 0 ? x : 0);
+export const decimalByte = x => atLeastZero(x < 255 ? x : 255);
+export const themed = x => decimalByte(theme.palette.type === 'dark' ? x : 255 - x);
+
+export const rgba = (red, green, blue, alpha) =>
+  `rgba(${themed(red)}, ${themed(green)}, ${themed(blue)}, ${alpha})`;
+
+export const rgb = (red, green, blue) => rgba(red, green, blue, 1);
 
 export const getErrorStatus = error => typeof error === 'string' && error.length > 0;
 

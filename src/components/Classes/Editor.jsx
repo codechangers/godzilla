@@ -16,7 +16,8 @@ import {
   getUserData,
   validateFields,
   getErrorStatus,
-  getDateFromTimestamp
+  getDateFromTimestamp,
+  rgba
 } from '../../utils/helpers';
 import { programTypeToText, weekDays } from '../../utils/globals';
 import autoBind from '../../utils/autoBind';
@@ -525,7 +526,7 @@ const styles = theme => ({
   bold: {
     '& p': {
       fontWeight: 'normal',
-      color: 'rgba(255, 255, 255, 0.87)'
+      color: rgba(255, 255, 255, 0.87)
     }
   },
   daysOfWeek: {
