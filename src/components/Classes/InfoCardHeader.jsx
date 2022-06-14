@@ -13,11 +13,11 @@ import { db } from '../../utils/firebase';
 const SignUpsProgress = withStyles({
   root: {
     height: 6,
-    backgroundColor: rgb(164, 164, 164),
+    backgroundColor: rgb(25, 25, 25),
     borderRadius: 8
   },
   bar: {
-    backgroundColor: 'var(--yellow-color)'
+    backgroundColor: 'var(--primary-color)'
   }
 })(LinearProgress);
 
@@ -345,7 +345,7 @@ const styles = theme => ({
       width: '2px',
       height: '10px',
       borderRadius: '1px',
-      backgroundColor: 'var(--blue-color)',
+      backgroundColor: rgb(128, 128, 128, 0.5),
       display: 'block'
     },
     [theme.breakpoints.down('sm')]: {
