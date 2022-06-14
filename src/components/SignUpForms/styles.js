@@ -7,7 +7,7 @@ export const AccountType = styled.div({
   width: '100%',
   minHeight: '100vh',
   boxSizing: 'border-box',
-  backgroundColor: '#120d26',
+  backgroundColor: 'var(--background-color)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -26,7 +26,7 @@ export const AccountSelectionSection = styled.div({
   width: '100%',
   marginTop: 54,
   marginBottom: 75,
-  backgroundColor: '#120d26'
+  backgroundColor: 'var(--background-color)'
 });
 
 export const AccountSelectionCards = styled.div({
@@ -84,7 +84,7 @@ export const AccountLinkButton = styled.button(
     }
   },
   ({ error }) => ({
-    color: error ? '#FF0C3E' : 'inherit'
+    color: error ? 'var(--error-color)' : 'inherit'
   })
 );
 
@@ -160,7 +160,7 @@ export const LinkButton = styled.button(
     }
   },
   ({ error }) => ({
-    color: error ? '#FF0C3E' : 'inherit'
+    color: error ? 'var(--error-color)' : 'inherit'
   })
 );
 
@@ -185,7 +185,7 @@ export const ActionInner = styled.div({
 });
 
 export const ListItem = styled.div({
-  backgroundColor: '#120d26',
+  backgroundColor: 'var(--background-color)',
   border: `0.5px solid ${rgba(255, 255, 255, 0.2)}`,
   borderRadius: 0,
   '@media (max-width: 420px)': {
