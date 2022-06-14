@@ -39,11 +39,6 @@ const ParentDashboard = ({ user, accounts, location }) => {
   const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
   useEffect(() => setCAB({}), [location]);
 
-  // Selected Class Init
-  const [selectedCls, setSelectedCls] = useState(null);
-  const useSelectedCls = () => [selectedCls, setSelectedCls];
-  useEffect(() => setSelectedCls(null), [whoAmI]);
-
   const getID = () => {
     const path = location.pathname;
     if (path.includes('/parent/signup/') && path.length > 18) {
@@ -59,7 +54,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
     let Interface = routeToInterface[cleanPath];
     if (whoAmIRoutes.includes(cleanPath) && whoAmI === null) Interface = WhoAmInterface;
     return Interface === null ? null : (
-      <Interface {...{ accounts, user, useCustomAppBar, useSelectedCls, whoAmI, setWhoAmI }} />
+      <Interface {...{ accounts, user, useCustomAppBar, whoAmI, setWhoAmI }} />
     );
   };
 
@@ -78,9 +73,7 @@ const ParentDashboard = ({ user, accounts, location }) => {
       <StripeProvider apiKey={STRIPE_KEY}>
         <Elements>
           {getInterface() || (
-            <ClassViewInterface
-              {...{ whoAmI, setWhoAmI, useCustomAppBar, useSelectedCls, accounts }}
-            />
+            <ClassViewInterface {...{ whoAmI, setWhoAmI, useCustomAppBar, accounts }} />
           )}
         </Elements>
       </StripeProvider>

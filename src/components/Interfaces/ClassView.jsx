@@ -23,12 +23,10 @@ const propTypes = {
   width: PropTypes.string.isRequired,
   whoAmI: PropTypes.object.isRequired,
   setWhoAmI: PropTypes.func.isRequired,
-  useCustomAppBar: PropTypes.func.isRequired,
-  useSelectedCls: PropTypes.func.isRequired
+  useCustomAppBar: PropTypes.func.isRequired
 };
 
-const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSelectedCls }) => {
-  const [setSelectedCls] = useSelectedCls().slice(1);
+const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
   const childRef = useMemo(() => whoAmI.ref, [whoAmI]);
   const child = useLiveChild(childRef);
   const classRefs = useMemo(() => child?.classes || [], [child]);
@@ -86,27 +84,6 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSele
     });
   }, [whoAmI, child, showHistory, width]);
 
-  // TODO: Use timeouts to update without refresh.
-  const whenIs = cls => {
-    const now = new Date(Date.now());
-    const endsAt = getExactDateTime(cls.endDate, cls.endTime);
-    const startsAt = getExactDateTime(cls.startDate, cls.startTime);
-    const hasEnded = endsAt <= now;
-    const hasStarted = startsAt <= now;
-    return [hasStarted, hasEnded];
-  };
-
-  const isActive = cls => {
-    const [hasStarted, hasEnded] = whenIs(cls);
-    return hasStarted && !hasEnded;
-  };
-
-  const timePrompt = cls => {
-    if (isActive(cls)) return 'Start';
-    if (whenIs(cls)[1]) return 'Terminated';
-    return 'Upcoming';
-  };
-
   const filteredClasses = useMemo(
     () =>
       showHistory
@@ -137,17 +114,7 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar, useSele
         .map(cls => (
           <Paper key={cls.id} className={classes.paper}>
             <InfoCardHeader cls={cls}>
-              <Button
-                disabled={!isActive(cls)}
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setSelectedCls(cls);
-                  history.push('/parent/tutorials');
-                }}
-              >
-                {timePrompt(cls)}
-              </Button>
+              <div />
             </InfoCardHeader>
           </Paper>
         ))}
