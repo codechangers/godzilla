@@ -8,7 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
-import { rgb, rgba } from '../../utils/helpers';
+import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   width: PropTypes.string.isRequired,
@@ -238,6 +238,7 @@ const CodeBlock = ({ code, lang, width }) => {
         <Typography
           variant="body1"
           style={{
+            color: '#fff',
             display: 'flex',
             alignItems: 'center',
             overflow: 'hidden'
@@ -266,7 +267,9 @@ const CodeBlock = ({ code, lang, width }) => {
           </Tooltip>
         ) : (
           <CopyToClipboard text={copyCode}>
-            <Button startIcon={<CopyIcon />}>Copy Code</Button>
+            <Button color="secondary" startIcon={<CopyIcon />}>
+              Copy Code
+            </Button>
           </CopyToClipboard>
         )}
       </div>
@@ -288,7 +291,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: '0.3em 0.3em 0 0',
-    backgroundColor: rgb(29, 31, 33),
+    backgroundColor: 'rgb(29, 31, 33)',
     marginTop: 12,
     padding: '6px 18px',
     borderBottom: `solid ${rgba(255, 255, 255, 0.1)} 2px`
@@ -297,7 +300,7 @@ const useStyles = makeStyles({
     maxWidth: '100%',
     boxSizing: 'border-box',
     padding: '12px 0',
-    backgroundColor: rgb(29, 31, 33),
+    backgroundColor: 'rgb(29, 31, 33)',
     borderRadius: '0 0 0.3em 0.3em'
   }
 });

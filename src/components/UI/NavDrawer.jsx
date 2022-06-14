@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Folder from './Folder';
-import { filterPages } from '../../utils/helpers';
+import { filterPages, rgb } from '../../utils/helpers';
 
 const propTypes = {
   open: PropTypes.bool.isRequired,
@@ -75,7 +75,7 @@ NavDrawer.defaultProps = defaultProps;
 const useStyles = drawerWidth =>
   makeStyles({
     drawer: {
-      color: 'lightgrey',
+      color: rgb(211, 211, 211),
       width: drawerWidth,
       backgroundColor: 'var(--background-color)',
       paddingTop: '4px'

@@ -14,7 +14,6 @@ import {
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import CSVDownload from './CSVDownload';
 import Modal from './Modal';
-import { rgba } from '../../utils/helpers';
 
 const propTypes = {
   cls: PropTypes.object,
@@ -117,7 +116,7 @@ const ContactInfo = ({ cls, onClose }) => {
           <Button
             variant="contained"
             disabled={isLoading || students.length === 0}
-            style={{ color: isLoading ? rgba(0, 0, 0, 0.3) : rgba(0, 0, 0, 0.6) }}
+            style={{ color: isLoading ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.6)' }}
           >
             <DownloadIcon style={{ marginRight: '8px' }} />
             Download Info

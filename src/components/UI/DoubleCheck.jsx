@@ -5,7 +5,6 @@ import { AspectRatio } from '@material-ui/icons';
 import clsx from 'clsx';
 import Modal from './Modal';
 import codeImgs from '../../resources/codeImgs';
-import { rgb } from '../../utils/helpers';
 
 const propTypes = {
   page: PropTypes.string.isRequired
@@ -56,15 +55,22 @@ const DoubleCheck = ({ page }) => {
       >
         <div className={classes.row}>
           <div style={{ display: 'block', width: 48 }} className={classes.iconWrap} />
-          <Typography variant="h2">{title}</Typography>
+          <Typography variant="h2" style={{ color: '#fff' }}>
+            {title}
+          </Typography>
           <Tooltip title={zoom ? 'Shrink' : 'Expand'} className={classes.iconWrap}>
-            <IconButton onClick={() => setZoom(!zoom)}>
+            <IconButton color="primary" onClick={() => setZoom(!zoom)}>
               <AspectRatio className={clsx([classes.icon, { [classes.spin]: zoom }])} />
             </IconButton>
           </Tooltip>
         </div>
         <img src={current} alt="Code Example" />
-        <Button variant="outlined" onClick={() => setShow(false)} className={classes.closeBtn}>
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => setShow(false)}
+          className={classes.closeBtn}
+        >
           Close
         </Button>
       </Modal>
@@ -75,7 +81,7 @@ DoubleCheck.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   modal: {
-    backgroundColor: rgb(29, 35, 51),
+    backgroundColor: 'rgb(29, 35, 51)',
     transition: 'all 200ms ease',
     padding: '5px 0',
     '& img': {
