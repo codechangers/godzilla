@@ -29,7 +29,7 @@ export const breakpoints = {
   values: bpValues,
   ...getSizes()
 };
-export const paletteType = 'dark';
+export const paletteType = 'light';
 
 export const months = [
   'January',
