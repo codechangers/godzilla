@@ -53,7 +53,7 @@ const defaultProps = {
   enableIntercom: false,
   whoAmI: null,
   appBarConfig: {
-    title: 'Code Contest',
+    title: 'CodeChangers',
     content: null,
     action: null,
     clsname: '',
