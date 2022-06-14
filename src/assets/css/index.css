@@ -42,7 +42,6 @@ body {
 /**** Background Images ****/
 #background1-img {
   background-image: url('../images/background1.png');
-  background-position: top center;
 }
 #students-img0,
 #students-img1,
@@ -57,15 +56,15 @@ body {
 }
 #students-img0 {
   background-image: url('../images/students-min.jpg');
-  background-position: 60% center;
+  background-position: 48% center;
 }
 #students-img1 {
   background-image: url('../images/students1-min.jpg');
-  background-position: 70% center;
+  background-position: center center;
 }
 #students-img2 {
   background-image: url('../images/students2-min.jpg');
-  background-position: 48% center;
+  background-position: 45% center;
 }
 #students-img3 {
   background-image: url('../images/students3-min.jpg');
@@ -73,19 +72,15 @@ body {
 }
 #students-img4 {
   background-image: url('../images/students4-min.jpg');
-  background-position: 52% center;
+  background-position: 56% center;
 }
 #students-img5 {
   background-image: url('../images/students5-min.jpg');
-  background-position: 11% center;
+  background-position: 58% center;
 }
 #students-img6 {
   background-image: url('../images/students6-min.jpg');
-  background-position: 40% center;
-}
-#students-img7 {
-  background-image: url('../images/students7-min.jpg');
-  background-position: 55% center;
+  background-position: 56% center;
 }
 @keyframes fadeIn {
   0% {

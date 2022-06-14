@@ -61,7 +61,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     const { state } = this.props.location;
-    const backgroundImage = Math.floor(Math.random() * 8);
+    const backgroundImage = Math.floor(Math.random() * 7);
     this.setState({ backgroundImage });
     this.props.updateAccounts(this.props.user);
     if (state && state.signupID) {
