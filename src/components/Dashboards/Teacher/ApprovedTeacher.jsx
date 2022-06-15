@@ -273,8 +273,8 @@ class ApprovedTeacher extends React.Component {
           <SnackbarContent
             aria-describedby="client-snackbar"
             message={getMessage()}
-            action={[<StripeConnect key="stripe_oauth" color="primary" variant="outlined" />]}
-            style={{ width: '100%', backgroundColor: 'var(--blue-color)' }}
+            action={[<StripeConnect key="stripe_oauth" variant="outlined" />]}
+            style={{ width: '100%', backgroundColor: 'var(--secondary-color)' }}
           />
         </Snackbar>
         <ContactInfo
