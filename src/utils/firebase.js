@@ -1,6 +1,5 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import 'firebase/storage';
 import 'firebase/auth';
 
 // All configuration variables are pulled from a .env file
@@ -22,10 +21,6 @@ export const db = firebase
   .firestore()
   .collection('env')
   .doc(process.env.REACT_APP_ENV);
-export const ref = firebase
-  .storage()
-  .ref()
-  .child(process.env.REACT_APP_ENV);
 export const auth = firebase.auth();
 export const googleSignIn = () => {
   const provider = new GoogleAuthProvider();
