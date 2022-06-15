@@ -1,6 +1,6 @@
-const functions = require('firebase-functions');
-const stripe = require('./stripe');
-const learn = require('./learn');
+const functions = require("firebase-functions");
+const stripe = require("./stripe");
+const learn = require("./learn");
 
 /* =====================
  * == Stripe Payments ==
@@ -8,8 +8,8 @@ const learn = require('./learn');
 
 // Handle Registration.
 exports.handleRegistrationPayment = functions.firestore
-  .document('/env/{env}/payments/{paymentId}')
-  .onCreate(stripe.payments.handleRegistration);
+    .document("/env/{env}/payments/{paymentId}")
+    .onCreate(stripe.payments.handleRegistration);
 
 /* ============================
  * == Stripe Seller Accounts ==
@@ -17,27 +17,27 @@ exports.handleRegistrationPayment = functions.firestore
 
 // Handle Create.
 exports.createStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onCreate(stripe.sellers.connect);
+    .document("/env/{env}/stripeSellers/{sellerId}")
+    .onCreate(stripe.sellers.connect);
 
 // Handle Retry.
 exports.retryStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onUpdate(stripe.sellers.retryConnect);
+    .document("/env/{env}/stripeSellers/{sellerId}")
+    .onUpdate(stripe.sellers.retryConnect);
 
 // Handle Delete.
 exports.deleteStripeSellerAccount = functions.firestore
-  .document('/env/{env}/stripeSellers/{sellerId}')
-  .onDelete(stripe.sellers.disconnect);
+    .document("/env/{env}/stripeSellers/{sellerId}")
+    .onDelete(stripe.sellers.disconnect);
 
 /* ====================
  * == Learn Accounts ==
  * ==================== */
 
 exports.assignLearnAccountId = functions.firestore
-  .document('/env/{env}/children/{childId}')
-  .onCreate(learn.assignId);
+    .document("/env/{env}/children/{childId}")
+    .onCreate(learn.assignAccountId);
 
 exports.generateLearnIds = functions.firestore
-  .document('/env/{env}/learnIdTickets/{ticketId}')
-  .onCreate(learn.generateIds);
+    .document("/env/{env}/learnIdTickets/{ticketId}")
+    .onCreate(learn.generateIds);

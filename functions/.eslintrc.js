@@ -1,11 +1,14 @@
 module.exports = {
   root: true,
   env: {
-    es2022: true,
-    node: true
+    es2021: true,
+    node: true,
   },
-  extends: ['eslint:recommended', 'google'],
+  extends: ["eslint:recommended", "google"],
   rules: {
-    quotes: ['error', 'double']
-  }
+    "max-len": ["error", {code: 100}],
+    "quotes": ["error", "double"],
+    "valid-jsdoc": [0],
+    "require-jsdoc": [0],
+  },
 };
