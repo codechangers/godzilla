@@ -1,106 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Typography, CircularProgress } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from '../styles';
-import CurriculumInterface from '../../Interfaces/Curriculum';
-import PaymentsInterface from '../../Interfaces/Payments';
 import ProfileInterface from '../../Interfaces/Profile';
-import SettingsInterface from '../../Interfaces/Settings';
 import PromoCodesInterface from '../../Interfaces/PromoCodes';
 import SideBar from '../../UI/SideBar';
 import ApprovedTeacher from './ApprovedTeacher';
 import DeclinedTeacher from './DeclinedTeacher';
 import PendingTeacher from './PendingTeacher';
 import TrainingTeacher from './TrainingTeacher';
+import { useAccountData } from '../../../hooks/accounts';
+
+const propTypes = {
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
 
 const routeToInterface = {
   '/teacher': null,
-  '/teacher/curriculum': CurriculumInterface,
-  '/teacher/payments': PaymentsInterface,
   '/teacher/profile': ProfileInterface,
-  '/teacher/settings': SettingsInterface,
   '/teacher/promo': PromoCodesInterface
 };
 
-let teacherListener = () => {};
+const TeacherDashboard = props => {
+  const { accounts, user, location } = props;
+  const [isTeacher, teacher, loading] = useAccountData('teachers', true);
+  const [isAdmin] = useAccountData('admins');
 
-class TeacherDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      teacher: null
-    };
-  }
+  // Custom App Bar Init
+  const [cab, setCAB] = useState({});
+  const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
+  useEffect(() => setCAB({}), [location]);
 
-  componentDidMount() {
-    if (this.props.accounts.teachers) {
-      teacherListener = this.props.db
-        .collection('teachers')
-        .doc(this.props.accounts.teachers.id)
-        .onSnapshot(tDoc => {
-          this.setState({ teacher: tDoc.data() });
-        });
-    }
-  }
+  const getInterface = () => {
+    const Interface = routeToInterface[location.pathname];
+    return Interface === null ? null : <Interface {...{ user, accounts, useCustomAppBar }} />;
+  };
 
-  componentWillUnmount() {
-    teacherListener();
-    teacherListener = () => {};
-  }
-
-  getInterface() {
-    const Interface = routeToInterface[this.props.location.pathname];
-    const { firebase, db, user, accounts } = this.props;
-    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
-  }
-
-  getDashboard() {
-    const { user, accounts } = this.props;
-    const { teacher } = this.state;
+  const getDashboard = () => {
     let Dashboard = null;
-    if (teacher) {
-      if (user.isSignedIn && accounts.teachers) {
-        if (teacher.isVerrified) {
-          Dashboard = teacher.isTraining ? TrainingTeacher : ApprovedTeacher;
-        } else {
-          Dashboard = teacher.isDeclined ? DeclinedTeacher : PendingTeacher;
-        }
+    if (isTeacher) {
+      if (teacher.isVerrified) {
+        Dashboard = teacher.isTraining ? TrainingTeacher : ApprovedTeacher;
+      } else {
+        Dashboard = teacher.isDeclined ? DeclinedTeacher : PendingTeacher;
       }
     }
-    return Dashboard !== null ? <Dashboard {...this.props} /> : null;
-  }
+    return Dashboard !== null ? <Dashboard {...props} useCustomAppBar={useCustomAppBar} /> : null;
+  };
 
-  isApproved() {
-    const { teacher } = this.state;
-    return teacher && teacher.isVerrified && !teacher.isTraining;
-  }
+  let approvedRoutes =
+    isTeacher && teacher.isVerrified && !teacher.isTraining
+      ? ['Promo Codes', 'Parent Dash']
+      : ['Parent Dash'];
+  approvedRoutes = isAdmin ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
-  render() {
-    const { user, firebase, accounts } = this.props;
-    let approvedRoutes = this.isApproved() ? ['Promo Codes', 'Parent Dash'] : ['Parent Dash'];
-    approvedRoutes = accounts.admins ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
-
-    return user.isSignedIn ? (
-      <PageWrapper>
-        <SideBar
-          names={['Profile', 'Dashboard'].concat(approvedRoutes)}
-          baseRoute="/teacher"
-          firebase={firebase}
-        />
-        {this.getInterface() || this.getDashboard()}
+  if (loading)
+    return (
+      <PageWrapper style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h4" style={{ marginBottom: 20 }}>
+          Loading Dashboard...
+        </Typography>
+        <CircularProgress />
       </PageWrapper>
-    ) : (
-      <Redirect to="/login" />
     );
-  }
-}
-
-TeacherDashboard.propTypes = {
-  user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  return isTeacher ? (
+    <PageWrapper>
+      <SideBar
+        names={['Profile', 'Dashboard'].concat(approvedRoutes)}
+        baseRoute="/teacher"
+        appBarConfig={cab}
+      />
+      {getInterface() || getDashboard()}
+    </PageWrapper>
+  ) : (
+    <Redirect to="/login" />
+  );
 };
+TeacherDashboard.propTypes = propTypes;
 
 export default TeacherDashboard;

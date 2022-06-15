@@ -25,18 +25,19 @@ const AccountType = ({ setAccountType, next, width }) => (
   <Styled.AccountType>
     <Styled.AccountSelectionSection>
       <Typography variant="h2" style={getHeaderStyle(width)}>
-        <span>Select the type of</span> <span>Account you need</span>
+        <span>Select the type of </span>
+        <span>Account you need</span>
       </Typography>
       <Styled.AccountSelectionCards>
         <Card style={{ width: '40%', minWidth: '300px' }}>
-          <CardHeader title="Parent Account" />
+          <CardHeader title="Family Account" />
           <CardContent>
             <Typography
               variant="body2"
               component="p"
               style={{ fontSize: '18px', marginBottom: 20 }}
             >
-              Register your children and get them learning STEM today!
+              Register your kids for a CodeChangers event today!
             </Typography>
             <Button
               onClick={() => {
@@ -47,7 +48,7 @@ const AccountType = ({ setAccountType, next, width }) => (
               variant="contained"
               color="primary"
             >
-              Sign Up as a Parent
+              Sign Up as a Family
             </Button>
           </CardContent>
         </Card>
@@ -83,7 +84,8 @@ const AccountType = ({ setAccountType, next, width }) => (
           next();
         }}
       >
-        <span>Need an Organization Account?</span> <span>Register Here</span>
+        <span>Need an Organization Account? </span>
+        <span> Register Here</span>
       </Styled.AccountLinkButton>
     </Styled.AccountLinkButtonWrapper>
   </Styled.AccountType>

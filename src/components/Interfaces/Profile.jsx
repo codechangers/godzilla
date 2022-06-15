@@ -31,19 +31,16 @@ import {
   School,
   FormatSize,
   Wc,
-  Fingerprint,
   Close
 } from '@material-ui/icons';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { dataMemberToValidation, API_URL } from '../../globals';
-import { getDateFromTimestamp } from '../../helpers';
-import autoBind from '../../autoBind';
+import { dataMemberToValidation } from '../../utils/globals';
+import { getDateFromTimestamp, rgb } from '../../utils/helpers';
+import autoBind from '../../utils/autoBind';
+import { auth, db } from '../../utils/firebase';
 import * as Styled from './styles';
 
 const propTypes = {
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
@@ -122,11 +119,7 @@ const childDropDowns = {
 };
 
 const getSubHeader = text => (
-  <ListSubheader
-    component="div"
-    style={{ backgroundColor: '#fff', borderRadius: '4px 4px 0 0' }}
-    id="nested-list-subheader"
-  >
+  <ListSubheader component="div" style={{ borderRadius: '4px 4px 0 0' }} id="nested-list-subheader">
     {text}
   </ListSubheader>
 );
@@ -284,28 +277,14 @@ class ProfileInterface extends React.Component {
     });
   }
 
-  getStudentID(child) {
-    // eslint-disable-next-line
-    fetch(`${API_URL}/get_uid`)
-      .then(res => res.json())
-      .then(res => {
-        const learnID = res.uid;
-        child.ref.update({ learnID }).then(() => {
-          this.fetchChildrenData();
-        });
-      });
-  }
-
   fetchAccountData() {
-    this.props.db
-      .collection('parents')
+    db.collection('parents')
       .doc(this.props.user.uid)
       .get()
       .then(doc => {
         let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
         if (this.props.accounts.teachers) {
-          this.props.db
-            .collection('teachers')
+          db.collection('teachers')
             .doc(this.props.user.uid)
             .get()
             .then(tDoc => {
@@ -320,12 +299,12 @@ class ProfileInterface extends React.Component {
         } else {
           this.setState({ accountData });
         }
-        this.fetchChildrenData();
+        this.fetchChildrenData(accountData);
       });
   }
 
-  fetchChildrenData() {
-    const childrenRefs = this.state.accountData.children || [];
+  fetchChildrenData(accountData) {
+    const childrenRefs = accountData.children || this.state.accountData.children || [];
     const children = [];
     childrenRefs.forEach(childRef => {
       childRef.get().then(childDoc => {
@@ -383,7 +362,7 @@ class ProfileInterface extends React.Component {
       };
       if (this.validateFields(childFields)) {
         if (!child.parent) {
-          childFields.parent = this.props.db.collection('parents').doc(this.props.user.uid);
+          childFields.parent = db.collection('parents').doc(this.props.user.uid);
         }
         child.ref.update(childFields);
       }
@@ -391,8 +370,7 @@ class ProfileInterface extends React.Component {
   }
 
   changePassword() {
-    this.props.firebase
-      .auth()
+    auth
       .sendPasswordResetEmail(this.props.user.email)
       .then(() => {
         console.log('Email Sent...');
@@ -418,7 +396,7 @@ class ProfileInterface extends React.Component {
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={getSubHeader(
-              this.props.accounts.teachers ? 'Teacher Account' : 'Parent Account'
+              this.props.accounts.teachers ? 'Teacher Account' : 'Family Account'
             )}
             className={classes.root}
           >
@@ -481,32 +459,6 @@ class ProfileInterface extends React.Component {
                     timeout="auto"
                     unmountOnExit
                   >
-                    <ListItem className={classes.childListItem} style={{ flexWrap: 'wrap' }}>
-                      <ListItemIcon>
-                        <Fingerprint />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          child.learnID
-                            ? `Student ID: ${child.learnID}`
-                            : 'Get your Personal Student ID!'
-                        }
-                      />
-
-                      {child.learnID ? (
-                        <CopyToClipboard text={child.learnID}>
-                          <Button>Copy ID</Button>
-                        </CopyToClipboard>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => this.getStudentID(child)}
-                        >
-                          Get your ID
-                        </Button>
-                      )}
-                    </ListItem>
                     {this.getChildFields(child.id)}
                     <ListItem>
                       <ListItemText primary="" />
@@ -538,7 +490,7 @@ class ProfileInterface extends React.Component {
         >
           <SnackbarContent
             style={{
-              color: '#fff',
+              color: rgb(255, 255, 255),
               backgroundColor: this.state.passwordReset.includes('Failed') ? '#B7300F' : '#0EA90B'
             }}
             aria-describedby="client-snackbar"

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Typography, Button, TextField } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import Modal from '../../UI/Modal';
 import CSVDownload from '../../UI/CSVDownload';
-import { API_URL } from '../../../globals';
+import { useLiveTicketStatus, useLearnIds } from '../../../hooks/learn';
+import { db } from '../../../utils/firebase';
 
 const propTypes = {
   open: PropTypes.bool,
@@ -19,35 +20,37 @@ const defaultProps = {
 const IDGenerator = ({ open, onClose }) => {
   const [numIds, setNumIds] = useState('');
   const [error, setError] = useState('');
-  const [data, setData] = useState([]);
 
-  const setGenerated = ids => {
-    setData(
+  const [ticket, setTicket] = useState(null);
+  const completed = useLiveTicketStatus(ticket);
+
+  const idsTicket = useMemo(() => (completed ? ticket : null), [completed, ticket]);
+  const [ids] = useLearnIds(idsTicket);
+
+  const data = useMemo(
+    () =>
       ids.map(id => ({
         first_name: 'CodeChangers',
         last_name: 'Camper',
         username: id,
         password: '12345678'
-      }))
-    );
-  };
+      })),
+    [ids]
+  );
 
   const onSubmit = () => {
-    if (!Number.isNaN(Number(numIds))) {
-      if (Number(numIds) > 0 && Number(numIds) <= 200) {
+    const n = Number(numIds);
+    if (!Number.isNaN(n)) {
+      if (n > 0 && n <= 200) {
         setError('');
-        const ids = [];
-        for (let i = 0; i < Number(numIds); i++) {
-          fetch(`${API_URL}/get_uid`)
-            .then(res => res.json())
-            .then(res => {
-              const learnID = res.uid;
-              ids.push(learnID);
-              if (ids.length >= Number(numIds)) {
-                setGenerated(ids);
-              }
-            });
-        }
+        const ticketRef = db.collection('learnIdTickets').doc();
+        ticketRef
+          .set({ count: n })
+          .then(() => setTicket(ticketRef))
+          .catch(err => {
+            console.error(err);
+            setError('Failed to request new ids. Try again later.');
+          });
       } else {
         setError('Enter a value between 1 and 200');
       }
@@ -81,14 +84,14 @@ const IDGenerator = ({ open, onClose }) => {
           className={classes.numInput}
           helperText="Max of 200"
           error={error !== ''}
-          disabled={data.length > 0}
+          disabled={data.length > 0 || ticket !== null}
         />
         <Button
           onClick={onSubmit}
           color="primary"
           variant="outlined"
           style={{ marginBottom: 20 }}
-          disabled={data.length > 0}
+          disabled={data.length > 0 || ticket !== null}
         >
           Generate
         </Button>
@@ -100,7 +103,7 @@ const IDGenerator = ({ open, onClose }) => {
               variant="contained"
               color="primary"
               onClick={() => {
-                setData([]);
+                setTicket(null);
                 setNumIds('');
                 onClose();
               }}

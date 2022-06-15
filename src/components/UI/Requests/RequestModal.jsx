@@ -5,8 +5,8 @@ import { CheckCircle, Block } from '@material-ui/icons';
 import RequestTable from './RequestTable';
 import { AccountChip } from './Request';
 import Modal from '../Modal';
-import { getStatus } from '../../../helpers';
-import { STATUS } from '../../../globals';
+import { getStatus } from '../../../utils/helpers';
+import { STATUS } from '../../../utils/globals';
 
 const propTypes = {
   showAccount: PropTypes.object,

@@ -14,10 +14,10 @@ const routeToInterface = {
 };
 
 const OrganizationDashboard = props => {
-  const { firebase, db, user, accounts, location } = props;
+  const { user, accounts, location } = props;
   const getInterface = () => {
     const Interface = routeToInterface[location.pathname];
-    return Interface === null ? null : <Interface {...{ firebase, db, user, accounts }} />;
+    return Interface === null ? null : <Interface {...{ user, accounts }} />;
   };
   let Dashboard = null;
   if (user.isSignedIn && accounts.organizations) {
@@ -30,7 +30,7 @@ const OrganizationDashboard = props => {
   }
   return Dashboard ? (
     <PageWrapper>
-      <SideBar names={['Profile', 'Dashboard']} baseRoute="/organization" firebase={firebase} />
+      <SideBar names={['Profile', 'Dashboard']} baseRoute="/organization" />
       {getInterface() || <Dashboard {...props} />}
     </PageWrapper>
   ) : (
@@ -41,8 +41,6 @@ const OrganizationDashboard = props => {
 OrganizationDashboard.propTypes = {
   user: PropTypes.object.isRequired,
   accounts: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 

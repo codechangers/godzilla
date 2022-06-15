@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin(env) {
+      // Check Admin Privileges.
+      return get(/databases/$(database)/documents/env/$(env)/admins/$(request.auth.uid)).data.secret == "!_xEqyCw3Y.6*wrW32EkCz6GUUn7";
+    }
+
+    // TODO: Add isTeacher/Organization functions for account type specific creates.
+
+    match /env/{env}/{document=**} {
+      // Default document rules.
+      allow read: if request.auth.uid != null;
+      allow write: if false;
+    }
+
+    match /env/{env} { // PRODUCTION or DEVELOPMENT
+
+      match /admins/{admin} {
+        allow read, write: if false;
+      }
+
+      match /children/{child} {
+        allow write: if request.auth.uid != null;
+      }
+
+      match /classes/{class} {
+        allow create: if request.auth.uid != null;
+        allow write: if get(resource.data.teacher).id == request.auth.uid;
+        allow read: if true;
+      }
+
+      match /promos/{promo} {
+        allow create: if request.auth.uid != null;
+        allow write: if get(resource.data.teacher).id == request.auth.uid;
+        allow read: if true;
+      }
+
+      // Account Types
+      match /organizations/{organization} {
+        allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id;
+        allow update: if isAdmin(env);
+      }
+
+      match /parents/{parent} {
+        allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id;
+      }
+
+      match /teachers/{teacher} {
+        allow create: if request.auth.uid != null;
+        allow write: if request.auth.uid == resource.id;
+        allow update: if isAdmin(env);
+      }
+
+      // Stripe Data
+      match /stripeSellers/{sellerId} {
+        allow create: if request.auth.uid != null;
+        allow read, update: if request.auth.uid == resource.id;
+        allow write: if false;
+      }
+
+      match /payments/{payment} {
+        allow create: if request.auth.uid != null;
+        allow read: if resource.data.userID == request.auth.uid;
+        allow write: if false;
+      }
+
+      // Learn ID Generator
+      match /learnIdTickets/{ticketId} {
+        allow read, create: if isAdmin(env);
+        allow write: if false;
+      }
+
+    }
+
+  }
+}

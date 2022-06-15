@@ -73,7 +73,7 @@ RequestTable.defaultProps = defaultProps;
 const useStyles = makeStyles({
   tableWrapper: {
     width: '100%',
-    overflow: 'scroll'
+    overflow: 'auto'
   },
   table: {
     minWidth: '400px'

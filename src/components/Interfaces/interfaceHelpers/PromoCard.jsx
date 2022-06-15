@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Button, Typography, makeStyles, IconButton, Tooltip } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Delete, Edit } from '@material-ui/icons';
-import { getDateFromTimestamp, getMMDDYYYY, getHrMn } from '../../../helpers';
+import { getDateFromTimestamp, getMMDDYYYY, getHrMn } from '../../../utils/helpers';
 
 const propTypes = {
   promoCode: PropTypes.object.isRequired,

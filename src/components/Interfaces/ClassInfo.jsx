@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
@@ -7,140 +7,37 @@ import {
   makeStyles,
   Paper,
   Button,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   InputBase,
   IconButton,
   Tooltip,
-  Fab,
   TextField
 } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import SendIcon from '@material-ui/icons/Send';
+import clsx from 'clsx';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import InfoModal from './interfaceHelpers/InfoModal';
 import FAQModal from './interfaceHelpers/FAQModal';
 import ClassSignUp from '../Classes/SignUp';
+import { useIdClass } from '../../hooks/classes';
+import { db } from '../../utils/firebase';
+import { rgba } from '../../utils/helpers';
 import * as Styled from './styles';
 
 const propTypes = {
+  width: PropTypes.string.isRequired,
+  useCustomAppBar: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
-};
-
-const Fill = ({ className, prompt, isEditing, onClick }) => {
-  const classes = useStyles();
-  return (
-    isEditing && (
-      <div className={`${className} ${classes.fill}`}>
-        <Button onClick={onClick}>
-          <AddIcon />
-          {prompt}
-        </Button>
-      </div>
-    )
-  );
-};
-
-Fill.propTypes = {
-  className: PropTypes.string.isRequired,
-  prompt: PropTypes.string.isRequired,
-  isEditing: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
-};
-
-const EditButton = ({ isEditing, title, onClick }) =>
-  isEditing && (
-    <Tooltip title={title} aria-label={title} placement="top" arrow>
-      <IconButton
-        edge="end"
-        size="small"
-        style={{
-          margin: '2px 0 0 -32px',
-          backgroundColor: 'rgba(190, 190, 190, 0.7)'
-        }}
-        onClick={onClick}
-      >
-        <EditIcon />
-      </IconButton>
-    </Tooltip>
-  );
-
-EditButton.propTypes = {
-  isEditing: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
-};
-
-const SignUpButton = ({ cls, onClick, className, inputCode, setInputCode }) => {
-  const [tempCode, setTempCode] = useState('');
-  const [error, setError] = useState('');
-
-  const classes = useStyles();
-  return cls.isPrivate && inputCode !== cls.privacyCode ? (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        if (tempCode === cls.privacyCode) {
-          setInputCode(tempCode);
-          setError('');
-        } else {
-          setError('Invalid Code!');
-        }
-      }}
-      className={classes.registrationCode}
-      style={error.length > 0 ? { marginBottom: 0 } : {}}
-    >
-      <TextField
-        label="Registration Code"
-        error={error.length > 0}
-        helperText={error}
-        onChange={e => setTempCode(e.target.value)}
-        className={classes.registrationCodeInput}
-      />
-      <Tooltip title="Use Code" placement="top">
-        <IconButton
-          style={
-            error.length > 0 ? { marginLeft: '10px' } : { marginLeft: '10px', marginTop: '12px' }
-          }
-          aria-label="Use Code"
-          size="small"
-          color="primary"
-          type="submit"
-        >
-          <SendIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
-    </form>
-  ) : (
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={cls.children.length >= cls.maxStudents}
-      className={className}
-      onClick={onClick}
-    >
-      Sign Up!
-    </Button>
-  );
-};
-
-SignUpButton.propTypes = {
-  cls: PropTypes.object.isRequired,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  inputCode: PropTypes.string.isRequired,
-  setInputCode: PropTypes.func.isRequired
-};
-SignUpButton.defaultProps = {
-  onClick: () => {},
-  className: ''
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired
 };
 
 const modalPropSets = {
@@ -175,84 +72,103 @@ const defaultClassInfo = {
   faqs: []
 };
 
-const ClassInfoInterface = ({ location, db, user }) => {
-  const [cls, setCls] = useState({});
-  const [foundClass, setFoundClass] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+const ClassInfoInterface = ({ location, user, useCustomAppBar, width, accounts }) => {
+  // Get a classId from the url.
+  const classId = useMemo(() => {
+    return location?.pathname.replace('/parent/signup/', '') || '';
+  }, [location.pathname]);
+  const [foundClass, cls, isLoading] = useIdClass(classId, true);
   const [showSignup, setShowSignup] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalProps, setModalProps] = useState({});
   const [editFAQ, setEditFAQ] = useState([null, -1]);
+  const [originalInfo, setOriginalInfo] = useState(defaultClassInfo);
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
   const [isOwner, setIsOwner] = useState(false);
   const [inputCode, setInputCode] = useState('');
 
-  const updateClassInfo = newInfo => {
-    setClassInfo({ ...classInfo, ...newInfo });
+  const updateClassInfo = (newInfo, shouldSetOriginal = false) => {
+    const infoToBe = { ...classInfo, ...newInfo };
+    if (shouldSetOriginal) setOriginalInfo(infoToBe);
+    setClassInfo(infoToBe);
   };
 
+  // Check for class ownership.
   useEffect(() => {
-    const { pathname } = location;
-    if (pathname) {
-      db.collection('classes')
-        .doc(pathname.replace('/parent/signup/', ''))
-        .get()
-        .then(classDoc => {
-          if (classDoc.exists) {
-            setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
-            updateClassInfo(classDoc.data().info || defaultClassInfo);
-            setFoundClass(true);
-            if (classDoc.data().teacher.id === user.uid) {
-              setIsOwner(true);
-            }
-          } else {
-            setCls({ children: [] });
-          }
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-    // eslint-disable-next-line
-  }, [location, db]);
+    if (foundClass && cls.teacher.id === user.uid) setIsOwner(true);
+  }, [foundClass, cls, user]);
 
-  const getClassInfo = () => {
-    setIsLoading(true);
-    cls.ref
-      .get()
-      .then(classDoc => {
-        setCls({ ...classDoc.data(), id: classDoc.id, ref: classDoc.ref });
-        updateClassInfo(classDoc.data().info || defaultClassInfo);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
+  // Save class info to state.
+  useEffect(() => {
+    if (foundClass) updateClassInfo(cls.info || defaultClassInfo, true);
+  }, [foundClass, cls]);
+
+  // Use a custom app bar.
+  useEffect(() => {
+    let action = isEditing ? (
+      <Button
+        variant="contained"
+        onClick={() => setIsEditing(false)}
+        startIcon={<VisibilityIcon />}
+      >
+        View Preview
+      </Button>
+    ) : (
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => setIsEditing(true)}
+        startIcon={<EditIcon />}
+      >
+        Edit Info
+      </Button>
+    );
+    if (isWidthDown('xs', width)) {
+      // Use Icon buttons with Tooltips on mobile.
+      action = isEditing ? (
+        <Tooltip title="View Preview" placement="bottom">
+          <IconButton onClick={() => setIsEditing(false)}>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Edit Info" placement="bottom">
+          <IconButton color="primary" onClick={() => setIsEditing(true)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      );
+    }
+    useCustomAppBar({
+      title: isEditing ? 'Editing Info' : `Register for ${cls?.name || 'this class'}`,
+      action: isOwner ? action : null
+    });
+  }, [isOwner, isEditing, width, cls]);
 
   const saveClassInfo = () => {
-    cls.ref.update({ info: classInfo }).then(getClassInfo);
+    cls.ref.update({ info: classInfo });
   };
 
   const classes = useStyles();
   return isLoading ? (
-    <Styled.PageContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Styled.PageContent className={classes.wrapper}>
       <Typography variant="h3" style={{ marginBottom: '20px' }}>
         Finding Class...
       </Typography>
       <CircularProgress color="primary" />
     </Styled.PageContent>
   ) : (
-    <Styled.PageContent>
-      <Typography variant="h3" className={classes.mainHeader}>
-        {foundClass ? 'Class Info' : 'Class not found.'}
-      </Typography>
+    <Styled.PageContent className={classes.wrapper}>
+      {!foundClass && (
+        <Typography variant="h3" className={classes.mainHeader}>
+          Class not found.
+        </Typography>
+      )}
       {isEditing && (
         <div className={classes.editButtons}>
-          <Button onClick={getClassInfo}>Revert Changes</Button>
-          <Button color="primary" variant="outlined" onClick={saveClassInfo}>
+          <Button onClick={() => setClassInfo(originalInfo)}>Revert Changes</Button>
+          <Button color="secondary" variant="outlined" onClick={saveClassInfo}>
             Save Changes
           </Button>
         </div>
@@ -330,7 +246,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
           {(classInfo.title || classInfo.about || classInfo.youtube || isEditing) && (
             <div
               className={classes.cardWrapper}
-              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+              style={{ borderTop: `2px solid ${rgba(150, 150, 150, 0.3)}` }}
             >
               {(isEditing && (
                 <div className={classes.right} style={{ boxSizing: 'border-box', padding: '12px' }}>
@@ -401,14 +317,14 @@ const ClassInfoInterface = ({ location, db, user }) => {
           {(classInfo.faqs.length > 0 || isEditing) && (
             <div
               className={classes.faqWrapper}
-              style={{ borderTop: '2px solid rgba(150,150,150,0.3)' }}
+              style={{ borderTop: `2px solid ${rgba(150, 150, 150, 0.3)}` }}
             >
               <Typography variant="h4" className={classes.faqHeader}>
                 Important Information
               </Typography>
               {classInfo.faqs.map((faq, i) => (
-                <ExpansionPanel key={faq.q} className={classes.faqPanel}>
-                  <ExpansionPanelSummary
+                <Accordion key={faq.q} className={clsx(classes.faqPanel, classes.faqPanelOutline)}>
+                  <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
@@ -417,8 +333,8 @@ const ClassInfoInterface = ({ location, db, user }) => {
                     <Typography variant="h6" className={classes.question}>
                       {faq.q}
                     </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails className={classes.details}>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.details}>
                     <Typography variant="body1" className={classes.answer}>
                       {faq.a}
                     </Typography>
@@ -449,12 +365,12 @@ const ClassInfoInterface = ({ location, db, user }) => {
                         </Tooltip>
                       </div>
                     )}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  </AccordionDetails>
+                </Accordion>
               ))}
               {isEditing ? (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   className={classes.faqPanel}
                   style={{ borderRadius: 0, marginTop: 1 }}
                   onClick={() => setEditFAQ([{ q: '', a: '', new: true }, -1])}
@@ -482,6 +398,7 @@ const ClassInfoInterface = ({ location, db, user }) => {
         cls={cls}
         db={db}
         user={user}
+        accounts={accounts}
       />
       <InfoModal
         open={showInfo}
@@ -515,30 +432,127 @@ const ClassInfoInterface = ({ location, db, user }) => {
         faq={editFAQ[0] || undefined}
         index={editFAQ[1]}
       />
-      {isOwner &&
-        (isEditing ? (
-          <Fab variant="extended" className={classes.fab} onClick={() => setIsEditing(false)}>
-            <VisibilityIcon style={{ marginRight: '5px' }} />
-            View Preview
-          </Fab>
-        ) : (
-          <Fab
-            color="secondary"
-            variant="extended"
-            className={classes.fab}
-            onClick={() => setIsEditing(true)}
-          >
-            <EditIcon style={{ marginRight: '5px' }} />
-            Edit Info
-          </Fab>
-        ))}
     </Styled.PageContent>
   );
 };
-
 ClassInfoInterface.propTypes = propTypes;
 
+const Fill = ({ className, prompt, isEditing, onClick }) => {
+  const classes = useStyles();
+  return (
+    isEditing && (
+      <div className={`${className} ${classes.fill}`}>
+        <Button onClick={onClick}>
+          <AddIcon />
+          {prompt}
+        </Button>
+      </div>
+    )
+  );
+};
+Fill.propTypes = {
+  className: PropTypes.string.isRequired,
+  prompt: PropTypes.string.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+const EditButton = ({ isEditing, title, onClick }) =>
+  isEditing && (
+    <Tooltip title={title} aria-label={title} placement="top" arrow>
+      <IconButton
+        edge="end"
+        size="small"
+        style={{
+          margin: '2px 0 0 -32px',
+          backgroundColor: rgba(190, 190, 190, 0.7)
+        }}
+        onClick={onClick}
+      >
+        <EditIcon />
+      </IconButton>
+    </Tooltip>
+  );
+EditButton.propTypes = {
+  isEditing: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+const SignUpButton = ({ cls, onClick, className, inputCode, setInputCode }) => {
+  const [tempCode, setTempCode] = useState('');
+  const [error, setError] = useState('');
+
+  const classes = useStyles();
+  return cls.isPrivate && inputCode !== cls.privacyCode ? (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        if (tempCode === cls.privacyCode) {
+          setInputCode(tempCode);
+          setError('');
+        } else {
+          setError('Invalid Code!');
+        }
+      }}
+      className={classes.registrationCode}
+      style={error.length > 0 ? { marginBottom: 0 } : {}}
+    >
+      <TextField
+        label="Registration Code"
+        error={error.length > 0}
+        helperText={error}
+        onChange={e => setTempCode(e.target.value)}
+        className={classes.registrationCodeInput}
+      />
+      <Tooltip title="Use Code" placement="top">
+        <IconButton
+          style={
+            error.length > 0 ? { marginLeft: '10px' } : { marginLeft: '10px', marginTop: '12px' }
+          }
+          aria-label="Use Code"
+          size="small"
+          color="primary"
+          type="submit"
+        >
+          <SendIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+    </form>
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      disabled={cls.children.length >= cls.maxStudents}
+      className={className}
+      onClick={onClick}
+    >
+      Sign Up!
+    </Button>
+  );
+};
+SignUpButton.propTypes = {
+  cls: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  inputCode: PropTypes.string.isRequired,
+  setInputCode: PropTypes.func.isRequired
+};
+SignUpButton.defaultProps = {
+  onClick: () => {},
+  className: ''
+};
+
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 'calc(100vh - 64px - 64px)',
+    boxSizing: 'border-box',
+    paddingBottom: 20
+  },
   mainHeader: {
     marginBottom: '36px',
     textAlign: 'center'
@@ -549,14 +563,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginBottom: '30px'
+    alignItems: 'center'
   },
   cardWrapper: {
     width: 'calc(100% - 4px)',
     maxWidth: '1000px',
     minWidth: '300px',
-    marginBottom: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -593,7 +605,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   fill: {
-    background: '#ddd',
+    background: 'var(--background-color)',
     borderRadius: '3px',
     display: 'flex',
     justifyContent: 'center',
@@ -611,6 +623,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px'
   },
   logoFill: {
+    color: 'white',
     width: '90%',
     height: '140px',
     marginBottom: '10px'
@@ -619,13 +632,14 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
     height: '250px',
     borderRadius: '3px',
-    border: '2px solid rgba(120,120,120,0.3)',
-    backgroundColor: 'rgba(120,120,120,0.3)',
+    border: `2px solid ${rgba(120, 120, 120, 0.3)}`,
+    backgroundColor: rgba(120, 120, 120, 0.3),
     [theme.breakpoints.down('md')]: {
       width: '90%'
     }
   },
   mapsFill: {
+    color: 'white',
     width: '75%',
     height: '250px',
     [theme.breakpoints.down('md')]: {
@@ -638,11 +652,11 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'normal',
     lineHeight: '40px',
     letterSpacing: '0.25px',
-    color: 'rgba(0,0,0,0.87)'
+    color: 'inherit'
   },
   aboutInput: {
     width: '100%',
-    color: 'rgba(0,0,0,0.87)',
+    color: 'inherit',
     fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.5px',
@@ -653,13 +667,14 @@ const useStyles = makeStyles(theme => ({
     width: '90%',
     height: '350px',
     borderRadius: '3px',
-    border: '2px solid rgba(120,120,120,0.3)',
-    backgroundColor: 'rgba(120,120,120,0.3)',
+    border: `2px solid ${rgba(120, 120, 120, 0.3)}`,
+    backgroundColor: rgba(120, 120, 120, 0.3),
     [theme.breakpoints.down('xs')]: {
       height: '200px'
     }
   },
   youtubeFill: {
+    color: 'white',
     width: '90%',
     height: '350px',
     margin: '10px 0',
@@ -669,10 +684,14 @@ const useStyles = makeStyles(theme => ({
   },
   faqPanel: {
     width: '80%',
-    backgroundColor: '#f0f0f0',
     [theme.breakpoints.down('sm')]: {
       width: '98%'
     }
+  },
+  faqPanelOutline: {
+    boxSizing: 'border-box',
+    border: `1px solid ${rgba(255, 255, 255, 0.23)}`,
+    boxShadow: 'none'
   },
   faqHeader: {
     marginBottom: '20px',
@@ -734,19 +753,6 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '8px'
     }
   },
-  fab: {
-    position: 'fixed',
-    top: '20px',
-    right: '140px',
-    [theme.breakpoints.down('md')]: {
-      right: '60px'
-    },
-    [theme.breakpoints.down('sm')]: {
-      right: '10px',
-      top: 'auto',
-      bottom: '10px'
-    }
-  },
   registrationCode: {
     display: 'flex',
     justifyContent: 'center',
@@ -761,4 +767,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default withRouter(ClassInfoInterface);
+export default withWidth()(withRouter(ClassInfoInterface));

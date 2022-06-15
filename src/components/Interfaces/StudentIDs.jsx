@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import {
   makeStyles,
   Typography,
-  Table,
-  TableHead,
-  TableBody,
   TablePagination,
   Paper,
   CircularProgress,
@@ -13,13 +9,10 @@ import {
   Button
 } from '@material-ui/core';
 import IDGenerator from './interfaceHelpers/IDGenerator';
-import StudentInfoRow from '../Classes/StudentInfoRow';
+import StudentInfo from '../Classes/StudentInfo';
+import { db } from '../../utils/firebase';
 
-const propTypes = {
-  db: PropTypes.object.isRequired
-};
-
-const StudentIDs = ({ db }) => {
+const StudentIDs = () => {
   const [allStudents, setAllStudents] = useState([]);
   const [students, setStudents] = useState([]);
   const [page, setPage] = useState(0);
@@ -64,14 +57,10 @@ const StudentIDs = ({ db }) => {
         <Grid item xs={12} md={10} lg={8}>
           <Paper className={classes.paper}>
             <div className={classes.tableWrapper}>
-              <Table>
-                <TableHead>
-                  <StudentInfoRow showLables />
-                </TableHead>
-                <TableBody>
-                  {!isLoading && students.map((s, i) => <StudentInfoRow key={i} student={s} />)}
-                </TableBody>
-              </Table>
+              <div className={classes.students}>
+                <StudentInfo showLabels />
+                {!isLoading && students.map((s, i) => <StudentInfo key={i} student={s} />)}
+              </div>
             </div>
             {isLoading && <CircularProgress color="primary" />}
             {!isLoading && (
@@ -96,8 +85,6 @@ const StudentIDs = ({ db }) => {
     </div>
   );
 };
-
-StudentIDs.propTypes = propTypes;
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -124,7 +111,11 @@ const useStyles = makeStyles(theme => ({
   },
   tableWrapper: {
     width: '100%',
-    overflow: 'scroll'
+    overflowX: 'auto'
+  },
+  students: {
+    padding: '0 24px',
+    minWidth: 936
   },
   options: {
     marginBottom: 14

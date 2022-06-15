@@ -4,13 +4,15 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
+  Typography,
   Button,
   Card,
   CardHeader,
   CardContent
 } from '@material-ui/core';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
-import autoBind from '../../autoBind';
+import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
+import { db, auth } from '../../utils/firebase';
+import autoBind from '../../utils/autoBind';
 
 import * as Styled from './styles';
 
@@ -18,8 +20,6 @@ const propTypes = {
   accountType: PropTypes.string.isRequired,
   next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
-  firebase: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   OAuthed: PropTypes.func.isRequired
 };
@@ -53,8 +53,6 @@ class GenericSignUp extends React.Component {
     };
     this.getUserData = getUserData;
     this.validateFields = validateFields;
-    this.firebase = props.firebase;
-    this.db = props.db;
     autoBind(this);
   }
 
@@ -97,8 +95,7 @@ class GenericSignUp extends React.Component {
   }
 
   createParentDoc(user, accountType) {
-    this.db
-      .collection(accountTypeToCollection.parent)
+    db.collection(accountTypeToCollection.parent)
       .doc(user.uid)
       .set(
         this.getUserData([
@@ -128,8 +125,7 @@ class GenericSignUp extends React.Component {
     const { email, password } = this.state;
     const { accountType } = this.props;
     if (this.validateFields([...allFields, accountType === 'parent' ? 'address' : '']) === true) {
-      this.firebase
-        .auth()
+      auth
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
           if (res.user) {
@@ -175,7 +171,7 @@ class GenericSignUp extends React.Component {
     return (
       <Card>
         <CardHeader
-          title={`${accountType} Application`}
+          title={accountType === 'parent' ? 'Family Account Signup' : `${accountType} Application`}
           style={{
             marginLeft: 5,
             textTransform: 'capitalize',
@@ -238,16 +234,17 @@ class GenericSignUp extends React.Component {
             </Styled.FormFieldsRow>
             <Styled.CheckboxRow>
               <FormControlLabel control={this.getCheckBox()} label="Okay to receive texts" />
-              <p
+              <Typography
+                variant="body2"
+                color="textSecondary"
                 style={{
                   margin: '-8px 0 0 32px',
                   paddingBottom: '8px',
-                  fontSize: '0.75rem',
-                  color: 'rgba(0, 0, 0, 0.5)'
+                  fontSize: '0.75rem'
                 }}
               >
                 Subscribe to stay updated with new programs and offers
-              </p>
+              </Typography>
             </Styled.CheckboxRow>
             {accountType === 'parent' ? (
               <Styled.FormFieldsRow firstRow>
@@ -264,28 +261,36 @@ class GenericSignUp extends React.Component {
               </Styled.FormFieldsRow>
             ) : null}
             {useOAuth ? null : (
-              <Styled.FormFieldsRow>
-                <TextField
-                  error={getErrorStatus(errors.password)}
-                  id="password"
-                  type="password"
-                  label="Password"
-                  variant="outlined"
-                  helperText={errors.password}
-                  value={password}
-                  onChange={this.handleChange}
-                />
-                <TextField
-                  error={getErrorStatus(errors.confirmPassword)}
-                  id="confirmPassword"
-                  type="password"
-                  label="Confirm Password"
-                  variant="outlined"
-                  helperText={errors.confirmPassword}
-                  value={confirmPassword}
-                  onChange={this.handleChange}
-                />
-              </Styled.FormFieldsRow>
+              <>
+                {this.props.accountType === 'parent' && (
+                  <Typography variant="body2" style={{ margin: '10px 4px' }}>
+                    <strong>Note:</strong> Your kids will need to be able to get into this account,
+                    so make sure to use a password they can remember.
+                  </Typography>
+                )}
+                <Styled.FormFieldsRow>
+                  <TextField
+                    error={getErrorStatus(errors.password)}
+                    id="password"
+                    type="password"
+                    label="Password"
+                    variant="outlined"
+                    helperText={errors.password}
+                    value={password}
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    error={getErrorStatus(errors.confirmPassword)}
+                    id="confirmPassword"
+                    type="password"
+                    label="Confirm Password"
+                    variant="outlined"
+                    helperText={errors.confirmPassword}
+                    value={confirmPassword}
+                    onChange={this.handleChange}
+                  />
+                </Styled.FormFieldsRow>
+              </>
             )}
           </Styled.FormFieldsContainer>
           <Styled.FormFieldsOptions>

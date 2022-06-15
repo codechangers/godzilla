@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { breakpoints } from '../../globals';
+import { breakpoints } from '../../utils/globals';
 
 export const SignupWrapper = styled.div({
   width: '100%',
@@ -9,7 +9,7 @@ export const SignupWrapper = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   boxSizing: 'border-box',
-  backgroundColor: '#f4f4f4'
+  backgroundColor: 'var(--background-color)'
 });
 
 export const Form = styled.div(
@@ -42,14 +42,15 @@ export const LogoButton = styled.button({
   position: 'absolute',
   top: 30,
   left: 64,
-  padding: 0
+  padding: 0,
+  [breakpoints.down.xs]: {
+    left: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%'
+  }
 });
 
 export const LogoText = styled.img({
-  maxWidth: 240,
-  [breakpoints.down.xs]: {
-    width: '60%',
-    maxWidth: '789px',
-    left: 'calc(20% + 8px)'
-  }
+  maxWidth: 240
 });

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dashboard,
   ImportContacts,
+  Event,
   AttachMoney,
   AccountCircle,
   Settings,
@@ -15,19 +16,57 @@ import {
   School,
   Assignment
 } from '@material-ui/icons';
-import { Fab, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, makeStyles, IconButton, Collapse } from '@material-ui/core';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Link, withRouter } from 'react-router-dom';
+import { useIntercom } from 'react-use-intercom';
+import clsx from 'clsx';
 import Logout from './Logout';
+import Intercom from './Intercom';
 import { Logo } from '../Images';
+import { rgb, rgba } from '../../utils/helpers';
+
+const propTypes = {
+  location: PropTypes.object.isRequired,
+  names: PropTypes.arrayOf(PropTypes.string),
+  baseRoute: PropTypes.string,
+  enableIntercom: PropTypes.bool,
+  whoAmI: PropTypes.object,
+  width: PropTypes.string.isRequired,
+  appBarConfig: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.node,
+    action: PropTypes.node,
+    clsname: PropTypes.string,
+    wrap: PropTypes.bool,
+    wrappedContent: PropTypes.node
+  })
+};
+
+const defaultProps = {
+  names: [],
+  baseRoute: '/',
+  enableIntercom: false,
+  whoAmI: null,
+  appBarConfig: {
+    title: 'CodeChangers',
+    content: null,
+    action: null,
+    clsname: '',
+    wrap: false,
+    wrappedContent: null
+  }
+};
+const defaultABC = defaultProps.appBarConfig;
 
 const nameToIcon = {
   Dashboard,
   Curriculum: ImportContacts,
-  'My Classes': ImportContacts,
+  Events: Event,
   Payments: AttachMoney,
   Profile: AccountCircle,
   'Sign up': Edit,
-  'Class Search': Search,
+  Register: Search,
   'Promo Codes': CardGiftcard,
   Settings,
   'Parent Dash': AccountTree,
@@ -36,17 +75,25 @@ const nameToIcon = {
   'Student IDs': Assignment
 };
 
-const SideBar = ({ names, baseRoute, location, firebase }) => {
+const SideBar = ({ names, baseRoute, enableIntercom, whoAmI, location, width, appBarConfig }) => {
+  const { title, content, action, clsname, wrap, wrappedContent } = {
+    ...defaultABC,
+    ...appBarConfig
+  };
   const [showMenu, setShowMenu] = useState(false);
+
+  // Handle Intercom Unmount.
+  const intercomAPI = useIntercom();
+  useEffect(() => intercomAPI.shutdown, [intercomAPI]);
 
   const nameToRoute = {
     Dashboard: baseRoute,
-    'My Classes': baseRoute,
+    Events: baseRoute,
     Curriculum: `${baseRoute}/curriculum`,
     Payments: `${baseRoute}/payments`,
     Profile: `${baseRoute}/profile`,
     'Sign up': `${baseRoute}/signup`,
-    'Class Search': `${baseRoute}/search`,
+    Register: `${baseRoute}/search`,
     'Promo Codes': `${baseRoute}/promo`,
     Settings: `${baseRoute}/settings`,
     'Parent Dash': '/parent',
@@ -62,18 +109,53 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
     return nameToRoute[n] === path;
   };
 
+  const small = isWidthDown('xs', width);
   const classes = useStyles();
 
   return (
     <>
-      <Fab
-        onClick={() => setShowMenu(true)}
-        className={classes.menuToggle}
-        aria-label="menu"
-        size="small"
-      >
-        <Menu />
-      </Fab>
+      {enableIntercom && <Intercom show={!small || showMenu} whoAmI={whoAmI} api={intercomAPI} />}
+      <AppBar color="secondary" position="fixed" className={clsx(classes.appBar, clsname)}>
+        <div className={classes.toolBarWrapper}>
+          {small ? (
+            <IconButton
+              style={{
+                padding: 8,
+                margin: '0 28px'
+              }}
+              onClick={() => setShowMenu(!showMenu)}
+              aria-label="menu"
+              id="menu-primary"
+            >
+              <Menu />
+            </IconButton>
+          ) : (
+            <Logo />
+          )}
+          <Toolbar className={classes.toolBar}>
+            <Typography variant="h5" noWrap className={classes.title}>
+              {title}
+            </Typography>
+            {small && wrap ? (
+              <Collapse
+                in={showMenu}
+                timeout="auto"
+                unmountOnExit
+                classes={{
+                  wrapperInner: classes.secondaryInner,
+                  container: classes.secondaryContainer
+                }}
+              >
+                {wrappedContent || content}
+              </Collapse>
+            ) : (
+              content
+            )}
+            {action}
+          </Toolbar>
+        </div>
+        <div className={classes.appBarBorder} />
+      </AppBar>
       <div
         id="offclick"
         className={classes.sidebarClickoff}
@@ -89,62 +171,64 @@ const SideBar = ({ names, baseRoute, location, firebase }) => {
             showMenu ? `${classes.sidebarWrapper} ${classes.openSidebar}` : classes.sidebarWrapper
           }
         >
-          <Logo />
-          {names.map(name => {
-            const Icon = nameToIcon[name];
-            return (
-              <Link to={nameToRoute[name]} key={name} onClick={() => setShowMenu(false)}>
-                <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
-                  <Icon />
-                  {name}
-                </div>
-              </Link>
-            );
-          })}
-          <Logout firebase={firebase} className={classes.logoutButton} />
+          <div className={classes.sidebarContent}>
+            {small && <Logo />}
+            {names.map(name => {
+              const Icon = nameToIcon[name];
+              return (
+                <Link to={nameToRoute[name]} key={name} onClick={() => setShowMenu(false)}>
+                  <div className={isSelected(name, location) ? 'selected' : ''} key={name}>
+                    <Icon />
+                    {name}
+                  </div>
+                </Link>
+              );
+            })}
+            <div className={classes.sideBarBottom}>
+              <Logout className={classes.logoutButton} />
+            </div>
+          </div>
+          <div className={classes.sidebarBorder} />
         </div>
       </div>
     </>
   );
 };
-
-SideBar.propTypes = {
-  location: PropTypes.object.isRequired,
-  names: PropTypes.arrayOf(PropTypes.string),
-  baseRoute: PropTypes.string,
-  firebase: PropTypes.object.isRequired
-};
-
-SideBar.defaultProps = {
-  names: [],
-  baseRoute: '/'
-};
+SideBar.propTypes = propTypes;
+SideBar.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   sidebarWrapper: {
     position: 'fixed',
     top: 0,
     left: 0,
+    zIndex: 10,
     width: '96px',
     height: '100%',
+    overflow: 'hidden',
+    transition: 'width 300ms ease',
+    backgroundColor: 'var(--background-color)',
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      width: 0
+    }
+  },
+  sidebarContent: {
+    width: 'calc(100% - 1px)',
+    height: '100%',
     boxSizing: 'border-box',
-    paddingTop: '40px',
+    paddingTop: '68px',
     margin: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    backgroundColor: 'var(--background-color)',
-    overflow: 'hidden',
-    transition: 'width 300ms ease',
-    zIndex: 10,
-    [theme.breakpoints.down('xs')]: {
-      width: 0
-    },
+    flexShrink: 0,
+    overflowY: 'auto',
     '& > *': {
       marginBottom: '20px'
     },
-    '& > img': {
+    '& img': {
       width: '40px',
       marginRight: '28px',
       marginLeft: '28px'
@@ -160,41 +244,97 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: 'rgba(0, 20, 60, 0.6)'
+      color: rgba(255, 255, 255, 0.8)
     },
     '& > a > div:hover': {
-      color: 'rgba(0, 0, 0, 0.6)'
+      color: rgba(200, 200, 200, 0.8)
     },
     '& > a > div.selected': {
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: rgb(255, 255, 255)
     }
   },
-  logoutButton: {
-    width: '80px',
-    position: 'absolute',
-    bottom: '6px',
-    right: '8px',
-    left: '8px',
+  sidebarBorder: {
+    display: 'block',
+    alignSelf: 'flex-end',
+    width: 1,
+    height: 'calc(100% - 64px)',
+    background: rgba(255, 255, 255, 0.12)
+  },
+  appBar: {
+    backgroundColor: 'var(--background-color)',
+    color: theme.palette.text.primary,
+    boxShadow: 'none',
+    '& img': {
+      width: '40px',
+      marginRight: '28px',
+      marginLeft: '28px'
+    }
+  },
+  rightOfAppBar: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    justifyContent: 'center'
+    boxSizing: 'border-box'
+  },
+  appBarBorder: {
+    alignSelf: 'flex-end',
+    width: 'calc(100% - 96px + 1px)',
+    background: rgba(255, 255, 255, 0.12),
+    height: 1,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
+  },
+  secondaryContainer: {
+    width: 'calc(100% - 95px)',
+    position: 'fixed',
+    top: 64,
+    left: 95
+  },
+  secondaryInner: {
+    backgroundColor: 'var(--background-color)',
+    border: `1px solid ${rgba(255, 255, 255, 0.12)}`,
+    borderRight: 'none',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  toolBarWrapper: {
+    width: '100%',
+    height: 64,
+    display: 'flex',
+    alignItems: 'center'
+  },
+  toolBar: {
+    height: '100%',
+    paddingLeft: 0,
+    overflow: 'hidden',
+    width: '100%',
+    maxWidth: 'calc(100% - 96px)',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
+    }
+  },
+  title: {
+    flexGrow: 1
+  },
+  sideBarBottom: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
+  },
+  logoutButton: {
+    color: rgb(255, 255, 255),
+    width: '80px'
   },
   openSidebar: {
     [theme.breakpoints.down('xs')]: {
       width: '96px'
     }
-  },
-  menuToggle: {
-    display: 'none',
-    [theme.breakpoints.down('xs')]: {
-      display: 'block'
-    },
-    background: 'none',
-    boxShadow: 'none',
-    position: 'absolute',
-    paddingTop: '7px',
-    top: 5,
-    left: 5
   },
   sidebarClickoff: {
     [theme.breakpoints.down('xs')]: {
@@ -204,9 +344,9 @@ const useStyles = makeStyles(theme => ({
       top: 0,
       left: 0,
       zIndex: 9,
-      backgroundColor: 'rgba(0,0,0,0.7)'
+      backgroundColor: rgba(0, 0, 0, 0.7)
     }
   }
 }));
 
-export default withRouter(SideBar);
+export default withWidth()(withRouter(SideBar));
