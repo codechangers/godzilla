@@ -50,7 +50,7 @@ const ClassInfoCard = ({ cls, openUpdate, openDelete, openContacts, width }) => 
             small={small}
           />
         </CopyToClipboard>
-        <CSVDownload filename={`${cls.name}-students.csv`} data={studentLogins}>
+        <CSVDownload filename={`${cls.name}-logins.csv`} data={studentLogins}>
           <Option
             icon={<DownloadIcon />}
             text="Download Logins"
