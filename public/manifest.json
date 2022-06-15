@@ -1,6 +1,6 @@
 {
-  "short_name": "Code Contest",
-  "name": "Code Contest | Build a Video Game | Win Prizes",
+  "short_name": "CodeChangers",
+  "name": "CodeChangers Event Regisration Platform",
   "icons": [
     {
       "src": "favicon.ico",
@@ -30,6 +30,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#ff6ab2",
-  "background_color": "#120d26"
+  "theme_color": "#0094de",
+  "background_color": "#f4f4f4"
 }
