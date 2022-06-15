@@ -1,5 +1,5 @@
-const admin = require("firebase-admin");
 const {uniqueNamesGenerator, adjectives, colors, animals} = require("unique-names-generator");
+const {firestore} = require("../utils/admin");
 
 /**
  * Get a random id of N words.
@@ -20,14 +20,7 @@ const backupId = () => `backup-id${Math.floor(1000 + Math.random() * 9000)}`;
  * Get an id that is unique to this environment.
  */
 const getLearnId = ({params: {env}}) =>
-  Promise.all(
-      [2, 2, 3].map(getId).map((id) =>
-        admin
-            .firestore()
-            .doc(`env/${env}/learnIds/${id}`)
-            .get(),
-      ),
-  )
+  Promise.all([2, 2, 3].map(getId).map((id) => firestore.doc(`env/${env}/learnIds/${id}`).get()))
       .then((ids) => ids.filter((id) => id.exists()))
       .then((ids) => (ids.length > 0 ? ids[0] : backupId()))
       .catch((err) => {
