@@ -53,7 +53,11 @@ async function assignAccountId(snap, context) {
  */
 async function generateIds(snap, context) {
   const {count} = snap.data();
-  const idDocs = await Promise.all(Array(count).fill(getLearnId(context)));
+  const idDocs = await Promise.all(
+      Array(count)
+          .fill(context)
+          .map(getLearnId),
+  );
   await Promise.all(idDocs.map((d) => d.ref.set({owner: snap.ref})));
   await snap.ref.set({learnIds: idDocs.map((d) => d.id), completed: true});
 }
