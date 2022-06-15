@@ -70,32 +70,6 @@ export const STATUS = {
 };
 
 /**
- * Games Globals
- */
-export const gameTypes = {
-  '': '',
-  default: 'Default Template',
-  runner: 'Run Game',
-  soccer: 'Soccer Game',
-  zombie: 'Zombie Game'
-};
-
-export const gameNames = /^[a-z]+$/;
-
-export const gamesPerKid = 1;
-
-export const serverReqs = ['RESTART', 'STOP'];
-
-export const GREEN = '#22AE0C';
-
-export const defaultStatus = {
-  download: 0,
-  build: 0
-};
-
-export const gameNameBlackList = ['www'];
-
-/**
  * Global Data Memeber Validation.
  */
 export const dataMemberToValidation = {
