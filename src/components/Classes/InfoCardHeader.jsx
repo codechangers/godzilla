@@ -3,19 +3,21 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress, Typography } from '@material-ui/core';
 import { AccessTime, LocationOn } from '@material-ui/icons';
-import { getDateString, getTime } from '../../helpers';
-import { programTypeToText } from '../../globals';
+import clsx from 'clsx';
+import { getDateString, getTime, rgb } from '../../utils/helpers';
+import { programTypeToText } from '../../utils/globals';
 import { Template2 } from '../Images';
 import ScheduleModal from '../UI/ScheduleModal';
+import { db } from '../../utils/firebase';
 
 const SignUpsProgress = withStyles({
   root: {
     height: 6,
-    backgroundColor: '#E0F4FD',
+    backgroundColor: rgb(25, 25, 25),
     borderRadius: 8
   },
   bar: {
-    backgroundColor: '#00AFEF'
+    backgroundColor: 'var(--primary-color)'
   }
 })(LinearProgress);
 
@@ -26,25 +28,34 @@ class InfoCardHeader extends React.Component {
       teacher: null,
       showSchedule: false
     };
+    this.safeSetState = this.setState;
   }
 
   componentDidMount() {
-    if (this.props.db !== null) {
-      this.props.db
-        .collection('parents')
+    if (db !== null) {
+      db.collection('parents')
         .doc(this.props.cls.teacher.id)
         .get()
         .then(teacherDoc => {
-          this.setState({ teacher: teacherDoc.data() });
+          this.safeSetState({ teacher: teacherDoc.data() });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.safeSetState = () => {};
   }
 
   render() {
     const { cls, children, hideImage, preview, hideAccountType, classes } = this.props;
     const { teacher, showSchedule } = this.state;
     return (
-      <div className={`${classes.infoCardHeader} ${children !== null ? classes.parent : ''}`}>
+      <div
+        className={clsx(classes.infoCardHeader, {
+          [classes.parent]: children !== null,
+          [classes.slim]: children !== null && !hideImage
+        })}
+      >
         <div style={hideImage ? { width: '100%' } : null}>
           <Typography variant="h5" style={{ marginBottom: '6px' }}>
             {cls.name}
@@ -86,6 +97,7 @@ class InfoCardHeader extends React.Component {
                   border: 'none',
                   padding: 0,
                   fontSize: 'inherit',
+                  color: 'inherit',
                   cursor: 'pointer'
                 }}
               >
@@ -149,7 +161,6 @@ class InfoCardHeader extends React.Component {
 InfoCardHeader.propTypes = {
   cls: PropTypes.object.isRequired,
   children: PropTypes.node,
-  db: PropTypes.object,
   preview: PropTypes.bool,
   hideImage: PropTypes.bool,
   hideAccountType: PropTypes.bool,
@@ -158,7 +169,6 @@ InfoCardHeader.propTypes = {
 
 InfoCardHeader.defaultProps = {
   children: null,
-  db: null,
   preview: false,
   hideImage: false,
   hideAccountType: false
@@ -194,7 +204,7 @@ const styles = theme => ({
       '& > img': {
         width: '100%',
         maxWidth: '100%',
-        height: '120px'
+        height: '250px'
       },
       '& > div': {
         width: '100%'
@@ -206,6 +216,7 @@ const styles = theme => ({
       }
     }
   },
+  slim: { marginBottom: 0 },
   parent: {
     '& > img': {
       height: '474px',
@@ -231,7 +242,7 @@ const styles = theme => ({
       '& > img': {
         width: '100%',
         maxWidth: '100%',
-        height: '120px'
+        height: '250px'
       },
       '& > div': {
         width: '100%'
@@ -250,7 +261,7 @@ const styles = theme => ({
   programType: {
     backgroundColor: 'var(--secondary-color)',
     fontSize: '0.8rem',
-    color: '#fff',
+    color: rgb(255, 255, 255),
     padding: '2px 8px',
     lineHeight: '23px',
     borderRadius: '4px',
@@ -304,7 +315,6 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     '& h6': {
-      color: 'rgba(0,0,0,0.6)',
       fontSize: '14px',
       lineHeight: '24px',
       fontWeight: 500,
@@ -313,7 +323,6 @@ const styles = theme => ({
     '& p': {
       width: '108px',
       textAlign: 'left',
-      color: 'rgba(0,0,0,0.6)',
       fontSize: '10px',
       lineHeight: '16px',
       fontWeight: 500,
@@ -333,9 +342,10 @@ const styles = theme => ({
     zIndex: 2,
     position: 'relative',
     '& > span': {
-      width: '1px',
+      width: '2px',
       height: '10px',
-      backgroundColor: '#13506e',
+      borderRadius: '1px',
+      backgroundColor: rgb(128, 128, 128, 0.5),
       display: 'block'
     },
     [theme.breakpoints.down('sm')]: {
@@ -345,7 +355,8 @@ const styles = theme => ({
   bottomLine: {
     width: '100%',
     height: 0,
-    borderBottom: '1px solid #e0e0e0',
+    marginTop: 40 + 22,
+    borderBottom: `1px solid ${rgb(224, 224, 224)}`,
     [theme.breakpoints.down('md')]: {
       display: 'none'
     }

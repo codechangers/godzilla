@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Button, TextField } from '@material-ui/core';
-import autoBind from '../../autoBind';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import autoBind from '../../utils/autoBind';
+import { db, auth } from '../../utils/firebase';
+import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
 
 import * as Styled from './styles';
 
@@ -15,8 +16,6 @@ const idToDataMember = {
 const allFields = ['name', 'address', 'aboutMe'];
 
 const propTypes = {
-  db: PropTypes.object.isRequired,
-  firebase: PropTypes.object.isRequired,
   updateAccounts: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired
@@ -45,10 +44,9 @@ class ParentSignUp extends React.Component {
 
   handleSubmit() {
     if (this.validateFields(allFields)) {
-      const user = this.props.firebase.auth().currentUser;
+      const user = auth.currentUser;
       const date = new Date();
-      this.props.db
-        .collection('organizations')
+      db.collection('organizations')
         .doc(user.uid)
         .set({
           ...this.getUserData(allFields),

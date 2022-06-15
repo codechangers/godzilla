@@ -1,17 +1,18 @@
 import styled from '@emotion/styled';
-import { breakpoints } from '../../globals';
+import { breakpoints } from '../../utils/globals';
+import { rgba } from '../../utils/helpers';
 
 // AccountType styles
 export const AccountType = styled.div({
   width: '100%',
   minHeight: '100vh',
   boxSizing: 'border-box',
-  backgroundColor: '#f4f4f4',
+  backgroundColor: 'var(--background-color)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: '30px 64px',
-  overflow: 'scroll',
+  overflow: 'auto',
   [breakpoints.down.xs]: {
     padding: '30px 20px'
   }
@@ -25,7 +26,7 @@ export const AccountSelectionSection = styled.div({
   width: '100%',
   marginTop: 54,
   marginBottom: 75,
-  backgroundColor: '#f4f4f4'
+  backgroundColor: 'var(--background-color)'
 });
 
 export const AccountSelectionCards = styled.div({
@@ -83,7 +84,7 @@ export const AccountLinkButton = styled.button(
     }
   },
   ({ error }) => ({
-    color: error ? '#FF0C3E' : 'inherit'
+    color: error ? 'var(--error-color)' : 'inherit'
   })
 );
 
@@ -159,7 +160,7 @@ export const LinkButton = styled.button(
     }
   },
   ({ error }) => ({
-    color: error ? '#FF0C3E' : 'inherit'
+    color: error ? 'var(--error-color)' : 'inherit'
   })
 );
 
@@ -184,12 +185,9 @@ export const ActionInner = styled.div({
 });
 
 export const ListItem = styled.div({
-  backgroundColor: 'white',
+  backgroundColor: 'var(--background-color)',
+  border: `0.5px solid ${rgba(255, 255, 255, 0.2)}`,
   borderRadius: 0,
-  '&:nth-child(odd)': {
-    backgroundColor: '#F4F4F4',
-    borderRadius: 4
-  },
   '@media (max-width: 420px)': {
     paddingBottom: '56px'
   }

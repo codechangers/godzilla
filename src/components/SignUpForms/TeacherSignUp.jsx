@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardContent, Button, TextField, MenuItem } from '@material-ui/core';
-import autoBind from '../../autoBind';
-import { getUserData, validateFields, getErrorStatus } from '../../helpers';
+import autoBind from '../../utils/autoBind';
+import { db } from '../../utils/firebase';
+import { getUserData, validateFields, getErrorStatus } from '../../utils/helpers';
 
 import * as Styled from './styles';
 
@@ -25,7 +26,6 @@ const idToDataMember = {
 const allFields = ['whyTeach', 'prevExp', 'region', 'location', 'address'];
 
 const propTypes = {
-  db: PropTypes.object.isRequired,
   updateAccounts: PropTypes.func.isRequired,
   prev: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
@@ -66,8 +66,7 @@ class TeacherSignUp extends React.Component {
     if (this.validateFields(allFields) === true) {
       const { user } = this.props;
       const date = new Date();
-      this.props.db
-        .collection('teachers')
+      db.collection('teachers')
         .doc(user.uid)
         .set({
           ...this.getUserData(allFields),

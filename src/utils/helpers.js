@@ -1,4 +1,4 @@
-import { dataMemberToValidation, months, weekDays, STATUS } from './globals';
+import { dataMemberToValidation, months, weekDays, STATUS, paletteType } from './globals';
 
 /*
  * For all functions that need to be binded to a component, ES5 functions must be used,
@@ -39,6 +39,15 @@ export function validateFields(fields) {
   this.setState({ errors });
   return formValid;
 }
+
+export const atLeastZero = x => (x > 0 ? x : 0);
+export const decimalByte = x => atLeastZero(x < 255 ? x : 255);
+export const themed = x => decimalByte(paletteType === 'dark' ? x : 255 - x);
+
+export const rgba = (red, green, blue, alpha) =>
+  `rgba(${themed(red)}, ${themed(green)}, ${themed(blue)}, ${alpha})`;
+
+export const rgb = (red, green, blue) => rgba(red, green, blue, 1);
 
 export const getErrorStatus = error => typeof error === 'string' && error.length > 0;
 
@@ -86,6 +95,20 @@ export const getAgeFromBirthday = bDay => {
   return Math.floor((today - bDay.seconds) / yearSecs);
 };
 
+export const getExactDateTime = (date, time) => {
+  const dateObj = new Date(date.seconds * 1000);
+  const timeObj = new Date(time.seconds * 1000);
+  return new Date(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate(),
+    timeObj.getHours(),
+    timeObj.getMinutes(),
+    0, // Seconds
+    0 // Milliseconds
+  );
+};
+
 export const getDate = timestamp => getMMDDYYYY(getDateFromTimestamp(timestamp));
 
 export const getDateString = timestamp => getMonthDDYYYY(getDateFromTimestamp(timestamp));
@@ -118,3 +141,5 @@ export const getStatus = account => {
   }
   return STATUS.PENDING;
 };
+
+export const toData = doc => ({ ...doc.data(), id: doc.id, ref: doc.ref });

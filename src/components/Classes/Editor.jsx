@@ -12,9 +12,16 @@ import {
 } from '@material-ui/core';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
-import { getUserData, validateFields, getErrorStatus, getDateFromTimestamp } from '../../helpers';
-import { weekDays } from '../../globals';
-import autoBind from '../../autoBind';
+import {
+  getUserData,
+  validateFields,
+  getErrorStatus,
+  getDateFromTimestamp,
+  rgba,
+  rgb
+} from '../../utils/helpers';
+import { programTypeToText, weekDays } from '../../utils/globals';
+import autoBind from '../../utils/autoBind';
 
 const allFields = [
   'name',
@@ -55,7 +62,7 @@ class ClassEditor extends React.Component {
     super(props);
     this.state = {
       name: '',
-      programType: '',
+      programType: 'camp',
       description: '',
       locationName: '',
       locationAddress: '',
@@ -214,9 +221,11 @@ class ClassEditor extends React.Component {
             helperText={this.state.errors.programType}
             select
           >
-            <MenuItem value="camp">Camp</MenuItem>
-            <MenuItem value="after-school">After School Program</MenuItem>
-            <MenuItem value="special-event">Special Event</MenuItem>
+            {Object.entries(programTypeToText).map(([value, text]) => (
+              <MenuItem value={value} key={value}>
+                {text}
+              </MenuItem>
+            ))}
           </TextField>
         </div>
         {this.state.errors.daysOfWeek ? (
@@ -512,13 +521,13 @@ const styles = theme => ({
   boldIcon: {
     '& p': {
       fontWeight: 700,
-      color: '#757575'
+      color: rgb(117, 117, 117)
     }
   },
   bold: {
     '& p': {
       fontWeight: 'normal',
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: rgba(255, 255, 255, 0.87)
     }
   },
   daysOfWeek: {

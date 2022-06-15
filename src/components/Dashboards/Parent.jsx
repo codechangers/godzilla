@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import { StripeProvider, Elements } from 'react-stripe-elements';
@@ -9,7 +9,15 @@ import ClassInfoInterface from '../Interfaces/ClassInfo';
 import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
 import SettingsInterface from '../Interfaces/Settings';
-import autoBind from '../../autoBind';
+import WhoAmInterface from '../Interfaces/WhoAmI';
+import { STRIPE_KEY } from '../../utils/globals';
+import { useAccountData } from '../../hooks/accounts';
+
+const propTypes = {
+  user: PropTypes.object.isRequired,
+  accounts: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
 
 const routeToInterface = {
   '/parent': null,
@@ -19,79 +27,61 @@ const routeToInterface = {
   '/parent/settings': SettingsInterface
 };
 
-const Fail = () => (
-  <div style={{ display: 'flex', flexDirection: 'column' }}>
-    <h1 style={{ marginTop: 36 }}>Unable to connect to our payment servers...</h1>
-    <h2 style={{ textAlign: 'center' }}>Please try again later</h2>
-  </div>
-);
+const whoAmIRoutes = ['/parent'];
 
-class ParentDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.firebase = this.props.firebase;
-    autoBind(this);
-  }
+const ParentDashboard = ({ user, accounts, location }) => {
+  const [whoAmI, setWhoAmI] = useState(null);
+  const [isAdmin] = useAccountData('admins');
+  const [isTeacher] = useAccountData('teachers');
 
-  getID() {
-    const path = this.props.location.pathname;
+  // Custom App Bar Init
+  const [cab, setCAB] = useState({});
+  const useCustomAppBar = newCab => setCAB({ ...cab, ...newCab });
+  useEffect(() => setCAB({}), [location]);
+
+  const getID = () => {
+    const path = location.pathname;
     if (path.includes('/parent/signup/') && path.length > 18) {
       return path.replace('/parent/signup/', '');
     }
     return '';
-  }
+  };
 
-  getInterface() {
-    const { state, pathname } = this.props.location;
+  const getInterface = () => {
+    const { state, pathname } = location;
     const id = (state && state.signupID) || (state && state.searchId);
-    const Interface = routeToInterface[id ? pathname.replace(`/${id}`, '') : pathname];
-    const { firebase, accounts, db, user } = this.props;
-    return Interface === null ? null : <Interface {...{ firebase, accounts, db, user }} />;
-  }
-
-  render() {
-    const SP = this.props.apiKey ? StripeProvider : Fail;
-    let approvedRoutes = this.props.accounts.teachers ? ['Teacher Dash'] : [];
-    approvedRoutes = this.props.accounts.admins
-      ? approvedRoutes.concat(['Admin Dash'])
-      : approvedRoutes;
-    return this.props.user.isSignedIn ? (
-      <PageWrapper>
-        <SideBar
-          names={['Profile', 'My Classes', 'Class Search'].concat(approvedRoutes)}
-          baseRoute="/parent"
-          firebase={this.props.firebase}
-        />
-        <SP apiKey={this.props.apiKey}>
-          <Elements>
-            {this.getInterface() || (
-              <ClassViewInterface
-                firebase={this.props.firebase}
-                db={this.props.db}
-                accounts={this.props.accounts}
-              />
-            )}
-          </Elements>
-        </SP>
-      </PageWrapper>
-    ) : (
-      <Redirect to={{ pathname: '/login', state: { signupID: this.getID() } }} />
+    const cleanPath = id ? pathname.replace(`/${id}`, '') : pathname;
+    let Interface = routeToInterface[cleanPath];
+    if (whoAmIRoutes.includes(cleanPath) && whoAmI === null) Interface = WhoAmInterface;
+    return Interface === null ? null : (
+      <Interface {...{ accounts, user, useCustomAppBar, whoAmI, setWhoAmI }} />
     );
-  }
-}
+  };
 
-ParentDashboard.propTypes = {
-  firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  accounts: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  apiKey: PropTypes.string
-};
+  let approvedRoutes = isTeacher ? ['Teacher Dash'] : [];
+  approvedRoutes = isAdmin ? approvedRoutes.concat(['Admin Dash']) : approvedRoutes;
 
-ParentDashboard.defaultProps = {
-  apiKey: null
+  return user.isSignedIn ? (
+    <PageWrapper>
+      <SideBar
+        names={['Profile', 'Events', 'Register'].concat(approvedRoutes)}
+        baseRoute="/parent"
+        appBarConfig={cab}
+        whoAmI={whoAmI}
+        enableIntercom
+      />
+      <StripeProvider apiKey={STRIPE_KEY}>
+        <Elements>
+          {getInterface() || (
+            <ClassViewInterface {...{ whoAmI, setWhoAmI, useCustomAppBar, accounts }} />
+          )}
+        </Elements>
+      </StripeProvider>
+    </PageWrapper>
+  ) : (
+    <Redirect to={{ pathname: '/login', state: { signupID: getID() } }} />
+  );
 };
+ParentDashboard.propTypes = propTypes;
 
 export default withRouter(ParentDashboard);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -8,28 +8,36 @@ import {
   ListItemAvatar,
   ListItemText,
   Checkbox,
-  Button
+  Button,
+  ListItemSecondaryAction
 } from '@material-ui/core';
 import AccountIcon from '@material-ui/icons/AccountCircle';
+import { useHistory } from 'react-router';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import ClassTable from './ClassTable';
 import PromoInput from '../UI/PromoInput';
 import PaymentProcess from '../UI/PaymentProcess';
 import Modal from '../UI/Modal';
-import { API_URL } from '../../globals';
+import { db } from '../../utils/firebase';
+import { useParentsLiveChildren } from '../../hooks/children';
+import { rgb, rgba } from '../../utils/helpers';
 
 const propTypes = {
+  accounts: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  cls: PropTypes.object.isRequired,
-  db: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  stripe: PropTypes.object.isRequired
+  stripe: PropTypes.object.isRequired,
+  cls: PropTypes.object
 };
 
-const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
+const defaultProps = {
+  cls: null
+};
+
+const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
+  const children = useParentsLiveChildren();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [children, setChildren] = useState([]);
   const [selectedChildren, setSelectedChildren] = useState([]);
   const [promoDoc, setPromoDoc] = useState(null);
   const [invalidPayment, setInvalidPayment] = useState('');
@@ -42,28 +50,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
     setPayment({ ...payment, ...changes });
   };
 
-  useEffect(() => {
-    return db
-      .collection('parents')
-      .doc(user.uid)
-      .onSnapshot(parentDoc => {
-        const childrenData = [];
-        const childrenRefs = parentDoc.data().children || [];
-        childrenRefs.forEach(child => {
-          child.get().then(childDoc => {
-            const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-            childrenData.push(childData);
-            if (childrenData.length === childrenRefs.length) {
-              setChildren(childrenData);
-            }
-          });
-        });
-      });
-  }, [db, user]);
-
   const handleSubmit = async () => {
     let token;
     let errorMessage = 'Invalid Payment Information!';
+    // Get Stripe Token.
     if (getTotal() > 0) {
       const stripePayment = await stripe.createToken({ name: 'Registration Payment' });
       token = stripePayment.token;
@@ -75,50 +65,34 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
       setIsProcessing(true);
       setInvalidPayment('');
       updatePayment({ error: '' });
-      // eslint-disable-next-line
-      fetch(`${API_URL}/charge`, {
-        method: 'POST',
-        body: JSON.stringify({
-          token: token ? token.id : '1234',
-          classID: cls.id,
-          teacherID: cls.teacher.id,
-          parentID: user.uid,
-          promoId: promoDoc !== null ? promoDoc.id : '1234',
-          numberOfChildren: selectedChildren.filter(c => !checkDisabled(c)).length
-        }),
-        headers: {
-          'Content-Type': 'application/json'
+      // Create Payment Document.
+      const paymentRef = await db.collection('payments').add({
+        stripeToken: token?.id || null,
+        classRef: cls.ref,
+        seller: db.collection('stripeSellers').doc(cls.teacher.id),
+        parent: accounts.parents.ref,
+        promo: promoDoc !== null ? promoDoc.ref : null,
+        kidsToRegister: selectedChildren.map(c => c.ref),
+        userID: user.uid
+      });
+      // Listen for status updates.
+      paymentRef.onSnapshot(paymentDoc => {
+        const { status } = paymentDoc.data();
+        const stripeErrors = {
+          card_declined: 'Your card was declined.',
+          incorrect_cvc: "Your card's security code is incorrect.",
+          expired_card: 'Your card is expired.',
+          processing_error: 'We were unable to process your card.',
+          incorrect_number: 'Your card number is invalid.'
+        };
+        if (status === 'succeeded') updatePayment({ succeeded: true });
+        else if (Object.keys(stripeErrors).includes(status)) {
+          setIsProcessing(false);
+          setInvalidPayment(stripeErrors[status]);
+        } else if (status === 'failed') {
+          updatePayment({ failed: true, error: 'Failed to complete payment!' });
         }
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (res.status === 200) {
-            const clsChildren = cls.children || [];
-            selectedChildren.forEach(child => {
-              const classes = child.classes || [];
-              classes.push(cls.ref);
-              child.ref.update({ classes });
-              clsChildren.push(child.ref);
-            });
-            cls.ref.update({ children: clsChildren });
-            updatePayment({ succeeded: true });
-          } else if (res.error) {
-            console.log(res.error);
-            if (res.error.code === 'card_declined') {
-              setIsProcessing(false);
-              setInvalidPayment('Your Card was Declined.');
-            } else {
-              updatePayment({ failed: true });
-              updatePayment({ error: res.error.message });
-            }
-          } else {
-            updatePayment({ failed: true });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          updatePayment({ failed: true });
-        });
+      });
     } else {
       setIsProcessing(false);
       setInvalidPayment(errorMessage);
@@ -158,18 +132,14 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
     const registrations = selectedChildren.filter(c => !checkDisabled(c)).length;
     if (promoDoc !== null) {
       const { discountType, discountAmount, uses, limited } = promoDoc;
-      if (discountType === '$') {
-        total =
-          registrations > uses && limited
-            ? (cls.price - discountAmount >= 0 ? cls.price - discountAmount : 0 * uses) +
-              cls.price * (registrations - uses)
-            : (cls.price - discountAmount) * registrations;
-      } else {
-        total =
-          registrations > uses && limited
-            ? cls.price * (0.01 * discountAmount) * uses + cls.price * registrations - uses
-            : cls.price * (0.01 * discountAmount) * registrations;
-      }
+      const dPrice =
+        discountType === '$'
+          ? cls.price - discountAmount
+          : cls.price * (0.01 * (100 - discountAmount));
+      total =
+        registrations > uses && limited
+          ? dPrice * uses + cls.price * (registrations - uses)
+          : dPrice * registrations;
     } else {
       total = cls.price * registrations;
     }
@@ -179,17 +149,20 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
     return total;
   };
 
+  const history = useHistory();
   const classes = useStyles();
-  return (
+  return cls !== null ? (
     <Modal open={open} onClose={onClose} className={classes.modal}>
       {isProcessing ? (
         <PaymentProcess
           payment={payment}
+          waiver={cls.hasWaiver}
           onClose={() => {
             setSelectedChildren([]);
             setIsProcessing(false);
             updatePayment({ succeeded: false });
-            if (cls.hasWaiver) {
+            if (payment.succeeded) setPromoDoc(null);
+            if (cls.hasWaiver && payment.succeeded) {
               window.open(cls.waiverURL, '_blank');
             }
             onClose();
@@ -205,6 +178,21 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
           <ClassTable cls={cls} />
           <Typography variant="body1">Select Children to Register</Typography>
           <List style={{ width: '100%' }}>
+            {children.length === 0 && (
+              <ListItem>
+                <ListItemText primary="You don't have any children!" />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => history.push('/parent')}
+                    className={classes.emptyPrompt}
+                  >
+                    Add Kids
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
             {children.map(child => (
               <ListItem
                 key={child.id}
@@ -245,7 +233,7 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
                 className={classes.cardInfo}
                 style={invalidPayment ? { border: '1px solid red' } : null}
               >
-                <CardElement />
+                <CardElement style={{ base: { color: rgb(250, 250, 250) } }} />
               </div>
             </>
           )}
@@ -263,10 +251,10 @@ const ClassSignUp = ({ open, onClose, cls, db, user, stripe }) => {
         </>
       )}
     </Modal>
-  );
+  ) : null;
 };
-
 ClassSignUp.propTypes = propTypes;
+ClassSignUp.defaultProps = defaultProps;
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -314,12 +302,11 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     color: 'red',
-    fontWeight: 'bold',
     textAlign: 'center'
   },
   cardInfo: {
     width: 'calc(100% - 30px)',
-    border: '1px solid rgba(224, 224, 224, 1)',
+    border: `1px solid ${rgba(224, 224, 224, 1)}`,
     padding: 14,
     marginBottom: 20
   },
@@ -330,6 +317,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap'
+  },
+  emptyPrompt: {
+    [theme.breakpoints.down('xs')]: { display: 'none' }
   }
 }));
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MUIModal from '@material-ui/core/Modal';
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import Paper from './Paper';
 
 const propTypes = {
   open: PropTypes.bool,
@@ -24,7 +25,7 @@ const Modal = ({ open, onClose, children, className, title, description, noWrapp
       aria-labelledby={title}
       aria-describedby={description}
     >
-      {noWrapper ? children : <Paper className={`${classes.paper} ${className}`}>{children}</Paper>}
+      {noWrapper ? children : <Paper className={className}>{children}</Paper>}
     </MUIModal>
   );
 };
@@ -50,20 +51,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       paddingLeft: '0'
     }
-  },
-  paper: {
-    boxSizing: 'border-box',
-    padding: '20px',
-    outline: 'none',
-    width: '100%',
-    maxWidth: '700px',
-    minWidth: '300px',
-    maxHeight: '100%',
-    overflow: 'scroll',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
   }
 }));
 
