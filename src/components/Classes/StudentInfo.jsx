@@ -7,7 +7,7 @@ const StudentInfo = ({ showLabels, student }) => {
   const classes = useStyles();
   return student !== null || showLabels ? (
     <div className={`${classes.student}${showLabels ? ' ' + classes.bold : ''}`}>
-      <Typography variant="body2" style={{ width: 240 }}>
+      <Typography variant="body2" style={{ width: 190 }}>
         {showLabels ? 'Name' : `${student.fName} ${student.lName}`}
       </Typography>
       <Typography variant="body2" style={{ width: 65 }}>
@@ -19,8 +19,11 @@ const StudentInfo = ({ showLabels, student }) => {
       <Typography variant="body2" style={{ width: 100 }}>
         {showLabels ? 'Current Grade' : `${student.currentGrade} Grade`}
       </Typography>
-      <Typography variant="body2" style={{ width: 290 }}>
+      <Typography variant="body2" style={{ width: 190 }}>
         {showLabels ? 'Current School' : `${student.currentSchool}`}
+      </Typography>
+      <Typography variant="body2" style={{ width: 150 }}>
+        {showLabels ? 'Student ID' : `${student.learnID || 'No Student ID'}`}
       </Typography>
     </div>
   ) : null;
