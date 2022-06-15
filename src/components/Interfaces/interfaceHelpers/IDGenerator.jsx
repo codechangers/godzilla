@@ -84,14 +84,14 @@ const IDGenerator = ({ open, onClose }) => {
           className={classes.numInput}
           helperText="Max of 200"
           error={error !== ''}
-          disabled={data.length > 0}
+          disabled={data.length > 0 || ticket !== null}
         />
         <Button
           onClick={onSubmit}
           color="primary"
           variant="outlined"
           style={{ marginBottom: 20 }}
-          disabled={data.length > 0}
+          disabled={data.length > 0 || ticket !== null}
         >
           Generate
         </Button>

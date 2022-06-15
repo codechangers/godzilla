@@ -20,6 +20,12 @@ export const useLiveTicketStatus = ticketRef => {
 export const useLearnIds = ticketRef => {
   const [ids, setIds] = useState([]);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!ticketRef) {
+      setIds([]);
+      setLoading(false);
+    }
+  }, [ticketRef]);
   useEffect(learnIdsEffect(ticketRef, setIds, setLoading), [ticketRef]);
   return [ids, loading];
 };
