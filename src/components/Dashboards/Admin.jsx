@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { PageWrapper } from './styles';
 import AccountRequests from '../Interfaces/AccountRequests';
 import ProfileInterface from '../Interfaces/Profile';
+import StudentIDs from '../Interfaces/StudentIDs';
 import SideBar from '../UI/SideBar';
 
 const propTypes = {
@@ -14,7 +15,8 @@ const propTypes = {
 
 const routeToInterface = {
   '/admin': AccountRequests,
-  '/admin/profile': ProfileInterface
+  '/admin/profile': ProfileInterface,
+  '/admin/ids': StudentIDs
 };
 
 const AdminDashboard = ({ user, accounts, location }) => {
@@ -25,7 +27,10 @@ const AdminDashboard = ({ user, accounts, location }) => {
 
   return user.isSignedIn ? (
     <PageWrapper>
-      <SideBar names={['Profile', 'Dashboard', 'Parent Dash', 'Teacher Dash']} baseRoute="/admin" />
+      <SideBar
+        names={['Profile', 'Dashboard', 'Student IDs', 'Parent Dash', 'Teacher Dash']}
+        baseRoute="/admin"
+      />
       {getInterface()}
     </PageWrapper>
   ) : (
