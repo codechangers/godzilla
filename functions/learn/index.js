@@ -28,7 +28,7 @@ const getLearnId = ({ params: { env } }) =>
         .get()
     )
   )
-    .then(ids => ids.filter(id => id.exists))
+    .then(ids => ids.filter(id => id.exists()))
     .then(ids => (ids.length > 0 ? ids[0] : backupId()))
     .catch(err => {
       console.error(err);
@@ -44,4 +44,14 @@ async function assignAccountId(snap, context) {
   await snap.ref.update({ learnID: learnIdSnap.id });
 }
 
-module.exports = { assignId };
+/**
+ * Generate the number of learn ids requested by the ticket.
+ */
+async function generateIds(snap, context) {
+  const { count } = snap.data();
+  const idSnaps = await Promise.all(Array(count).fill(getLearnId(context)));
+  await Promise.all(idSnaps.map(s => s.ref.set({ owner: snap.ref })));
+  await snap.ref.set({ learnIds: idSnaps.map(s => s.id), completed: true });
+}
+
+module.exports = { assignId, generateIds };

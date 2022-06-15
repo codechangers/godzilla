@@ -37,3 +37,7 @@ exports.deleteStripeSellerAccount = functions.firestore
 exports.assignLearnAccountId = functions.firestore
   .document('/env/{env}/children/{childId}')
   .onCreate(learn.assignId);
+
+exports.generateLearnIds = functions.firestore
+  .document('/env/{env}/learnIdTickets/{ticketId}')
+  .onCreate(learn.generateIds);
