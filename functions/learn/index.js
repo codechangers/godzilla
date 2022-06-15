@@ -21,7 +21,7 @@ const backupId = () => `backup-id${Math.floor(1000 + Math.random() * 9000)}`;
  */
 const getLearnId = ({params: {env}}) =>
   Promise.all([2, 2, 3].map(getId).map((id) => firestore.doc(`env/${env}/learnIds/${id}`).get()))
-      .then((ids) => ids.filter((id) => id.exists()))
+      .then((ids) => ids.filter((id) => !id.exists()))
       .then((ids) => (ids.length > 0 ? ids[0] : backupId()))
       .catch((err) => {
         console.error(err);
@@ -32,9 +32,13 @@ const getLearnId = ({params: {env}}) =>
  * Assign a new learn id to a child.
  */
 async function assignAccountId(snap, context) {
-  const learnIdSnap = await getLearnId(context);
-  await learnIdSnap.ref.set({owner: snap.ref});
-  await snap.ref.update({learnID: learnIdSnap.id});
+  const learnID = await getLearnId(context);
+  if (learnID instanceof String) {
+    await snap.ref.update({learnID});
+  } else {
+    await learnID.ref.set({owner: snap.ref});
+    await snap.ref.update({learnID: learnID.id});
+  }
 }
 
 /**
