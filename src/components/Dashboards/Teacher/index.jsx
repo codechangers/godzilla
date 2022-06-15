@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, CircularProgress } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { PageWrapper } from '../styles';
-import CurriculumInterface from '../../Interfaces/Curriculum';
-import PaymentsInterface from '../../Interfaces/Payments';
 import ProfileInterface from '../../Interfaces/Profile';
-import SettingsInterface from '../../Interfaces/Settings';
 import PromoCodesInterface from '../../Interfaces/PromoCodes';
 import SideBar from '../../UI/SideBar';
 import ApprovedTeacher from './ApprovedTeacher';
@@ -23,10 +20,7 @@ const propTypes = {
 
 const routeToInterface = {
   '/teacher': null,
-  '/teacher/curriculum': CurriculumInterface,
-  '/teacher/payments': PaymentsInterface,
   '/teacher/profile': ProfileInterface,
-  '/teacher/settings': SettingsInterface,
   '/teacher/promo': PromoCodesInterface
 };
 

@@ -8,7 +8,6 @@ import SideBar from '../UI/SideBar';
 import ClassInfoInterface from '../Interfaces/ClassInfo';
 import ClassSearchInterface from '../Interfaces/ClassSearch';
 import ClassViewInterface from '../Interfaces/ClassView';
-import SettingsInterface from '../Interfaces/Settings';
 import WhoAmInterface from '../Interfaces/WhoAmI';
 import { STRIPE_KEY } from '../../utils/globals';
 import { useAccountData } from '../../hooks/accounts';
@@ -23,8 +22,7 @@ const routeToInterface = {
   '/parent': null,
   '/parent/signup': ClassInfoInterface,
   '/parent/search': ClassSearchInterface,
-  '/parent/profile': Profile,
-  '/parent/settings': SettingsInterface
+  '/parent/profile': Profile
 };
 
 const whoAmIRoutes = ['/parent'];
