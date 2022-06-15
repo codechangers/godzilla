@@ -68,6 +68,12 @@ service cloud.firestore {
         allow write: if false;
       }
 
+      // Learn ID Generator
+      match /learnIdTickets/{ticketId} {
+        allow read, create: if isAdmin(env);
+        allow write: if false;
+      }
+
     }
 
   }
