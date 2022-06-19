@@ -138,7 +138,7 @@ class ProfileInterface extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAccountData();
+    this.fetchAccountData().then(this.fetchChildrenData);
   }
 
   getEditField(field) {
@@ -278,13 +278,15 @@ class ProfileInterface extends React.Component {
   }
 
   fetchAccountData() {
-    db.collection('parents')
+    return db
+      .collection('parents')
       .doc(this.props.user.uid)
       .get()
       .then(doc => {
         let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
         if (this.props.accounts.teachers) {
-          db.collection('teachers')
+          return db
+            .collection('teachers')
             .doc(this.props.user.uid)
             .get()
             .then(tDoc => {
@@ -295,11 +297,11 @@ class ProfileInterface extends React.Component {
                 location: tDoc.data().location
               };
               this.setState({ accountData });
+              return accountData;
             });
-        } else {
-          this.setState({ accountData });
         }
-        this.fetchChildrenData(accountData);
+        this.setState({ accountData });
+        return accountData;
       });
   }
 
