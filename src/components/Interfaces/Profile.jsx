@@ -282,22 +282,22 @@ class ProfileInterface extends React.Component {
       .collection('parents')
       .doc(this.props.user.uid)
       .get()
-      .then(doc => {
-        let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
+      .then(doc => ({ ...doc.data(), id: doc.id, ref: doc.ref }))
+      .then(accountData => {
         if (this.props.accounts.teachers) {
           return db
             .collection('teachers')
             .doc(this.props.user.uid)
             .get()
             .then(tDoc => {
-              accountData = {
+              const teacherData = {
                 ...accountData,
                 teacherRef: tDoc.ref,
                 address: tDoc.data().address,
                 location: tDoc.data().location
               };
-              this.setState({ accountData });
-              return accountData;
+              this.setState({ accountData: teacherData });
+              return teacherData;
             });
         }
         this.setState({ accountData });
@@ -307,15 +307,15 @@ class ProfileInterface extends React.Component {
 
   fetchChildrenData(accountData) {
     const childrenRefs = accountData.children || this.state.accountData.children || [];
-    const children = [];
-    childrenRefs.forEach(childRef => {
-      childRef.get().then(childDoc => {
-        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-        children.push(childData);
-        if (children.length === childrenRefs.length) {
-          this.setState({ children });
-        }
-      });
+    return Promise.all(
+      childrenRefs.map(childRef =>
+        childRef
+          .get()
+          .then(childDoc => ({ ...childDoc.data(), id: childDoc.id, ref: childDoc.ref }))
+      )
+    ).then(children => {
+      this.setState({ children });
+      return children;
     });
   }
 
