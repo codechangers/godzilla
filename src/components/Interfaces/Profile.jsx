@@ -46,8 +46,8 @@ const propTypes = {
 };
 
 const accountToNames = {
-  parents: ['fName', 'lName', 'phone', 'address'],
-  teachers: ['fName', 'lName', 'phone', 'location', 'address'],
+  parent: ['fName', 'lName', 'phone', 'address'],
+  teacher: ['fName', 'lName', 'phone', 'location', 'address'],
   child: ['fName', 'lName', 'birthDate', 'currentSchool', 'currentGrade', 'shirtSize', 'gender']
 };
 
@@ -138,7 +138,9 @@ class ProfileInterface extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAccountData().then(this.fetchChildrenData);
+    this.fetchAccountData()
+      .then(this.fetchChildrenData)
+      .then(this.fillEmptyFields);
   }
 
   getEditField(field) {
@@ -238,7 +240,7 @@ class ProfileInterface extends React.Component {
   }
 
   getFields() {
-    const fields = this.props.accounts.teachers ? accountToNames.teachers : accountToNames.parents;
+    const fields = this.props.accounts.teachers ? accountToNames.teacher : accountToNames.parent;
     return fields.map(field => {
       const Icon = nameToIcon[field];
       const error = this.state.errors[field];
@@ -282,7 +284,7 @@ class ProfileInterface extends React.Component {
       .collection('parents')
       .doc(this.props.user.uid)
       .get()
-      .then(doc => ({ ...doc.data(), id: doc.id, ref: doc.ref }))
+      .then(doc => ({ ...doc.data(), id: doc.id, ref: doc.ref, accountType: 'parent' }))
       .then(accountData => {
         if (this.props.accounts.teachers) {
           return db
@@ -292,6 +294,7 @@ class ProfileInterface extends React.Component {
             .then(tDoc => {
               const teacherData = {
                 ...accountData,
+                accountType: 'teacher',
                 teacherRef: tDoc.ref,
                 address: tDoc.data().address,
                 location: tDoc.data().location
@@ -309,13 +312,30 @@ class ProfileInterface extends React.Component {
     const childrenRefs = accountData.children || this.state.accountData.children || [];
     return Promise.all(
       childrenRefs.map(childRef =>
-        childRef
-          .get()
-          .then(childDoc => ({ ...childDoc.data(), id: childDoc.id, ref: childDoc.ref }))
+        childRef.get().then(childDoc => ({
+          ...childDoc.data(),
+          id: childDoc.id,
+          ref: childDoc.ref,
+          accountType: 'child'
+        }))
       )
     ).then(children => {
       this.setState({ children });
       return children;
+    });
+  }
+
+  fillEmptyFields() {
+    const { accountData, children } = this.state;
+
+    const fillEmpty = accData => ({
+      ...Object.fromEntries(accountToNames[accData.accountType].map(x => [x, ''])),
+      ...accData
+    });
+
+    this.setState({
+      accountData: fillEmpty(accountData),
+      children: children.map(fillEmpty)
     });
   }
 
