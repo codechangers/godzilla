@@ -124,6 +124,11 @@ const getSubHeader = text => (
   </ListSubheader>
 );
 
+const fillEmptyFields = accountData => ({
+  ...Object.fromEntries(accountToNames[accountData.accountType].map(x => [x, ''])),
+  ...accountData
+});
+
 class ProfileInterface extends React.Component {
   constructor(props) {
     super(props);
@@ -138,9 +143,7 @@ class ProfileInterface extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAccountData()
-      .then(this.fetchChildrenData)
-      .then(this.fillEmptyFields);
+    this.fetchAccountData().then(this.fetchChildrenData);
   }
 
   getEditField(field) {
@@ -291,18 +294,18 @@ class ProfileInterface extends React.Component {
             .collection('teachers')
             .doc(this.props.user.uid)
             .get()
-            .then(tDoc => {
-              const teacherData = {
-                ...accountData,
-                accountType: 'teacher',
-                teacherRef: tDoc.ref,
-                address: tDoc.data().address,
-                location: tDoc.data().location
-              };
-              this.setState({ accountData: teacherData });
-              return teacherData;
-            });
+            .then(tDoc => ({
+              ...accountData,
+              accountType: 'teacher',
+              teacherRef: tDoc.ref,
+              address: tDoc.data().address,
+              location: tDoc.data().location
+            }));
         }
+        return accountData;
+      })
+      .then(fillEmptyFields)
+      .then(accountData => {
         this.setState({ accountData });
         return accountData;
       });
@@ -319,24 +322,12 @@ class ProfileInterface extends React.Component {
           accountType: 'child'
         }))
       )
-    ).then(children => {
-      this.setState({ children });
-      return children;
-    });
-  }
-
-  fillEmptyFields() {
-    const { accountData, children } = this.state;
-
-    const fillEmpty = accData => ({
-      ...Object.fromEntries(accountToNames[accData.accountType].map(x => [x, ''])),
-      ...accData
-    });
-
-    this.setState({
-      accountData: fillEmpty(accountData),
-      children: children.map(fillEmpty)
-    });
+    )
+      .then(children => children.map(fillEmptyFields))
+      .then(children => {
+        this.setState({ children });
+        return children;
+      });
   }
 
   validateFields(fields) {
