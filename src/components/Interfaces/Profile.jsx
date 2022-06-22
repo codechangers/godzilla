@@ -46,8 +46,8 @@ const propTypes = {
 };
 
 const accountToNames = {
-  parents: ['fName', 'lName', 'phone', 'address'],
-  teachers: ['fName', 'lName', 'phone', 'location', 'address'],
+  parent: ['fName', 'lName', 'phone', 'address'],
+  teacher: ['fName', 'lName', 'phone', 'location', 'address'],
   child: ['fName', 'lName', 'birthDate', 'currentSchool', 'currentGrade', 'shirtSize', 'gender']
 };
 
@@ -124,6 +124,11 @@ const getSubHeader = text => (
   </ListSubheader>
 );
 
+const fillEmptyFields = accountData => ({
+  ...Object.fromEntries(accountToNames[accountData.accountType].map(x => [x, ''])),
+  ...accountData
+});
+
 class ProfileInterface extends React.Component {
   constructor(props) {
     super(props);
@@ -138,7 +143,7 @@ class ProfileInterface extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAccountData();
+    this.fetchAccountData().then(this.fetchChildrenData);
   }
 
   getEditField(field) {
@@ -238,7 +243,7 @@ class ProfileInterface extends React.Component {
   }
 
   getFields() {
-    const fields = this.props.accounts.teachers ? accountToNames.teachers : accountToNames.parents;
+    const fields = this.props.accounts.teachers ? accountToNames.teacher : accountToNames.parent;
     return fields.map(field => {
       const Icon = nameToIcon[field];
       const error = this.state.errors[field];
@@ -278,43 +283,51 @@ class ProfileInterface extends React.Component {
   }
 
   fetchAccountData() {
-    db.collection('parents')
+    return db
+      .collection('parents')
       .doc(this.props.user.uid)
       .get()
-      .then(doc => {
-        let accountData = { ...doc.data(), id: doc.id, ref: doc.ref };
+      .then(doc => ({ ...doc.data(), id: doc.id, ref: doc.ref, accountType: 'parent' }))
+      .then(accountData => {
         if (this.props.accounts.teachers) {
-          db.collection('teachers')
+          return db
+            .collection('teachers')
             .doc(this.props.user.uid)
             .get()
-            .then(tDoc => {
-              accountData = {
-                ...accountData,
-                teacherRef: tDoc.ref,
-                address: tDoc.data().address,
-                location: tDoc.data().location
-              };
-              this.setState({ accountData });
-            });
-        } else {
-          this.setState({ accountData });
+            .then(tDoc => ({
+              ...accountData,
+              accountType: 'teacher',
+              teacherRef: tDoc.ref,
+              address: tDoc.data().address,
+              location: tDoc.data().location
+            }));
         }
-        this.fetchChildrenData(accountData);
+        return accountData;
+      })
+      .then(fillEmptyFields)
+      .then(accountData => {
+        this.setState({ accountData });
+        return accountData;
       });
   }
 
   fetchChildrenData(accountData) {
     const childrenRefs = accountData.children || this.state.accountData.children || [];
-    const children = [];
-    childrenRefs.forEach(childRef => {
-      childRef.get().then(childDoc => {
-        const childData = { ...childDoc.data(), id: childDoc.id, ref: childDoc.ref };
-        children.push(childData);
-        if (children.length === childrenRefs.length) {
-          this.setState({ children });
-        }
+    return Promise.all(
+      childrenRefs.map(childRef =>
+        childRef.get().then(childDoc => ({
+          ...childDoc.data(),
+          id: childDoc.id,
+          ref: childDoc.ref,
+          accountType: 'child'
+        }))
+      )
+    )
+      .then(children => children.map(fillEmptyFields))
+      .then(children => {
+        this.setState({ children });
+        return children;
       });
-    });
   }
 
   validateFields(fields) {

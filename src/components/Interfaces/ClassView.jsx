@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { History, Update } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import WhoAmIButton from './interfaceHelpers/WhoAmIButton';
 import InfoCardHeader from '../Classes/InfoCardHeader';
 import { useLiveChild } from '../../hooks/children';
@@ -114,7 +114,14 @@ const ClassViewInterface = ({ width, whoAmI, setWhoAmI, useCustomAppBar }) => {
         .map(cls => (
           <Paper key={cls.id} className={classes.paper}>
             <InfoCardHeader cls={cls}>
-              <div />
+              <Link
+                style={{ display: 'block', marginBottom: 15 }}
+                to={{ pathname: `/parent/signup/${cls.id}`, state: { signupID: cls.id } }}
+              >
+                <Button style={{ width: '100%' }} variant="contained">
+                  More Info
+                </Button>
+              </Link>
             </InfoCardHeader>
           </Paper>
         ))}
