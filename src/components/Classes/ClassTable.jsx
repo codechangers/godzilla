@@ -58,6 +58,7 @@ ClassTable.propTypes = propTypes;
 const useStyles = makeStyles({
   tableWrapper: {
     width: '100%',
+    minHeight: 108,
     display: 'flex',
     flexDirection: 'column',
     border: `1px solid ${rgba(31, 31, 31, 0.5)}`,
@@ -65,7 +66,8 @@ const useStyles = makeStyles({
       borderBottom: 'none'
     },
     margin: '14px 0',
-    overflowX: 'scroll'
+    overflowX: 'auto',
+    overflowY: 'hidden'
   }
 });
 

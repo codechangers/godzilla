@@ -177,7 +177,7 @@ const ClassSignUp = ({ accounts, open, onClose, cls, user, stripe }) => {
           </Typography>
           <ClassTable cls={cls} />
           <Typography variant="body1">Select Children to Register</Typography>
-          <List style={{ width: '100%' }}>
+          <List className={classes.childrenList}>
             {children.length === 0 && (
               <ListItem>
                 <ListItemText primary="You don't have any children!" />
@@ -299,6 +299,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       marginLeft: '10px'
     }
+  },
+  childrenList: {
+    width: '100%',
+    maxHeight: 'fit-content',
+    overflow: 'auto'
   },
   error: {
     color: 'red',
