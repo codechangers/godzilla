@@ -103,7 +103,7 @@ export const dataMemberToValidation = {
   locationName: () => '',
   locationAddress: () => '',
   price: state =>
-    !Number.isNaN(Number(state.price)) && Number(state.price) >= 10
+    !Number.isNaN(Number(state.price)) && Number(state.price) >= 0
       ? ''
       : 'Invalid price, must be at least $10',
   startDate: state =>
