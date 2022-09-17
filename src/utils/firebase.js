@@ -1,10 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { collection, doc, initializeFirestore } from 'firebase/firestore';
+import { initializeAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 // All configuration variables are pulled from a .env file
-
-const config = {
+const app = initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_PROJECT_ID,
@@ -12,20 +11,16 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
-};
+});
 
-firebase.initializeApp(config);
-export const { Timestamp } = firebase.firestore;
-export const { GoogleAuthProvider } = firebase.auth;
-export const db = firebase
-  .firestore()
-  .collection('env')
-  .doc(process.env.REACT_APP_ENV);
-export const auth = firebase.auth();
+export const db = doc(process.env.REACT_APP_ENV, collection('env', initializeFirestore(app, {})));
+export const auth = initializeAuth(app);
+
 export const googleSignIn = () => {
   const provider = new GoogleAuthProvider();
   provider.addScope('email');
-  auth.signInWithPopup(provider).catch(err => {
-    console.log(err);
-  });
+  return signInWithPopup(auth, provider);
 };
+
+export { Timestamp } from 'firebase/firestore';
+export { GoogleAuthProvider } from 'firebase/auth';
