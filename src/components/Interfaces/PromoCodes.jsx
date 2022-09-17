@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles, Typography } from '@material-ui/core';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
 import DeleteModal from './interfaceHelpers/DeleteModal';
@@ -21,17 +22,15 @@ const PromoCodesInterface = ({ user }) => {
   const [promoToDelete, setPromoToDelete] = useState({ isSet: false });
   const [showOldPromos, setShowOldPromos] = useState(false);
 
-  const createPromo = promoCode => {
+  const createPromo = async promoCode => {
     promoCode.active = true;
     promoCode.startUses = promoCode.uses;
     promoCode.teacher = teacher.ref;
     promoCode.createdOn = { seconds: Date.now() / 1000 };
-    db.collection('promos')
-      .add(promoCode)
-      .then(promoRef => {
-        teacher.ref.update({ promos: teacher.promos ? [...teacher.promos, promoRef] : [promoRef] });
-      })
-      .catch(err => console.log(err));
+    const promoRef = await addDoc(collection('promos', db), promoCode);
+    await updateDoc(doc(teacher), {
+      promos: teacher.promos ? [...teacher.promos, promoRef] : [promoRef]
+    });
   };
 
   const updatePromo = promoCode => {
