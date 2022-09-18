@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
@@ -6,7 +6,7 @@ import PromoForm from './interfaceHelpers/PromoForm';
 import PromoCard from './interfaceHelpers/PromoCard';
 import DeleteModal from './interfaceHelpers/DeleteModal';
 import { useLivePromoCodes } from '../../hooks/promos';
-import { toData } from '../../utils/helpers';
+import { useLiveTeacherData } from '../../hooks/teachers';
 import { db } from '../../utils/firebase';
 import * as Styled from './styles';
 
@@ -15,12 +15,12 @@ const propTypes = {
 };
 
 const PromoCodesInterface = ({ user }) => {
-  const [teacher, setTeacher] = useState(null);
   const promos = useLivePromoCodes(teacher?.promos || []);
   const [showForm, setShowForm] = useState(false);
   const [promoToEdit, setPromoToEdit] = useState({ isSet: false });
   const [promoToDelete, setPromoToDelete] = useState({ isSet: false });
   const [showOldPromos, setShowOldPromos] = useState(false);
+  const teacher = useLiveTeacherData(user?.uid);
 
   const createPromo = async promoCode => {
     promoCode.active = true;
@@ -50,14 +50,6 @@ const PromoCodesInterface = ({ user }) => {
     });
     setPromoToDelete({ isSet: false });
   };
-
-  useEffect(() => {
-    // Get Teacher Data
-    return db
-      .collection('teachers')
-      .doc(user.uid)
-      .onSnapshot(doc => setTeacher(toData(doc)));
-  }, [db, user, setTeacher]);
 
   const classes = useStyles();
 
