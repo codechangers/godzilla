@@ -4,12 +4,19 @@ import { db } from '../utils/firebase';
 import { onSnapshotDataEffectBase } from '../utils/effectBases';
 
 /**
- * Generate a hook that will handle snapshots for a firebase document.
+ * Generate a live data hook for a given firebase collection.
  */
-export const liveDocumentHook = collectionName => documentId => {
-  const [data, setData] = useState({});
+export const liveDocumentHookForCollection = collectionName => documentId => {
   const docRef = useMemo(() => doc(documentId, collection(collectionName, db)), [documentId]);
-  useEffect(liveDocumentEffect(docRef, setData), [docRef]);
+  return useDocumentReferenceLiveData(docRef);
+};
+
+/**
+ * Handle data snapshots for a firebase document.
+ */
+export const useDocumentReferenceLiveData = documentRef => {
+  const [data, setData] = useState({});
+  useEffect(liveDocumentEffect(documentRef, setData), [documentRef]);
   return data;
 };
 

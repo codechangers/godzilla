@@ -1,3 +1,3 @@
-import { liveDocumentHook } from './firebase';
+import { liveDocumentHookForCollection } from './firebase';
 
-export const useLiveTeacherData = liveDocumentHook('teachers');
+export const useLiveTeacherData = liveDocumentHookForCollection('teachers');
